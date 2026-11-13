@@ -26,6 +26,10 @@ export interface GameModule<S, M, V> {
   applyMove(state: S, player: PlayerId, move: M): MoveResult<S>;
   /** What one player may see. A null viewer is a spectator. */
   view(state: S, viewer: PlayerId | null): V;
+  /** Players the game is waiting on right now. Empty when the game is over. */
+  activePlayers(state: S): PlayerId[];
+  /** A default move for a player who is away, used when the host skips them. */
+  autoMove?(state: S, player: PlayerId): M | null;
   /** null while the game is still running. */
   result(state: S): GameResult | null;
 }

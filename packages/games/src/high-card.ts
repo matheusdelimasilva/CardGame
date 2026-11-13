@@ -157,6 +157,14 @@ export const highCard: GameModule<HighCardState, HighCardMove, HighCardView> = {
     };
   },
 
+  activePlayers(state) {
+    return state.winners ? [] : [state.players[state.turn]!];
+  },
+
+  autoMove(state, player) {
+    return state.players[state.turn] === player ? { type: "reveal" } : null;
+  },
+
   result(state) {
     return state.winners ? { winners: state.winners } : null;
   },
