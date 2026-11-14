@@ -8,8 +8,8 @@ import { norm, primaryArtist, stripThe } from "./normalize.mjs";
 
 const MIN_SCORE = 80;
 // A hit's original release is normally the chart year or the year before.
-// Allow a little slack; anything earlier is probably a different recording.
-const MAX_YEARS_BEFORE_CHART = 2;
+// Allow a year of slack (Dec release, next-year chart); anything earlier is probably a different recording.
+const MAX_YEARS_BEFORE_CHART = 1;
 
 const billboard = await readJson(join(CACHE_DIR, "billboard.json"));
 const mb = await readJson(join(CACHE_DIR, "musicbrainz.json"), {});

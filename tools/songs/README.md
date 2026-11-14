@@ -31,7 +31,7 @@ missing. `build-songs.mjs` works on partial caches; unmatched songs fall back to
 
 MusicBrainz often reports reissue or compilation dates (a 1949 hit "first released" in 2011),
 so a candidate date is only accepted if the title and primary artist match and the year is
-the chart year or up to 2 years before it. Otherwise the chart year is used.
+the chart year or the year before it. Otherwise the chart year is used.
 Each song records which one it used in `yearSource` (`musicbrainz` or `chart-year`).
 
 ## Output fields
