@@ -1,4 +1,4 @@
-import type { HistoryEntry } from "@cardgame/protocol";
+import type { GameInfo, HistoryEntry, SettingValues } from "@cardgame/protocol";
 import { KEYS, storage } from "./storage";
 
 async function call<T>(path: string, body?: unknown): Promise<T> {
@@ -23,7 +23,8 @@ export const api = {
   verify: (email: string, code: string) => call<{ token: string; email: string }>("/api/auth/verify", { email, code }),
   me: () => call<{ email: string }>("/api/me"),
   signOut: () => call<object>("/api/auth/signout", {}),
-  createRoom: () => call<{ code: string }>("/api/rooms", {}),
+  games: () => call<{ games: GameInfo[] }>("/api/games"),
+  createRoom: (gameId: string, settings: SettingValues) => call<{ code: string }>("/api/rooms", { gameId, settings }),
   roomExists: (code: string) => call<{ exists: boolean }>(`/api/rooms/${encodeURIComponent(code)}`),
   history: () => call<{ history: HistoryEntry[] }>("/api/history"),
 };

@@ -178,25 +178,12 @@ function SignIn({ onSignedIn }: { onSignedIn: (email: string) => void }) {
 
 function HostPanel({ email, onSignOut }: { email: string; onSignOut: () => void }) {
   const [history, setHistory] = useState<HistoryEntry[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-
   useEffect(() => {
     api
       .history()
       .then((r) => setHistory(r.history))
       .catch(() => setHistory([]));
   }, []);
-
-  const create = async () => {
-    setBusy(true);
-    try {
-      navigate(`/t/${(await api.createRoom()).code}`);
-    } catch (err) {
-      setError((err as Error).message);
-      setBusy(false);
-    }
-  };
 
   const signOut = () => {
     void api.signOut().catch(() => {});
@@ -214,10 +201,9 @@ function HostPanel({ email, onSignOut }: { email: string; onSignOut: () => void 
             Sign out
           </button>
         </p>
-        <button className="btn gold big" onClick={create} disabled={busy}>
+        <button className="btn gold big" onClick={() => navigate("/new")}>
           New table
         </button>
-        {error && <p className="form-error">{error}</p>}
       </section>
 
       <section className="panel">

@@ -1,7 +1,7 @@
 import { randomBytes, randomInt } from "node:crypto";
-import type { GameResult } from "@cardgame/engine";
-import { defaultGameId, games } from "@cardgame/games";
-import { MAX_NAME_LENGTH, SEAT_COUNT, type RoomView } from "@cardgame/protocol";
+import { resolveSettings, type GameResult, type SettingValues } from "@cardgame/engine";
+import { games } from "@cardgame/games";
+import { MAX_NAME_LENGTH, SEAT_COUNT, type GameInfo, type RoomView } from "@cardgame/protocol";
 
 export interface Member {
   id: string;
@@ -18,12 +18,18 @@ export interface RunningGame {
   players: string[];
   state: unknown;
   result: GameResult | null;
+  /** Who the game was waiting on when the turn clock last started. */
+  turnKey: string;
+  /** When the current turn runs out (epoch ms), or null if it is not timed. */
+  deadline: number | null;
+  turnMs: number;
 }
 
 export interface Room {
   code: string;
   hostEmail: string;
   gameId: string;
+  settings: SettingValues;
   members: Member[];
   game: RunningGame | null;
   updatedAt: number;
@@ -43,8 +49,50 @@ export function newRoomCode(): string {
 const newId = () => randomBytes(6).toString("hex");
 const newToken = () => randomBytes(24).toString("hex");
 
-export function createRoom(code: string, hostEmail: string): Room {
-  return { code, hostEmail, gameId: defaultGameId, members: [], game: null, updatedAt: Date.now() };
+export function gameInfo(gameId: string): GameInfo {
+  const { id, name, minPlayers, maxPlayers, description, settings } = games[gameId]!;
+  return { id, name, minPlayers, maxPlayers, description, settings };
+}
+
+/** The game must exist. Settings are checked against the game; anything invalid falls back to its default. */
+export function createRoom(code: string, hostEmail: string, gameId: string, settings: unknown = {}): Room {
+  return {
+    code,
+    hostEmail,
+    gameId,
+    settings: resolveSettings(games[gameId]!.settings, settings),
+    members: [],
+    game: null,
+    updatedAt: Date.now(),
+  };
+}
+
+/** Starts the turn clock when the game begins waiting on someone new. */
+function syncClock(room: Room, now: number): void {
+  const running = room.game;
+  if (!running) return;
+  const game = games[running.gameId]!;
+  const key = running.result ? "" : game.activePlayers(running.state).join(",");
+  if (key === running.turnKey) return;
+  running.turnKey = key;
+  const seconds = key ? (game.turnTimeLimit?.(running.state) ?? null) : null;
+  running.turnMs = seconds ? seconds * 1000 : 0;
+  running.deadline = seconds ? now + running.turnMs : null;
+}
+
+/** Plays the default move for anyone whose turn has run out. Returns true if the game changed. */
+export function expireTurn(room: Room, now = Date.now()): boolean {
+  const running = room.game;
+  if (!running || running.result || running.deadline === null || now < running.deadline) return false;
+  const game = games[running.gameId]!;
+  let changed = false;
+  for (const playerId of game.activePlayers(running.state)) {
+    const auto = game.autoMove?.(running.state, playerId) ?? null;
+    if (auto !== null && apply(room, playerId, auto, now) === null) changed = true;
+  }
+  // Nothing could be played for them: stop the clock rather than fire again every tick.
+  if (!changed) running.deadline = null;
+  return changed;
 }
 
 const isRunning = (room: Room) => room.game !== null && room.game.result === null;
@@ -83,15 +131,7 @@ export function stand(room: Room, member: Member): Refusal {
   return null;
 }
 
-export function setGame(room: Room, member: Member, gameId: string): Refusal {
-  if (!member.isHost) return "Only the host can choose the game.";
-  if (isRunning(room)) return "Finish the current game first.";
-  if (!games[gameId]) return "Unknown game.";
-  room.gameId = gameId;
-  return null;
-}
-
-export function start(room: Room, member: Member, seed = randomInt(2 ** 31)): Refusal {
+export function start(room: Room, member: Member, seed = randomInt(2 ** 31), now = Date.now()): Refusal {
   if (!member.isHost) return "Only the host can start the game.";
   if (isRunning(room)) return "A game is already running.";
   const game = games[room.gameId]!;
@@ -101,11 +141,13 @@ export function start(room: Room, member: Member, seed = randomInt(2 ** 31)): Re
     .map((m) => m.id);
   if (players.length < game.minPlayers) return `${game.name} needs at least ${game.minPlayers} players.`;
   if (players.length > game.maxPlayers) return `${game.name} allows at most ${game.maxPlayers} players.`;
-  room.game = { gameId: game.id, players, state: game.setup({ players, seed }), result: null };
+  const state = game.setup({ players, seed, settings: room.settings });
+  room.game = { gameId: game.id, players, state, result: null, turnKey: "", deadline: null, turnMs: 0 };
+  syncClock(room, now);
   return null;
 }
 
-function apply(room: Room, playerId: string, gameMove: unknown): Refusal {
+function apply(room: Room, playerId: string, gameMove: unknown, now: number): Refusal {
   const running = room.game!;
   const game = games[running.gameId]!;
   let outcome;
@@ -117,16 +159,17 @@ function apply(room: Room, playerId: string, gameMove: unknown): Refusal {
   if (!outcome.ok) return outcome.error;
   running.state = outcome.state;
   running.result = game.result(outcome.state);
+  syncClock(room, now);
   return null;
 }
 
-export function move(room: Room, member: Member, gameMove: unknown): Refusal {
+export function move(room: Room, member: Member, gameMove: unknown, now = Date.now()): Refusal {
   if (!inRunningGame(room, member)) return "You are not playing in this game.";
-  return apply(room, member.id, gameMove);
+  return apply(room, member.id, gameMove, now);
 }
 
 /** The host plays a default move for a player who is away. */
-export function skip(room: Room, member: Member, playerId: string): Refusal {
+export function skip(room: Room, member: Member, playerId: string, now = Date.now()): Refusal {
   if (!member.isHost) return "Only the host can skip a player.";
   if (!isRunning(room)) return "No game is running.";
   const target = room.members.find((m) => m.id === playerId);
@@ -135,7 +178,7 @@ export function skip(room: Room, member: Member, playerId: string): Refusal {
   const game = games[room.game!.gameId]!;
   const auto = game.autoMove?.(room.game!.state, playerId) ?? null;
   if (auto === null) return "There is nothing to skip for that player right now.";
-  return apply(room, playerId, auto);
+  return apply(room, playerId, auto, now);
 }
 
 /** Removes a player from the room. A running game they were in is ended. */
@@ -156,7 +199,7 @@ export function endGame(room: Room, member: Member): Refusal {
 }
 
 /** Everything one member is allowed to know about the room. */
-export function viewFor(room: Room, member: Member): RoomView {
+export function viewFor(room: Room, member: Member, now = Date.now()): RoomView {
   const seats: RoomView["seats"] = Array.from({ length: SEAT_COUNT }, () => null);
   for (const m of room.members) {
     if (m.seat === null) continue;
@@ -178,12 +221,16 @@ export function viewFor(room: Room, member: Member): RoomView {
       active: game.activePlayers(room.game.state),
       view: game.view(room.game.state, viewer),
       result: room.game.result,
+      timer:
+        room.game.deadline === null
+          ? null
+          : { remainingMs: Math.max(0, room.game.deadline - now), totalMs: room.game.turnMs },
     };
   }
   return {
     code: room.code,
-    gameId: room.gameId,
-    games: Object.values(games).map(({ id, name, minPlayers, maxPlayers }) => ({ id, name, minPlayers, maxPlayers })),
+    gameInfo: gameInfo(room.gameId),
+    settings: room.settings,
     you: { id: member.id, name: member.name, seat: member.seat, isHost: member.isHost },
     seats,
     spectators: room.members

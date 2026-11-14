@@ -124,6 +124,49 @@ button:disabled { cursor: default; }
 .history-players { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0 0.8rem; color: var(--text); }
 .history-players .winner { color: var(--gold); }
 
+/* ---------- New table: game picker and settings ---------- */
+.steps { display: flex; justify-content: space-between; align-items: center; }
+.steps .link { text-decoration: none; font-size: 1.35rem; }
+.game-list { display: grid; gap: 0.75rem; }
+.game-card {
+  display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 0.75rem; text-align: left;
+  background: var(--plate); color: var(--ink);
+  border: 3px solid var(--ink); border-radius: 10px; box-shadow: 0 6px 0 var(--ink);
+  padding: 0.7rem 0.85rem;
+  transition: transform 80ms, box-shadow 80ms;
+}
+.game-card:hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--ink); }
+.game-card:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ink); }
+.game-name { font-family: var(--pixel); font-weight: 700; font-size: 1.9rem; line-height: 1; }
+.game-players { align-self: center; background: var(--ink); color: var(--gold); border-radius: 5px; padding: 0 0.4em; font-size: 1.05rem; }
+.game-desc { grid-column: 1 / -1; color: #55524a; font-size: 1.1rem; }
+.settings { display: grid; gap: 0.6rem; }
+.setting { display: flex; align-items: center; gap: 0.75rem; background: var(--charcoal); border-radius: 10px; padding: 0.7rem 0.8rem; }
+.setting.select { flex-direction: column; align-items: stretch; }
+.setting-text { display: grid; gap: 0.15rem; flex: 1; min-width: 0; }
+.setting-label { font-size: 1.45rem; color: var(--cream); }
+.setting-desc { color: var(--muted); font-size: 1.05rem; }
+.switch {
+  flex: none; position: relative; width: 5.2rem; height: 2.75rem; padding: 0;
+  border: 3px solid var(--ink); border-radius: 8px; background: #3a3d40; color: var(--muted);
+  box-shadow: inset 0 4px 0 rgba(0, 0, 0, 0.35);
+  font-size: 1.25rem; text-transform: uppercase;
+  transition: background 150ms;
+}
+.switch-knob {
+  position: absolute; top: 3px; left: 3px; width: 2rem; height: calc(100% - 10px);
+  background: var(--plate); border: 2px solid var(--ink); border-radius: 5px; box-shadow: 0 4px 0 var(--ink);
+  transition: left 220ms var(--spring);
+}
+.switch-text { position: absolute; top: 50%; right: 0.55rem; transform: translateY(-50%); }
+.switch.on { background: var(--gold); color: var(--ink); }
+.switch.on .switch-knob { left: calc(100% - 2rem - 3px); }
+.switch.on .switch-text { right: auto; left: 0.6rem; }
+.input.select {
+  flex: none; width: 100%; appearance: none; cursor: pointer; padding-right: 2.2rem;
+  background: var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23ffd84a' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 0.8rem center / 0.8rem;
+}
+
 /* ---------- Cards ---------- */
 .card {
   --w: 3.4rem;
@@ -237,6 +280,9 @@ button:disabled { cursor: default; }
 .seat-tags { display: flex; gap: 0.25rem; margin-top: 7px; min-height: 1.2rem; }
 .tag { background: var(--panel); color: var(--text); border-radius: 5px; padding: 0 0.35em; font-size: 1.05rem; white-space: nowrap; }
 .tag.red { background: var(--red); color: var(--cream); }
+.tag.clock { background: var(--gold); color: var(--ink); }
+.tag.clock.low { background: var(--red); color: var(--cream); animation: nudge 0.5s ease-in-out infinite; }
+.lobby-settings { list-style: none; margin: 0; padding: 0.3rem 0 0; border-top: 2px dashed #3a3d40; color: var(--text); font-size: 1.05rem; display: grid; gap: 0.05rem; }
 .seat.active .avatar { box-shadow: 0 0 0 4px var(--gold), 0 0 26px rgba(255, 216, 74, 0.85); }
 .seat.active .nametag { background: var(--gold); transform: scale(1.08); }
 .seat-arrow {
@@ -290,6 +336,8 @@ button.seat:hover .avatar, button.seat.open:not(:disabled):hover .avatar { trans
   box-shadow: 0 5px 0 var(--ink), 0 0 24px rgba(255, 216, 74, 0.6);
   animation: nudge 1s ease-in-out infinite;
 }
+.plate-clock { font-family: var(--mono); font-weight: 400; text-transform: none; margin-left: 0.5em; background: var(--ink); color: var(--gold); border-radius: 5px; padding: 0 0.35em; }
+.plate-clock.low { background: var(--red); color: var(--cream); }
 .me-panel { display: flex; align-items: center; gap: 0.6rem; min-width: 0; flex: 1; }
 .me-panel.active .avatar { box-shadow: 0 0 0 4px var(--gold), 0 0 26px rgba(255, 216, 74, 0.85); }
 .me-text { display: grid; justify-items: start; gap: 0.3rem; min-width: 0; flex: 1; }

@@ -2,6 +2,7 @@ import { MAX_NAME_LENGTH, SEAT_COUNT, type RoomView, type SeatView } from "@card
 import { useEffect, useState, type FormEvent } from "react";
 import { navigate } from "./App";
 import { gameUIs } from "./games";
+import { describeSettings } from "./NewTable";
 import { Avatar, OpenSeat, Seat } from "./Seat";
 import { KEYS, storage } from "./storage";
 import { useRoom } from "./useRoom";
@@ -9,6 +10,8 @@ import { useRoom } from "./useRoom";
 export function Room({ code }: { code: string }) {
   const { room, connection, error, send } = useRoom(code);
   const [menuFor, setMenuFor] = useState<string | null>(null);
+  // Hooks must run on every render, so this sits above the early returns below.
+  const secondsLeft = useSecondsLeft(room?.game && !room.game.result ? room.game.timer : null);
 
   if (connection === "gone") {
     return <Notice title="Table not found" text="This table has closed or the link is wrong." />;
@@ -74,6 +77,7 @@ export function Room({ code }: { code: string }) {
                   seat={seat}
                   player={player}
                   active={running && game.active.includes(player.id)}
+                  clock={running && game.active.includes(player.id) ? secondsLeft : null}
                   tag={game && ui && player.inGame ? ui.seatTag(game, player.id) : running ? "next game" : null}
                   cards={running && ui && gameProps && player.inGame ? <ui.SeatCards {...gameProps} playerId={player.id} /> : null}
                   onClick={you.isHost ? () => setMenuFor(player.id) : undefined}
@@ -93,6 +97,7 @@ export function Room({ code }: { code: string }) {
           {running && (
             <div className={`turn-plate${playing && game.active.includes(you.id) ? " mine" : ""}`}>
               {playing && game.active.includes(you.id) ? "Your turn" : `waiting for ${waitingOn.join(", ")}...`}
+              {secondsLeft !== null && <span className={`plate-clock${secondsLeft <= 5 ? " low" : ""}`}>{secondsLeft}s</span>}
             </div>
           )}
           {you.seat !== null ? (
@@ -204,7 +209,7 @@ export function Room({ code }: { code: string }) {
 }
 
 function Lobby({ room, send, nameOf }: { room: RoomView; send: ReturnType<typeof useRoom>["send"]; nameOf: (id: string) => string }) {
-  const info = room.games.find((g) => g.id === room.gameId)!;
+  const info = room.gameInfo;
   const seated = room.seats.filter((s) => s !== null).length;
   const winners = room.game?.result?.winners.map(nameOf) ?? null;
   const missing = info.minPlayers - seated;
@@ -220,20 +225,17 @@ function Lobby({ room, send, nameOf }: { room: RoomView; send: ReturnType<typeof
       ) : (
         <>
           <div className="lobby-label">now playing</div>
-          {room.you.isHost && room.games.length > 1 ? (
-            <select className="input" value={room.gameId} onChange={(e) => send({ type: "setGame", gameId: e.target.value })}>
-              {room.games.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.name}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <div className="lobby-game">{info.name}</div>
-          )}
+          <div className="lobby-game">{info.name}</div>
           <div className="lobby-label">
             {seated} seated · {info.minPlayers} to {info.maxPlayers} players
           </div>
+          {info.settings.length > 0 && (
+            <ul className="lobby-settings">
+              {describeSettings(info, room.settings).map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+          )}
         </>
       )}
       {room.you.isHost ? (
@@ -252,6 +254,20 @@ function Lobby({ room, send, nameOf }: { room: RoomView; send: ReturnType<typeof
       )}
     </div>
   );
+}
+
+/** Counts down a turn timer locally between server updates. null when the turn is not timed. */
+function useSecondsLeft(timer: { remainingMs: number } | null): number | null {
+  const [left, setLeft] = useState<number | null>(null);
+  useEffect(() => {
+    if (!timer) return setLeft(null);
+    const end = performance.now() + timer.remainingMs;
+    const tick = () => setLeft(Math.max(0, Math.ceil((end - performance.now()) / 1000)));
+    tick();
+    const id = setInterval(tick, 250);
+    return () => clearInterval(id);
+  }, [timer]);
+  return left;
 }
 
 function Announcement({ info }: { info: { key: string; title: string; detail: string } | null }) {
