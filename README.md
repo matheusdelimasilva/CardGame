@@ -8,7 +8,7 @@ One player signs in with an email code and hosts; everyone else joins from a sha
 | Step | State |
 |---|---|
 | 1. Engine: cards, zones, visibility, per-player views | Done |
-| 2. Demo game (High Card) on the engine | Done |
+| 2. Demo game on the engine | Done |
 | 3. Server: rooms, join by link, seats, spectators, reconnect | Done |
 | 4. Round-table web client, portrait-first on phones | Done |
 | 5. Email sign-in for hosts, game history | Done (emails need a Resend key) |
@@ -51,7 +51,8 @@ RESEND_API_KEY=... EMAIL_FROM="CardGame <you@your-domain>" NODE_ENV=production p
 
 ## How a table works
 
-- The host signs in with an email code and creates a table, which gets a six-character code and a link (`/t/CODE`).
+- The host signs in with an email code, picks a game, chooses that game's settings, and creates a table. The table gets a six-character code and a link (`/t/CODE`).
+- The game and its settings are fixed for the life of the table and shown to everyone in the lobby.
 - Guests open the link, type a nickname and tap an open seat. A token in their browser gives them the same seat back after a refresh or a dropped connection.
 - People who arrive during a game watch it, and can take an open seat to join the next game.
 - A disconnected player keeps their seat and shows as "away". The host can tap them to play their turn for them, or remove them (which ends the current game).
@@ -60,7 +61,9 @@ RESEND_API_KEY=... EMAIL_FROM="CardGame <you@your-domain>" NODE_ENV=production p
 
 ## Adding a game
 
-1. Write the rules as a `GameModule` in `packages/games/src` and add it to `games` in `index.ts`.
+1. Write the rules as a `GameModule` in `packages/games/src` and add it to `games` in `index.ts`. It then appears in the host's game picker.
+   - `settings` lists what the host can choose before creating a table. Two kinds exist: `toggle` (on/off) and `select` (one option from a dropdown). The settings screen is generated from this list, and the chosen values arrive in `setup`.
+   - `turnTimeLimit` (optional) returns how many seconds the current turn may take. When it runs out, the server plays the game's `autoMove` for that player.
 2. Write its table UI as a `GameUI` in `packages/web/src/games` and add it to `gameUIs`. It supplies the table centre, the cards beside each seat, the seat label, your hand, your action buttons and announcements.
 
 ## How the engine works
@@ -73,7 +76,7 @@ RESEND_API_KEY=... EMAIL_FROM="CardGame <you@your-domain>" NODE_ENV=production p
 - Shuffles come from a seed stored in the state, so a game can be saved, restored and replayed.
 
 A game implements `GameModule`: `setup`, `applyMove` (rejects illegal moves), `view` and `result`.
-See `packages/games/src/high-card.ts` for a complete example.
+See `packages/games/src/demo.ts` for a complete example.
 
 ## Checks
 

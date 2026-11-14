@@ -1,9 +1,9 @@
-import type { HighCardView } from "@cardgame/games";
+import type { DemoView } from "@cardgame/games";
 import type { GameView } from "@cardgame/protocol";
 import { Card, faceLabel } from "../Card";
 import type { GameProps, GameUI } from "./types";
 
-const viewOf = (game: GameView) => game.view as HighCardView;
+const viewOf = (game: GameView) => game.view as DemoView;
 const cardOf = (game: GameView, playerId: string) => viewOf(game).table.zones[`slot:${playerId}`]?.cards[0] ?? null;
 
 function list(names: string[]): string {
@@ -11,7 +11,7 @@ function list(names: string[]): string {
   return `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`;
 }
 
-export const highCardUI: GameUI = {
+export const demoUI: GameUI = {
   Center({ game }) {
     const view = viewOf(game);
     const deck = view.table.zones.deck!.cards;

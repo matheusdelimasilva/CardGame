@@ -90,13 +90,19 @@ describe("a table over the network", () => {
   it("runs a game between a host and a guest, with history and reconnect", async () => {
     await boot();
     const session = await signIn();
-    const { code } = (await api("/api/rooms", {}, session)).body;
+    const listed = (await api("/api/games")).body.games;
+    expect(listed.map((g: { id: string }) => g.id)).toEqual(["demo"]);
+    expect((await api("/api/rooms", {}, session)).status).toBe(400);
+    expect((await api("/api/rooms", { gameId: "__proto__" }, session)).status).toBe(400);
+    const { code } = (await api("/api/rooms", { gameId: "demo", settings: { tiebreaker: "S" } }, session)).body;
     expect((await api(`/api/rooms/${code.toLowerCase()}`)).body.exists).toBe(true);
     expect((await api("/api/rooms/ZZZZZZ")).body.exists).toBe(false);
 
     const host = await client(code, { sessionToken: session });
     const guest = await client(code);
     expect(host.room!.you.isHost).toBe(true);
+    expect(host.room!.gameInfo.name).toBe("Demo");
+    expect(guest.room!.settings).toEqual({ turnTimer: false, tiebreaker: "S" });
     expect(guest.room!.you.isHost).toBe(false);
 
     host.send({ type: "setName", name: "Hosty" });
@@ -126,7 +132,7 @@ describe("a table over the network", () => {
 
     const history = (await api("/api/history", undefined, session)).body.history;
     expect(history).toHaveLength(1);
-    expect(history[0]).toMatchObject({ roomCode: code, gameName: "High Card", players: ["Hosty", "Guesty"] });
+    expect(history[0]).toMatchObject({ roomCode: code, gameName: "Demo", players: ["Hosty", "Guesty"] });
 
     host.send({ type: "kick", playerId: back.room!.you.id });
     await back.until(() => back.kicked);

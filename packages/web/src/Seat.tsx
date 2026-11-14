@@ -18,11 +18,13 @@ interface Props {
   player: SeatView;
   active: boolean;
   tag: string | null;
+  /** Seconds left on this player's turn, when turns are timed. */
+  clock?: number | null;
   cards?: ReactNode;
   onClick?: () => void;
 }
 
-export function Seat({ seat, player, active, tag, cards, onClick }: Props) {
+export function Seat({ seat, player, active, tag, clock, cards, onClick }: Props) {
   const body = (
     <>
       {active && <span className="seat-arrow" aria-hidden="true" />}
@@ -40,6 +42,7 @@ export function Seat({ seat, player, active, tag, cards, onClick }: Props) {
       </span>
       <span className="seat-tags">
         {tag && <span className="tag">{tag}</span>}
+        {clock != null && <span className={`tag clock${clock <= 5 ? " low" : ""}`}>{clock}s</span>}
         {!player.connected && <span className="tag red">away</span>}
       </span>
     </>

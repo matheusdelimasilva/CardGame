@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import type { HighCardView } from "@cardgame/games";
+import type { DemoView } from "@cardgame/games";
 import * as rooms from "../src/rooms";
 
-function table(names = ["Ana", "Bo", "Cy"]) {
-  const room = rooms.createRoom("ABC234", "host@example.com");
+function table(names = ["Ana", "Bo", "Cy"], settings: unknown = {}) {
+  const room = rooms.createRoom("ABC234", "host@example.com", "demo", settings);
   const members = names.map((name, i) => {
     const m = rooms.join(room, undefined, i === 0);
     m.connected = true;
@@ -13,7 +13,7 @@ function table(names = ["Ana", "Bo", "Cy"]) {
   });
   return { room, members, host: members[0]! };
 }
-const gameView = (room: rooms.Room, m: rooms.Member) => rooms.viewFor(room, m).game!.view as HighCardView;
+const gameView = (room: rooms.Room, m: rooms.Member) => rooms.viewFor(room, m).game!.view as DemoView;
 
 describe("rooms", () => {
   it("gives a returning token the same member and seat", () => {
@@ -109,6 +109,46 @@ describe("rooms", () => {
     expect(rooms.stand(room, members[2]!)).toBeNull();
     expect(rooms.start(room, host, 4)).toBeNull();
     expect(room.game!.players).toHaveLength(2);
+  });
+
+  it("keeps valid settings and replaces invalid ones with defaults", () => {
+    const good = table(["Ana", "Bo"], { turnTimer: true, tiebreaker: "H" });
+    expect(good.room.settings).toEqual({ turnTimer: true, tiebreaker: "H" });
+    const bad = table(["Ana", "Bo"], { turnTimer: "yes", tiebreaker: "Z", extra: 1 });
+    expect(bad.room.settings).toEqual({ turnTimer: false, tiebreaker: "none" });
+    expect(table(["Ana", "Bo"], null).room.settings).toEqual({ turnTimer: false, tiebreaker: "none" });
+    expect(rooms.viewFor(good.room, good.host).gameInfo.settings.map((s) => s.type)).toEqual(["toggle", "select"]);
+  });
+
+  it("has no turn clock unless the timer setting is on", () => {
+    const { room, host } = table();
+    rooms.start(room, host, 7, 1000);
+    expect(rooms.viewFor(room, host, 1000).game!.timer).toBeNull();
+    expect(rooms.expireTurn(room, 10_000_000)).toBe(false);
+  });
+
+  it("reveals for a player when their timed turn runs out, and restarts the clock per turn", () => {
+    const { room, members, host } = table(["Ana", "Bo", "Cy"], { turnTimer: true });
+    rooms.start(room, host, 7, 1000);
+    expect(rooms.viewFor(room, host, 6000).game!.timer).toEqual({ remainingMs: 15_000, totalMs: 20_000 });
+    // Peeking is not a new turn: the clock keeps running.
+    rooms.move(room, host, { type: "peek" }, 8000);
+    expect(room.game!.deadline).toBe(21_000);
+    expect(rooms.expireTurn(room, 20_999)).toBe(false);
+    expect(rooms.expireTurn(room, 21_000)).toBe(true);
+    expect(rooms.viewFor(room, host, 21_000).game!.active).toEqual([members[1]!.id]);
+    expect(room.game!.deadline).toBe(41_000);
+    // Playing in time hands the clock to the next player.
+    expect(rooms.move(room, members[1]!, { type: "reveal" }, 25_000)).toBeNull();
+    expect(room.game!.deadline).toBe(45_000);
+  });
+
+  it("stops the clock when the game is over", () => {
+    const { room, host } = table(["Ana", "Bo"], { turnTimer: true });
+    rooms.start(room, host, 3, 0);
+    for (let now = 20_000; !room.game!.result; now += 20_000) expect(rooms.expireTurn(room, now)).toBe(true);
+    expect(room.game!.deadline).toBeNull();
+    expect(rooms.viewFor(room, host).game!.timer).toBeNull();
   });
 
   it("refuses malformed moves without crashing", () => {
