@@ -5,6 +5,7 @@ import { games } from "@cardgame/games";
 import type { ClientMessage, HistoryEntry, ServerMessage } from "@cardgame/protocol";
 import { WebSocket, WebSocketServer } from "ws";
 import { Auth, normalizeEmail, type SendEmail } from "./auth";
+import { Deezer } from "./deezer";
 import * as rooms from "./rooms";
 import type { Member, Room } from "./rooms";
 import { Store } from "./store";
@@ -34,6 +35,7 @@ const MIME: Record<string, string> = {
 export function createApp(options: AppOptions): { server: Server; close: () => void } {
   const store = new Store(options.dataFile);
   const auth = new Auth(store, options.sendEmail);
+  const deezer = new Deezer();
   const roomsByCode = new Map<string, Room>();
   const sockets = new Map<Room, Map<WebSocket, Member>>();
 
@@ -156,6 +158,15 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
         const email = sessionEmail(req);
         if (!email) return json(res, 401, { error: "Not signed in." });
         return json(res, 200, { history: store.data.history[email] ?? [] });
+      }
+      if (route === "GET /api/preview") {
+        // ?title=...&artist=...  or  ?deezerId=123  ->  audio/mpeg (30s preview)
+        const id = Number(url.searchParams.get("deezerId"));
+        const title = url.searchParams.get("title")?.trim();
+        const artist = url.searchParams.get("artist")?.trim();
+        if (id > 0) return await deezer.streamPreview({ deezerId: id }, req, res);
+        if (!title || !artist) return json(res, 400, { error: "Pass title and artist, or deezerId." });
+        return await deezer.streamPreview({ title, artist }, req, res);
       }
       const roomMatch = /^\/api\/rooms\/([A-Za-z0-9]+)$/.exec(url.pathname);
       if (req.method === "GET" && roomMatch) {
