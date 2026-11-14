@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SONGS, fitsAt, hitster, songOf, type HitsterState } from "../src";
+import { DECK_SIZE, SONGS, fitsAt, hitster, songKey, songOf, type HitsterState } from "../src";
 
 const players = ["a", "b", "c"];
 const defaults = { cardsToWin: "10", showSongInfo: true };
@@ -44,14 +44,22 @@ describe("fitsAt", () => {
 });
 
 describe("song list", () => {
-  it("has enough distinct, plausible songs for eight players", () => {
-    expect(SONGS.length).toBeGreaterThanOrEqual(8 * 10 + 20);
-    expect(new Set(SONGS.map((s) => `${s.title}|${s.artist}`)).size).toBe(SONGS.length);
+  it("has plenty of well-formed songs, each with its own key", () => {
+    expect(SONGS.length).toBeGreaterThanOrEqual(DECK_SIZE);
+    expect(new Set(SONGS.map(songKey)).size).toBe(SONGS.length);
     for (const s of SONGS) {
       expect(s.title && s.artist).toBeTruthy();
-      expect(s.year).toBeGreaterThanOrEqual(1900);
-      expect(s.year).toBeLessThanOrEqual(2030);
+      expect(Number.isInteger(s.year) && s.year >= 1900 && s.year <= 2100).toBe(true);
+      expect(s.deezerId === null || s.deezerId > 0).toBe(true);
+      expect(songOf(songKey(s))).toBe(s);
     }
+  });
+
+  it("deals a different sample of songs for a different seed, and the same one for the same seed", () => {
+    const faces = (seed: number) => Object.values(start(seed).table.zones).flatMap((z) => z.cards.map((c) => c.face)).sort();
+    expect(faces(1)).toEqual(faces(1));
+    expect(faces(1)).not.toEqual(faces(2));
+    expect(new Set(faces(1)).size).toBe(DECK_SIZE);
   });
 });
 
@@ -60,7 +68,7 @@ describe("hitster", () => {
     const s = start();
     for (const p of players) expect(years(s, p)).toHaveLength(1);
     expect(cards(s, "current")).toHaveLength(1);
-    expect(cards(s, "deck")).toHaveLength(SONGS.length - players.length - 1);
+    expect(cards(s, "deck")).toHaveLength(DECK_SIZE - players.length - 1);
     expect(hitster.activePlayers(s)).toEqual(["a"]);
   });
 
@@ -74,7 +82,7 @@ describe("hitster", () => {
     expect(next.lastTurn).toMatchObject({ player: "a", outcome: "correct", turnNumber: 1 });
     expect(current(next)).toBe("b");
     expect(cards(next, "current")).toHaveLength(1);
-    expect(totalCards(next)).toBe(SONGS.length);
+    expect(totalCards(next)).toBe(DECK_SIZE);
   });
 
   it("discards a wrongly placed song face up and leaves the timeline alone", () => {
@@ -120,6 +128,8 @@ describe("hitster", () => {
       expect(Object.keys(view.current!).sort()).toEqual(["artist", "id", "title"]);
       expect(view.current!.title).toBe(songOf(cards(s, "current")[0]!.face).title);
       expect(view.timelines.a![0]!.year).toBe(years(s, "a")[0]);
+      // Deezer ids would identify the song, and so its year: they stay on the server.
+      expect(JSON.stringify(view)).not.toContain("deezerId");
     }
   });
 
@@ -133,7 +143,7 @@ describe("hitster", () => {
     // Player a always places correctly; the others always pass.
     for (let i = 0; i < 100 && !s.winners; i++) {
       s = apply(s, current(s), current(s) === "a" ? { type: "place", index: spot(s, true)! } : { type: "pass" });
-      expect(totalCards(s)).toBe(SONGS.length);
+      expect(totalCards(s)).toBe(DECK_SIZE);
     }
     expect(hitster.result(s)).toEqual({ winners: ["a"] });
     expect(years(s, "a")).toHaveLength(5);
@@ -145,11 +155,11 @@ describe("hitster", () => {
 
   it("reshuffles the discard pile when the deck runs out", () => {
     let s = start(3, defaults, ["a", "b"]);
-    const turns = SONGS.length + 20; // more passes than there are songs
+    const turns = DECK_SIZE + 20; // more passes than there are cards
     for (let i = 0; i < turns; i++) s = apply(s, current(s), { type: "pass" });
     expect(s.winners).toBeNull();
     expect(cards(s, "current")).toHaveLength(1);
-    expect(totalCards(s)).toBe(SONGS.length);
+    expect(totalCards(s)).toBe(DECK_SIZE);
   });
 
   it("with eight players always placing correctly, someone reaches ten cards", () => {

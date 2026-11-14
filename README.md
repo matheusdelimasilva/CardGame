@@ -70,8 +70,9 @@ RESEND_API_KEY=... EMAIL_FROM="CardGame <you@your-domain>" NODE_ENV=production p
 ## Games
 
 - **Hitster** (`packages/games/src/hitster`): each player builds a timeline of songs by release year. The table draws a song on your turn and you choose where it goes; a correct spot keeps the card, a wrong one discards it. First to 10 cards wins (5 or 8 as a setting).
-  - Not built yet: music playback, betting on other players' placements, and the real card artwork. Until playback exists, the "Show title and artist" setting shows the song's name instead.
-  - The song list in `songs.ts` is a starter set. It lives only on the server: the client is sent a song's year only once the card is face up.
+  - Not built yet: music playback in the game and betting on other players' placements. Until playback exists, the "Show title and artist" setting shows the song's name instead.
+  - Songs come from `tools/songs/out/songs.json` (see `tools/songs/README.md`). Each game deals a random 300 of them. The list lives only on the server: a client is sent a song's year only once the card is face up, and never its Deezer id.
+  - Cards use the Vinyl design from `docs/design/song-cards.html`, coloured by decade; the song being placed uses its face-down back.
 - **Demo** (`packages/games/src/demo.ts`): not a real game. A round of highest-card-wins that exercises dealing, hidden cards, turns, a turn timer and scoring.
 
 ## How the engine works

@@ -7,14 +7,18 @@ import {
   deal,
   moveAll,
   moveCard,
+  nextRandom,
   shuffle,
   type GameModule,
   type PlayerId,
   type TableState,
 } from "@cardgame/engine";
-import { SONGS, type Song } from "./songs";
+import { SONGS, songKey, songOf, type Song } from "./songs";
 
-export { SONGS, type Song } from "./songs";
+export { SONGS, songKey, songOf, type Song } from "./songs";
+
+/** Songs dealt into one game, drawn at random from the full list. Keeps saved games small. */
+export const DECK_SIZE = 300;
 
 /**
  * Hitster. Every player builds a timeline of songs in order of release year.
@@ -22,7 +26,7 @@ export { SONGS, type Song } from "./songs";
  * it goes in your timeline. Right: the card stays. Wrong: it is discarded.
  * The first player whose timeline reaches the target wins.
  *
- * A card's face is the song's index in SONGS. Zones:
+ * A card's face is the song's key (see songKey). Zones:
  *   deck, discard      shared piles
  *   current            the song being placed; its year is hidden from everyone
  *   timeline:<player>  that player's cards, oldest first, face up
@@ -45,7 +49,7 @@ export interface HitsterState {
 export interface TurnSummary {
   turnNumber: number;
   player: PlayerId;
-  song: Song;
+  song: RevealedSong;
   outcome: "correct" | "wrong" | "passed";
 }
 
@@ -55,8 +59,31 @@ export type HitsterMove =
   /** Give up the current song. Used when the host plays an absent player's turn. */
   | { type: "pass" };
 
-export interface SongCardView extends Song {
+/** A face-up song card as sent to clients. */
+export interface SongCardView {
   id: string;
+  title: string;
+  artist: string;
+  year: number;
+}
+
+/** What everyone is told about a finished turn. */
+export type RevealedSong = Pick<Song, "title" | "artist" | "year">;
+
+/** Picks `count` different songs using the game's seed, so a game can be replayed exactly. */
+function sampleSongs(seed: number, count: number): Song[] {
+  const pool = [...SONGS];
+  let rng = seed | 0;
+  const picked: Song[] = [];
+  while (picked.length < count && pool.length > 0) {
+    const r = nextRandom(rng);
+    rng = r.state;
+    const i = Math.floor(r.value * pool.length);
+    picked.push(pool[i]!);
+    pool[i] = pool.at(-1)!;
+    pool.pop();
+  }
+  return picked;
 }
 
 export interface HitsterView {
@@ -74,12 +101,6 @@ export interface HitsterView {
 }
 
 const timeline = (player: PlayerId) => `timeline:${player}`;
-
-export function songOf(face: string): Song {
-  const song = SONGS[Number(face)];
-  if (!song) throw new Error(`Unknown song card: ${face}`);
-  return song;
-}
 
 /**
  * Whether a song from `year` may sit at `index` in a timeline with these
@@ -143,7 +164,7 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
     let table = createTable(seed);
     for (const zone of ["deck", "discard", "current"]) table = addZone(table, zone);
     for (const player of players) table = addZone(table, timeline(player), player);
-    table = shuffle(addCards(table, "deck", SONGS.map((_, i) => String(i))), "deck");
+    table = shuffle(addCards(table, "deck", sampleSongs(seed, DECK_SIZE).map(songKey)), "deck");
     for (const player of players) table = deal(table, "deck", timeline(player), FACE_UP).table;
 
     const state: HitsterState = {
@@ -165,7 +186,8 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
     if (current.players[current.turn] !== player) return { ok: false, error: "It is not your turn." };
     const state = structuredClone(current);
     const card = state.table.zones.current!.cards[0]!;
-    const song = songOf(card.face);
+    const { title, artist, year } = songOf(card.face);
+    const song: RevealedSong = { title, artist, year };
     let outcome: TurnSummary["outcome"];
 
     if (move.type === "place") {
@@ -205,7 +227,10 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       timelines: Object.fromEntries(
         state.players.map((p) => [
           p,
-          state.table.zones[timeline(p)]!.cards.map((c) => ({ id: c.id, ...songOf(c.face) })),
+          state.table.zones[timeline(p)]!.cards.map((c) => {
+            const { title, artist, year } = songOf(c.face);
+            return { id: c.id, title, artist, year };
+          }),
         ]),
       ),
       current:

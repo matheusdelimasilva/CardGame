@@ -386,26 +386,86 @@ button.seat:hover .avatar, button.seat.open:not(:disabled):hover .avatar { trans
 .timeline {
   display: flex; align-items: stretch; gap: 0.35rem; overflow-x: auto; padding: 0.3rem 0.15rem 0.7rem;
   scrollbar-width: thin; scrollbar-color: var(--muted) transparent;
-  /* Centre a short timeline, but let a long one scroll from its start. */
-  justify-content: safe center;
 }
+/* Auto margins centre a short timeline and vanish when it overflows, so a long one scrolls from its start. */
+.timeline > :first-child { margin-left: auto; }
+.timeline > :last-child { margin-right: auto; }
 .timeline-item { display: flex; gap: 0.35rem; flex: none; }
-.song-card {
-  --w: clamp(4.6rem, 21vw, 6rem);
-  flex: none; width: var(--w); height: calc(var(--w) * 1.4);
-  display: grid; grid-template-rows: auto 1fr auto; gap: 0.15rem; padding: 0.3rem 0.35rem;
-  background: var(--cream); color: var(--ink); text-align: center;
-  border: 3px solid var(--ink); border-radius: 9px; box-shadow: 0 5px 0 var(--ink);
-  border-top-width: 10px; overflow: hidden;
+/* Song cards: the Vinyl design and its face-down back, from docs/design/song-cards.html.
+   Everything inside is sized in --u (1% of the card width), so one --w scales the whole card. */
+.sc {
+  --w: 7rem;
+  --u: calc(var(--w) / 100);
+  --acc: var(--gold);
+  position: relative; flex: none;
+  width: var(--w); height: calc(var(--w) * 1.4);
+  border: 3px solid var(--ink); border-radius: calc(var(--u) * 9);
+  background: var(--cream); color: var(--ink);
+  box-shadow: 0 calc(var(--u) * 6) 0 var(--ink);
+  overflow: hidden; display: flex; flex-direction: column;
+  font-family: var(--mono); line-height: 1; user-select: none;
 }
-.song-card.fresh { animation: pop 500ms var(--spring); box-shadow: 0 5px 0 var(--ink), 0 0 18px rgba(255, 216, 74, 0.9); }
-.song-year { font-size: calc(var(--w) * 0.4); line-height: 0.9; }
-.song-title, .song-artist { font-size: 0.95rem; line-height: 1; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; }
-.song-title { -webkit-line-clamp: 2; line-clamp: 2; align-self: center; }
-.song-artist { -webkit-line-clamp: 1; line-clamp: 1; color: #6b675c; }
-.decade-0 { border-top-color: #ef4a3c; } .decade-1 { border-top-color: #3b8cf0; } .decade-2 { border-top-color: #b57af2; }
-.decade-3 { border-top-color: #f0913b; } .decade-4 { border-top-color: #35c2ae; } .decade-5 { border-top-color: #f277ad; }
-.decade-6 { border-top-color: #8fd14f; }
+.sc.md { --w: clamp(6.6rem, 27vw, 7.8rem); }
+.sc.back-size { --w: clamp(4.6rem, 20vw, 6rem); }
+.sc span { display: block; }
+.fit { overflow: hidden; overflow-wrap: anywhere; min-width: 0; }
+.feat { display: block; font-size: 0.78em; opacity: 0.75; margin-top: 0.15em; }
+.v-vinyl { background: var(--charcoal); color: var(--cream); padding: calc(var(--u) * 5) calc(var(--u) * 5) calc(var(--u) * 5.5); gap: calc(var(--u) * 4); }
+.v-vinyl .vn-rec {
+  position: relative; flex: none; align-self: center;
+  width: calc(var(--u) * 84); height: calc(var(--u) * 84); border-radius: 50%;
+  box-shadow: 0 calc(var(--u) * 2.5) 0 #000;
+}
+/* Only the disc turns; the shadow (on .vn-rec) and the light streaks (::after) stay put. */
+.v-vinyl .vn-disc {
+  position: absolute; inset: 0; border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--acc) 0 31%, transparent 31.5%),
+    repeating-radial-gradient(circle, #0d0e0f 0 1.3%, #26282a 1.3% 2.3%);
+  display: grid; place-items: center;
+  animation: spin 2.4s linear infinite paused;
+}
+.sc.v-vinyl:not(.v-back):hover .vn-disc, .sc.v-vinyl.playing .vn-disc { animation-play-state: running; }
+.sc.playing { outline: 3px solid var(--gold); outline-offset: 3px; }
+.v-vinyl .vn-rec::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+  background: conic-gradient(from 20deg, transparent 0 8%, rgba(255, 255, 255, 0.1) 12%, transparent 17% 52%, rgba(255, 255, 255, 0.07) 57%, transparent 62%);
+  -webkit-mask: radial-gradient(circle, transparent 0 31.5%, #000 32%);
+  mask: radial-gradient(circle, transparent 0 31.5%, #000 32%);
+}
+/* Printed arcs on the label rim: they are what make the spin visible. */
+.v-vinyl .vn-print {
+  width: calc(var(--u) * 36); height: calc(var(--u) * 36); border-radius: 50%;
+  background: conic-gradient(rgba(20, 22, 23, 0.28) 0 22%, transparent 22% 50%, rgba(255, 250, 240, 0.45) 50% 58%, transparent 58% 70%, rgba(20, 22, 23, 0.28) 70% 74%, transparent 74%);
+  -webkit-mask: radial-gradient(closest-side, transparent 0 74%, #000 76% 90%, transparent 92%);
+  mask: radial-gradient(closest-side, transparent 0 74%, #000 76% 90%, transparent 92%);
+}
+/* The year sits above the disc, so it stays level while the record turns underneath. */
+.v-vinyl .vn-lbl {
+  position: absolute; inset: 0; z-index: 1; display: grid; place-items: center;
+  color: var(--ink); font-size: calc(var(--u) * 14); line-height: 1; letter-spacing: 0.02em;
+}
+.v-vinyl .vn-plate {
+  flex: 1; min-height: 0;
+  background: var(--plate); color: var(--ink);
+  border-radius: calc(var(--u) * 4);
+  padding: calc(var(--u) * 2.5) calc(var(--u) * 4);
+  display: flex; flex-direction: column; justify-content: center; gap: calc(var(--u) * 1.5); text-align: center;
+}
+.v-vinyl .vn-title { font-family: var(--pixel); font-weight: 700; font-size: calc(var(--u) * 11.5); max-height: calc(var(--u) * 23); line-height: 1.02; }
+.v-vinyl .vn-artist { font-size: calc(var(--u) * 9.5); color: var(--ink-soft, #4d4e48); max-height: calc(var(--u) * 10); }
+.v-back .vn-hole { position: relative; width: calc(var(--u) * 4); height: calc(var(--u) * 4); border-radius: 50%; background: var(--charcoal); }
+.v-back .vn-plate { gap: calc(var(--u) * 2.5); }
+.v-back .vn-mystery { font-family: var(--pixel); font-weight: 700; font-size: calc(var(--u) * 17); letter-spacing: 0.12em; line-height: 1; }
+.v-back .vn-eq { display: none; justify-content: center; align-items: flex-end; gap: calc(var(--u) * 1.6); height: calc(var(--u) * 7); }
+.v-back .vn-eq i { width: calc(var(--u) * 2.6); height: 100%; background: var(--ink); transform-origin: bottom; animation: eq 0.9s ease-in-out infinite; }
+.v-back .vn-eq i:nth-child(2) { animation-delay: -0.3s; animation-duration: 0.7s; }
+.v-back .vn-eq i:nth-child(3) { animation-delay: -0.55s; animation-duration: 1.1s; }
+.v-back .vn-eq i:nth-child(4) { animation-delay: -0.15s; animation-duration: 0.8s; }
+.sc.v-back.playing .vn-eq { display: flex; }
+.sc.fresh { animation: pop 500ms var(--spring); outline: 3px solid var(--gold); outline-offset: 3px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes eq { 0%, 100% { transform: scaleY(0.25); } 50% { transform: scaleY(1); } }
 .spot {
   flex: none; width: 2.75rem; padding: 0;
   background: rgba(255, 250, 240, 0.06); color: var(--cream);
@@ -415,14 +475,16 @@ button.seat:hover .avatar, button.seat.open:not(:disabled):hover .avatar { trans
 }
 .spot:hover { background: rgba(255, 216, 74, 0.2); }
 .spot.chosen { background: var(--gold); color: var(--ink); border: 3px solid var(--ink); box-shadow: 0 5px 0 var(--ink); transform: translateY(-4px); }
-.now-playing {
-  display: grid; gap: 0.1rem; justify-items: center; max-width: 100%;
-  background: var(--charcoal); border-radius: 12px; box-shadow: 0 6px 0 var(--ink); padding: 0.6rem 0.9rem 0.7rem;
+/* Stacked on phones, where seats sit close to the centre; side by side on wide screens. */
+.now-playing { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; max-width: 100%; text-align: center; }
+.now-text { justify-items: center; }
+.now-text {
+  display: grid; gap: 0.15rem; min-width: 0;
+  background: var(--charcoal); border-radius: 10px; box-shadow: 0 5px 0 var(--ink); padding: 0.45rem 0.65rem 0.55rem;
 }
 .now-label { color: var(--muted); font-size: 1.05rem; }
-.now-title { color: var(--gold); font-size: clamp(1.5rem, 6.5vw, 2rem); line-height: 1; overflow-wrap: anywhere; }
-.now-artist { color: var(--cream); font-size: 1.25rem; }
-.now-year { color: var(--muted); font-size: 1.05rem; letter-spacing: 0.08em; }
+.now-title { color: var(--gold); font-size: clamp(1.3rem, 5.5vw, 1.8rem); line-height: 1; overflow-wrap: anywhere; }
+.now-artist { color: var(--cream); font-size: 1.15rem; line-height: 1; overflow-wrap: anywhere; }
 .year-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem; }
 .year-chip { background: var(--cream); color: var(--ink); border: 2px solid var(--ink); border-radius: 5px; padding: 0 0.3em; font-size: 1.05rem; }
 .song-stack {
@@ -447,6 +509,8 @@ button.seat:hover .avatar, button.seat.open:not(:disabled):hover .avatar { trans
   .me-sub { font-size: 1.5rem; }
   .dock-actions { justify-self: end; width: min(100%, 21rem); }
   .dock-wide { grid-column: 2 / 4; }
+  .now-playing { flex-direction: row; text-align: left; gap: 0.7rem; }
+  .now-text { justify-items: start; }
   .dock:has(.dock-wide) { grid-template-columns: minmax(0, 21rem) minmax(0, 1fr) 0; column-gap: 1.5rem; }
   .actions-buttons { grid-template-columns: 1fr 1fr; }
   .card.md { --w: clamp(3rem, 5.5vw, 4.5rem); }
