@@ -22,7 +22,15 @@ or step by step (all from the repo root):
 node tools/songs/scrape-billboard.mjs 1949 2025   # ~3 min, caches HTML in .cache/html
 node tools/songs/fetch-musicbrainz.mjs            # ~2 h (1 req/s limit), resumable
 node tools/songs/build-songs.mjs                  # instant, offline
+node tools/songs/fetch-deezer.mjs --top 5         # optional: Deezer ids, chart top 5 per year (~3 min)
+node tools/songs/build-songs.mjs                  # again, to write deezerId into songs.json
 ```
+
+`fetch-deezer.mjs` uses the server's matcher (`packages/server/src/deezer.ts`). It is strict on
+purpose: remixes, live takes, re-recordings ("Taylor's Version") and unrecognised title tags are
+treated as misses, because a wrong recording would play under the wrong year. Misses are cached as
+`null`; review them in `out/deezer-review.txt` and fix by hand in `deezer-overrides.json`
+(`{"Artist — Title": <deezer track id>}`, or `null` to drop the song). Drop `--top` to match every song.
 
 The lookup step is resumable: stop it any time and re-run, it only fetches what is
 missing. `build-songs.mjs` works on partial caches; unmatched songs fall back to the chart year.
@@ -37,7 +45,8 @@ Each song records which one it used in `yearSource` (`musicbrainz` or `chart-yea
 ## Output fields
 
 `title`, `artist`, `year` (release year, the one to use), `yearSource`, `chartYear`,
-`chartRank`, `mbid` (MusicBrainz recording ID when matched).
+`chartRank`, `mbid` (MusicBrainz recording ID when matched), `deezerId` (Deezer track for the
+30s preview, played via `GET /api/preview?deezerId=`; null when not matched yet).
 A song that charted in two consecutive years appears once.
 
 ## Known limits

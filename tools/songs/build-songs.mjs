@@ -3,7 +3,8 @@
 // Usage: node build-songs.mjs
 // Output: out/songs.json, out/songs.min.json
 import { join } from "node:path";
-import { CACHE_DIR, OUT_DIR, readJson, writeJson } from "./lib.mjs";
+import { norm as deezerNorm } from "../../packages/server/src/deezer.ts";
+import { CACHE_DIR, OUT_DIR, ROOT, readJson, writeJson } from "./lib.mjs";
 import { norm, primaryArtist, stripThe } from "./normalize.mjs";
 
 const MIN_SCORE = 80;
@@ -13,6 +14,9 @@ const MAX_YEARS_BEFORE_CHART = 1;
 
 const billboard = await readJson(join(CACHE_DIR, "billboard.json"));
 const mb = await readJson(join(CACHE_DIR, "musicbrainz.json"), {});
+// From fetch-deezer.mjs (optional): Deezer track ids, plus hand-made overrides (null = drop the song).
+const deezer = await readJson(join(CACHE_DIR, "deezer.json"), {});
+const deezerOverrides = await readJson(join(ROOT, "deezer-overrides.json"), {});
 
 const yearOf = (d) => (d && /^\d{4}/.test(d) ? Number(d.slice(0, 4)) : null);
 
@@ -68,7 +72,20 @@ for (const s of songs) {
   const prev = seen.get(key);
   if (!prev || s.chartRank < prev.chartRank) seen.set(key, s);
 }
-const final = [...seen.values()].sort((a, b) => a.year - b.year || a.chartRank - b.chartRank);
+let dropped = 0;
+const withDeezer = [];
+for (const s of seen.values()) {
+  const label = `${s.artist} — ${s.title}`;
+  const id = label in deezerOverrides ? deezerOverrides[label] : deezer[`${deezerNorm(s.artist)}|${deezerNorm(s.title)}`]?.id ?? null;
+  if (label in deezerOverrides && id === null) {
+    dropped++;
+    continue;
+  }
+  withDeezer.push({ ...s, deezerId: id });
+}
+stats.deezerMatched = withDeezer.filter((s) => s.deezerId !== null).length;
+stats.droppedNoPreview = dropped;
+const final = withDeezer.sort((a, b) => a.year - b.year || a.chartRank - b.chartRank);
 
 await writeJson(join(OUT_DIR, "songs.json"), final);
 console.log(`songs: ${final.length} (deduped from ${songs.length})`);

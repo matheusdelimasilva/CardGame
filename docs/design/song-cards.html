@@ -1,0 +1,647 @@
+<title>Song Card Designs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=VT323&display=swap">
+<style>
+/* Layout: felt table page; a control panel, then one row per card design (big card + a hand of four). */
+:root {
+  --ink: #141617;
+  --ink-soft: #4d4e48;
+  --charcoal: #1c1e20;
+  --panel: #26292b;
+  --cream: #fffaf0;
+  --plate: #efe6d0;
+  --text: #d8d2bf;
+  --muted: #a9a493;
+  --red: #ef4a3c;
+  --blue: #3b8cf0;
+  --gold: #ffd84a;
+  --felt: #417461;
+  --felt-dark: #325c4c;
+  --pixel: "Pixelify Sans", ui-monospace, monospace;
+  --mono: "VT323", ui-monospace, monospace;
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100%;
+  background:
+    radial-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1.5px) 0 0 / 6px 6px,
+    radial-gradient(ellipse at 50% 0%, #4f8a72 0%, var(--felt) 45%, var(--felt-dark) 100%) fixed;
+  background-color: var(--felt-dark);
+  color: var(--cream);
+  font-family: var(--mono);
+  font-size: 1.25rem;
+  line-height: 1.15;
+}
+.page {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding-block: 2rem 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid;
+  gap: 1.5rem;
+}
+h1, h2 { font-family: var(--pixel); font-weight: 700; margin: 0; line-height: 1; text-wrap: balance; }
+p { margin: 0; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+header { display: grid; gap: 0.6rem; }
+header h1 { font-size: clamp(2.2rem, 8vw, 3.4rem); color: var(--gold); text-shadow: 0 5px 0 var(--ink); }
+header p { color: var(--plate); max-width: 44rem; text-shadow: 0 2px 0 rgba(20, 22, 23, 0.6); }
+
+/* ---------- Controls ---------- */
+.panel {
+  background: var(--panel);
+  border-radius: 14px;
+  box-shadow: 0 8px 0 var(--ink);
+  padding: 1.1rem;
+  display: grid;
+  gap: 0.9rem;
+}
+.controls { grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); align-items: start; }
+.field { display: grid; gap: 0.3rem; min-width: 0; }
+.field label, .group-label { color: var(--muted); font-size: 1.05rem; }
+.input {
+  width: 100%;
+  min-height: 2.6rem;
+  padding: 0 0.7rem;
+  border: 3px solid var(--ink);
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--cream);
+  font: inherit;
+  font-size: 1.35rem;
+}
+.row { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+.row .field { flex: 1 1 6rem; }
+.btn {
+  font: inherit;
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  min-height: 2.5rem;
+  padding: 0 0.9rem;
+  border: 3px solid var(--ink);
+  border-radius: 8px;
+  background: var(--plate);
+  color: var(--ink);
+  box-shadow: 0 5px 0 var(--ink);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 80ms, box-shadow 80ms;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--ink); }
+.btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+.btn.gold { background: var(--gold); }
+.chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.chip {
+  font: inherit; font-size: 1.15rem;
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  min-height: 2.2rem; padding: 0 0.6rem;
+  border: 3px solid var(--ink); border-radius: 8px;
+  background: var(--charcoal); color: var(--text);
+  cursor: pointer;
+}
+.chip[aria-pressed="true"] { background: var(--plate); color: var(--ink); box-shadow: 0 4px 0 var(--ink); }
+.swatch { width: 0.85rem; height: 0.85rem; border-radius: 50%; border: 2px solid var(--ink); flex: none; }
+.swatch.decades { background: conic-gradient(#ef4a3c 0 12.5%, #ff8a3d 0 25%, #ffd84a 0 37.5%, #ff6fae 0 50%, #3b8cf0 0 62.5%, #45c486 0 75%, #9b7bff 0 87.5%, #33cccc 0); }
+.toggles { display: grid; gap: 0.45rem; }
+.toggle { display: flex; align-items: center; gap: 0.5rem; color: var(--text); cursor: pointer; }
+.toggle input { width: 1.2rem; height: 1.2rem; accent-color: var(--gold); margin: 0; }
+.decade-key { display: flex; flex-wrap: wrap; gap: 0.3rem 0.7rem; font-size: 1rem; color: var(--muted); }
+.decade-key span { display: inline-flex; align-items: center; gap: 0.3rem; }
+
+/* ---------- Design rows ---------- */
+.design {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1.25rem 2rem;
+  align-items: center;
+  padding: 1.4rem 1.2rem 1.6rem;
+  background: rgba(20, 22, 23, 0.22);
+  border-radius: 18px;
+}
+.design-head { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.9rem; }
+.design-tag {
+  font-family: var(--mono); font-size: 1.6rem; line-height: 1;
+  background: var(--plate); color: var(--ink);
+  border: 3px solid var(--ink); border-radius: 7px; box-shadow: 0 4px 0 var(--ink);
+  padding: 0.1em 0.45em 0.15em;
+}
+.design-head p { color: var(--plate); flex: 1 1 18rem; min-width: 0; text-shadow: 0 2px 0 rgba(20, 22, 23, 0.6); }
+.hero-slot { display: grid; justify-items: center; gap: 0.6rem; }
+.slot-note { font-size: 1rem; color: var(--cream); text-shadow: 0 2px 0 rgba(20, 22, 23, 0.7); }
+.hand { display: flex; flex-wrap: wrap; gap: 1.1rem 0.9rem; justify-content: flex-start; padding-bottom: 0.4rem; }
+.hand .sc { transition: transform 220ms var(--spring); }
+.hand .sc:hover { transform: translateY(-8px) rotate(-2deg); }
+@media (max-width: 640px) {
+  .design { grid-template-columns: minmax(0, 1fr); padding-inline: 0.8rem; }
+  .hand { justify-content: center; }
+}
+
+/* ---------- Song card: shared frame ---------- */
+.sc {
+  --w: 7rem;
+  --u: calc(var(--w) / 100);
+  --acc: var(--gold);
+  position: relative;
+  flex: none;
+  width: var(--w);
+  height: calc(var(--w) * 1.4);
+  border: 3px solid var(--ink);
+  border-radius: calc(var(--u) * 9);
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: 0 calc(var(--u) * 6) 0 var(--ink);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--mono);
+  line-height: 1;
+  user-select: none;
+}
+.sc.lg { --w: clamp(10rem, 46vw, 13rem); box-shadow: -3px 8px 0 var(--ink); }
+.sc.md { --w: clamp(6.6rem, 27vw, 7.8rem); }
+.fit { overflow: hidden; overflow-wrap: anywhere; min-width: 0; }
+.feat { display: block; font-size: 0.78em; opacity: 0.75; margin-top: 0.15em; }
+
+/* B · Cassette: decade-colored shell, year on the label tab, a tape window with two wound reels. */
+.v-cass { background: var(--acc); padding: calc(var(--u) * 6); gap: calc(var(--u) * 4); }
+.v-cass .cs-label {
+  flex: 1; min-height: 0;
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 calc(var(--u) * 10.5), rgba(20, 22, 23, 0.13) calc(var(--u) * 10.5) calc(var(--u) * 11.2)) 0 calc(var(--u) * 15) / 100% 100% no-repeat,
+    var(--cream);
+  border: calc(var(--u) * 1.6) solid var(--ink); border-radius: calc(var(--u) * 4);
+  padding: calc(var(--u) * 3.5) calc(var(--u) * 5) calc(var(--u) * 3);
+  display: flex; flex-direction: column; gap: calc(var(--u) * 2.5);
+}
+.v-cass .cs-top { display: flex; justify-content: space-between; align-items: center; gap: calc(var(--u) * 2); }
+.v-cass .cs-yr {
+  background: var(--ink); color: var(--cream);
+  font-size: calc(var(--u) * 13); line-height: 1; letter-spacing: 0.04em;
+  padding: 0 calc(var(--u) * 2.5) calc(var(--u) * 0.6); border-radius: calc(var(--u) * 1.5);
+}
+.v-cass .cs-rank { font-size: calc(var(--u) * 10); color: var(--ink-soft); letter-spacing: 0.06em; }
+.v-cass .cs-title { font-size: calc(var(--u) * 16); text-transform: uppercase; max-height: calc(var(--u) * 34); line-height: 0.92; }
+.v-cass .cs-artist { font-size: calc(var(--u) * 10.5); color: var(--ink-soft); max-height: calc(var(--u) * 13); margin-top: auto; }
+.v-cass .cs-deck {
+  position: relative; flex: none; height: calc(var(--u) * 46);
+  background: var(--ink); border-radius: calc(var(--u) * 4);
+}
+/* Screws in the shell corners */
+.v-cass .cs-deck::before {
+  content: ""; position: absolute; inset: calc(var(--u) * 2.5);
+  background:
+    radial-gradient(circle, #5a5d5f 0 45%, transparent 50%) 0 0 / calc(var(--u) * 3.2) calc(var(--u) * 3.2) no-repeat,
+    radial-gradient(circle, #5a5d5f 0 45%, transparent 50%) 100% 0 / calc(var(--u) * 3.2) calc(var(--u) * 3.2) no-repeat,
+    radial-gradient(circle, #5a5d5f 0 45%, transparent 50%) 0 100% / calc(var(--u) * 3.2) calc(var(--u) * 3.2) no-repeat,
+    radial-gradient(circle, #5a5d5f 0 45%, transparent 50%) 100% 100% / calc(var(--u) * 3.2) calc(var(--u) * 3.2) no-repeat;
+}
+/* The window the reels sit in */
+.v-cass .cs-window {
+  position: absolute; left: calc(var(--u) * 7); right: calc(var(--u) * 7); top: calc(var(--u) * 4); height: calc(var(--u) * 31);
+  border-radius: calc(var(--u) * 15.5);
+  background: #4a4e52; box-shadow: inset 0 calc(var(--u) * 1) 0 rgba(0, 0, 0, 0.5);
+  display: flex; align-items: center; justify-content: space-between; padding: 0 calc(var(--u) * 1);
+}
+/* Tape running between the reels, under them */
+.v-cass .cs-window::before {
+  content: ""; position: absolute; left: 25%; right: 25%; bottom: calc(var(--u) * 3.5); height: calc(var(--u) * 1.4);
+  background: var(--ink);
+}
+.v-cass .cs-slot { position: relative; width: calc(var(--u) * 29); height: calc(var(--u) * 29); display: grid; place-items: center; }
+.v-cass .cs-reel {
+  width: calc(var(--u) * (14 + 15 * var(--t))); height: calc(var(--u) * (14 + 15 * var(--t))); border-radius: 50%;
+  background: repeating-radial-gradient(circle, var(--ink) 0 1px, #2b2e31 1px 2.5px);
+  display: grid; place-items: center;
+}
+.v-cass .cs-hub {
+  width: calc(var(--u) * 14); height: calc(var(--u) * 14); border-radius: 50%;
+  background:
+    radial-gradient(circle, #4a4e52 0 24%, transparent 25%),
+    radial-gradient(circle, transparent 0 46%, var(--plate) 47%),
+    repeating-conic-gradient(#4a4e52 0 16deg, var(--plate) 16deg 60deg);
+  animation: spin 1.8s linear infinite paused;
+}
+.sc.v-cass:hover .cs-hub, .sc.v-cass.playing .cs-hub { animation-play-state: running; }
+/* The trapezoid at the bottom edge where the tape head goes in */
+.v-cass .cs-head {
+  position: absolute; left: 50%; bottom: 0; width: calc(var(--u) * 46); height: calc(var(--u) * 8); transform: translateX(-50%);
+  background:
+    radial-gradient(circle, var(--ink) 0 45%, transparent 50%) 22% 55% / calc(var(--u) * 3.4) calc(var(--u) * 3.4) no-repeat,
+    radial-gradient(circle, var(--ink) 0 45%, transparent 50%) 78% 55% / calc(var(--u) * 3.4) calc(var(--u) * 3.4) no-repeat,
+    #3a3d40;
+  clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
+}
+
+/* C · Vinyl: a big record with the year split around the spindle hole, title on a plate. */
+.v-vinyl { background: var(--charcoal); color: var(--cream); padding: calc(var(--u) * 5) calc(var(--u) * 5) calc(var(--u) * 5.5); gap: calc(var(--u) * 4); }
+.v-vinyl .vn-rec {
+  position: relative; flex: none; align-self: center;
+  width: calc(var(--u) * 84); height: calc(var(--u) * 84); border-radius: 50%;
+  box-shadow: 0 calc(var(--u) * 2.5) 0 #000;
+}
+/* Only the disc turns; the shadow (on .vn-rec) and the light streaks (::after) stay put. */
+.v-vinyl .vn-disc {
+  position: absolute; inset: 0; border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--acc) 0 31%, transparent 31.5%),
+    repeating-radial-gradient(circle, #0d0e0f 0 1.3%, #26282a 1.3% 2.3%);
+  display: grid; place-items: center;
+  animation: spin 2.4s linear infinite paused;
+}
+.sc.v-vinyl:not(.v-back):hover .vn-disc, .sc.v-vinyl.playing .vn-disc, .sc.v-vinyl.demo-playing .vn-disc { animation-play-state: running; }
+/* The card whose song is playing gets the same gold glow as the active seat. */
+.sc.playing { outline: 3px solid var(--gold); outline-offset: 3px; }
+.sc.loading { outline: 3px dashed var(--gold); outline-offset: 3px; }
+.sound-note { color: var(--muted); font-size: 1rem; }
+.sound-note.warn { color: #ff8b80; }
+.v-vinyl .vn-rec::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+  background: conic-gradient(from 20deg, transparent 0 8%, rgba(255, 255, 255, 0.1) 12%, transparent 17% 52%, rgba(255, 255, 255, 0.07) 57%, transparent 62%);
+  -webkit-mask: radial-gradient(circle, transparent 0 31.5%, #000 32%);
+  mask: radial-gradient(circle, transparent 0 31.5%, #000 32%);
+}
+/* Printed arcs on the label rim. Grooves are concentric, so these are what make the spin visible. */
+.v-vinyl .vn-print {
+  width: calc(var(--u) * 36); height: calc(var(--u) * 36); border-radius: 50%;
+  background: conic-gradient(rgba(20, 22, 23, 0.28) 0 22%, transparent 22% 50%, rgba(255, 250, 240, 0.45) 50% 58%, transparent 58% 70%, rgba(20, 22, 23, 0.28) 70% 74%, transparent 74%);
+  -webkit-mask: radial-gradient(closest-side, transparent 0 74%, #000 76% 90%, transparent 92%);
+  mask: radial-gradient(closest-side, transparent 0 74%, #000 76% 90%, transparent 92%);
+}
+/* The year sits above the disc, so it stays level while the record turns underneath. */
+.v-vinyl .vn-lbl {
+  position: absolute; inset: 0; z-index: 1; display: grid; place-items: center;
+  color: var(--ink); font-size: calc(var(--u) * 14); line-height: 1; letter-spacing: 0.02em;
+}
+.v-vinyl .vn-plate {
+  flex: 1; min-height: 0;
+  background: var(--plate); color: var(--ink);
+  border-radius: calc(var(--u) * 4);
+  padding: calc(var(--u) * 2.5) calc(var(--u) * 4);
+  display: flex; flex-direction: column; justify-content: center; gap: calc(var(--u) * 1.5); text-align: center;
+}
+.v-vinyl .vn-title { font-family: var(--pixel); font-weight: 700; font-size: calc(var(--u) * 11.5); max-height: calc(var(--u) * 23); line-height: 1.02; }
+.v-vinyl .vn-artist { font-size: calc(var(--u) * 9.5); color: var(--ink-soft); max-height: calc(var(--u) * 10); }
+
+/* E · Hi-score: the year as an arcade score on a dark screen. */
+.v-score { background: var(--ink); color: var(--cream); padding: calc(var(--u) * 9) calc(var(--u) * 8); gap: calc(var(--u) * 3); text-align: center; align-items: center; }
+.v-score::before {
+  content: ""; position: absolute; inset: calc(var(--u) * 3.5);
+  border: calc(var(--u) * 1.4) solid var(--acc); border-radius: calc(var(--u) * 5);
+  pointer-events: none;
+}
+.v-score::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.28) 0 1px, transparent 1px 3px);
+}
+.v-score .so-lbl { font-size: calc(var(--u) * 9.5); color: var(--acc); letter-spacing: 0.18em; }
+.v-score .so-yr {
+  font-family: var(--pixel); font-weight: 700; font-size: calc(var(--u) * 30); color: var(--gold);
+  text-shadow: 0 calc(var(--u) * 2) 0 #000, 0 0 calc(var(--u) * 8) rgba(255, 216, 74, 0.55);
+  font-variant-numeric: tabular-nums; line-height: 0.9;
+}
+.v-score .so-rule { width: 70%; border-top: calc(var(--u) * 1.2) dashed rgba(255, 250, 240, 0.35); margin: calc(var(--u) * 2) 0; flex: none; }
+.v-score .so-title { font-size: calc(var(--u) * 15); text-transform: uppercase; max-height: calc(var(--u) * 46); line-height: 0.95; }
+.v-score .so-artist { font-size: calc(var(--u) * 11); color: var(--acc); max-height: calc(var(--u) * 22); }
+.v-score .so-rank { margin-top: auto; font-size: calc(var(--u) * 9); color: var(--muted); letter-spacing: 0.12em; }
+
+/* Hover (or playing): the year glows harder and turns into a CRT readout:
+   red/blue fringes, scanlines, a bright band rolling down, and a flicker. */
+.v-score .so-yr { position: relative; transition: text-shadow 200ms; }
+.v-score .so-yr::after {
+  content: ""; position: absolute; inset: -6% -4%; pointer-events: none; opacity: 0;
+  background:
+    linear-gradient(to bottom, transparent 0 42%, rgba(255, 250, 240, 0.22) 50%, transparent 58%) 0 0 / 100% 300%,
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0 1px, transparent 1px 3px);
+  transition: opacity 200ms;
+}
+.sc.v-score:hover .so-yr, .sc.v-score.playing .so-yr {
+  color: #ffe680;
+  text-shadow:
+    calc(var(--u) * -0.9) 0 rgba(239, 74, 60, 0.85),
+    calc(var(--u) * 0.9) 0 rgba(59, 140, 240, 0.85),
+    0 0 calc(var(--u) * 6) rgba(255, 216, 74, 0.95),
+    0 0 calc(var(--u) * 16) rgba(255, 216, 74, 0.7);
+  animation: crtFlicker 2.4s steps(1) infinite;
+}
+.sc.v-score:hover .so-yr::after, .sc.v-score.playing .so-yr::after { opacity: 1; animation: crtRoll 1.8s linear infinite; }
+
+/* Mystery year: hidden until the reveal. */
+.sc.hidden-year .yr-slot { animation: blink 1.1s steps(2, start) infinite; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes blink { to { visibility: hidden; } }
+@keyframes crtRoll { from { background-position: 0 100%, 0 0; } to { background-position: 0 -100%, 0 0; } }
+@keyframes crtFlicker {
+  0%, 100% { opacity: 1; transform: none; }
+  31% { opacity: 0.82; }
+  33% { opacity: 1; }
+  62% { transform: translateX(calc(var(--u) * 0.8)) skewX(-4deg); }
+  64% { transform: none; }
+  88% { opacity: 0.9; }
+}
+
+/* ---------- Deck back: the vinyl card, face down ---------- */
+.backs { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 1.6rem 2rem; align-items: flex-start; }
+.back-slot { display: grid; justify-items: center; gap: 0.7rem; }
+.v-back .vn-hole {
+  position: relative; width: calc(var(--u) * 4); height: calc(var(--u) * 4); border-radius: 50%;
+  background: var(--charcoal);
+}
+.v-back .vn-plate { gap: calc(var(--u) * 2.5); }
+.v-back .vn-mystery { font-family: var(--pixel); font-weight: 700; font-size: calc(var(--u) * 17); letter-spacing: 0.12em; line-height: 1; }
+/* Equalizer bars: only in the playing state. */
+.v-back .vn-eq { display: none; justify-content: center; align-items: flex-end; gap: calc(var(--u) * 1.6); height: calc(var(--u) * 7); }
+.v-back .vn-eq i { width: calc(var(--u) * 2.6); height: 100%; background: var(--ink); transform-origin: bottom; animation: eq 0.9s ease-in-out infinite; }
+.v-back .vn-eq i:nth-child(2) { animation-delay: -0.3s; animation-duration: 0.7s; }
+.v-back .vn-eq i:nth-child(3) { animation-delay: -0.55s; animation-duration: 1.1s; }
+.v-back .vn-eq i:nth-child(4) { animation-delay: -0.15s; animation-duration: 0.8s; }
+.sc.v-back.playing .vn-eq, .sc.v-back.demo-playing .vn-eq { display: flex; }
+.sc.v-back.demo-playing { outline: 3px solid var(--gold); outline-offset: 3px; }
+@keyframes eq { 0%, 100% { transform: scaleY(0.25); } 50% { transform: scaleY(1); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="page">
+  <header>
+    <h1>Song Cards</h1>
+    <p>Three ways to draw a song card at the same size and with the same ink outline and drop shadow as the cards on the table. Edit the song or switch the color, and every design below updates.</p>
+  </header>
+
+  <section class="panel controls" aria-label="Customize the cards">
+    <div class="field">
+      <label for="f-title">Song</label>
+      <input class="input" id="f-title" value="When Doves Cry" autocomplete="off">
+      <label for="f-artist">Artist(s)</label>
+      <input class="input" id="f-artist" value="Prince" autocomplete="off">
+      <div class="row">
+        <div class="field"><label for="f-year">Year</label><input class="input" id="f-year" type="number" min="1900" max="2099" value="1984"></div>
+        <div class="field"><label for="f-rank">Chart rank</label><input class="input" id="f-rank" type="number" min="1" max="100" value="1"></div>
+      </div>
+      <div class="row"><button class="btn gold" id="shuffle" type="button">Random song</button></div>
+    </div>
+    <div class="field">
+      <span class="group-label">Card color</span>
+      <div class="chips" id="accents" role="group" aria-label="Card color">
+        <button class="chip" type="button" data-acc="decade" aria-pressed="true"><span class="swatch decades"></span>By decade</button>
+        <button class="chip" type="button" data-acc="#ffd84a" aria-pressed="false"><span class="swatch" style="background:#ffd84a"></span>Gold</button>
+        <button class="chip" type="button" data-acc="#ef4a3c" aria-pressed="false"><span class="swatch" style="background:#ef4a3c"></span>Red</button>
+        <button class="chip" type="button" data-acc="#3b8cf0" aria-pressed="false"><span class="swatch" style="background:#3b8cf0"></span>Blue</button>
+      </div>
+      <div class="decade-key" id="decade-key"></div>
+      <span class="group-label">Show</span>
+      <div class="toggles">
+        <label class="toggle"><input type="checkbox" id="t-hide"> Hide the year (before the reveal)</label>
+        <label class="toggle"><input type="checkbox" id="t-rank" checked> Year-end chart rank</label>
+      </div>
+      <span class="group-label">Sound</span>
+      <div class="row"><button class="chip" type="button" id="sound" aria-pressed="false">♪ Play songs on hover</button></div>
+      <p class="sound-note" id="sound-note" aria-live="polite">Hover a card to hear its 30-second Deezer preview. On a phone, tap the card.</p>
+    </div>
+  </section>
+
+  <div id="designs"></div>
+
+  <section class="design" aria-labelledby="backs-h">
+    <div class="design-head">
+      <h2 class="design-tag" id="backs-h">Deck back</h2>
+      <p>The Vinyl card face down: no year, title or artist, just a gold label with the spindle hole and "???". The label is always gold so its color can't give the decade away. It has two states. Static: the record sits still and nothing plays. Playing: the record spins, bars bounce and the song plays. With sound on, hover the static card to switch it to playing.</p>
+    </div>
+    <div class="backs" id="backs"></div>
+  </section>
+</div>
+
+<script>
+const DECADES = [
+  [1950, "#ef4a3c"], [1960, "#ff8a3d"], [1970, "#ffd84a"], [1980, "#ff6fae"],
+  [1990, "#3b8cf0"], [2000, "#45c486"], [2010, "#9b7bff"], [2020, "#33cccc"],
+];
+// Real rows from tools/songs/out/songs.json, picked to cover the decades and the long-text cases.
+const SONGS = [
+  { title: "Volare (Nel blu dipinto di blu)", artist: "Domenico Modugno", year: 1958, rank: 1 },
+  { title: "California Dreamin'", artist: "The Mamas & the Papas", year: 1966, rank: 1 },
+  { title: "Evergreen (Love Theme from A Star Is Born)", artist: "Barbra Streisand", year: 1977, rank: 4 },
+  { title: "When Doves Cry", artist: "Prince", year: 1984, rank: 1 },
+  { title: "(Everything I Do) I Do It for You", artist: "Bryan Adams", year: 1991, rank: 1 },
+  { title: "No Scrubs", artist: "TLC", year: 1999, rank: 2 },
+  { title: "Bad Day", artist: "Daniel Powter", year: 2006, rank: 1 },
+  { title: "Thrift Shop", artist: "Macklemore & Ryan Lewis featuring Wanz", year: 2013, rank: 1 },
+  { title: "Levitating", artist: "Dua Lipa", year: 2021, rank: 1 },
+  { title: "We Don't Talk About Bruno", artist: "Carolina Gaitán, Mauro Castillo, Adassa, Rhenzy Feliz, Diane Guerrero, Stephanie Beatriz and the Encanto cast", year: 2022, rank: 24 },
+];
+const HAND = [SONGS[0], SONGS[2], SONGS[7], SONGS[9]];
+
+const DESIGNS = [
+  { id: "cass", name: "B · Cassette", note: "The whole card takes the decade color. The year sits on the label tab with the chart number beside it. Below is a tape window with two wound reels. Hover to spin them." },
+  { id: "vinyl", name: "C · Vinyl", note: "A dark card with the year on the record label. Hover to play: the record turns under the year, while the year, shadow and shine stay still." },
+  { id: "score", name: "E · Hi-score", note: "The year is the score on an arcade screen. Hover a card and the year glows brighter and flickers like an old CRT screen, with scanlines rolling through it." },
+];
+
+const state = { song: { ...SONGS[3] }, acc: "decade", hide: false, rank: true };
+
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function decadeColor(y) { let c = DECADES[0][1]; for (const [d, col] of DECADES) if (y >= d) c = col; return c; }
+function splitArtist(a) {
+  const m = /\s+(?:featuring|feat\.?|ft\.?)\s+/i.exec(a);
+  return m ? { main: a.slice(0, m.index), feat: a.slice(m.index + m[0].length) } : { main: a, feat: "" };
+}
+function artistHTML(a) { const { main, feat } = splitArtist(a); return esc(main) + (feat ? `<span class="feat">feat. ${esc(feat)}</span>` : ""); }
+
+function card(design, s, size) {
+  const yearOk = Number.isFinite(s.year) && s.year > 0;
+  const full = state.hide || !yearOk ? "????" : String(s.year);
+  const short = state.hide || !yearOk ? "'??" : "'" + String(s.year).slice(-2);
+  const acc = state.acc === "decade" ? decadeColor(yearOk ? s.year : 1950) : state.acc;
+  const rank = state.rank && s.rank ? s.rank : null;
+  const t = esc(s.title || "Untitled"), a = artistHTML(s.artist || "Unknown artist");
+  const label = `${s.title}, ${s.artist}, ${state.hide ? "year hidden" : s.year}`;
+  const open = `<div class="sc ${size} v-${design}${state.hide ? " hidden-year" : ""}" style="--acc:${acc}" role="img" aria-label="${esc(label)}" data-title="${esc(s.title)}" data-artist="${esc(s.artist)}">`;
+  switch (design) {
+    case "cass": return open + `
+      <div class="cs-label"><div class="cs-top"><span class="cs-yr yr-slot">${full}</span>${rank ? `<span class="cs-rank">NO.${rank}</span>` : ""}</div>
+      <div class="fit cs-title">${t}</div><div class="fit cs-artist">${a}</div></div>
+      <div class="cs-deck"><div class="cs-window">
+        <span class="cs-slot"><span class="cs-reel" style="--t:1"><span class="cs-hub"></span></span></span>
+        <span class="cs-slot"><span class="cs-reel" style="--t:0.35"><span class="cs-hub"></span></span></span>
+      </div><span class="cs-head"></span></div></div>`;
+    case "vinyl": return open + `
+      <div class="vn-rec"><div class="vn-disc"><span class="vn-print"></span></div><div class="vn-lbl"><span class="yr-slot">${full}</span></div></div>
+      <div class="vn-plate"><div class="fit vn-title">${t}</div><div class="fit vn-artist">${a}</div></div></div>`;
+    case "score": return open + `
+      <span class="so-lbl">YEAR</span><span class="so-yr yr-slot">${full}</span><span class="so-rule"></span>
+      <div class="fit so-title">${t}</div><div class="fit so-artist">${a}</div>
+      ${rank ? `<span class="so-rank">CHART #${String(rank).padStart(2, "0")}</span>` : ""}</div>`;
+  }
+}
+
+// Shrink each text box until it fits its space; long titles get smaller instead of clipping.
+function fitAll(root = document) {
+  root.querySelectorAll(".fit").forEach((el) => {
+    el.style.fontSize = "";
+    const base = parseFloat(getComputedStyle(el).fontSize);
+    let f = base;
+    while ((el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) && f > base * 0.45) {
+      f *= 0.93;
+      el.style.fontSize = f + "px";
+    }
+  });
+}
+
+function render() {
+  stopPreview();
+  const host = document.getElementById("designs");
+  host.innerHTML = DESIGNS.map((d) => `
+    <section class="design" aria-labelledby="h-${d.id}">
+      <div class="design-head"><h2 class="design-tag" id="h-${d.id}">${d.name}</h2><p>${d.note}</p></div>
+      <div class="hero-slot">${card(d.id, state.song, "lg")}<span class="slot-note">your song</span></div>
+      <div class="hand">${HAND.map((s) => card(d.id, s, "md")).join("")}</div>
+    </section>`).join("");
+  fitAll(host);
+}
+
+function readForm() {
+  state.song = {
+    title: document.getElementById("f-title").value.trim(),
+    artist: document.getElementById("f-artist").value.trim(),
+    year: parseInt(document.getElementById("f-year").value, 10),
+    rank: parseInt(document.getElementById("f-rank").value, 10) || null,
+  };
+  render();
+}
+function fillForm(s) {
+  document.getElementById("f-title").value = s.title;
+  document.getElementById("f-artist").value = s.artist;
+  document.getElementById("f-year").value = s.year;
+  document.getElementById("f-rank").value = s.rank ?? "";
+  readForm();
+}
+
+document.getElementById("decade-key").innerHTML = DECADES.map(([d, c]) => `<span><span class="swatch" style="background:${c}"></span>${String(d).slice(2)}s</span>`).join("");
+["f-title", "f-artist", "f-year", "f-rank"].forEach((id) => document.getElementById(id).addEventListener("input", readForm));
+document.getElementById("shuffle").addEventListener("click", () => {
+  let s; do { s = SONGS[Math.floor(Math.random() * SONGS.length)]; } while (s.title === state.song.title);
+  fillForm(s);
+});
+document.getElementById("accents").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-acc]"); if (!b) return;
+  state.acc = b.dataset.acc;
+  document.querySelectorAll("#accents [data-acc]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  render();
+});
+// Card hover/tap listeners cover the whole page, so the deck backs below the designs play too.
+const designsEl = document.querySelector(".page");
+document.getElementById("t-hide").addEventListener("change", (e) => {
+  state.hide = e.target.checked;
+  render();
+});
+document.getElementById("t-rank").addEventListener("change", (e) => { state.rank = e.target.checked; render(); });
+// ---------- Song previews ----------
+// Audio comes from the game server's GET /api/preview (a 30s Deezer preview, streamed same-origin).
+// That needs the local dev server: the published artifact page can't reach it.
+var preview = { audio: new Audio(), on: false, card: null, timer: 0, fade: 0 };
+preview.audio.preload = "none";
+const soundBtn = document.getElementById("sound");
+const soundNote = document.getElementById("sound-note");
+const onDevServer = /^(localhost|127\.0\.0\.1|\[::1\]|\d+\.\d+\.\d+\.\d+)$/.test(location.hostname);
+function note(text, warn = false) { soundNote.textContent = text; soundNote.classList.toggle("warn", warn); }
+if (!onDevServer) {
+  soundBtn.disabled = true;
+  note("Sound needs the game server. Run pnpm dev and open this page from the local dev server.", true);
+}
+function fadeTo(target, ms, done) {
+  cancelAnimationFrame(preview.fade);
+  const a = preview.audio, from = a.volume, t0 = performance.now();
+  const step = (t) => {
+    // The first frame's timestamp can be slightly before t0, so clamp k and the volume (must stay in 0..1).
+    const k = Math.max(0, Math.min(1, (t - t0) / ms));
+    a.volume = Math.max(0, Math.min(1, from + (target - from) * k));
+    if (k < 1) preview.fade = requestAnimationFrame(step); else if (done) done();
+  };
+  preview.fade = requestAnimationFrame(step);
+}
+function startPreview(cardEl) {
+  if (!preview.on || preview.card === cardEl) return;
+  stopPreview();
+  clearTimeout(preview.pauseTimer);
+  preview.card = cardEl;
+  cardEl.classList.add("loading");
+  const a = preview.audio;
+  a.src = `/api/preview?title=${encodeURIComponent(cardEl.dataset.title)}&artist=${encodeURIComponent(cardEl.dataset.artist)}`;
+  a.volume = 0;
+  a.play().then(() => {
+    if (preview.card !== cardEl) return;
+    cardEl.classList.replace("loading", "playing");
+    note(`Playing ${cardEl.dataset.title} by ${cardEl.dataset.artist}.`);
+    fadeTo(1, 300);
+  }).catch((err) => {
+    if (err.name === "AbortError" || preview.card !== cardEl) return; // a newer hover took over
+    cardEl.classList.remove("loading");
+    preview.card = null;
+    note(`No preview for ${cardEl.dataset.title}. Deezer may not have it, or the game server isn't running.`, true);
+  });
+}
+function stopPreview() {
+  clearTimeout(preview.timer);
+  const cardEl = preview.card;
+  if (!cardEl) return;
+  preview.card = null;
+  cardEl.classList.remove("loading", "playing");
+  fadeTo(0, 180);
+  // Pause on a timer, not at the end of the fade: animation frames don't run in a background tab.
+  clearTimeout(preview.pauseTimer);
+  preview.pauseTimer = setTimeout(() => { if (!preview.card) preview.audio.pause(); }, 200);
+}
+preview.audio.addEventListener("ended", stopPreview);
+soundBtn.addEventListener("click", () => {
+  preview.on = !preview.on;
+  soundBtn.setAttribute("aria-pressed", String(preview.on));
+  if (!preview.on) stopPreview();
+  note(preview.on ? "Sound on. Hover a card to hear it." : "Hover a card to hear its 30-second Deezer preview. On a phone, tap the card.");
+});
+// Mouse: a short delay so sweeping across the hand doesn't fire off every song.
+designsEl.addEventListener("pointerover", (e) => {
+  if (e.pointerType !== "mouse") return;
+  const cardEl = e.target.closest(".sc[data-title]");
+  if (!cardEl || cardEl.contains(e.relatedTarget)) return;
+  clearTimeout(preview.timer);
+  preview.timer = setTimeout(() => startPreview(cardEl), 220);
+});
+designsEl.addEventListener("pointerout", (e) => {
+  if (e.pointerType !== "mouse") return;
+  const cardEl = e.target.closest(".sc[data-title]");
+  if (!cardEl || cardEl.contains(e.relatedTarget)) return;
+  clearTimeout(preview.timer);
+  if (preview.card === cardEl) stopPreview();
+});
+// Touch: tap to play, tap again to stop.
+designsEl.addEventListener("pointerup", (e) => {
+  if (e.pointerType === "mouse") return;
+  const cardEl = e.target.closest(".sc[data-title]");
+  if (!cardEl) return;
+  if (preview.card === cardEl) stopPreview(); else startPreview(cardEl);
+});
+
+// ---------- Deck backs ----------
+// Each back still carries its song (for the preview), but shows none of it.
+function backCard(s, playing) {
+  return `<div class="sc lg v-vinyl v-back${playing ? " demo-playing" : ""}" style="--acc:var(--gold)" role="img"
+    aria-label="Face-down song card${playing ? ", playing" : ""}" data-title="${esc(s.title)}" data-artist="${esc(s.artist)}">
+    <div class="vn-rec"><div class="vn-disc"><span class="vn-print"></span></div><div class="vn-lbl"><span class="vn-hole"></span></div></div>
+    <div class="vn-plate"><div class="vn-mystery">???</div><div class="vn-eq"><i></i><i></i><i></i><i></i></div></div></div>`;
+}
+document.getElementById("backs").innerHTML = `
+  <div class="back-slot">${backCard(SONGS[1], false)}<span class="slot-note">static</span></div>
+  <div class="back-slot">${backCard(SONGS[5], true)}<span class="slot-note">playing</span></div>`;
+
+let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => fitAll(), 120); });
+
+render();
+if (document.fonts) document.fonts.ready.then(() => fitAll());
+</script>
