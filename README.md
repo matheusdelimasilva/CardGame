@@ -63,6 +63,7 @@ RESEND_API_KEY=... EMAIL_FROM="CardGame <you@your-domain>" NODE_ENV=production p
 
 1. Write the rules as a `GameModule` in `packages/games/src` and add it to `games` in `index.ts`. It then appears in the host's game picker.
    - `settings` lists what the host can choose before creating a table. Two kinds exist: `toggle` (on/off) and `select` (one option from a dropdown). The settings screen is generated from this list, and the chosen values arrive in `setup`.
+   - `currentTrack` (optional) names a recording everyone should hear at this point in the game. The server turns it into a secret per-recording URL and the table plays it; the game's UI gets playback state and a pause/replay toggle as `audio`.
    - `turnTimeLimit` (optional) returns how many seconds the current turn may take. When it runs out, the server plays the game's `autoMove` for that player.
 2. Write its table UI as a `GameUI` in `packages/web/src/games` and add it to `gameUIs`. It supplies the table centre, the cards beside each seat, the seat label, your hand, your action buttons and announcements. A game whose hand and buttons share state, or need a phone's full width, supplies one `Dock` instead of `Hand` and `Actions` (Hitster does).
    - Import the rules package with `import type` only, so hidden data such as Hitster's song years is not bundled into the client.
@@ -70,8 +71,10 @@ RESEND_API_KEY=... EMAIL_FROM="CardGame <you@your-domain>" NODE_ENV=production p
 ## Games
 
 - **Hitster** (`packages/games/src/hitster`): each player builds a timeline of songs by release year. The table draws a song on your turn and you choose where it goes; a correct spot keeps the card, a wrong one discards it. First to 10 cards wins (5 or 8 as a setting).
-  - Not built yet: music playback in the game and betting on other players' placements. Until playback exists, the "Show title and artist" setting shows the song's name instead.
-  - Songs come from `tools/songs/out/songs.json` (see `tools/songs/README.md`). Each game deals a random 300 of them. The list lives only on the server: a client is sent a song's year only once the card is face up, and never its Deezer id.
+  - Sound: the song being placed plays on every player's and spectator's device (a 30-second Deezer preview). Tapping the record pauses or replays it, and the speaker button in the top bar turns sound off for that device. Phones refuse to start sound until the page has been tapped, so a "tap anywhere to turn on sound" strip appears when that happens.
+  - The browser is given an unguessable URL per song (`/api/rooms/CODE/track/...`) that the server streams from Deezer. It does not name the song and stops working when the turn ends, so the sound cannot be used to look up the year.
+  - Not built yet: betting on other players' placements. The "Show title and artist" setting (off by default) shows the song's name as well, for playing without sound.
+  - Songs come from `tools/songs/out/songs.json` (see `tools/songs/README.md`). Each game deals a random 300 of those that have a Deezer id. The list lives only on the server: a client is sent a song's year only once the card is face up, and never its Deezer id.
   - Cards use the Vinyl design from `docs/design/song-cards.html`, coloured by decade; the song being placed uses its face-down back.
 - **Demo** (`packages/games/src/demo.ts`): not a real game. A round of highest-card-wins that exercises dealing, hidden cards, turns, a turn timer and scoring.
 

@@ -6,3 +6,6 @@ data
 
 # Song data pipeline raw caches
 tools/songs/.cache/
+
+# Claude Code agent worktrees
+.claude/worktrees/

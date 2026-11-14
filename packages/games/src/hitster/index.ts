@@ -70,9 +70,14 @@ export interface SongCardView {
 /** What everyone is told about a finished turn. */
 export type RevealedSong = Pick<Song, "title" | "artist" | "year">;
 
-/** Picks `count` different songs using the game's seed, so a game can be replayed exactly. */
+/**
+ * Picks `count` different songs using the game's seed, so a game can be
+ * replayed exactly. Only songs that can be played (they have a Deezer id) are
+ * used, unless there are too few of them to fill a deck.
+ */
 function sampleSongs(seed: number, count: number): Song[] {
-  const pool = [...SONGS];
+  const playable = SONGS.filter((s) => s.deezerId !== null);
+  const pool = playable.length >= count ? playable : [...SONGS];
   let rng = seed | 0;
   const picked: Song[] = [];
   while (picked.length < count && pool.length > 0) {
@@ -155,8 +160,8 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       type: "toggle",
       id: "showSongInfo",
       label: "Show title and artist",
-      description: "Shows the song's name while it is being placed. Leave on until music playback is connected.",
-      default: true,
+      description: "Shows the song's name while it plays. Much easier; meant for playing without sound.",
+      default: false,
     },
   ],
 
@@ -257,6 +262,13 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
 
   autoMove(state, player) {
     return state.players[state.turn] === player ? { type: "pass" } : null;
+  },
+
+  currentTrack(state) {
+    const card = state.winners ? undefined : state.table.zones.current!.cards[0];
+    if (!card) return null;
+    const { title, artist, deezerId } = songOf(card.face);
+    return { title, artist, deezerId };
   },
 
   result(state) {

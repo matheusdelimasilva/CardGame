@@ -133,6 +133,23 @@ describe("hitster", () => {
     }
   });
 
+  it("names the song to play on the server side only, and only deals songs that can be played", () => {
+    const s = start();
+    const song = songOf(cards(s, "current")[0]!.face);
+    expect(hitster.currentTrack!(s)).toEqual({ title: song.title, artist: song.artist, deezerId: song.deezerId });
+    for (const zone of Object.values(s.table.zones)) {
+      for (const card of zone.cards) expect(songOf(card.face).deezerId).not.toBeNull();
+    }
+  });
+
+  it("has no song to play once the game is over", () => {
+    let s = start(5, { cardsToWin: "5", showSongInfo: false });
+    for (let i = 0; i < 100 && !s.winners; i++) {
+      s = apply(s, current(s), current(s) === "a" ? { type: "place", index: spot(s, true)! } : { type: "pass" });
+    }
+    expect(hitster.currentTrack!(s)).toBeNull();
+  });
+
   it("hides the title and artist too when that setting is off", () => {
     const view = hitster.view(start(11, { cardsToWin: "10", showSongInfo: false }), "a");
     expect(view.current).toMatchObject({ title: null, artist: null });

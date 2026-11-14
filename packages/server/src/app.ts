@@ -17,6 +17,8 @@ export interface AppOptions {
   sendEmail: SendEmail | null;
   /** Built web client to serve, if any. */
   staticDir?: string;
+  /** Used for requests to Deezer; tests pass a stand-in. */
+  fetch?: typeof fetch;
 }
 
 const ROOM_IDLE_MS = 12 * 60 * 60 * 1000;
@@ -35,7 +37,7 @@ const MIME: Record<string, string> = {
 export function createApp(options: AppOptions): { server: Server; close: () => void } {
   const store = new Store(options.dataFile);
   const auth = new Auth(store, options.sendEmail);
-  const deezer = new Deezer();
+  const deezer = new Deezer(options.fetch);
   const roomsByCode = new Map<string, Room>();
   const sockets = new Map<Room, Map<WebSocket, Member>>();
 
@@ -44,6 +46,12 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
     if (!games[room.gameId]) continue; // saved by an older version with a game that no longer exists
     room.settings ??= {};
     if (room.game && !games[room.game.gameId]) room.game = null;
+    if (room.game) {
+      // Fields added after some snapshots were written.
+      room.game.trackKey ??= "";
+      room.game.trackNonce ??= null;
+      rooms.syncTrack(room);
+    }
     for (const m of room.members) m.connected = false;
     roomsByCode.set(room.code, room);
   }
@@ -176,6 +184,16 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
         if (id > 0) return await deezer.streamPreview({ deezerId: id }, req, res);
         if (!title || !artist) return json(res, 400, { error: "Pass title and artist, or deezerId." });
         return await deezer.streamPreview({ title, artist }, req, res);
+      }
+      // The recording a table is listening to. The path says nothing about which song it is,
+      // and stops working as soon as the game moves on to the next one.
+      const trackMatch = /^\/api\/rooms\/([A-Za-z0-9]+)\/track\/([a-f0-9]+)$/.exec(url.pathname);
+      if (req.method === "GET" && trackMatch) {
+        const room = roomsByCode.get(trackMatch[1]!.toUpperCase());
+        const track = room ? rooms.trackFor(room, trackMatch[2]!) : null;
+        if (!track) return json(res, 404, { error: "That song is no longer playing." });
+        const song = track.deezerId ? { deezerId: track.deezerId } : { title: track.title, artist: track.artist };
+        return await deezer.streamPreview(song, req, res);
       }
       const roomMatch = /^\/api\/rooms\/([A-Za-z0-9]+)$/.exec(url.pathname);
       if (req.method === "GET" && roomMatch) {
