@@ -61,6 +61,18 @@ describe("table", () => {
     expect(t.zones.discard!.cards.at(-1)).toMatchObject({ id: cardId, visibleTo: "all" });
   });
 
+  it("inserts a card at a position and rejects positions outside the zone", () => {
+    let t = addCards(table(), "discard", ["X1", "X2", "X3"], FACE_UP);
+    const { table: dealt, cardId } = deal(t, "deck", "hand:a", FACE_DOWN);
+    t = moveCard(dealt, cardId, "discard", { index: 1, visibleTo: FACE_UP });
+    expect(faces(t, "discard")).toEqual(["X1", t.zones.discard!.cards[1]!.face, "X2", "X3"]);
+    expect(t.zones.discard!.cards[1]!.id).toBe(cardId);
+    expect(moveCard(t, cardId, "discard", { index: 3 }).zones.discard!.cards[3]!.id).toBe(cardId);
+    expect(() => moveCard(t, cardId, "hand:a", { index: 1 })).toThrow(EngineError);
+    expect(() => moveCard(t, cardId, "hand:a", { index: -1 })).toThrow(EngineError);
+    expect(() => moveCard(t, cardId, "hand:a", { index: 0.5 })).toThrow(EngineError);
+  });
+
   it("rejects unknown zones, unknown cards and dealing from an empty zone", () => {
     const t = table();
     expect(() => deal(t, "discard", "hand:a", FACE_DOWN)).toThrow(EngineError);

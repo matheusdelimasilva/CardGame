@@ -64,7 +64,15 @@ RESEND_API_KEY=... EMAIL_FROM="CardGame <you@your-domain>" NODE_ENV=production p
 1. Write the rules as a `GameModule` in `packages/games/src` and add it to `games` in `index.ts`. It then appears in the host's game picker.
    - `settings` lists what the host can choose before creating a table. Two kinds exist: `toggle` (on/off) and `select` (one option from a dropdown). The settings screen is generated from this list, and the chosen values arrive in `setup`.
    - `turnTimeLimit` (optional) returns how many seconds the current turn may take. When it runs out, the server plays the game's `autoMove` for that player.
-2. Write its table UI as a `GameUI` in `packages/web/src/games` and add it to `gameUIs`. It supplies the table centre, the cards beside each seat, the seat label, your hand, your action buttons and announcements.
+2. Write its table UI as a `GameUI` in `packages/web/src/games` and add it to `gameUIs`. It supplies the table centre, the cards beside each seat, the seat label, your hand, your action buttons and announcements. A game whose hand and buttons share state, or need a phone's full width, supplies one `Dock` instead of `Hand` and `Actions` (Hitster does).
+   - Import the rules package with `import type` only, so hidden data such as Hitster's song years is not bundled into the client.
+
+## Games
+
+- **Hitster** (`packages/games/src/hitster`): each player builds a timeline of songs by release year. The table draws a song on your turn and you choose where it goes; a correct spot keeps the card, a wrong one discards it. First to 10 cards wins (5 or 8 as a setting).
+  - Not built yet: music playback, betting on other players' placements, and the real card artwork. Until playback exists, the "Show title and artist" setting shows the song's name instead.
+  - The song list in `songs.ts` is a starter set. It lives only on the server: the client is sent a song's year only once the card is face up.
+- **Demo** (`packages/games/src/demo.ts`): not a real game. A round of highest-card-wins that exercises dealing, hidden cards, turns, a turn timer and scoring.
 
 ## How the engine works
 

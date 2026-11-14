@@ -377,6 +377,63 @@ button.seat:hover .avatar, button.seat.open:not(:disabled):hover .avatar { trans
 .modal h2 { font-size: 1.9rem; }
 .modal h2.name { font-family: var(--mono); font-weight: 400; font-size: 2.2rem; }
 
+/* ---------- Hitster ---------- */
+.dock-wide { grid-column: 1 / -1; min-width: 0; }
+.hitster-dock { display: grid; gap: 0.5rem; background: var(--panel); border-radius: 14px; box-shadow: 0 8px 0 var(--ink); padding: 0.7rem; }
+.hitster-bar { display: flex; align-items: center; gap: 0.75rem; }
+.hitster-bar .actions-status { flex: 1; }
+.hitster-bar .btn { margin-bottom: 6px; }
+.timeline {
+  display: flex; align-items: stretch; gap: 0.35rem; overflow-x: auto; padding: 0.3rem 0.15rem 0.7rem;
+  scrollbar-width: thin; scrollbar-color: var(--muted) transparent;
+  /* Centre a short timeline, but let a long one scroll from its start. */
+  justify-content: safe center;
+}
+.timeline-item { display: flex; gap: 0.35rem; flex: none; }
+.song-card {
+  --w: clamp(4.6rem, 21vw, 6rem);
+  flex: none; width: var(--w); height: calc(var(--w) * 1.4);
+  display: grid; grid-template-rows: auto 1fr auto; gap: 0.15rem; padding: 0.3rem 0.35rem;
+  background: var(--cream); color: var(--ink); text-align: center;
+  border: 3px solid var(--ink); border-radius: 9px; box-shadow: 0 5px 0 var(--ink);
+  border-top-width: 10px; overflow: hidden;
+}
+.song-card.fresh { animation: pop 500ms var(--spring); box-shadow: 0 5px 0 var(--ink), 0 0 18px rgba(255, 216, 74, 0.9); }
+.song-year { font-size: calc(var(--w) * 0.4); line-height: 0.9; }
+.song-title, .song-artist { font-size: 0.95rem; line-height: 1; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; }
+.song-title { -webkit-line-clamp: 2; line-clamp: 2; align-self: center; }
+.song-artist { -webkit-line-clamp: 1; line-clamp: 1; color: #6b675c; }
+.decade-0 { border-top-color: #ef4a3c; } .decade-1 { border-top-color: #3b8cf0; } .decade-2 { border-top-color: #b57af2; }
+.decade-3 { border-top-color: #f0913b; } .decade-4 { border-top-color: #35c2ae; } .decade-5 { border-top-color: #f277ad; }
+.decade-6 { border-top-color: #8fd14f; }
+.spot {
+  flex: none; width: 2.75rem; padding: 0;
+  background: rgba(255, 250, 240, 0.06); color: var(--cream);
+  border: 3px dashed rgba(255, 250, 240, 0.5); border-radius: 9px;
+  font-size: 1.8rem; line-height: 1;
+  transition: background 120ms, transform 220ms var(--spring);
+}
+.spot:hover { background: rgba(255, 216, 74, 0.2); }
+.spot.chosen { background: var(--gold); color: var(--ink); border: 3px solid var(--ink); box-shadow: 0 5px 0 var(--ink); transform: translateY(-4px); }
+.now-playing {
+  display: grid; gap: 0.1rem; justify-items: center; max-width: 100%;
+  background: var(--charcoal); border-radius: 12px; box-shadow: 0 6px 0 var(--ink); padding: 0.6rem 0.9rem 0.7rem;
+}
+.now-label { color: var(--muted); font-size: 1.05rem; }
+.now-title { color: var(--gold); font-size: clamp(1.5rem, 6.5vw, 2rem); line-height: 1; overflow-wrap: anywhere; }
+.now-artist { color: var(--cream); font-size: 1.25rem; }
+.now-year { color: var(--muted); font-size: 1.05rem; letter-spacing: 0.08em; }
+.year-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem; }
+.year-chip { background: var(--cream); color: var(--ink); border: 2px solid var(--ink); border-radius: 5px; padding: 0 0.3em; font-size: 1.05rem; }
+.song-stack {
+  display: grid; place-items: center; transform: rotate(5deg);
+  width: calc(var(--seat) * 0.34); height: calc(var(--seat) * 0.47);
+  background: var(--cream); color: var(--ink); border: 2px solid var(--ink); border-radius: 5px;
+  box-shadow: 3px 3px 0 var(--plate), 3px 3px 0 2px var(--ink);
+  font-size: calc(var(--seat) * 0.3); line-height: 1; padding-left: 0.2em;
+}
+@keyframes pop { 0% { transform: scale(0.5); } 55% { transform: scale(1.2); } 100% { transform: scale(1); } }
+
 /* Wide screens: the dock becomes three columns, as in the design mockup. */
 @media (min-width: 760px) {
   :root { --seat: clamp(6rem, 11vw, 9rem); }
@@ -389,6 +446,8 @@ button.seat:hover .avatar, button.seat.open:not(:disabled):hover .avatar { trans
   .nametag.me { font-size: 2.2rem; }
   .me-sub { font-size: 1.5rem; }
   .dock-actions { justify-self: end; width: min(100%, 21rem); }
+  .dock-wide { grid-column: 2 / 4; }
+  .dock:has(.dock-wide) { grid-template-columns: minmax(0, 21rem) minmax(0, 1fr) 0; column-gap: 1.5rem; }
   .actions-buttons { grid-template-columns: 1fr 1fr; }
   .card.md { --w: clamp(3rem, 5.5vw, 4.5rem); }
   .oval { inset: 12% 14%; }
