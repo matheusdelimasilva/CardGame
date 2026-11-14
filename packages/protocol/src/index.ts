@@ -40,6 +40,11 @@ export interface GameView {
   /** The game's own view, already filtered for this viewer. */
   view: unknown;
   result: { winners: string[] } | null;
+  /**
+   * Audio everyone should hear right now. The URL is unguessable and changes
+   * with every recording; it does not say which recording it is.
+   */
+  track: { url: string } | null;
   /** Time left on the current turn when this view was sent, if the turn is timed. */
   timer: { remainingMs: number; totalMs: number } | null;
 }

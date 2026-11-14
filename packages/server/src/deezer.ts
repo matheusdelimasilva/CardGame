@@ -245,10 +245,17 @@ export class Deezer {
 
     const abort = new AbortController();
     res.on("close", () => abort.abort());
-    const upstream = await this.fetchImpl(track.previewUrl, {
-      headers: req.headers.range ? { range: req.headers.range } : {},
-      signal: abort.signal,
-    });
+    let upstream: Response;
+    try {
+      upstream = await this.fetchImpl(track.previewUrl, {
+        headers: req.headers.range ? { range: req.headers.range } : {},
+        signal: abort.signal,
+      });
+    } catch (err) {
+      // The listener went away (a browser drops the request when the next song starts): nothing to answer.
+      if (abort.signal.aborted) return;
+      throw err;
+    }
     if (!upstream.ok || !upstream.body) {
       this.previews.delete(track.id); // maybe expired; next call re-resolves
       res.writeHead(502, { "Content-Type": "application/json" });

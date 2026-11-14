@@ -1,5 +1,5 @@
 import { randomBytes, randomInt } from "node:crypto";
-import { resolveSettings, type GameResult, type SettingValues } from "@cardgame/engine";
+import { resolveSettings, type GameResult, type SettingValues, type Track } from "@cardgame/engine";
 import { games } from "@cardgame/games";
 import { MAX_NAME_LENGTH, SEAT_COUNT, type GameInfo, type RoomView } from "@cardgame/protocol";
 
@@ -23,6 +23,10 @@ export interface RunningGame {
   /** When the current turn runs out (epoch ms), or null if it is not timed. */
   deadline: number | null;
   turnMs: number;
+  /** Which recording the nonce below stands for; "" when nothing is playing. */
+  trackKey: string;
+  /** Random id for the current recording's URL. A new one is made for every recording. */
+  trackNonce: string | null;
 }
 
 export interface Room {
@@ -78,6 +82,29 @@ function syncClock(room: Room, now: number): void {
   const seconds = key ? (game.turnTimeLimit?.(running.state) ?? null) : null;
   running.turnMs = seconds ? seconds * 1000 : 0;
   running.deadline = seconds ? now + running.turnMs : null;
+}
+
+function currentTrack(running: RunningGame): Track | null {
+  if (running.result) return null;
+  return games[running.gameId]!.currentTrack?.(running.state) ?? null;
+}
+
+/** Gives the table a fresh, unguessable URL whenever the recording to play changes. */
+export function syncTrack(room: Room): void {
+  const running = room.game;
+  if (!running) return;
+  const track = currentTrack(running);
+  const key = track ? `${track.deezerId ?? ""}|${track.title}|${track.artist}` : "";
+  if (key === running.trackKey) return;
+  running.trackKey = key;
+  running.trackNonce = key ? newToken() : null;
+}
+
+/** The recording behind a track URL, or null if that URL is not the current one. */
+export function trackFor(room: Room, nonce: string): Track | null {
+  const running = room.game;
+  if (!running || !running.trackNonce || running.trackNonce !== nonce) return null;
+  return currentTrack(running);
 }
 
 /** Plays the default move for anyone whose turn has run out. Returns true if the game changed. */
@@ -142,8 +169,19 @@ export function start(room: Room, member: Member, seed = randomInt(2 ** 31), now
   if (players.length < game.minPlayers) return `${game.name} needs at least ${game.minPlayers} players.`;
   if (players.length > game.maxPlayers) return `${game.name} allows at most ${game.maxPlayers} players.`;
   const state = game.setup({ players, seed, settings: room.settings });
-  room.game = { gameId: game.id, players, state, result: null, turnKey: "", deadline: null, turnMs: 0 };
+  room.game = {
+    gameId: game.id,
+    players,
+    state,
+    result: null,
+    turnKey: "",
+    deadline: null,
+    turnMs: 0,
+    trackKey: "",
+    trackNonce: null,
+  };
   syncClock(room, now);
+  syncTrack(room);
   return null;
 }
 
@@ -160,6 +198,7 @@ function apply(room: Room, playerId: string, gameMove: unknown, now: number): Re
   running.state = outcome.state;
   running.result = game.result(outcome.state);
   syncClock(room, now);
+  syncTrack(room);
   return null;
 }
 
@@ -221,6 +260,7 @@ export function viewFor(room: Room, member: Member, now = Date.now()): RoomView 
       active: game.activePlayers(room.game.state),
       view: game.view(room.game.state, viewer),
       result: room.game.result,
+      track: room.game.trackNonce ? { url: `/api/rooms/${room.code}/track/${room.game.trackNonce}` } : null,
       timer:
         room.game.deadline === null
           ? null

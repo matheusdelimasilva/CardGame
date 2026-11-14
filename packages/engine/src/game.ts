@@ -40,6 +40,17 @@ export function resolveSettings(defs: readonly SettingDef[], raw: unknown): Sett
   return values;
 }
 
+/**
+ * A recording the whole table should hear right now. It stays on the server:
+ * clients are only given an opaque URL that plays it.
+ */
+export interface Track {
+  title: string;
+  artist: string;
+  /** Deezer track id, or null to look the song up by title and artist. */
+  deezerId: number | null;
+}
+
 export interface SetupContext {
   /** Seated players, in table order. */
   players: PlayerId[];
@@ -72,6 +83,8 @@ export interface GameModule<S, M, V> {
   autoMove?(state: S, player: PlayerId): M | null;
   /** Seconds the current turn may take, or null for no limit. When it runs out the server plays autoMove. */
   turnTimeLimit?(state: S): number | null;
+  /** The recording to play for everyone at this point in the game, if any. */
+  currentTrack?(state: S): Track | null;
   /** null while the game is still running. */
   result(state: S): GameResult | null;
 }

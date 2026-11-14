@@ -8,8 +8,27 @@ let app: ReturnType<typeof createApp>;
 let base: string;
 const sent: { to: string; code: string }[] = [];
 
+/** Stands in for Deezer: any track id resolves to a preview whose bytes name that id. */
+const deezerCalls: string[] = [];
+const fakeDeezer = (async (input: RequestInfo | URL, init?: RequestInit) => {
+  const url = String(input);
+  deezerCalls.push(url);
+  const track = /^https:\/\/api\.deezer\.com\/track\/(\d+)$/.exec(url);
+  if (track) {
+    const body = { id: Number(track[1]), title: "T", artist: { name: "A" }, preview: `https://cdn.test/${track[1]}.mp3?hdnea=exp=9999999999` };
+    return new Response(JSON.stringify(body), { headers: { "content-type": "application/json" } });
+  }
+  const preview = /^https:\/\/cdn\.test\/(\d+)\.mp3/.exec(url);
+  if (preview) {
+    const range = new Headers(init?.headers).get("range");
+    return new Response(`mp3-of-${preview[1]}`, { status: range ? 206 : 200, headers: { "content-type": "audio/mpeg" } });
+  }
+  return new Response("{}", { status: 404 });
+}) as typeof fetch;
+
 async function boot(withEmail = false) {
   app = createApp({
+    fetch: fakeDeezer,
     dataFile: null,
     sendEmail: withEmail ? async (to, code) => void sent.push({ to, code }) : null,
   });
@@ -137,6 +156,38 @@ describe("a table over the network", () => {
     host.send({ type: "kick", playerId: back.room!.you.id });
     await back.until(() => back.kicked);
     await host.until(() => host.room!.seats[4] === null);
+  });
+
+  it("plays the current Hitster song to the table without naming it, and only while it is current", async () => {
+    await boot();
+    const session = await signIn();
+    const { code } = (await api("/api/rooms", { gameId: "hitster" }, session)).body;
+    const host = await client(code, { sessionToken: session });
+    const guest = await client(code);
+    host.send({ type: "setName", name: "Hosty" });
+    host.send({ type: "sit", seat: 0 });
+    guest.send({ type: "setName", name: "Guesty" });
+    guest.send({ type: "sit", seat: 1 });
+    await host.until(() => host.room!.seats[1]?.name === "Guesty");
+    host.send({ type: "start" });
+    await guest.until(() => guest.room!.game !== null);
+
+    const first = guest.room!.game!.track!.url;
+    expect(JSON.stringify(guest.room)).not.toContain("deezerId");
+    const res = await fetch(`http://${base}${first}`, { headers: { range: "bytes=0-" } });
+    expect(res.status).toBe(206);
+    expect(res.headers.get("content-type")).toBe("audio/mpeg");
+    const played = /^mp3-of-(\d+)$/.exec(await res.text())![1]!;
+    // The id Deezer was asked for never appears in what the browser was sent.
+    expect(first).not.toContain(played);
+    expect(JSON.stringify(guest.room)).not.toContain(played);
+
+    host.send({ type: "move", move: { type: "place", index: 0 } });
+    await guest.until(() => guest.room!.game!.track!.url !== first);
+    expect((await fetch(`http://${base}${first}`)).status).toBe(404);
+    expect((await fetch(`http://${base}${guest.room!.game!.track!.url}`)).status).toBe(200);
+    expect((await fetch(`http://${base}/api/rooms/${code}/track/${"0".repeat(48)}`)).status).toBe(404);
+    expect((await fetch(`http://${base}/api/rooms/ZZZZZZ/track/${"0".repeat(48)}`)).status).toBe(404);
   });
 
   it("refuses a connection to a table that does not exist", async () => {

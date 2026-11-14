@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import type { DemoView } from "@cardgame/games";
 import * as rooms from "../src/rooms";
 
-function table(names = ["Ana", "Bo", "Cy"], settings: unknown = {}) {
-  const room = rooms.createRoom("ABC234", "host@example.com", "demo", settings);
+function table(names = ["Ana", "Bo", "Cy"], settings: unknown = {}, gameId = "demo") {
+  const room = rooms.createRoom("ABC234", "host@example.com", gameId, settings);
   const members = names.map((name, i) => {
     const m = rooms.join(room, undefined, i === 0);
     m.connected = true;
@@ -149,6 +149,45 @@ describe("rooms", () => {
     for (let now = 20_000; !room.game!.result; now += 20_000) expect(rooms.expireTurn(room, now)).toBe(true);
     expect(room.game!.deadline).toBeNull();
     expect(rooms.viewFor(room, host).game!.timer).toBeNull();
+  });
+
+  it("gives a game with no audio no track", () => {
+    const { room, host } = table();
+    rooms.start(room, host, 7);
+    expect(rooms.viewFor(room, host).game!.track).toBeNull();
+    expect(rooms.trackFor(room, "anything")).toBeNull();
+  });
+
+  it("gives each Hitster song its own secret URL that dies when the turn ends", () => {
+    const { room, members, host } = table(["Ana", "Bo"], {}, "hitster");
+    rooms.start(room, host, 7);
+    const url = () => rooms.viewFor(room, members[1]!).game!.track!.url;
+    const nonce = (u: string) => u.split("/").at(-1)!;
+    const first = url();
+    expect(first).toMatch(/^\/api\/rooms\/ABC234\/track\/[a-f0-9]{48}$/);
+    expect(rooms.viewFor(room, host).game!.track!.url).toBe(first); // same for everyone at the table
+    const song = rooms.trackFor(room, nonce(first))!;
+    expect(song.deezerId).toBeGreaterThan(0);
+    expect(rooms.trackFor(room, "0".repeat(48))).toBeNull();
+
+    expect(rooms.move(room, host, { type: "pass" })).toBeNull();
+    const second = url();
+    expect(second).not.toBe(first);
+    expect(rooms.trackFor(room, nonce(first))).toBeNull();
+    expect(rooms.trackFor(room, nonce(second))).not.toEqual(song);
+
+    // Nothing a client receives names the recording.
+    const sent = JSON.stringify(rooms.viewFor(room, members[1]!));
+    expect(sent).not.toContain("deezerId");
+    expect(sent).not.toContain(String(rooms.trackFor(room, nonce(second))!.deezerId));
+  });
+
+  it("stops offering a track when the game ends", () => {
+    const { room, host } = table(["Ana", "Bo"], {}, "hitster");
+    rooms.start(room, host, 7);
+    const old = rooms.viewFor(room, host).game!.track!.url.split("/").at(-1)!;
+    rooms.endGame(room, host);
+    expect(rooms.trackFor(room, old)).toBeNull();
   });
 
   it("refuses malformed moves without crashing", () => {
