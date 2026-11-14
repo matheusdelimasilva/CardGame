@@ -1,6 +1,7 @@
 import { MAX_NAME_LENGTH, SEAT_COUNT, type RoomView, type SeatView } from "@cardgame/protocol";
 import { useEffect, useState, type FormEvent } from "react";
 import { navigate } from "./App";
+import { useTrackAudio } from "./audio";
 import { gameUIs } from "./games";
 import { describeSettings } from "./NewTable";
 import { Avatar, OpenSeat, Seat } from "./Seat";
@@ -12,6 +13,7 @@ export function Room({ code }: { code: string }) {
   const [menuFor, setMenuFor] = useState<string | null>(null);
   // Hooks must run on every render, so this sits above the early returns below.
   const secondsLeft = useSecondsLeft(room?.game && !room.game.result ? room.game.timer : null);
+  const audio = useTrackAudio(room?.game && !room.game.result ? (room.game.track?.url ?? null) : null);
 
   if (connection === "gone") {
     return <Notice title="Table not found" text="This table has closed or the link is wrong." />;
@@ -33,6 +35,7 @@ export function Room({ code }: { code: string }) {
     you: game.players.includes(you.id) ? you.id : null,
     nameOf,
     move: (move: unknown) => send({ type: "move", move }),
+    audio,
   };
 
   // Seats are drawn clockwise starting from the viewer, who sits at the bottom.
@@ -50,10 +53,21 @@ export function Room({ code }: { code: string }) {
           ‹
         </button>
         <span className="topbar-code">table {room.code}</span>
+        {running && game.track && (
+          <button
+            className="topbar-sound"
+            onClick={() => audio.setMuted(!audio.muted)}
+            aria-pressed={!audio.muted}
+            aria-label={audio.muted ? "Turn sound on" : "Turn sound off"}
+          >
+            {audio.muted ? "🔇" : "🔊"}
+          </button>
+        )}
         <ShareButton code={room.code} />
       </header>
 
       {connection === "reconnecting" && <div className="reconnecting">Connection lost. Reconnecting...</div>}
+      {audio.status === "blocked" && <div className="sound-prompt">🔊 Tap anywhere to turn on sound</div>}
 
       <div className="felt">
         <div className="oval" />

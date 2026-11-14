@@ -1,5 +1,6 @@
 import type { GameView } from "@cardgame/protocol";
 import type { ReactNode } from "react";
+import type { TrackAudio } from "../audio";
 
 export interface GameProps {
   game: GameView;
@@ -9,6 +10,8 @@ export interface GameProps {
   nameOf: (id: string) => string;
   /** Sends a move to the server. */
   move: (move: unknown) => void;
+  /** Playback of the table's current recording on this device, for games that have sound. */
+  audio: TrackAudio;
 }
 
 /** What a game supplies so the shared table can draw it. */

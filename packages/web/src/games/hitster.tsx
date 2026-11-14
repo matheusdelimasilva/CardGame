@@ -2,6 +2,7 @@
 import type { HitsterView, SongCardView } from "@cardgame/games";
 import type { GameView } from "@cardgame/protocol";
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import type { TrackAudio } from "../audio";
 import type { GameProps, GameUI } from "./types";
 
 const viewOf = (game: GameView) => game.view as HitsterView;
@@ -89,8 +90,8 @@ function SongCard({ song, fresh }: { song: SongCardView; fresh?: boolean }) {
  * the decade away. `playing` spins the record and shows the equalizer bars;
  * it is for when the song is actually audible.
  */
-function SongBack({ playing }: { playing?: boolean }) {
-  return (
+function SongBack({ playing, onTap, tapLabel }: { playing?: boolean; onTap?: () => void; tapLabel?: string }) {
+  const card = (
     <span className={`sc back-size v-vinyl v-back${playing ? " playing" : ""}`} role="img" aria-label="Face-down song card">
       <span className="vn-rec">
         <span className="vn-disc">
@@ -111,6 +112,32 @@ function SongBack({ playing }: { playing?: boolean }) {
       </span>
     </span>
   );
+  return onTap ? (
+    <button className="song-back-button" onClick={onTap} aria-label={tapLabel}>
+      {card}
+    </button>
+  ) : (
+    card
+  );
+}
+
+/** What the listener is told about the sound, and what tapping the record will do. */
+function soundHint(audio: TrackAudio): string {
+  if (audio.muted) return "sound is off";
+  switch (audio.status) {
+    case "playing":
+      return "tap the record to pause";
+    case "loading":
+      return "loading the song...";
+    case "paused":
+      return "tap the record to hear it again";
+    case "blocked":
+      return "tap the record to hear it";
+    case "error":
+      return "this song could not be played";
+    default:
+      return "";
+  }
 }
 
 /** Words for a position in a timeline: "before 1984", "between 1984 and 1991", "after 1991". */
@@ -179,7 +206,7 @@ function Dock({ game, you, nameOf, move }: GameProps) {
 }
 
 export const hitsterUI: GameUI = {
-  Center({ game, you, nameOf }) {
+  Center({ game, you, nameOf, audio }) {
     const view = viewOf(game);
     const player = view.currentPlayer;
     if (!view.current || !player) return null;
@@ -187,7 +214,11 @@ export const hitsterUI: GameUI = {
     return (
       <div className="center-game">
         <div className="now-playing">
-          <SongBack />
+          <SongBack
+            playing={audio.status === "playing"}
+            onTap={audio.muted ? undefined : audio.toggle}
+            tapLabel={audio.status === "playing" ? "Pause the song" : "Play the song"}
+          />
           <div className="now-text">
             <span className="now-label">♪ {player === you ? "your song" : `${nameOf(player)}'s song`}</span>
             {view.current.title ? (
@@ -198,8 +229,9 @@ export const hitsterUI: GameUI = {
                 </span>
               </>
             ) : (
-              <span className="now-title">Listen...</span>
+              <span className="now-title">{audio.status === "error" ? "No sound" : "Listen..."}</span>
             )}
+            <span className="now-hint">{soundHint(audio)}</span>
           </div>
         </div>
         {theirLine && (
