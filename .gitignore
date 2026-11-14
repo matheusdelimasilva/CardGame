@@ -3,3 +3,6 @@ dist
 .env
 *.log
 data
+
+# Song data pipeline raw caches
+tools/songs/.cache/
