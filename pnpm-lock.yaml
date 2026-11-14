@@ -23,7 +23,11 @@ importers:
         specifier: workspace:*
         version: link:../engine
 
-  packages/protocol: {}
+  packages/protocol:
+    dependencies:
+      '@cardgame/engine':
+        specifier: workspace:*
+        version: link:../engine
 
   packages/server:
     dependencies:

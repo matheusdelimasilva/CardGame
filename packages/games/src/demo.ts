@@ -21,10 +21,27 @@ import {
 /**
  * Demo game. Each round the table deals one face-down card to every player.
  * Players may peek at their own card at any time and reveal it on their turn.
- * The highest card scores a point (ties all score). First to the target wins.
+ * The highest card scores a point. First to the target wins.
+ *
+ * Settings: an optional turn timer, and a tiebreaker suit for tied high cards.
  */
 
 export const TARGET_SCORE = 5;
+export const TURN_SECONDS = 20;
+
+/** "none", or the suit letter that wins a tie. */
+export type Tiebreaker = "none" | "H" | "D" | "C" | "S";
+
+/**
+ * Who scores this round: the highest rank. If several tie and one of them
+ * holds the tiebreaker suit, only that player scores; otherwise all tied score.
+ */
+export function roundWinners(players: PlayerId[], cards: Record<PlayerId, string>, tiebreaker: Tiebreaker): PlayerId[] {
+  const best = Math.max(...players.map((p) => rankValue(cards[p]!)));
+  const tied = players.filter((p) => rankValue(cards[p]!) === best);
+  const favoured = tied.filter((p) => cards[p]!.endsWith(tiebreaker));
+  return tiebreaker !== "none" && favoured.length > 0 ? favoured : tied;
+}
 
 export interface RoundSummary {
   round: number;
@@ -32,7 +49,7 @@ export interface RoundSummary {
   winners: PlayerId[];
 }
 
-export interface HighCardState {
+export interface DemoState {
   table: TableState;
   players: PlayerId[];
   scores: Record<PlayerId, number>;
@@ -44,11 +61,13 @@ export interface HighCardState {
   revealed: number;
   lastRound: RoundSummary | null;
   winners: PlayerId[] | null;
+  turnTimer: boolean;
+  tiebreaker: Tiebreaker;
 }
 
-export type HighCardMove = { type: "peek" } | { type: "reveal" };
+export type DemoMove = { type: "peek" } | { type: "reveal" };
 
-export interface HighCardView {
+export interface DemoView {
   table: TableView;
   players: PlayerId[];
   scores: Record<PlayerId, number>;
@@ -61,7 +80,7 @@ export interface HighCardView {
 
 const slot = (player: PlayerId) => `slot:${player}`;
 
-function dealRound(state: HighCardState): void {
+function dealRound(state: DemoState): void {
   let table = state.table;
   if (table.zones.deck!.cards.length < state.players.length) {
     table = shuffle(moveAll(table, "discard", "deck"), "deck");
@@ -74,13 +93,12 @@ function dealRound(state: HighCardState): void {
   state.turn = state.firstPlayer;
 }
 
-function finishRound(state: HighCardState): void {
+function finishRound(state: DemoState): void {
   const cards: Record<PlayerId, string> = {};
   for (const player of state.players) {
     cards[player] = state.table.zones[slot(player)]!.cards[0]!.face;
   }
-  const best = Math.max(...Object.values(cards).map(rankValue));
-  const winners = state.players.filter((p) => rankValue(cards[p]!) === best);
+  const winners = roundWinners(state.players, cards, state.tiebreaker);
   for (const winner of winners) state.scores[winner]! += 1;
   state.lastRound = { round: state.round, cards, winners };
 
@@ -98,17 +116,41 @@ function finishRound(state: HighCardState): void {
   dealRound(state);
 }
 
-export const highCard: GameModule<HighCardState, HighCardMove, HighCardView> = {
-  id: "high-card",
-  name: "High Card",
+export const demo: GameModule<DemoState, DemoMove, DemoView> = {
+  id: "demo",
+  name: "Demo",
   minPlayers: 2,
   maxPlayers: 8,
+  description: "Not a real game: a tiny round of highest-card-wins that shows the table working.",
+  settings: [
+    {
+      type: "toggle",
+      id: "turnTimer",
+      label: "Turn timer",
+      description: `Each turn lasts ${TURN_SECONDS} seconds. When time runs out, the card is revealed for the player.`,
+      default: false,
+    },
+    {
+      type: "select",
+      id: "tiebreaker",
+      label: "Tiebreaker suit",
+      description: "When the highest cards tie, the one in this suit takes the point alone.",
+      options: [
+        { value: "none", label: "None: tied players all score" },
+        { value: "H", label: "Hearts" },
+        { value: "D", label: "Diamonds" },
+        { value: "C", label: "Clubs" },
+        { value: "S", label: "Spades" },
+      ],
+      default: "none",
+    },
+  ],
 
-  setup({ players, seed }) {
+  setup({ players, seed, settings }) {
     let table = addZone(addZone(createTable(seed), "deck"), "discard");
     for (const player of players) table = addZone(table, slot(player), player);
     table = shuffle(addCards(table, "deck", standardDeck()), "deck");
-    const state: HighCardState = {
+    const state: DemoState = {
       table,
       players: [...players],
       scores: Object.fromEntries(players.map((p) => [p, 0])),
@@ -118,6 +160,8 @@ export const highCard: GameModule<HighCardState, HighCardMove, HighCardView> = {
       revealed: 0,
       lastRound: null,
       winners: null,
+      turnTimer: settings.turnTimer === true,
+      tiebreaker: settings.tiebreaker as Tiebreaker,
     };
     dealRound(state);
     return state;
@@ -163,6 +207,10 @@ export const highCard: GameModule<HighCardState, HighCardMove, HighCardView> = {
 
   autoMove(state, player) {
     return state.players[state.turn] === player ? { type: "reveal" } : null;
+  },
+
+  turnTimeLimit(state) {
+    return state.turnTimer && !state.winners ? TURN_SECONDS : null;
   },
 
   result(state) {

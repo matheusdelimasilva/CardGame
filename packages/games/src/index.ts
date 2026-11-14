@@ -1,12 +1,10 @@
 import type { GameModule } from "@cardgame/engine";
-import { highCard } from "./high-card";
+import { demo } from "./demo";
 
-export * from "./high-card";
+export * from "./demo";
 
 /** Every game the platform can run, keyed by id. */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const games: Record<string, GameModule<any, any, any>> = {
-  [highCard.id]: highCard,
+  [demo.id]: demo,
 };
-
-export const defaultGameId = highCard.id;

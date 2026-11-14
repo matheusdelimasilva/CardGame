@@ -39,6 +39,9 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
 
   // Rooms restored from a snapshot start with everybody disconnected.
   for (const room of store.data.rooms) {
+    if (!games[room.gameId]) continue; // saved by an older version with a game that no longer exists
+    room.settings ??= {};
+    if (room.game && !games[room.game.gameId]) room.game = null;
     for (const m of room.members) m.connected = false;
     roomsByCode.set(room.code, room);
   }
@@ -143,12 +146,18 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
         if (header.startsWith("Bearer ")) auth.signOut(header.slice(7));
         return json(res, 200, {});
       }
+      if (route === "GET /api/games") {
+        return json(res, 200, { games: Object.keys(games).map(rooms.gameInfo) });
+      }
       if (route === "POST /api/rooms") {
         const email = sessionEmail(req);
         if (!email) return json(res, 401, { error: "Sign in to host a table." });
+        const body = await readBody(req);
+        const gameId = String(body.gameId ?? "");
+        if (!Object.hasOwn(games, gameId)) return json(res, 400, { error: "Choose a game first." });
         let code = rooms.newRoomCode();
         while (roomsByCode.has(code)) code = rooms.newRoomCode();
-        roomsByCode.set(code, rooms.createRoom(code, email));
+        roomsByCode.set(code, rooms.createRoom(code, email, gameId, body.settings));
         persist();
         return json(res, 200, { code });
       }
@@ -217,9 +226,6 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
         case "stand":
           refusal = rooms.stand(room, member);
           break;
-        case "setGame":
-          refusal = rooms.setGame(room, member, msg.gameId);
-          break;
         case "start":
           refusal = rooms.start(room, member);
           break;
@@ -265,6 +271,18 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
     });
   });
 
+  // Turn timers: play the default move for anyone who has run out of time.
+  const clock = setInterval(() => {
+    for (const room of roomsByCode.values()) {
+      if (!room.game || room.game.deadline === null) continue;
+      const wasFinished = room.game.result !== null;
+      if (!rooms.expireTurn(room)) continue;
+      if (!wasFinished && room.game.result) recordHistory(room);
+      broadcast(room);
+    }
+  }, 250);
+  clock.unref();
+
   const sweep = setInterval(() => {
     const cutoff = Date.now() - ROOM_IDLE_MS;
     for (const [code, room] of roomsByCode) {
@@ -281,6 +299,7 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
     server,
     close: () => {
       clearInterval(sweep);
+      clearInterval(clock);
       for (const ws of wss.clients) ws.terminate();
       wss.close();
       server.close();

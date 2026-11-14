@@ -1,5 +1,9 @@
 /** Messages and views shared by the server and the web client. */
 
+import type { SettingDef, SettingValues } from "@cardgame/engine";
+
+export type { SelectSetting, SettingDef, SettingValues, ToggleSetting } from "@cardgame/engine";
+
 export const SEAT_COUNT = 8;
 export const MAX_NAME_LENGTH = 14;
 
@@ -8,6 +12,8 @@ export interface GameInfo {
   name: string;
   minPlayers: number;
   maxPlayers: number;
+  description: string;
+  settings: SettingDef[];
 }
 
 export interface SeatView {
@@ -34,12 +40,15 @@ export interface GameView {
   /** The game's own view, already filtered for this viewer. */
   view: unknown;
   result: { winners: string[] } | null;
+  /** Time left on the current turn when this view was sent, if the turn is timed. */
+  timer: { remainingMs: number; totalMs: number } | null;
 }
 
 export interface RoomView {
   code: string;
-  gameId: string;
-  games: GameInfo[];
+  /** The game this table was created for, and the host's settings for it. */
+  gameInfo: GameInfo;
+  settings: SettingValues;
   you: { id: string; name: string; seat: number | null; isHost: boolean };
   /** Always SEAT_COUNT entries; null is an open seat. */
   seats: (SeatView | null)[];
@@ -52,7 +61,6 @@ export type ClientMessage =
   | { type: "setName"; name: string }
   | { type: "sit"; seat: number }
   | { type: "stand" }
-  | { type: "setGame"; gameId: string }
   | { type: "start" }
   | { type: "move"; move: unknown }
   | { type: "skip"; playerId: string }
