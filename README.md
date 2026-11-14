@@ -39,7 +39,41 @@ RESEND_API_KEY=... EMAIL_FROM="CardGame <you@your-domain>" NODE_ENV=production p
 | `PORT` | `3001` | HTTP and WebSocket port |
 | `RESEND_API_KEY` | none | Sends sign-in codes by email. Required when `NODE_ENV=production` |
 | `EMAIL_FROM` | Resend test sender | From address for sign-in emails |
-| `DATA_FILE` | `data/db.json` | Sessions, history and room snapshots |
+| `DATA_FILE` | `data/db.json` | JSON storage for sessions, history and room snapshots when `DATABASE_URL` is unset |
+| `DATABASE_URL` | none | Postgres connection URL; uses Postgres instead of `DATA_FILE` |
+
+### Postgres locally
+
+JSON remains the default. To use Postgres instead, start a local database with Docker:
+
+```sh
+docker run --name cardgame-postgres \
+  -e POSTGRES_USER=cardgame -e POSTGRES_PASSWORD=cardgame -e POSTGRES_DB=cardgame \
+  -p 127.0.0.1:5432:5432 -v cardgame-postgres:/var/lib/postgresql/data \
+  -d postgres:17
+DATABASE_URL=postgres://cardgame:cardgame@localhost:5432/cardgame pnpm dev
+```
+
+The server creates missing tables on startup: `sessions` (`token` primary key, `email`),
+`history` (`host_email` primary key, `entries` JSONB array, newest first, up to 100 games),
+and `rooms` (`code` primary key, `snapshot` JSONB). It loads them into memory before
+accepting requests. Writes are debounced by 300 ms; only changed rows are written,
+including rooms mutated in place. Shutdown waits for pending writes. Sign-in codes
+stay in memory and are never persisted. Run one server process per database; active
+rooms and sessions are cached in that process. Existing JSON data is not imported automatically.
+
+Stop the database with `docker stop cardgame-postgres`; restart it with
+`docker start cardgame-postgres`. The named volume preserves data between containers.
+
+Postgres integration tests are skipped unless `TEST_DATABASE_URL` is set:
+
+```sh
+TEST_DATABASE_URL=postgres://cardgame:cardgame@localhost:5432/cardgame pnpm test
+```
+
+Use a local/test database account that can create schemas. Each integration test creates
+and removes its own isolated schema. `createApp({ dataFile: null, ... })` always uses
+an in-memory JSON store, even when `DATABASE_URL` is set, keeping existing tests isolated.
 
 ## Layout
 
@@ -57,7 +91,7 @@ RESEND_API_KEY=... EMAIL_FROM="CardGame <you@your-domain>" NODE_ENV=production p
 - People who arrive during a game watch it, and can take an open seat to join the next game.
 - A disconnected player keeps their seat and shows as "away". The host can tap them to play their turn for them, or remove them (which ends the current game).
 - Finished games are saved to the host's history.
-- Rooms are snapshotted to the data file after every change and close after 12 hours without activity.
+- Rooms are snapshotted to the configured store after every change and close after 12 hours without activity.
 
 ## Adding a game
 
