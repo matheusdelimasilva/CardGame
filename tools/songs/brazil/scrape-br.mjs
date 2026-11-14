@@ -134,5 +134,5 @@ for (let year = FROM; year <= TO; year++) {
   });
   cats.years[year] = { total: titles.length, songs };
   await writeJson(catPath, cats);
-  console.log(`Canções de ${year}: ${songs.filter(isBrazilian).length}/${titles.length} brasileiras`);
+  console.log(`Canções de ${year}: ${songs.filter((p) => isBrazilian(p)).length}/${titles.length} brasileiras`);
 }

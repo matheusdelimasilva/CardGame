@@ -3,14 +3,18 @@
 // Usage: node build-songs-br.mjs
 // Output: ../out/songs-br.json
 import { join } from "node:path";
-import { CACHE_DIR, OUT_DIR, readJson, writeJson } from "../lib.mjs";
+import { norm as deezerNorm } from "../../../packages/server/src/deezer.ts";
+import { CACHE_DIR, OUT_DIR, ROOT, readJson, writeJson } from "../lib.mjs";
 import { norm } from "../normalize.mjs";
 import { allSongs, primaryArtistBr, songKey } from "./sources-br.mjs";
 
 const MIN_SCORE = 80;
-const MAX_YEARS_BEFORE_CHART = 2;
+const MAX_YEARS_BEFORE_CHART = 1; // same window as the US build
 
 const mb = await readJson(join(CACHE_DIR, "br", "musicbrainz.json"), {});
+// Shared with the US pipeline: `node ../fetch-deezer.mjs --file songs-br.json` fills it.
+const deezer = await readJson(join(CACHE_DIR, "deezer.json"), {});
+const deezerOverrides = await readJson(join(ROOT, "deezer-overrides.json"), {});
 const yearOf = (d) => (d && /^\d{4}/.test(d) ? Number(d.slice(0, 4)) : null);
 
 function mbMatches(song) {
@@ -60,17 +64,37 @@ for (const song of await allSongs()) {
   });
 }
 
+// A page with no artist is the same song as a same-titled entry within a year that has one.
+const withArtist = [...merged.values()].filter((s) => s.artist);
+for (const [key, s] of merged) {
+  if (s.artist) continue;
+  const twin = withArtist.find((o) => norm(o.title) === norm(s.title) && Math.abs(o.year - s.year) <= 1);
+  if (twin) {
+    twin.mbid ??= s.mbid;
+    merged.delete(key);
+  }
+}
+
 const final = [...merged.values()]
-  .map((s) => ({
-    title: s.title,
-    artist: s.artist,
-    year: s.year,
-    yearSource: s.yearSource,
-    chartYear: s.chartYear ?? null,
-    chartRank: s.rank ?? null,
-    mbid: s.mbid,
-    source: s.source,
-  }))
+  .map((s) => {
+    const label = `${s.artist} — ${s.title}`;
+    const deezerId = label in deezerOverrides ? deezerOverrides[label]
+      : deezer[`${deezerNorm(s.artist)}|${deezerNorm(s.title)}`]?.id ?? null;
+    return {
+      title: s.title,
+      artist: s.artist,
+      year: s.year,
+      yearSource: s.yearSource,
+      chartYear: s.chartYear ?? null,
+      chartRank: s.rank ?? null,
+      mbid: s.mbid,
+      deezerId,
+      source: s.source,
+      drop: label in deezerOverrides && deezerId === null,
+    };
+  })
+  .filter((s) => !s.drop)
+  .map(({ drop, ...s }) => s)
   .sort((a, b) => a.year - b.year || (a.chartRank ?? 999) - (b.chartRank ?? 999) || a.title.localeCompare(b.title, "pt"));
 
 await writeJson(join(OUT_DIR, "songs-br.json"), final);

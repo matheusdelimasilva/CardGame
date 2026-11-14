@@ -1,0 +1,3343 @@
+Deezer matches: 1436 matched, 466 missing
+
+== Missing ==
+1912  #null  Pedro de Alcântara e Ernesto Nazareth — Odeon
+1914  #null  Eduardo das Neves e coro — O Luar do Sertão
+1917  #null  Donga e Mauro de Almeida — Pelo Telefone
+1918  #null  Sinhô — Quem São Eles?
+1920  #null  Sinhô — Pé de Anjo
+1928  #null  Sinhô (int. Mário Reis) — Jura
+1929  #null  Araci Cortes — Linda Flor (Ai, Ioiô)
+1930  #null  Carmen Miranda — P'ra Você Gostar de Mim
+1932  #null  Irmãos Valença / Lamartine Babo — O Teu Cabelo Não Nega
+1933  #null  Francisco Alves e Aurora Miranda — Cai, Cai, Balão
+1935  #null  André Filho — Cidade Maravilhosa
+1935  #null  Carmen Miranda — O Tic-Tac do Meu Coração
+1936  #null  Vicente Paiva e Jararaca — Mamãe Eu Quero
+1936  #null  Noel Rosa e Heitor dos Prazeres — Pierrô Apaixonado
+1937  #null  Carmen Miranda — Mamãe Eu Quero
+1937  #null  Raul Torres, Inezita Barroso e outros — Marvada Pinga
+1937  #null  Wilson Simonal — Meu Limão, Meu Limoeiro
+1938  #null  Carmen Miranda — Boneca de Piche
+1938  #null  Braguinha e Alberto Ribeiro — Touradas em Madri
+1939  #null  Carmen Miranda — Cai, Cai
+1939  #null  Dorival Caymmi (Carmen Miranda) — O Que É Que a Baiana Tem?
+1939  #null  Carmen Miranda — Você nasceu para ser granfina
+1940  #null  Carmen Miranda — Disseram que Voltei Americanizada
+1941  #null  Carmen Miranda — A Week-End in Havana
+1941  #null  Haroldo Lobo e Nássara — Alá-lá-ô
+1941  #null  Mário Lago e Roberto Roberti — Aurora
+1941  #null  Carmen Miranda — When I Love, I Love
+1942  #null  Trio de Ouro com Fon-Fon e Sua Orquestra — Ave Maria no Morro
+1942  #null  Herivelto Martins e Grande Otelo — Praça Onze
+1943  #null  Benedito Lacerda e Aldo Cabral — Despedida de Mangueira
+1944  #null  Ataulfo Alves e Mário Lago — Atire a Primeira Pedra
+1944  #null  Francisco Alves — Canção do Expedicionário
+1944  #null  Carmen Miranda — Give Me a Band and a Bandana
+1947  #null  Carmen Miranda — I Make My Money With Bananas
+1950  #null  Carmen Miranda — Baião Ca-Room' Pa Pa
+1950  #null  Luiz Gonzaga e Humberto Teixeira — Qui Nem Jiló
+1953  #null  Vanja Orico (trilha de O Cangaceiro) — Mulher Rendeira
+1954  #null  Kaye Ballard — Fly Me to the Moon
+1955  #null  Carmen Miranda — Delicado
+1955  #null  Luizinho e Limeira com conjunto — O menino da portêra
+1957  #null  Dorival Caymmi e Sylvia Telles — História de Pescadores: Canção da Partida; Adeus da Esposa; Temporal; Cantiga de Noiva; Velório Val; Na Manhã Seguinte
+1957  #null  vários artistas — Por Causa de Você
+1958  #null  Mário Zan e Palmeira — Nova Flor
+1959  #null  Moacyr Franco — Me Dá Um Dinheiro Aí
+1960  #null  Tom Jobim — Corcovado
+1961  #null  Sônia Mamede e Evaldo Gouveia — Maria Chiquinha
+1961  #null  Roberto Carlos — The Wanderer
+1962  #null  Stan Getz e João Gilberto — Garota de Ipanema
+1963  #null  Elizeth Cardoso — Meu Grão de Açúcar
+1963  #null  Hervé Cordovil — Rua Augusta
+1964  #null  Adoniran Barbosa — O Trem das Onze
+1964  #null  Caetano Veloso — Samba de Verão
+1965  #null  Elis Regina — Arrastão
+1967  #null  Tom Jobim — Wave
+1968  #null  Gal Costa — Namorinho de Portão
+1968  #null  Chico Buarque e Tom Jobim — Sabiá
+1968  #null  Tom Jobim e Chico Buarque — Sabiá
+1968  #null  Silvio Santos — Transplante de Corintiano
+1969  #null  Nelson Ned — Tudo Passará
+1970  #null  Jorge Ben — Oba, Lá Vem Ela
+1971  #null  Lucio Dalla, Chico Buarque — Minha história
+1972  #null  Gilberto Gil — Cada Macaco no Seu Galho
+1973  #null  Vinícius de Moraes e Toquinho — Meu Pai Oxalá
+1974  #null  Raul Seixas — Como Vovó já Dizia
+1974  #null  Raul Seixas — Gita
+1974  #null  Elis Regina — O Mestre-Sala dos Mares (Almirante Negro)
+1974  #null  Jorge Ben — Os Alquimistas Estão Chegando
+1977  #null  Chico Buarque — O Cio da Terra
+1977  #null  Pery & Poty — Sublime Renúncia
+1979  #null  Baby Consuelo — Menino do Rio
+1980  #null  O Encontro — A Bênção, João de Deus
+1980  #null  Elis Regina e Adoniran Barbosa — Tiro ao Álvaro
+1981  #null  Vários — Agonia
+1981  #null  Zizi Possi — Caminhos de Sol
+1981  #null  Chico Buarque e Os Trapalhões — Piruetas
+1982  #null  Leovegildo Lins da Gama Júnior — Povo Feliz (Voa, Canarinho)
+1982  #null  Eduardo Dussek — Rock da Cachorra
+1983  #null  Raul Seixas — Carimbador Maluco
+1983  #null  Aretha, Moraes Moreira, Ricardo Graça Mello, Bebel Gilberto, Baby Consuelo — Lindo Balão Azul
+1983  #null  Gang 90 e as Absurdettes — Telefone
+1984  #null  Gal Costa — Chuva de Prata
+1985  #null  vários artistas — Abraço a Moçambique
+1985  #null  Dominó — Ainda Sou Você
+1985  #null  Dominó — Companheiro
+1985  #null  Dominó — Ela Não Gosta de Mim
+1986  #null  Dominó — Amor e Música
+1986  #null  Dominó — Guerreiros
+1986  #null  Dominó — Jura de Amor
+1986  #null  Camisa de Vênus — Silvia
+1987  #null  Fausto Fawcett — Kátia Flávia, a Godiva do Irajá
+1987  #null  Dominó — Manequim
+1987  #null  Dominó — Medusa
+1987  #null  Cazuza — O Nosso Amor A Gente Inventa
+1987  #null  Dominó — P" da Vida
+1987  #null  Os Paralamas do Sucesso — Track Track
+1987  #null  Marina Lima — Uma Noite e Meia
+1988  #null  Dominó — As Palavras
+1988  #null  Alcione (cantora) — Besame
+1988  #null  Margareth Menezes — Elegibô (História de Ifá)
+1988  #null  Racionais MCs — Tempos Difíceis
+1988  #null  Angélica — Vou de Táxi
+1988  #null  Vários Artistas — We Are the World of Carnaval
+1989  #null  Gilberto Gil — Amarra o Teu Arado a Uma Estrela
+1989  #null  Eliana — Ao Mestre com Carinho
+1989  #null  Gilberto Gil e Chico Buarque — Baticum
+1989  #null  Marisa Monte — Bem Que Se Quis
+1989  #null  Raul Seixas e Marcelo Nova — Carpinteiro do Universo
+1989  #null  Katsbarnea — Extra
+1990  #null  Roberto Carlos — Abre las Ventanas al Amor
+1990  #null  Cássia Eller — Lullaby
+1990  #null  Dominó — O Que Eu Te Ponho
+1991  #null  Torrinho — Porto de Lenha
+1992  #null  Cheb Khaled — El Arbi
+1992  #null  Cássia Eller — O Marginal
+1992  #null  Rosa León featuring Miguel Bosé — Se Todos Fossem Igual a Você
+1992  #null  Gabriel o Pensador — Tô Feliz (Matei o Presidente)
+1992  #null  Dominó — Vem Provar
+1993  #null  Gabriel o Pensador — 175 Nada Especial
+1993  #null  Chitãozinho & Xororó — Palavras (Words)
+1994  #null  Aerobanda — Coração Verde e Amarelo
+1994  #null  Cidinho & Doca — Rap da Felicidade
+1995  #null  Mamonas Assassinas — Cabeça de Bagre II
+1995  #null  Simone — Então É Natal
+1995  #null  Os Paralamas do Sucesso e Jairo Cliff — Luís Inácio (300 Picaretas)
+1995  #null  É o Tchan! — Pau Que Nasce Torto / Melô do Tchan
+1995  #null  Mamonas Assassinas — Sabão Crá-Cra
+1995  #null  Paralamas do Sucesso — Uma Brasileira
+1997  #null  Racionais MCs — Fórmula Mágica da Paz
+1997  #null  Titãs — Os Cegos do Castelo
+1998  #13  Claudinho & Buchecha — Xereta
+1998  #37  Julio Iglesias — Dois Amigos
+1998  #74  Céline Dion (participação de Bee Gees) — Immortality
+1998  #86  Banda Beijo — Peraê
+1998  #null  Farofa Carioca — A Carne
+1998  #null  Rita Lee — O Gosto do Azedo
+1999  #6  Chitãozinho & Xororó — Alô
+1999  #8  Só Pra Contrariar — Sai da Minha Aba
+1999  #24  Roberta Miranda (participação de Reginaldo Rossi) — Amanhã
+1999  #30  É o Tchan! — É o Tchan na Selva
+1999  #33  Karametade — Mel na Minha Boca
+1999  #34  Raça Pura — A Dança do Pinto
+1999  #38  Pepê & Neném — Mais uma Vez
+1999  #39  Art Popular — Sai da Frente
+1999  #44  É o Tchan! — Lambatchan
+1999  #45  Os Paralamas do Sucesso — Que País é Este
+1999  #48  Patrulha do Samba — Rala no Pezinho
+1999  #52  Roupa Nova — Bem Maior
+1999  #56  Chitãozinho & Xororó — Coração Vazio
+1999  #65  Legião Urbana — Hoje a Noite Não Tem Luar
+1999  #67  Terra Samba — No Ponto
+1999  #73  Katinguelê — Minha Deusa
+1999  #78  Raimundos — A Mais Pedida
+1999  #89  Rionegro & Solimões — Bate o Pé
+1999  #91  'N Sync — Sailing
+1999  #92  Wando — A Próxima Vítima
+1999  #95  Soweto — Maçã do Amor
+1999  #null  Gabriel o Pensador com a participação de Lulu Santos — Astronauta
+1999  #null  Eduardo Costa com participação de Paula Fernandes — Meu Grito de Amor
+2000  #3  Os Travessos — Tô Te Filmando
+2000  #null  Apocalipse com participação de Consciência Humana — Muita Treta
+2000  #null  Cássia Eller — Vá Morar com o Diabo
+2001  #1  Ana Carolina — Quem de Nós Dois
+2001  #null  Roberto Frejat — Amor Pra Recomeçar
+2001  #null  Bonde do Tigrão — Cerol na Mão/Entra e Sai
+2001  #null  vários artistas — El Ultimo Adios (The Last Goodbye)
+2001  #null  MC Naldinho e MC Beth — Um Tapinha Não Dói
+2002  #6  Sandy & Junior — Love Never Fails
+2002  #9  Michael Bolton — All for Love
+2002  #null  Rouge — Beijo Molhado
+2002  #null  CPM 22 — Desconfio
+2002  #null  Bandana — El poder de los sueños
+2002  #null  Las Ketchup — The Ketchup Song (Aserejé)
+2003  #8  Netinho de Paula — Quer Casar Comigo?
+2003  #null  Kelly Key — A Loirinha, o Playboy e o Negão
+2003  #null  Ministério Apascentar de Nova Iguaçu — Abro mão
+2003  #null  Gil — Balada Quente
+2003  #null  Ministério Apascentar de Nova Iguaçu — Bendito Serás
+2003  #null  Ministério Apascentar de Nova Iguaçu — Mais
+2003  #null  Ministério Apascentar de Nova Iguaçu — Se a Nação Clamar
+2003  #null  Ministério Apascentar de Nova Iguaçu — Toque no Altar
+2004  #2  Ivete Sangalo — Flor do Reggae
+2004  #2  Marjorie Estiano — Você Sempre Será
+2004  #6  Latino — Festa no Apê
+2004  #null  Rouge — Sem Você
+2004  #null  Rouge — Vem Dançar
+2005  #7  Edson & Hudson — É Amor Demais
+2005  #8  Bruno & Marrone — Choram as Rosas
+2005  #11  Zeca Pagodinho — Cadê Meu Amor?
+2005  #null  Rouge — Cidade Triste
+2005  #null  Seu Cuca — Já Que Você Não Me Quer Mais
+2005  #null  Chris Brown com a participação de Juelz Santana — Run It!
+2006  #1  Fergie — Big Girls Don't Cry
+2006  #15  Zezé Di Camargo & Luciano — Olha Eu Aí
+2006  #16  Papas da Língua — Lua Cheia/Fica Doida
+2006  #19  Nelly Furtado — Say It Right
+2006  #28  Akon ft. Eminem — Smack That
+2006  #30  The Pussycat Dolls (participação de Snoop Dogg) — Buttons
+2006  #33  Chris Brown — Say Goodbye
+2006  #35  Justin Timberlake — My Love
+2006  #39  Babado Novo — Doce Paixão
+2006  #45  James Morrison — You Give Me Something
+2006  #55  Marjorie Estiano — Espirais
+2006  #56  Leonardo — Idas e Voltas
+2006  #59  Inimigos da HP — Nosso Filme
+2006  #67  Zezé Di Camargo & Luciano (participação de Ivete Sangalo) — Amor que Fica
+2006  #71  Akon — Sorry, Blame It on Me
+2006  #73  Tommy Vee vs. Andrea T. Mendoza — Lovely
+2006  #82  Roupa Nova (participação de Claudia Leitte) — Um Sonho a Dois
+2006  #84  Leonardo — Uma Festa Todo Dia
+2006  #87  Inimigos da HP — Vem Buscar o que é Teu
+2006  #null  CPM 22 — Inevitável
+2006  #null  Toque no Altar — Tua Graça Me Basta
+2007  #1  Ivete Sangalo — Deixo
+2007  #5  Chris Brown — With You
+2007  #7  Chris Brown (participação de T-Pain) — Kiss Kiss
+2007  #11  Timbaland (participação de OneRepublic) — Apologize
+2007  #12  Exaltasamba — Livre pra Voar
+2007  #22  Diddy (participação de Keyshia Cole) — Last Night
+2007  #31  Bruno & Marrone — Pra Não Morrer de Amor
+2007  #32  Ivete Sangalo (participação de Saulo Fernandes) — Não Precisa Mudar
+2007  #45  Jorge & Mateus — De Tanto te Querer
+2007  #56  Armandinho — Semente
+2007  #58  Exaltasamba — Anjo Meu
+2007  #66  César Menotti & Fabiano — Do Lado Esquerdo
+2007  #68  Sorriso Maroto — Faz Assim
+2007  #68  KLB — Todo Azul do Mar
+2007  #69  Exaltasamba — Tchau e Bença
+2007  #70  Edson & Hudson (participação de Bruno & Marrone) — Imprevisível
+2007  #71  Skank — Beleza Pura
+2007  #76  César Menotti & Fabiano — Leilão
+2007  #77  César Menotti & Fabiano — Caso por Acaso
+2007  #89  Sandy & Junior — Abri os Olhos
+2007  #93  Edson & Hudson — Eu Quero Mais
+2007  #null  Trazendo a Arca — Marca da Promessa
+2007  #null  Trazendo a Arca — Não Vou Desistir
+2007  #null  CPM 22 — Nossa Música
+2008  #10  Claudia Leitte — Exttravasa
+2008  #14  Madonna (participação de Justin Timberlake) — 4 Minutes
+2008  #21  Jordin Sparks (participação de Chris Brown) — No Air
+2008  #24  Flo Rida (participação de T-Pain) — Low
+2008  #27  César Menotti & Fabiano — Ciumenta
+2008  #36  Claudia Leitte — Pássaros
+2008  #42  Usher (participação de Young Jeezy) — Love in This Club
+2008  #52  Jeito Moleque — Medo de Amar
+2008  #62  Exaltasamba — Nuvens de Algodão
+2008  #78  Ian Carey — Keep on Rising
+2008  #81  Jeito Moleque — Coração Aberto
+2008  #82  Kardinal Offishall (participação de Akon) — Dangerous (Remix)
+2008  #92  Alexandre Pires (participação de Revelação) — Delírios de Amor
+2008  #98  Inimigos da HP — Bye, Bye
+2008  #null  Asa de Águia e Ivete Sangalo — Além Mar
+2008  #null  Charlie Brown Jr. — Be Myself
+2008  #null  Jorge Ben Jor — Ogum
+2008  #null  Dennis DJ — Super Poderosa
+2009  #null  Trazendo a Arca — Em Ti Esperarei
+2009  #null  Regis Danese — Faz um Milagre em Mim
+2009  #null  Trazendo a Arca — Nosso Deus é Santo
+2009  #null  Trazendo a Arca — Preparado Está
+2010  #null  Michel Teló — Amanhã Sei Lá
+2010  #null  Elva Hsiao — Beautiful Encounter (Yan Yu)
+2010  #null  Aggro Santos com a participação de Kimberly Wyatt — Candy
+2010  #null  Trazendo a Arca — Entre a Fé e a Razão
+2010  #null  Trazendo a Arca — O Nardo
+2011  #1  Michel Teló — Ai Se Eu Te Pego
+2011  #1  Michel Teló — Humilde Residência
+2011  #1  Adele — Someone Like You
+2011  #null  Os Meninos de Seu Zeh — Ai Se Eu Te Pego
+2011  #null  Resgate — Assim Caminha a Humanidade?
+2011  #null  Rebeldes — Do Jeito Que Eu Sou
+2011  #null  Funk You Bit — Funk do Mortal Kombat
+2011  #null  Manu Gavassi — Odeio
+2012  #null  Wanessa Camargo — Atmosphere
+2012  #null  Cássia Eller — Do Lado do Avesso
+2012  #null  Racionais MCs — Mil Faces de um Homem Leal (Marighella)
+2012  #null  MC Nego do Borel — Os Caras do Momento
+2012  #null  MC Federado & Os Leleks — Passinho do Volante (Ah, Lelek Lek Lek)
+2013  #null  Wanessa Camargo — Shine It On
+2013  #null  Rouge — Tudo É Rouge
+2013  #null  Rouge — Tudo Outra Vez
+2014  #null  Victor & Leo — Caminhos Diferentes
+2014  #null  Anitta com participação de Projota — Cobertor
+2014  #null  Santana & Wyclef Jean com participação de Avicii & Alexandre Pires — Dar um Jeito (We Will Find a Way)
+2014  #null  Anitta — Movimento da Sanfoninha
+2014  #null  Claudia Leitte com a participação de Wesley Safadão — Pancadão Frenético
+2014  #null  MC Tati Zaqui — Parará Tibum
+2014  #null  Marília Mendonça — Sentimento Louco
+2014  #null  Pitbull com participação de Jennifer Lopez e Claudia Leitte — We Are One (Ole Ola)
+2015  #1  Adele — Hello
+2015  #1  Thaeme & Thiago — Pra Ter Você Aqui
+2015  #1  Victor & Leo — Vai Me Perdoando
+2015  #null  Anitta com a participação de Vitin — Cravo e Canela
+2015  #null  Cristiano Araújo — Hoje Eu Tô Terrível
+2015  #null  Israel Novaes com a participação de Wesley Safadão — Você Merece Cachê
+2016  #1  Zé Neto & Cristiano — Amigo Taxista
+2016  #1  Zé Neto & Cristiano — Cadeira de Aço
+2016  #1  Marília Mendonça — Eu Sei de Cor
+2016  #1  Gustavo Mioto — Impressionando os Anjos
+2016  #1  Henrique & Diego part. Dennis DJ — Malbec
+2016  #1  Maiara & Maraisa — Medo Bobo
+2016  #1  Simone & Simaria — Regime Fechado
+2016  #1  Maiara & Maraisa — Você Faz Falta Aqui
+2016  #null  MCs Zaac & Jerry Smith — Bumbum Granada
+2016  #null  Fontana — Electric
+2016  #null  Ivete Sangalo — Mais e Mais
+2016  #null  Kevinho — Olha a Explosão
+2016  #null  Ludmilla com a participação de Jeremih — Tipo Crazy
+2016  #null  Ivete Sangalo e Calum Scott — Transformar
+2016  #null  Ivete Sangalo com a participação de Luan Santana — Zero a Dez
+2017  #1  Marília Mendonça — Amante Não Tem Lar
+2017  #1  Henrique & Juliano — Aquela Pessoa
+2017  #1  Bruno & Marrone — Beijo de Varanda
+2017  #1  Marília Mendonça — De Quem é a Culpa?
+2017  #1  Bruno & Marrone — Enquanto Eu Brindo Cê Chora
+2017  #1  Gustavo Mioto — Relógio
+2017  #1  Maiara & Maraisa — Sorte Que Cê Beija Bem
+2017  #1  Anitta, MC Zaac e Maejor (com a participação de Tropkillaz e DJ Yuri Martins) — Vai Malandra
+2017  #null  Joelma com participação de Ivete Sangalo — Amor Novo
+2017  #null  Gustavo Mioto com participação de Anitta — Coladinha em Mim
+2017  #null  Hugo & Guilherme — Conveniência
+2018  #1  Felipe Araújo e Ferrugem — Atrasadinha
+2018  #1  Marília Mendonça — Ausência
+2018  #1  Marília Mendonça — Ciumeira
+2018  #1  Zé Neto & Cristiano — Largado às Traças
+2018  #1  Maiara & Maraisa — Nem Tchum
+2018  #1  Zé Neto & Cristiano — Notificação Preferida
+2018  #1  Jorge & Mateus — Propaganda
+2018  #1  Henrique & Juliano — Quem Pegou, Pegou
+2018  #1  Luan Santana part. Jorge & Mateus — Sofazinho
+2018  #1  Kevinho (com a participação de Simone & Simaria) — Ta Tum Tum
+2018  #null  Gustavo Mioto com participação de Jorge & Mateus — Anti-Amor
+2018  #null  Marília Mendonça — Bebi Liguei
+2018  #null  Marília Mendonça — Bem Pior Que Eu
+2018  #null  Marília Mendonça — Bye Bye
+2018  #null  Marília Mendonça — Casa da Mãe Joana
+2018  #null  MC Tha e Jaloo — Céu Azul
+2018  #null  Ludmilla com participação de Felipe Araújo — Clichê
+2018  #null  Ludmilla com participação de MC Pupio e MC Doguinha — Din Din Din
+2018  #null  Marília Mendonça — Estranho
+2018  #null  Marília Mendonça — Passa Mal
+2018  #null  Claudia Leitte com participação de Hungria Hip-Hop & Olodum — Saudade
+2018  #null  Marília Mendonça — Sem Sal
+2018  #null  Jorge & Mateus — Sofazinho
+2018  #null  Gustavo Mioto — Solteiro Não Trai
+2018  #null  Luan Santana — Vingança
+2018  #null  Zimbra — Você É A Mais Sincera
+2019  #1  Hugo & Guilherme — Baba de Ex
+2019  #1  Zé Neto & Cristiano — Barzinho Aleatório
+2019  #1  Zé Neto & Cristiano — Bebi Minha Bicicleta
+2019  #1  Anitta, Lexa e Luísa Sonza (com participação de Rebecca) — Combatchy
+2019  #1  Kevin o Chris — Ela É do Tipo
+2019  #1  Zé Neto & Cristiano — Estado Decadente
+2019  #1  Henrique & Juliano — Liberdade Provisória
+2019  #1  Luan Santana — Quando a Bad Bater
+2019  #1  Dadá Boladão, Tati Zaqui e OIK — Surtada
+2019  #1  Kevinho (com a participação de Anitta) — Terremoto
+2019  #1  Marília Mendonça — Todo Mundo Vai Sofrer
+2019  #null  Vitor Kley com a participação de Samuel Rosa — A Tal Canção pra Lua
+2019  #null  Marília Mendonça, Léo Santana e Didá Banda Feminina — Apaixonadinha
+2019  #null  Anitta e Becky G — Banana
+2019  #null  Marília Mendonça e Maiara & Maraisa — Bebaça
+2019  #null  Jorge & Mateus — Cheirosa
+2019  #null  Ludmilla com participação de Léo Santana — Invocada
+2019  #null  Marília Mendonça — Love À Queima Roupa
+2019  #null  Anitta, Ludmilla e Snoop Dogg com participação de Papatinho — Onda Diferente
+2019  #null  Anitta e Swae Lee — Poquito
+2019  #null  Anitta e Prince Royce — Rosa
+2019  #null  Jorge & Mateus — Tijolão
+2019  #null  MC Livinho e DJ Guuga — Vidrado de Você
+2020  #1  Tyga, MC Zaac e Anitta — Desce pro Play (PA PA PA)
+2020  #1  Marília Mendonça — Graveto
+2020  #1  MC Niack — Na Raba Toma Tapão
+2020  #1  MC Niack e DJ Rique Sales — Oh Juliana
+2020  #31  Marcos & Belutti (com participação de Jorge & Mateus) — Tudo Indica
+2020  #58  Conde do Forró — Romance Desapegado
+2020  #68  Menos é Mais — Adorei
+2020  #83  Henrique & Juliano — Briga Feia
+2020  #null  Pabllo Vittar com participação de Pocah — Bandida
+2020  #null  Kevinho com participação de Tyga — Corpo Sensual
+2020  #null  MC Lan, Major Lazer e Anitta com participação de Beam — Rave de Favela
+2020  #null  Kevinho — Te Gusta
+2021  #1  Henrique & Juliano — Arranhão
+2021  #1  Wesley Safadão — Eu Já Tava Bem
+2021  #1  Raffa Torres — Moça do Caixa
+2021  #1  Israel & Rodolffo — Moral da História
+2021  #1  George Henrique & Rodrigo (com participação de Marília Mendonça) — Vai Lá Em Casa Hoje
+2021  #11  Hugo & Guilherme — Coração na Cama
+2021  #13  Zé Neto & Cristiano — Alô Ambev (Segue Sua Vida)
+2021  #19  Sandro & Cícero (com participação de MC Mirella) — Me Adota
+2021  #21  João Gabriel (com participação de Humberto & Ronaldo) — Trouxamente
+2021  #29  George Henrique & Rodrigo — Vou Valendo
+2021  #33  Israel & Rodolffo — Melhor que Muita Gente
+2021  #34  Eduardo Costa — Chama Ela pra Mim
+2021  #38  John Amplificado — Chega e Senta
+2021  #40  Marcos & Belutti (com participação de Dilsinho) — Estado Frágil
+2021  #56  Karinah (com participação de Belo) — No Fim do Mundo
+2021  #60  Lauana Prado — Sua Mãe Tá Nessa
+2021  #64  Menos é Mais — Pagando Mal com Mal
+2021  #66  João Bosco & Gabriel — Alô, Ex-Amor
+2021  #67  Silk Sonic (Bruno Mars e Anderson .Paak) — Leave the Door Open
+2021  #72  Hugo & Guilherme — Oi, Deus
+2021  #73  Zezé Di Camargo — Vou Ter que Tomar Uma
+2021  #74  Bruno César & Rodrigo Reys — Curioso
+2021  #77  Clayton & Romário (com participação de Jorge & Mateus) — Água nos Zói
+2021  #78  Murilo Huff (com participação de Henrique & Juliano) — Desejando Eu
+2021  #82  Douglas & Vinicius (com participação de MC Bruninho) — Figurinha
+2021  #84  Sorriso Maroto (com participação de Belo) — 100 Likes
+2021  #85  Solange Almeida (com participação de Bruno) — Fruto da Imaginação
+2021  #90  Menos é Mais (com participação de Marília Mendonça) — Amor Falsificado
+2021  #null  Luísa Sonza e Mariah Angeliq — Anaconda
+2021  #null  Pabllo Vittar e Rennan da Penha — Number One
+2021  #null  Manu Gavassi — Subversiva
+2022  #1  Israel & Rodolffo & Ana Castela — Bombomzinho
+2022  #1  Israel & Rodolffo e Ana Castela — Bombonzinho
+2022  #1  MC Paiva e MC Ryan SP — Casei com a Putaria
+2022  #1  Gustavo Mioto & Mari Fernandez — Eu Gosto Assim
+2022  #1  Gustavo Mioto e Mari Fernandez — Eu Gosto Assim
+2022  #1  Hugo & Guilherme e Marília Mendonça — Mal Feito
+2022  #1  MC Cabelinho, TZ da Coronel, Chefin, Luísa Sonza, N.I.N.A., Xamã, Oruam, Chris MC, L7nnon e Salve Malak — Poesia Acústica 13
+2022  #1  MC Frog, Davi Kneip e DJ Gabriel Do Borel — Sentadona (Ai Calica)
+2022  #1  Davi Kneip, MC Frog, DJ Gabriel do Borel & Luísa Sonza — Sentadona S2
+2022  #null  Pabllo Vittar e Gloria Groove — Ameianoite
+2022  #null  Guilherme & Benuto e Xand Avião — Assunto Delicado
+2022  #null  Luísa Sonza e Ludmilla — Café da Manhã
+2022  #null  Pabllo Vittar e MC Carol — Descontrolada
+2022  #null  Pabllo Vittar e Rina Sawayama — Follow Me
+2022  #null  André Abujamra, Arrigo Barnabé, Bruno Gagliasso, Caio Prado, Cida Moreira, Chico Brown, Chico César, Chico Chico, Dexter, Dora Morelenbaum, Héloa, Hodari, Jorge Du Peixe, José Miguel Wisnik, Leci Brandão, Lenine (cantor), Luana Carvalho, Marina Íris, Marina Lima, Monica Salmaso, Paulinho Moska, Pedro Luís, Péricles Cavalcanti, Preta Ferreira, Professor Pasquale, Ricardo Aleixo, Thaline Karajá, Vitor da Trindade, Wagner Moura e Zélia Duncan. — Hino ao Inominável
+2022  #null  Hugo & Guilherme e Jorge & Mateus — Meu Número
+2022  #null  Zelito Miranda — Nasci pra Cantar
+2022  #null  Jorge & Mateus — Todo Seu
+2022  #null  Fhop Music e Marco Telles — Único
+2023  #1  Kevin o Chris e DJ Nk da Serra — Faz um Vuk Vuk (Teto Espelhado)
+2023  #1  Lauana Prado — Me Leva pra Casa / Escrito nas Estrelas / Saudade
+2023  #null  Fred & Fabrício e Bruno & Marrone — @tentação
+2023  #null  Fred & Fabrício e Jorge & Mateus — Flor de Plástico
+2023  #null  Bruno Gadiol com participação de Grag Queen — Foda-se
+2023  #null  Ana Castela e Gustavo Mioto — Fronteira
+2023  #null  Fred & Fabrício e Hugo & Guilherme — Guarda Roupa
+2023  #null  Tony Babalu — Lara (ao vivo)
+2023  #null  Juliette e Duda Beat — Magia Amarela
+2023  #null  Hugo & Guilherme — Mágica
+2023  #null  Hugo & Guilherme — Metade de Mim
+2023  #null  Clayton & Romário e Luan Santana — Namorando ou Não
+2023  #null  Emilia e Ludmilla — No Se Ve
+2023  #null  Tony Babalu — Reflexo (ao vivo)
+2023  #null  Ana Castela — Solteiro Forçado
+2024  #1  MC Menor RV e TR — Baby Eu Tava na Rua da Água
+2024  #1  Grupo Menos é Mais — Coração Partido (Corazón Partío)
+2024  #1  Gustavo Moura e Rafael — Digitando
+2024  #1  Jorge & Mateus e Lauana Prado — Haverá Sinais
+2024  #1  Mari Fernandez e Zé Felipe — Louco, Louco
+2024  #1  Tz da Coronel, Ryu the Runner, Nagalli e Cúpula — Qual é o Seu Desejo?
+2024  #1  Léo Foguete — Última Noite
+2024  #null  Isadora Pompeo — Aliança
+2024  #null  Danilo & Davi — Apaga Apaga Apaga
+2024  #null  Isadora Pompeo — Canção de Paulo
+2024  #null  Fred & Fabrício e Clayton & Romário — Gotejou no Celular
+2024  #null  Clayton & Romário — Morena
+2024  #null  Hugo & Guilherme e Maiara & Maraisa — Morena de Goiânia
+2024  #null  Gloria Groove — Nosso Primeiro Beijo
+2024  #null  Isadora Pompeo — Ovelhinha
+2024  #null  Léo e Matheus — Xonei
+2025  #1  MC Tuto, Oruam, Zé Felipe, DJ Lc Da Roça, Mc K9, Mc Rodrigo do Cn, Mc Pl Alves — Oh Garota Eu Quero Você Só Pra Mim
+2025  #null  Paula Fernandes — Amar de Novo
+2025  #null  Anitta — En 4
+2026  #null  Anitta — Pinterest
+2026  #null  Simaria — Tô Bem
+
+== Matched ==
+1929  #null  Mário Reis — Jura
+            => Mario Reis — Jura   [80977744]
+1929  #null  Carmen Miranda — Não Vá Simbora
+            => Carmen Miranda — Não Vá Simbora   [498603362]
+1929  #null  Carmen Miranda — Triste Jandaia
+            => Carmen Miranda — Triste Jandaia   [13309119]
+1930  #null  Carmen Miranda — Pra Você Gostar de Mim (Taí)
+            => Carmen Miranda — Pra Voce Gostar De Mim (Tai)   [1588616622]
+1931  #null  Chitãozinho & Xororó — No Rancho Fundo
+            => Chitãozinho & Xororó — No Rancho Fundo   [2947008]
+1931  #null  Francisco Alves — Se Você Jurar
+            => Francisco Alves — Se Você Jurar   [640184192]
+1933  #null  Carmen Miranda — Chegou a Hora da Fogueira
+            => Carmen Miranda — Chegou A Hora Da Fogueira   [13309159]
+1933  #null  Carmen Miranda — Inconstitucionalissimamente
+            => Carmen Miranda — Inconstitucionalissimamente   [13309163]
+1933  #null  Lamartine Babo — Linda Morena
+            => Lamartine Babo — Linda Morena   [2965302041]
+1933  #null  Noel Rosa e Orestes Barbosa — Positivismo
+            => Noel Rosa — Positivismo   [473615932]
+1934  #null  Mário Reis / Bide e Marçal — Agora É Cinza
+            => Mario Reis — Agora é Cinza   [15406112]
+1934  #null  Carmen Miranda — Ao voltar do samba
+            => Carmen Miranda — Ao Voltar Do Samba   [13309173]
+1934  #null  Carmen Miranda — Coração
+            => Carmen Miranda — Coração   [15421205]
+1934  #null  Carmen Miranda & Mário Reis — Isto é Lá Com Santo Antônio
+            => Carmen Miranda — Isto É Lá Com Santo Antonio   [13309172]
+1934  #null  Carmen Miranda — Na batucada da vida
+            => Carmen Miranda — Na Batucada da Vida   [15421197]
+1935  #null  Carmen Miranda — Adeus Batucada
+            => Carmen Miranda — Adeus Batucada   [11560279]
+1935  #null  Carmen Miranda — Anoiteceu
+            => Carmen Miranda — Anoiteceu   [15421212]
+1935  #null  Carmen Miranda — Primavera no Rio
+            => Carmen Miranda — Primavera No Rio   [13309175]
+1935  #null  Carmen Miranda — Querido Adão
+            => Carmen Miranda — Querido Adão   [916506342]
+1935  #null  Carmen Miranda — Sonho de Papel
+            => Carmen Miranda — Sonho De Papel   [916506202]
+1936  #null  Carmen Miranda — Cantores de Rádio
+            => Carmen Miranda — Cantores de Radio   [3248952311]
+1936  #null  Carmen Miranda — Como vaes você
+            => Carmen Miranda — Como ''Vaes'' Você?   [3410670]
+1936  #null  Carmen Miranda — No Tabuleiro da Baiana
+            => Carmen Miranda — No Tabuleiro da Baiana   [11560277]
+1936  #null  Francisco Alves — Pula a Fogueira
+            => Francisco Alves — Pula A Fogueira   [13309233]
+1936  #null  Carmen Miranda & Aurora Miranda — Rancor
+            => Carmen Miranda — Rancor   [916505862]
+1937  #null  Carmen Miranda — Balancê
+            => Carmen Miranda — Balance   [3248952181]
+1937  #null  Carmen Miranda — Cachorro Vira-Lata
+            => Carmen Miranda — Cachorro Vira-Lata   [916507352]
+1937  #null  Carmen Miranda — Camisa Listada
+            => Carmen Miranda — Camisa Listada   [3248952231]
+1937  #null  Orlando Silva (Pixinguinha) — Carinhoso
+            => Orlando Silva — Carinhoso   [13305078]
+1937  #null  Sílvio Caldas — Chão de Estrelas
+            => Silvio Caldas — Chão de Estrelas   [104302696]
+1937  #null  Vicente Celestino — Coração Materno
+            => Vicente Celestino — Coração Materno   [1879716227]
+1937  #null  Carmen Miranda — Eu Dei...
+            => Carmen Miranda — Eu Dei...   [11560275]
+1937  #null  Carmen Miranda — Pois Sim, Pois Não
+            => Carmen Miranda — Pois Sim!... Pois Não!...   [41084781]
+1937  #null  Carmen Miranda & Sílvio Caldas — Quando eu penso na Bahia
+            => Carmen Miranda — Quando Eu Penso Na Bahia   [804119202]
+1938  #null  Orlando Silva — A Jardineira
+            => Orlando Silva — A Jardineira   [13310441]
+1938  #null  Adriana Calcanhotto — E o mundo não se acabou
+            => Adriana Calcanhotto — E o Mundo Não Se Acabou   [71395438]
+1938  #null  Carmen Miranda & Trio de Ouro — Na Bahia
+            => Carmen Miranda — Na Bahia   [63716506]
+1938  #null  Carmen Miranda — Na Baixa do Sapateiro
+            => Carmen Miranda — Na Baixa do Sapateiro   [63716502]
+1939  #null  Carmen Miranda & Dorival Caymmi — A Preta do Acarajé
+            => Carmen Miranda — A Preta Do Acarajé   [3410661]
+1939  #null  Ary Barroso — Aquarela do Brasil
+            => Ary Barroso — Aquarela Do Brasil   [1543922832]
+1939  #null  Carmen Miranda — O Que É que a Baiana Tem?
+            => Carmen Miranda — O Que É Que A Baiana Tem   [3410660]
+1939  #null  Carmen Miranda — South American Way
+            => Carmen Miranda — South American Way   [1588616582]
+1939  #null  Carmen Miranda — Uva de Caminhão
+            => Carmen Miranda — Uva de Caminhão   [11560269]
+1940  #null  Raul Torres & Serrinha — Cabocla Tereza
+            => Raul Torres e Florencio — Cabocla Tereza   [1125473462]
+1940  #null  Carmen Miranda — Disso É Que Eu Gosto
+            => Carmen Miranda — Disso É Que Eu Gosto   [498603232]
+1940  #null  Carmen Miranda — Recenseamento
+            => Carmen Miranda — Recenseamento   [3410668]
+1940  #null  Dorival Caymmi — Samba da Minha Terra
+            => Dorival Caymmi — Samba Da Minha Terra   [1144601882]
+1940  #null  Carmen Miranda — Voltei pro morro
+            => Carmen Miranda — Voltei Pro Morro   [3410662]
+1941  #null  Carmen Miranda — Chattanooga Choo Choo
+            => Carmen Miranda — Chattanooga Choo Choo   [2779761071]
+1941  #null  Carmen Miranda — Chica Chica Boom Chic
+            => Carmen Miranda — Chica Chica Boom Chic   [4305504622]
+1941  #null  Carmen Miranda — Diz que tem
+            => Carmen Miranda — Diz Que Tem   [3410663]
+1941  #null  Carmen Miranda — Manuelo
+            => Carmen Miranda — Manuelo (Remastered)   [117005968]
+1941  #null  Carmen Miranda — Rebola a Bola
+            => Carmen Miranda — Rebola a Bola   [2779761051]
+1941  #null  Carmen Miranda — Thank You, North America
+            => Carmen Miranda — Thank You, North America   [498603552]
+1942  #null  Ataulfo Alves e Mário Lago — Ai, Que Saudades da Amélia
+            => Ataulfo Alves — Ai! Que Saudades da Amélia   [2744849811]
+1943  #null  Milú e Xutos e Pontapés — A Minha Casinha
+            => miLú — A Minha Casinha   [548113962]
+1943  #null  Carmen Miranda & Benny Goodman e sua Orquestra — Paducah
+            => Carmen Miranda — Paducah   [15853257]
+1943  #null  Carmen Miranda — The Lady in the Tutti Frutti Hat
+            => Carmen Miranda — The Lady in the Tutti-Frutti Hat   [15853247]
+1944  #null  Orlando Silva — Atire a Primeira Pedra
+            => Orlando Silva — Atire a Primeira Pedra   [513879372]
+1944  #null  Judy Garland e George Stoll Orquestra — The Trolley Song
+            => Judy Garland — The Trolley Song   [16234543]
+1945  #null  Tonico & Tinoco — Chico Mineiro
+            => Tonico e Tinoco — Chico mineiro   [14656001]
+1945  #null  Chico Buarque — Gente Humilde
+            => Chico Buarque — Gente Humilde   [78761194]
+1946  #null  Luiz Gonzaga e Humberto Teixeira — Baião
+            => Luiz Gonzaga — Baião   [78671065]
+1946  #null  Dick Farney (Braguinha e Alberto Ribeiro) — Copacabana
+            => Dick Farney — Copacabana   [16093507]
+1947  #null  Luiz Gonzaga — Asa Branca
+            => Luiz Gonzaga — Asa Branca   [13290609]
+1947  #null  Waldir Azevedo — Brasileirinho
+            => Waldir Azevedo — Brasileirinho   [1501108782]
+1947  #null  Carmen Miranda — Cuanto Le Gusta
+            => Carmen Miranda — Cuanto le gusta (Remastered)   [117005974]
+1949  #null  Emilinha Borba — Chiquita Bacana
+            => Emilinha Borba — Chiquita bacana   [62789404]
+1949  #null  Carmen Miranda feat. Andrews Sisters — The Wedding Samba
+            => Carmen Miranda — the Wedding Samba   [4098659]
+1950  #null  Francisco Alves — Retrato do Velho
+            => Francisco Alves — Retrato Do Velho   [4039497491]
+1951  #null  Linda Batista (Lupicínio Rodrigues) — Vingança
+            => Linda Batista — Vingança   [13305116]
+1952  #null  Luiz Gonzaga — Pau-de-Arara
+            => Luiz Gonzaga — Pau de Arara   [67238549]
+1953  #null  Inezita Barroso — Ronda
+            => Inezita Barroso — Ronda   [3492197171]
+1955  #null  Adoniran Barbosa — Saudosa Maloca
+            => Adoniran Barbosa — Saudosa Maloca   [3369001]
+1956  #null  Dorival Caymmi — Maracangalha
+            => Dorival Caymmi — Maracangalha   [3443060]
+1956  #null  Little Richard — Slippin' and Slidin'
+            => Little Richard — Slippin' and Slidin'   [65037964]
+1957  #null  Nelson Cavaquinho — A flor e o espinho
+            => Nelson Cavaquinho — A Flor e o Espinho   [13249159]
+1957  #null  Cauby Peixoto — Rock and Roll em Copacabana
+            => Cauby Peixoto — Rock And Roll Em Copacabana   [116144042]
+1958  #null  Elizeth Cardoso / João Gilberto — Chega de Saudade
+            => Elizeth Cardoso — Chega de Saudade   [1557927062]
+1959  #null  Dolores Duran — A Noite do Meu Bem
+            => Dolores Duran — A Noite do Meu Bem   [2617438502]
+1959  #null  João Gilberto — Bim Bom
+            => Joao Gilberto Trio — Bim Bom   [135456214]
+1959  #null  Inezita Barroso — Colcha de Retalhos
+            => Inezita Barroso — Colcha De Retalhos   [1457080822]
+1959  #null  Johnny Restivo — Dear Someone
+            => Johnny Restivo — Dear Someone   [1850856957]
+1959  #null  João Gilberto — Desafinado
+            => João Gilberto — Desafinado   [716533502]
+1959  #null  Celly Campello — Estúpido Cupido
+            => Celly Campello — Estúpido Cupido   [1157004702]
+1959  #null  João Gilberto — Lobo Bobo
+            => João Gilberto — Lobo Bobo   [1478992672]
+1959  #null  João Gilberto — Maria Ninguém
+            => João Gilberto — Maria ninguem   [89012475]
+1959  #null  Neil Sedaka — Oh! Carol
+            => Neil Sedaka — Oh Carol   [2407563175]
+1960  #null  Celly Campello — Banho de Lua
+            => Celly Campello — Banho de Lua (Remastered)   [2775647931]
+1962  #null  Jorge Veiga — Brigitte Bardot
+            => Jorge Veiga — Brigitte Bardot   [15410254]
+1962  #null  Pery Ribeiro / Tom Jobim e Vinicius de Moraes — Garota de Ipanema
+            => Pery Ribeiro — Garota De Ipanema   [739435292]
+1962  #null  Noite Ilustrada — Volta Por Cima
+            => Noite Ilustrada — Volta Por Cima   [2275841627]
+1963  #null  Wilson Simonal — Balanço Zona Sul
+            => Wilson Simonal — Balanço Zona Sul   [103525540]
+1963  #null  Jorge Ben — Mas Que Nada
+            => Jorge Ben Jor — Mas, Que Nada!   [4703131]
+1963  #null  Roberto Carlos — Parei na Contramão
+            => Roberto Carlos — Parei na Contramão   [17000514]
+1964  #null  The Beatles — A Hard Day's Night
+            => The Beatles — A Hard Day's Night (Remastered 2015)   [116348602]
+1964  #null  Roberto Carlos — É Proibido Fumar
+            => Roberto Carlos — É Proibido Fumar   [103343620]
+1964  #null  Roberto Carlos — O Calhambeque
+            => Roberto Carlos — O Calhambeque   [13244709]
+1964  #null  Ronnie Cord — Rua Augusta
+            => Ronnie Cord — Rua Augusta   [2692236152]
+1964  #null  Chico Buarque — Tem Mais Samba
+            => Chico Buarque — Tem Mais Samba   [11059195]
+1965  #null  Erasmo Carlos — Festa de Arromba
+            => Erasmo Carlos — Festa de Arromba   [117873596]
+1965  #null  Chico Buarque — Pedro Pedreiro
+            => Chico Buarque — Pedro Pedreiro   [11059199]
+1965  #null  Roberto Carlos — Quero Que Vá Tudo pro Inferno
+            => Roberto Carlos — Quero Que Vá Tudo Pro Inferno   [103414524]
+1966  #null  Chico Buarque — A Banda
+            => Chico Buarque — A Banda   [11059194]
+1966  #null  Chico Buarque — Com açúcar, com afeto
+            => Chico Buarque — Com Açúcar, Com Afeto   [11059249]
+1966  #null  Jair Rodrigues — Disparada
+            => Jair Rodrigues — Disparada   [564977812]
+1966  #null  Chico Buarque — Funeral de um Lavrador
+            => Chico Buarque — Funeral de um Lavrador   [11058977]
+1966  #null  Chico Buarque — Morena dos Olhos d'Água
+            => Chico Buarque — Morena Dos Olhos D'água   [11059257]
+1966  #null  Roberto Carlos — Namoradinha de um Amigo Meu
+            => Roberto Carlos — Namoradinha de um Amigo Meu   [103413932]
+1967  #null  Caetano Veloso — Alegria, Alegria
+            => Caetano Veloso — Alegria, Alegria   [3369383151]
+1967  #null  Chico Buarque — Carolina
+            => Chico Buarque — Carolina   [11058971]
+1967  #null  Caetano Veloso — Coração Vagabundo
+            => Caetano Veloso — Coração Vagabundo   [14083212]
+1967  #null  Gilberto Gil — Domingo no Parque
+            => Gilberto Gil — Domingo No Parque   [80871438]
+1967  #null  Chico Buarque — Januária
+            => Chico Buarque — Januária   [11058969]
+1967  #null  Wilson Simonal — Nem Vem Que não Tem
+            => Wilson Simonal — Nem Vem Que Não Tem   [4173361332]
+1967  #null  Chico Buarque — Noite dos Mascarados
+            => Chico Buarque — Noite Dos Mascarados   [11059247]
+1967  #null  Edu Lobo — Ponteio
+            => Edu Lobo — Ponteio   [2803549942]
+1967  #null  Chico Buarque — Retrato em Branco e Preto
+            => Chico Buarque — Retrato Em Branco e Preto   [11058968]
+1967  #null  Chico Buarque — Roda Viva
+            => Chico Buarque — Roda-Viva   [11058972]
+1967  #null  Wilson Simonal — Tributo a Martin Luther King
+            => Wilson Simonal — Tributo A Martin Luther King   [716563332]
+1968  #null  Os Mutantes — A Minha Menina
+            => Os Mutantes — A Minha Menina   [1560122]
+1968  #null  Gal Costa — Divino, Maravilhoso
+            => Gal Costa — Divino Maravilhoso   [4669695]
+1968  #null  Roberto Carlos — É Preciso Saber Viver
+            => Roberto Carlos — É Preciso Saber Viver   [17000522]
+1968  #null  Geraldo Vandré — Pra Não Dizer Que Não Falei das Flores
+            => Geraldo Vandre — Pra não dizer que não falei das flores   [16093580]
+1968  #null  Elton Medeiros — Pressentimento
+            => Elton Medeiros — Pressentimento   [2234191737]
+1968  #null  Roberto Carlos — Se Você Pensa
+            => Roberto Carlos — Se Você Pensa   [103414552]
+1968  #null  Caetano Veloso — Soy loco por ti, América
+            => Caetano Veloso — Soy Loco Por Ti América (Remastered 2006)   [884003]
+1968  #null  Caetano Veloso — Tropicália
+            => Caetano Veloso — Tropicália (Remastered 2006)   [883992]
+1969  #null  Gilberto Gil — Aquele Abraço
+            => Gilberto Gil — Aquele abraço   [904664012]
+1969  #null  Roberto Carlos — As Curvas da Estrada de Santos
+            => Roberto Carlos — As Curvas da Estrada de Santos   [103414586]
+1969  #null  Jorge Ben — Bebete Vãobora
+            => Jorge Ben Jor — Bebete Vãobora   [529383891]
+1969  #null  The Beatles — Golden Slumbers
+            => The Beatles — Golden Slumbers (Remastered 2009)   [116348478]
+1969  #null  Os Brazões — Gotham City
+            => Os Brazoes — Gotham City   [11143823]
+1969  #null  Roberto Carlos — Não Vou Ficar
+            => Roberto Carlos — Não Vou Ficar   [103414584]
+1969  #null  Wilson Simonal — País Tropical
+            => Wilson Simonal — Pais Tropical   [1596659752]
+1969  #null  Toquinho & Jorge Ben Jor — Que Maravilha
+            => Toquinho — Que Maravilha   [119474346]
+1970  #null  Tim Maia — Azul da Cor do Mar
+            => Tim Maia — Azul Da Cor Do Mar   [543138072]
+1970  #null  Chico Buarque — Essa Moça Tá Diferente
+            => Chico Buarque — Essa Moça Tá Diferente   [78761187]
+1970  #null  Os Incríveis — Eu Te Amo, Meu Brasil
+            => Os Incríveis — Eu Te Amo Meu Brasil   [15415854]
+1970  #null  Chitãozinho & Xororó — Galopeira (Galopera)
+            => Chitãozinho & Xororó — Galopeira (Remastered 2020)   [1157001732]
+1970  #null  Roberto Carlos — Jesus Cristo
+            => Roberto Carlos — Jesus Cristo   [72319238]
+1970  #null  Fagner — Mucuripe
+            => Fagner — Mucuripe   [88209957]
+1970  #null  Zé Kéti — O Meu Pecado
+            => Zé Keti — O Meu Pecado   [3493863351]
+1970  #null  Tim Maia — Primavera
+            => Tim Maia — Primavera   [3257190861]
+1970  #null  Tião Carreiro & Pardinho — Rio de Lágrimas
+            => Tião Carreiro & Pardinho — Rio de lágrimas   [9054552]
+1971  #null  Chico Buarque — Construção
+            => Chico Buarque — Construção   [2237170]
+1971  #null  Chico Buarque — Cotidiano
+            => Chico Buarque — Cotidiano   [2237166]
+1971  #null  Roberto Carlos — Detalhes
+            => Roberto Carlos — Detalhes   [72317936]
+1971  #null  Erasmo Carlos — É Preciso Dar um Jeito, Meu Amigo
+            => Erasmo Carlos — É Preciso Dar Um Jeito, Meu Amigo   [16558838]
+1971  #null  Tom Zé — Jimmy, Renda-se
+            => Tom Zé — Jimmy, Renda-Se   [123219666]
+1971  #null  Tim Maia — Não Quero Dinheiro (Só Quero Amar)
+            => Tim Maia — Não Quero Dinheiro (Só Quero Amar)   [543139482]
+1971  #null  Chico Buarque — Samba de Orly
+            => Chico Buarque — Samba De Orly   [2237179]
+1971  #null  Roberto Carlos — Todos Estão surdos
+            => Roberto Carlos — Todos Estão Surdos   [17000523]
+1972  #null  Novos Baianos — A Menina Dança
+            => Novos Baianos — A Menina Dança   [3495588851]
+1972  #null  Novos Baianos — Acabou Chorare
+            => Novos Baianos — Acabou Chorare   [3495588831]
+1972  #null  Mott the Hoople — All the Young Dudes
+            => Mott The Hoople — All the Young Dudes   [13149413]
+1972  #null  Novos Baianos — Besta É Tu
+            => Novos Baianos — Besta É Tu   [3495550831]
+1972  #null  Novos Baianos — Brasil Pandeiro
+            => Novos Baianos — Brasil pandeiro   [16093617]
+1972  #null  Jorge Ben Jor — Fio Maravilha
+            => Jorge Ben Jor — Fio Maravilha   [75724782]
+1972  #null  Jorge Ben — Fio Maravilha
+            => Jorge Ben Jor — Fio Maravilha   [75724782]
+1972  #null  Raul Seixas — Let me Sing, Let me Sing
+            => Raul Seixas — Let Me Sing, Let Me Sing   [76417782]
+1972  #null  Novos Baianos — Preta Pretinha
+            => Novos Baianos — Preta pretinha   [16093613]
+1972  #null  Novos Baianos — Swing de Campo Grande
+            => Novos Baianos — Swing de Campo Grande   [3495550801]
+1972  #null  Jorge Ben — Taj Mahal
+            => Jorge Ben Jor — Taj Mahal   [6951800]
+1972  #null  Novos Baianos — Tinindo Trincando
+            => Novos Baianos — Tinindo Trincando   [3495588811]
+1972  #null  Novos Baianos — Um Bilhete Pra Didi
+            => Novos Baianos — Um Bilhete Pra Didi   [3495588871]
+1972  #null  Chico Buarque — Vence na Vida Quem Diz Sim
+            => Chico Buarque — Vence Na Vida Quem Diz Sim   [4682971]
+1972  #null  Caetano Veloso — You Don't Know Me
+            => Caetano Veloso — You Don't Know Me   [34179371]
+1973  #null  Terry Stafford — Amarillo by Morning
+            => Terry Stafford — Amarillo By Morning   [66023277]
+1973  #null  Secos & Molhados — Assim Assado
+            => Secos & Molhados — Assim assado   [3880006]
+1973  #null  Secos & Molhados — El Rey
+            => Secos & Molhados — El rey   [3880008]
+1973  #null  Elizeth Cardoso — Eu Bebo Sim
+            => Elizeth Cardoso — Eu Bebo Sim   [2597266]
+1973  #null  Sérgio Sampaio — Eu Quero É Botar meu Bloco na Rua
+            => Sérgio Sampaio — Eu Quero É Botar Meu Bloco Na Rua   [389063171]
+1973  #null  Chico Buarque — Fado Tropical
+            => Chico Buarque — Fado Tropical   [4682968]
+1973  #null  Secos & Molhados — Fala
+            => Secos & Molhados — Fala   [3880013]
+1973  #null  Chico Buarque — Flor da Idade
+            => Chico Buarque — Flor Da Idade   [77645147]
+1973  #null  Tim Maia — Gostava Tanto de Você
+            => Tim Maia — Gostava Tanto De Você   [543126422]
+1973  #null  Nelson Cavaquinho — Juízo Final
+            => Nelson Cavaquinho — Juízo Final   [572316792]
+1973  #null  Raul Seixas — Metamorfose Ambulante
+            => Raul Seixas — Metamorfose Ambulante   [4676600]
+1973  #null  Secos & Molhados — O Patrão Nosso de Cada Dia
+            => Secos & Molhados — O Patrão Nosso De Cada Dia   [3880003]
+1973  #null  Secos & Molhados — O Vira
+            => Secos & Molhados — O vira   [3880002]
+1973  #null  Raul Seixas — Ouro de Tolo
+            => Raul Seixas — Ouro De Tolo   [4676608]
+1973  #null  Secos & Molhados — Prece Cósmica
+            => Secos & Molhados — Prece cósmica   [3880010]
+1973  #null  Tim Maia — Réu Confesso
+            => Tim Maia — Réu Confesso   [543126352]
+1973  #null  Secos & Molhados — Rosa de Hiroshima
+            => Secos & Molhados — Rosa de Hiroshima   [3880009]
+1973  #null  Secos & Molhados — Sangue Latino
+            => Secos & Molhados — Sangue latino   [12334774]
+1974  #null  Beth Carvalho — 1.800 Colinas
+            => Beth Carvalho — 1.800 Colinas   [3462442711]
+1974  #null  Chico Buarque — Acorda Amor
+            => Chico Buarque — Acorda Amor   [4679975]
+1974  #null  Elis Regina e Tom Jobim — Águas de Março
+            => Elis Regina — Águas De Março   [565340102]
+1974  #null  Jorge Ben Jor — Eu Vou Torcer
+            => Jorge Ben Jor — Eu Vou Torcer   [4700506]
+1974  #null  Morris Albert — Feelings
+            => Morris Albert — Feelings   [14207490]
+1974  #null  Chico Buarque — Lígia
+            => Chico Buarque — Ligia   [4679976]
+1974  #null  Hoyt Axton — No No Song
+            => Hoyt Axton — No No Song   [16002069]
+1974  #null  Os Meninos de Deus — Senhor, Fazei de Mim (Um Instrumento de Tua Paz)
+            => Os Meninos De Deus — Senhor Fazei de Mim (Um Instrumento de Tua Paz)   [3179028061]
+1974  #null  Raul Seixas — Sociedade Alternativa
+            => Raul Seixas — Sociedade Alternativa   [2800734]
+1974  #null  Morris Albert — Sweet Loving Man
+            => Morris Albert — Sweet Loving Man   [1693967707]
+1974  #null  Jorge Ben — Zumbi
+            => Jorge Ben Jor — Zumbi   [4700509]
+1975  #null  Raul Seixas — A Maçã
+            => Raul Seixas — A maçã   [14574455]
+1975  #null  Erasmo Carlos — Além do Horizonte
+            => Erasmo Carlos — Além Do Horizonte   [1387408642]
+1975  #null  Elis Regina — Dois pra Lá, Dois pra Cá
+            => Elis Regina — Dois Pra Lá, Dois Pra Cá   [1599878]
+1975  #null  Sandy & Junior — Enrosca
+            => Sandy e Junior — Enrosca   [4675588]
+1975  #null  Di Melo — Kilariô
+            => Di Melo — Kilário   [1269464812]
+1975  #null  Rita Lee — Luz del Fuego
+            => Rita Lee — Luz Del Fuego   [15709221]
+1975  #null  Gal Costa — Modinha para Gabriela
+            => Gal Costa — Modinha Para Gabriela   [112649720]
+1975  #null  Rita Lee — Ovelha Negra
+            => Rita Lee — Ovelha Negra   [15709222]
+1975  #null  Chico Buarque — Tanto Mar
+            => Chico Buarque — Tanto Mar   [4676543]
+1975  #null  Raul Seixas — Tente Outra Vez
+            => Raul Seixas — Tente Outra Vez   [4676249]
+1976  #null  Belchior — Apenas um Rapaz Latino-Americano
+            => Belchior — Apenas Um Rapaz Latino Americano   [1780742547]
+1976  #null  Clara Nunes — Canto das Três Raças
+            => Clara Nunes — Canto Das Três Raças   [3419916]
+1976  #null  Belchior — Como Nossos Pais
+            => Belchior — Como nossos pais   [1161245352]
+1976  #null  Elis Regina — Como Nossos Pais
+            => Elis Regina — Como Nossos Pais   [1599850]
+1976  #null  Tim Maia — Ela Partiu
+            => Tim Maia — Ela Partiu   [52686421]
+1976  #null  Raul Seixas — Eu Nasci Há 10 Mil Anos Atrás
+            => Raul Seixas — Eu Nasci Há 10 Mil Anos Atrás   [83944585]
+1976  #null  Claudia Telles — Fim de tarde
+            => Claudia Telles — Fim de tarde   [831294052]
+1976  #null  Chico Buarque — Meu Caro Amigo
+            => Chico Buarque — Meu Caro Amigo   [2444517]
+1976  #null  Chico Buarque — Mulheres de Atenas
+            => Chico Buarque — Mulheres De Atenas   [2444509]
+1976  #null  Chico Buarque — O Que Será? (À Flor da Terra)
+            => Chico Buarque — O Que Será (A Flor Da Terra)   [2444508]
+1976  #null  Chico Buarque — Olhos nos Olhos
+            => Chico Buarque — Olhos Nos Olhos   [140345821]
+1976  #null  Jorge Ben Jor — Ponta de Lança Africano (Umbabarauma)
+            => Jorge Ben Jor — Ponta De Lança Africano   [6951795]
+1977  #null  Roberto Carlos — Amigo
+            => Roberto Carlos — Amigo   [72317970]
+1977  #null  Roberto Carlos — Cavalgada
+            => Roberto Carlos — Cavalgada   [103468390]
+1977  #null  Milionário & José Rico — Estrada da Vida
+            => Milionário & José Rico — Estrada da vida   [4113509]
+1977  #null  Sivuca e Chico Buarque — João e Maria
+            => Sivuca — João e Maria   [11136218]
+1977  #null  Raul Seixas — Maluco Beleza
+            => Raul Seixas — Maluco beleza   [34625531]
+1977  #null  Caetano Veloso — Odara
+            => Caetano Veloso — Odara   [58496261]
+1977  #null  Elis Regina — Romaria
+            => Elis Regina — Romaria   [1599860]
+1977  #null  Gilberto Gil — Sítio do Picapau Amarelo
+            => Gilberto Gil — Sítio do Picapau Amarelo   [3264944861]
+1977  #null  Sá & Guarabyra — Sobradinho
+            => Sá & Guarabyra — Sobradinho   [562411142]
+1977  #null  Iggy Pop — The Passenger
+            => Iggy Pop — The Passenger   [3121463]
+1978  #null  Chico Buarque — Apesar de Você
+            => Chico Buarque — Apesar De Você   [4676544]
+1978  #null  Chico Buarque e Milton Nascimento — Cálice
+            => Chico Buarque — Cálice   [4676535]
+1978  #null  Zé Ramalho — Chão de Giz'
+            => Zé Ramalho — Chão de Giz   [13304674]
+1978  #null  Chico Buarque — Geni e o Zepelim
+            => Chico Buarque — Geni E O Zepelim   [4288708092]
+1978  #null  Milton Nascimento — Maria, Maria
+            => Milton Nascimento — Maria Maria   [475006482]
+1978  #null  Elba Ramalho e Marieta Severo — O Meu Amor
+            => Elba Ramalho — O Meu Amor   [13304083]
+1978  #null  Caetano Veloso — Sampa
+            => Caetano Veloso — Sampa   [58496271]
+1978  #null  Tim Maia — Sossego
+            => Tim Maia — Sossego   [3254073651]
+1978  #null  Seu Jorge — Zé do Caroço
+            => Seu Jorge — Zé do Caroço   [5786002]
+1979  #null  Zé Ramalho — Admirável Gado Novo
+            => Zé Ramalho — Admirável Gado Novo   [70097320]
+1979  #null  Maria Bethânia — Amando sobre os Jornais
+            => Maria Bethânia — Amando Sobre Os Jornais   [4701923]
+1979  #null  Angela Ro Ro — Amor, Meu Grande Amor
+            => Angela Ro Ro — Amor Meu Grande Amor   [69155565]
+1979  #null  Chico Buarque — Bye Bye Brasil
+            => Chico Buarque — Bye Bye Brasil   [1761491277]
+1979  #null  Maria Bethânia — Cheiro de Amor
+            => Maria Bethânia — Cheiro De Amor   [4701917]
+1979  #null  Beth Carvalho — Coisinha do Pai
+            => Beth Carvalho — Coisinha do Pai   [71292162]
+1979  #null  Maria Bethânia — Gota de Sangue
+            => Maria Bethânia — Gota De Sangue   [4701920]
+1979  #null  Maria Bethânia — Grito de Alerta
+            => Maria Bethânia — Grito De Alerta   [4701921]
+1979  #null  Jorge Ben — Ive Brussel
+            => Jorge Ben Jor — Ive Brussel   [73371701]
+1979  #null  Rita Lee — Mania de Você
+            => Rita Lee — Mania De Você   [104938156]
+1979  #null  Maria Bethânia — Mel
+            => Maria Bethânia — Mel   [4701915]
+1979  #null  Maria Bethânia — Nenhum Verão
+            => Maria Bethânia — Nenhum Verão   [4701924]
+1979  #null  Elis Regina — O Bêbado e a Equilibrista
+            => Elis Regina — O bêbado e a equilibrista   [14998719]
+1979  #null  Caetano Veloso — Oração ao Tempo
+            => Caetano Veloso — Oração Ao Tempo   [3369383181]
+1979  #null  Gilberto Gil — Toda Menina Baiana
+            => Gilberto Gil — Toda Menina Baiana   [4244899901]
+1980  #null  Gretchen — 1, 2, 3 (One-Two-Three)
+            => Gretchen — 1-2-3   [689422252]
+1980  #null  Elis Regina — Alô, Alô Marciano
+            => Elis Regina — Alô, alô marciano   [86130079]
+1980  #null  Raul Seixas — Aluga-se
+            => Raul Seixas — Aluga-Se   [15354187]
+1980  #null  Rita Lee — Lança Perfume
+            => Rita Lee — Lança Perfume   [105596892]
+1980  #null  Maria Bethânia — Noite de um Verão de Sonho
+            => Maria Bethânia — Noite De Um Verão De Sonho   [3023820771]
+1980  #null  A Cor do Som — Palco
+            => A Cor Do Som — Palco   [16094456]
+1980  #null  Raul Seixas — Rock das 'Aranha'
+            => Raul Seixas — Rock Das "Aranha"   [15354195]
+1980  #null  Gilberto Gil — Se Eu Quiser Falar Com Deus
+            => Gilberto Gil — Se eu quiser falar com Deus   [709049]
+1980  #null  Tim Maia — Você e Eu, Eu e Você (Juntinhos)
+            => Tim Maia — Você E Eu, Eu E Você (Juntinhos)   [543129832]
+1981  #null  Rebanhão — Baião
+            => Rebanhão — Baião (Original)   [381424111]
+1981  #null  Rebanhão — Casinha
+            => Rebanhão — Casinha   [381424331]
+1981  #null  Roberto Carlos — Emoções
+            => Roberto Carlos — Emoções   [17000524]
+1981  #null  Gal Costa — Festa do Interior
+            => Gal Costa — Festa Do Interior   [529711021]
+1981  #null  Rita Lee e Roberto — Mutante
+            => Rita Lee — Mutante   [104914370]
+1981  #null  Seu Cuca — Perdidos na Selva
+            => Seu Cuca — Perdidos na Selva   [143507858]
+1981  #null  Rita Lee e Roberto — Tatibitati
+            => Rita Lee — Tatibitati   [104914368]
+1981  #null  Ovelha — Te Amo, Que Mais Posso Dizer? (Sem Você não Viverei)
+            => Ovelha — Te Amo, Que Mais Posso Dizer   [496432272]
+1982  #null  Gretchen — Allah-la-ô My Love
+            => Gretchen — Allah-la-o, My Love   [3824964001]
+1982  #null  Gilberto Gil — Andar com Fé
+            => Gilberto Gil — Andar com fé   [876104422]
+1982  #null  Joaquim & Manuel — Boate Azul
+            => Joaquim & Manuel — Boate Azul   [70147438]
+1982  #null  Rita Lee — Cor de Rosa Choque
+            => Rita Lee — Cor De Rosa Choque   [104914336]
+1982  #null  Gilberto Gil — Drão
+            => Gilberto Gil — Drão   [876104432]
+1982  #null  Chitãozinho & Xororó — Fio de Cabelo
+            => Chitãozinho & Xororó — Fio De Cabelo (Remastered 2020)   [1157001652]
+1982  #null  Cássia Eller — Flor do Sol
+            => Cássia Eller — Flor do Sol   [102388374]
+1982  #null  Sérgio Mendes — Never Gonna Let You Go
+            => Sergio Mendes — Never Gonna Let You Go   [10263271]
+1982  #null  Djavan — Sina
+            => Djavan — Sina   [71125141]
+1982  #null  Lulu Santos — Tempos Modernos
+            => Lulu Santos — Tempos Modernos   [72318837]
+1982  #null  Metrô — Ti Ti Ti
+            => Metrô — Ti Ti Ti   [71701724]
+1982  #null  Blitz — Você Não Soube Me Amar
+            => Blitz — Você Não Soube Me Amar   [3401132]
+1983  #null  Dalto — Anjo
+            => Dalto — Anjo   [3427993]
+1983  #null  Alceu Valença — Anunciação
+            => Alceu Valença — Anunciação   [137726289]
+1983  #null  Toquinho — Aquarela
+            => Toquinho — Aquarela   [105785768]
+1983  #null  Lulu Santos — Como uma Onda (Zen-Surfismo)
+            => Lulu Santos — Como uma onda (Zen-surfismo)   [3878749]
+1983  #null  Milton Nascimento — Coração de Estudante
+            => Milton Nascimento — Coração de estudante   [126774227]
+1983  #null  Ritchie — Menina Veneno
+            => Ritchie — Menina Veneno   [14924893]
+1983  #null  Tim Maia — O Descobridor dos Sete Mares
+            => Tim Maia — O Descobridor Dos Sete Mares   [543123692]
+1983  #null  Barão Vermelho — Pro Dia Nascer Feliz
+            => Barão Vermelho — Pro Dia Nascer Feliz   [87149227]
+1983  #null  Premê — São Paulo, São Paulo
+            => Preme — São Paulo, São Paulo   [1040219602]
+1984  #null  Gretchen — Bate, Bate Coração
+            => Gretchen — Bate, Bate Coração   [3824964021]
+1984  #null  Metrô — Beat Acelerado
+            => Metrô — Beat Acelerado   [129637784]
+1984  #null  Barão Vermelho — Bete Balanço
+            => Barão Vermelho — Bete Balanço   [11085356]
+1984  #null  Marina Lima — Fullgás
+            => Marina Lima — Fullgás   [3068040]
+1984  #null  Os Paralamas do Sucesso — Meu Erro
+            => Os Paralamas Do Sucesso — Meu Erro   [3316719]
+1984  #null  Os Paralamas do Sucesso — Óculos
+            => Os Paralamas Do Sucesso — Óculos   [3419859301]
+1984  #null  Biafra — Sonho De Ícaro
+            => Biafra — Sonho De Icaro   [705013652]
+1984  #null  Gilberto Gil — Tempo Rei
+            => Gilberto Gil — Tempo rei   [904640722]
+1984  #null  Chico Buarque — Vai Passar
+            => Chico Buarque — Vai Passar   [691684302]
+1985  #null  Legião Urbana — Ainda É Cedo
+            => Legiao Urbana — Ainda É Cedo   [3530208]
+1985  #null  Geronimo Santana — É d'Oxum
+            => Gerônimo Santana — É D'Oxum   [97536932]
+1985  #null  Tetê Espíndola — Escrito nas Estrelas
+            => Tetê Espíndola — Escrito Nas Estrelas   [1860262427]
+1985  #null  Camisa de Vênus — Eu Não Matei Joana D'Arc
+            => Camisa de Vênus — Eu Não Matei Joana d'Arc   [136765244]
+1985  #null  Cazuza — Exagerado
+            => Cazuza — Exagerado   [69323110]
+1985  #null  Luiz Caldas — Fricote
+            => Luiz Caldas — Fricote   [3198096551]
+1985  #null  Camisa de Vênus — Hoje
+            => Camisa de Vênus — Hoje   [136765260]
+1985  #null  Ultraje a Rigor — Inútil
+            => Ultraje A Rigor — Inútil   [63652994]
+1985  #null  Metrô — Johnny Love
+            => Metrô — Johnny Love   [71701715]
+1985  #null  RPM — Olhar 43
+            => RPM — Olhar 43   [13265455]
+1985  #null  Legião Urbana — Por Enquanto
+            => Legiao Urbana — Por Enquanto   [3530741]
+1985  #null  Kiko Zambianchi — Primeiros Erros (Chove)
+            => Kiko Zambianchi — Primeiros Erros (Chove)   [3522862]
+1985  #null  Legião Urbana — Será
+            => Legiao Urbana — Será   [3530207]
+1985  #null  Dr. Silvana & Cia. — Serão Extra (Eu Fui Dar Mamãe)
+            => Dr. Silvana & Cia. — Serão Extra   [15023515]
+1985  #null  Legião Urbana — Soldados
+            => Legiao Urbana — Soldados   [121126298]
+1985  #null  Tim Maia e Gal Costa — Um Dia de Domingo
+            => Tim Maia — Um Dia de Domingo   [3254073761]
+1986  #null  Gilberto Gil — A Paz
+            => Gilberto Gil — A Paz   [589488382]
+1986  #null  Titãs — AA UU
+            => Titãs — Aa uu   [4102751]
+1986  #null  Os Paralamas do Sucesso — Alagados
+            => Os Paralamas Do Sucesso — Alagados   [3316724]
+1986  #null  Titãs — Cabeça Dinossauro
+            => Titãs — Cabeça dinossauro   [4102750]
+1986  #null  Legião Urbana — Eduardo e Mônica
+            => Legiao Urbana — Eduardo E Mônica   [3530722]
+1986  #null  Titãs — Homem Primata
+            => Titãs — Homem primata   [43819831]
+1986  #null  Legião Urbana — Quase sem Querer
+            => Legiao Urbana — Quase Sem Querer   [3530720]
+1986  #null  Fábio Jr. e Bonnie Tyler — Sem Limites pra Sonhar (Reaching for the Infinite Heart)
+            => Fabio Jr. — Sem Limites Pra Sonhar (Reaching For The Infinite Heart) (feat. Bonnie Tyler)   [14934917]
+1986  #null  Legião Urbana — Tempo Perdido
+            => Legiao Urbana — Tempo Perdido   [3530724]
+1987  #42  Reginaldo Rossi — Garçom
+            => Reginaldo Rossi — Garçom   [1270664422]
+1987  #null  Trem da Alegria — A Orquestra dos Bichos
+            => Trem Da Alegria — A Orquestra dos Bichos   [563655052]
+1987  #null  Kid Abelha — Amanhã é 23
+            => Kid Abelha — Amanhã é 23   [55606961]
+1987  #null  Titãs — Bichos Escrotos
+            => Titãs — Bichos Escrotos   [137199666]
+1987  #null  Titãs — Comida
+            => Titãs — Comida   [36363041]
+1987  #null  Raul Seixas — Cowboy Fora da Lei
+            => Raul Seixas — Cowboy Fora Da Lei   [3299676]
+1987  #null  Legião Urbana — Faroeste Caboclo
+            => Legiao Urbana — Faroeste Caboclo   [3530214]
+1987  #null  Jorge Ben Jor — Mama África
+            => Jorge Ben Jor — Mama África   [126773129]
+1987  #null  Chico Buarque — O Velho Francisco
+            => Chico Buarque — O Velho Francisco   [16977218]
+1988  #null  João Mineiro & Marciano — Ainda Ontem Chorei de Saudade
+            => João Mineiro & Marciano — Ainda Ontem Chorei De Saudade   [3508136]
+1988  #null  Legião Urbana — Angra dos Reis
+            => Legiao Urbana — Angra Dos Reis   [3529922]
+1988  #null  Tracy Chapman — Baby Can I Hold You
+            => Tracy Chapman — Baby Can I Hold You   [2271566]
+1988  #null  Dominó — Bruta Ansiedade
+            => Domino — Bruta Ansiedade   [834768842]
+1988  #null  Cazuza — Faz Parte do Meu Show
+            => Cazuza — Faz Parte Do Meu Show   [2760124]
+1988  #null  Cazuza — Ideologia
+            => Cazuza — Ideologia   [4670017]
+1988  #null  Cássia Eller — Malandragem
+            => Cássia Eller — Malandragem   [975414202]
+1988  #null  Ed Motta e Conexão Japeri — Manuel
+            => Ed Motta — Manuel   [86130187]
+1988  #null  Dominó — Maria
+            => Domino — Mariá   [14931151]
+1988  #null  Rebanhão — Nele Você Pode Confiar
+            => Rebanhão — Nele Você Pode Confiar   [3467417561]
+1988  #null  Rebanhão — Primeiro Amor
+            => Rebanhão — Primeiro Amor   [3467417541]
+1989  #null  Legião Urbana — 1965 (Duas Tribos)
+            => Legiao Urbana — 1965 (Duas Tribos)   [3529950]
+1989  #null  Polegar — Dá pra Mim
+            => Polegar — Dá Pra Mim   [3541322721]
+1989  #null  Leandro & Leonardo — Entre Tapas e Beijos
+            => Leandro & Leonardo  — Entre tapas e beijos   [4103256]
+1989  #null  Chitãozinho & Xororó — Evidências
+            => Chitãozinho & Xororó — Evidências   [1093761562]
+1989  #null  Paquitas — Fada Madrinha (É Tão Bom)
+            => Paquitas — Fada Madrinha   [883509982]
+1989  #null  Titãs — Flores
+            => Titãs — Flores   [4084896]
+1989  #null  The Jesus and Mary Chain — Head On
+            => The Jesus And Mary Chain — Head On   [3327575541]
+1989  #null  Kaoma — Lambada
+            => Kaoma — Lambada   [2364224845]
+1989  #null  Os Paralamas do Sucesso — Lanterna dos Afogados
+            => Os Paralamas Do Sucesso — Lanterna Dos Afogados   [3419859231]
+1989  #null  Legião Urbana — Monte Castelo
+            => Legiao Urbana — Monte Castelo   [3529951]
+1989  #null  Chitãozinho & Xororó — Página Virada
+            => Chitãozinho & Xororó — Página Virada (Remastered 2020)   [1157001702]
+1989  #null  Legião Urbana — Pais e Filhos
+            => Legiao Urbana — Pais E Filhos   [3530216]
+1990  #null  Leandro & Leonardo — Desculpe, Mas Eu Vou Chorar
+            => Leandro & Leonardo  — Desculpe, mas eu vou chorar   [4091002]
+1990  #null  Dominó — Leilão
+            => Domino — Leilão   [14931152]
+1990  #null  Chitãozinho & Xororó — Nuvem de Lágrimas
+            => Chitãozinho & Xororó — Nuvem De Lágrimas (Remastered 2020)   [1157001712]
+1990  #null  Engenheiros do Hawaii — O Papa É Pop
+            => Engenheiros do Hawaii — O Papa é Pop   [13252217]
+1990  #null  Rebanhão — Palácios
+            => Rebanhão — Palácios   [3094037301]
+1990  #null  Leandro & Leonardo — Pense em Mim
+            => Leandro & Leonardo  — Pense em mim   [3902616]
+1990  #null  Paula Abdul — Rush Rush
+            => Paula Abdul — Rush Rush   [3311534]
+1990  #null  Maria Bethânia — Tocando em Frente
+            => Maria Bethânia — Tocando Em Frente   [589488442]
+1991  #null  Raça Negra — É o Amor
+            => Raça Negra — É o Amor   [123220346]
+1991  #null  Zezé Di Camargo & Luciano — É o Amor
+            => Zezé Di Camargo & Luciano — É o Amor   [13265460]
+1991  #null  Legião Urbana — Metal Contra as Nuvens
+            => Legiao Urbana — Metal Contra As Nuvens   [3531468]
+1991  #null  Legião Urbana — O Teatro dos Vampiros
+            => Legiao Urbana — O Teatro Dos Vampiros   [3531471]
+1991  #null  Os Cascavelletes — Sob um Céu de Blues
+            => Os Cascavelletes — Sob um Céu de Blues   [2107749907]
+1992  #null  Trem da Alegria — Alguém no Céu
+            => Trem Da Alegria — Alguém No Céu   [2431642585]
+1992  #null  Raça Negra — Cheia de Manias
+            => Raça Negra — Cheia de Manias   [705328182]
+1992  #null  Cássia Eller — Eles
+            => Cássia Eller — Eles   [3123222361]
+1992  #null  Adriana Calcanhotto — Esquadros
+            => Adriana Calcanhotto — Esquadros   [13231220]
+1992  #null  Alceu Valença — La Belle de Jour
+            => Alceu Valença — La Belle de Jour   [458895752]
+1992  #null  Adriana Calcanhotto — Mentiras
+            => Adriana Calcanhotto — Mentiras   [13231219]
+1992  #null  Leandro & Leonardo — Temporal de Amor
+            => Leandro & Leonardo  — Temporal de amor   [3060832931]
+1992  #null  Fernando Mendes — Você não Me Ensinou a Te Esquecer
+            => Fernando Mendes — Você Não Me Ensinou A Te Esquecer   [564958642]
+1993  #null  Eliana — Amiga
+            => Eliana — Amiga   [15425941]
+1993  #null  Racionais MC's — Fim de Semana no Parque
+            => Racionais MC's — Fim de Semana no Parque   [134801928]
+1993  #null  Racionais MC's — Homem na Estrada
+            => Racionais MC's — Homem na Estrada   [134801934]
+1993  #null  Racionais MC's — Mano na Porta do Bar
+            => Racionais MC's — Mano na Porta do Bar   [134801932]
+1993  #null  Latino — Me Leva
+            => Latino — Me Leva   [15022413]
+1993  #null  Chico Buarque — Paratodos
+            => Chico Buarque — Paratodos   [559707772]
+1993  #null  Legião Urbana — Perfeição
+            => Legiao Urbana — Perfeição   [3530446]
+1993  #null  Rebanhão — Velho Amigo
+            => Rebanhão — Velho amigo   [1515140422]
+1994  #null  Skank — Jackie Tequila
+            => Skank — Jackie Tequila   [6430916]
+1995  #null  Chico César — À Primeira Vista
+            => Chico Cesar — À Primeira Vista   [63990349]
+1995  #null  Mamonas Assassinas — Bois Don't Cry
+            => Mamonas Assassinas — Bois Don't Cry   [3105911]
+1995  #null  Mamonas Assassinas — Chopis Centis
+            => Mamonas Assassinas — Chopis Centis   [3105904]
+1995  #null  Mamonas Assassinas — Débil Metal
+            => Mamonas Assassinas — Debil Metal   [3105912]
+1995  #null  Raça Negra — É Tarde Demais
+            => Raça Negra — É Tarde Demais   [705328172]
+1995  #null  Mamonas Assassinas — Jumento Celestino
+            => Mamonas Assassinas — Jumento Celestino   [3105905]
+1995  #null  Mamonas Assassinas — Lá Vem o Alemão
+            => Mamonas Assassinas — Lá Vem O Alemão   [3105914]
+1995  #null  Companhia do Pagode — Na Boquinha da Garrafa
+            => Companhia Do Pagode — Na Boquinha da Garrafa   [2592553852]
+1995  #null  Ney Matogrosso — O Último Dia
+            => Ney Matogrosso — O Último Dia   [801238612]
+1995  #null  Baba Cósmica — Sábado de Sol
+            => Baba Cósmica — Sábado de Sol   [1399478072]
+1995  #null  Mamonas Assassinas — Uma Arlinda Mulher
+            => Mamonas Assassinas — Uma Arlinda Mulher   [3105907]
+1996  #null  RPM — A Cruz e a Espada
+            => RPM — A Cruz e a Espada   [13265548]
+1996  #null  Eliana — A Dança dos Bichos
+            => Eliana — A Dança dos Bichos   [13309694]
+1996  #null  Carlinhos Brown — A Namorada
+            => Carlinhos Brown — A Namorada   [1463389362]
+1996  #null  Tiririca — Eu Sou Chifrudo
+            => Tiririca — Eu Sou Chifrudo   [1431782332]
+1996  #null  Tiririca — Florentina
+            => Tiririca — Florentina   [1431782322]
+1996  #null  Skank — Garota Nacional
+            => Skank — Garota Nacional   [14897306]
+1996  #null  Os Paralamas do Sucesso — Lourinha Bombril (Parate y Mira)
+            => Os Paralamas Do Sucesso — Lourinha Bombril (Parate Y Mira)   [3316725]
+1996  #null  Michael Jackson — They Don't Care About Us
+            => Michael Jackson — They Don't Care About Us (Remastered Version)   [4603398]
+1996  #null  Zeca Pagodinho — Verdade
+            => Zeca Pagodinho — Verdade   [4682319]
+1997  #null  Dominó — Baila Baila Comigo
+            => Domino — Baila Baila Comigo (Radio Edit)   [563933002]
+1997  #null  Aqua — Barbie Girl
+            => Aqua — Barbie Girl   [1115044]
+1997  #null  Skank — É Uma Partida de Futebol
+            => Skank — É uma Partida de Futebol   [14897304]
+1997  #null  Gabriel o Pensador — Festa da Música
+            => Gabriel O Pensador — Festa da Música / Bye Bye Tristeza / Devagar, Devagarinho   [13264476]
+1997  #null  Ed Motta — Fora da Lei
+            => Ed Motta — Fora Da Lei   [2801344]
+1997  #null  Bob Dylan — Knockin' on Heaven's Door
+            => Bob Dylan — Knockin' On Heaven's Door   [75768727]
+1997  #null  É o Tchan! — Ralando o Tchan (Dança do Ventre)
+            => É O Tchan — Ralando O Tchan (Dança Do Ventre)   [529383681]
+1997  #null  Peninha — Sozinho
+            => Peninha — Sozinho   [435883242]
+1997  #null  Natalie Imbruglia — Torn
+            => Natalie Imbruglia — Torn   [992131]
+1997  #null  Shania Twain — You're Still the One
+            => Shania Twain — You're Still The One   [731732292]
+1998  #1  Caetano Veloso — Sozinho
+            => Caetano Veloso — Sozinho   [3369383301]
+1998  #9  Jota Quest — O Vento
+            => Jota Quest — O Vento   [6347399]
+1998  #14  Netinho — Indecisão
+            => Netinho De Paula — Indecisão   [681249012]
+1998  #15  Zezé Di Camargo & Luciano — Dois Corações e Uma História
+            => Zezé Di Camargo & Luciano — Dois Corações e uma História   [13260128]
+1998  #23  Kiloucura — Meu Casamento
+            => Kiloucura — Meu Casamento   [3470838321]
+1998  #25  Exaltasamba — Me Apaixonei Pela Pessoa Errada
+            => Exaltasamba — Me Apaixonei Pela Pessoa Errada   [3457524]
+1998  #32  Kiloucura — Pela Vida Inteira
+            => Kiloucura — Pela Vida Inteira   [3122356831]
+1998  #35  Banda Eva — De Ladinho
+            => Banda Eva — De Ladinho   [3009270]
+1998  #36  Daniel — Declaração de Amor
+            => Daniel — Declaração de amor   [753597]
+1998  #43  Daniel — Pra Falar a Verdade
+            => Daniel — Pra falar a verdade   [753638]
+1998  #46  Zezé Di Camargo & Luciano — Pior é Te Perder
+            => Zezé Di Camargo & Luciano — Pior é Te Perder   [46715501]
+1998  #59  Jota Quest — Fácil
+            => Jota Quest — Fácil   [6347394]
+1998  #60  Raça Pura — Juliana
+            => Raça Pura — Juliana   [13540095]
+1998  #62  Alejandro Sanz — Corazón Partío
+            => Alejandro Sanz — Corazón partío   [14496771]
+1998  #70  Molejo — Samba-Rock do Molejão
+            => Molejo — Samba Rock do Molejão   [74224220]
+1998  #72  Asa de Águia — Dança do Vampiro
+            => Asa De Águia — Dança do Vampiro   [13266832]
+1998  #79  Rionegro & Solimões — Frio da Madrugada
+            => Rionegro & Solimões — Frio da Madrugada   [690943592]
+1998  #80  Céline Dion — To Love You More
+            => Céline Dion — To Love You More (Radio Edit)   [619757092]
+1998  #82  Jota Quest — Sempre Assim
+            => Jota Quest — Sempre Assim   [6347392]
+1998  #85  Sandy & Junior — No Fundo do Coração
+            => Sandy e Junior — No Fundo Do Coração   [139876415]
+1998  #88  Negritude Júnior — Faça o que Eu Digo
+            => Negritude Junior — Faça O Que Eu Digo   [3324839]
+1998  #96  Bruno & Marrone — Vida Vazia
+            => Bruno & Marrone — Vida Vazia   [13304046]
+1998  #97  Rick & Renner — Ela é Demais
+            => Rick & Renner — Ela é demais   [688705]
+1998  #null  Djavan — Eu Te Devoro
+            => Djavan — Eu Te Devoro   [74636768]
+1998  #null  Mamonas Assassinas — Onon Onon
+            => Mamonas Assassinas — Onon Onon   [3570043041]
+1998  #null  Skank — Resposta
+            => Skank — Resposta   [13263710]
+1998  #null  Chico Buarque — Xote de Navegação
+            => Chico Buarque — Xote De Navegação   [689100062]
+1999  #1  Ivete Sangalo — Se Eu Não Te Amasse Tanto Assim
+            => Ivete Sangalo — Se Eu Não Te Amasse Tanto Assim   [562771952]
+1999  #2  Karametade — Nunca Vou Deixar Você
+            => Karametade — Nunca Vou Deixar Você   [2953110881]
+1999  #3  Backstreet Boys — I Want It That Way
+            => Backstreet Boys — I Want It That Way   [13141170]
+1999  #4  Os Morenos — Mina de Fé
+            => Os Morenos — Mina de Fé   [3604933082]
+1999  #5  Raça Negra — Deus Me Livre
+            => Raça Negra — Deus Me Livre   [705328202]
+1999  #5  Maurício Manieri — Pensando em Você
+            => Maurício Manieri — Pensando Em Você   [13252227]
+1999  #6  Os Travessos — Quando a Gente Ama
+            => Os Travessos — Quando a Gente Ama   [66256439]
+1999  #7  Maurício Manieri — Bem Querer
+            => Maurício Manieri — Bem Querer   [13252229]
+1999  #10  Brian McKnight (com participação de Ivete Sangalo) — Back at One
+            => Brian McKnight — Back At One   [2173612]
+1999  #10  Joanna — Tô Fazendo Falta
+            => Joanna — Tô Fazendo Falta   [2492371431]
+1999  #11  Zezé Di Camargo & Luciano — Pare
+            => Zezé Di Camargo & Luciano — Pare!   [13250837]
+1999  #12  Só Pra Contrariar — Interfone
+            => Só Pra Contrariar — Interfone   [13213052]
+1999  #16  Leonardo — 120... 150... 200 Km por Hora
+            => Leonardo — 120... 150... 200 Km, por Hora   [13252117]
+1999  #17  Só Pra Contrariar — Machuca Demais
+            => Só Pra Contrariar — Machuca Demais   [13213054]
+1999  #18  Sandy & Junior — Imortal
+            => Sandy e Junior — Imortal   [529385631]
+1999  #19  Leonardo — Mentira que Virou Paixão
+            => Leonardo — Mentira Que Virou Paixão   [13252109]
+1999  #20  Soweto — Não Foi à Toa
+            => Soweto — Não Foi A Toa   [3265350]
+1999  #21  Rick & Renner — Muleca
+            => Rick & Renner — Muleca   [764215]
+1999  #22  Ara Ketu — Minha Razão de Viver
+            => Ara Ketu — Minha Razão de Viver   [3674771302]
+1999  #26  Paulo Ricardo — Como Se Fosse a Primeira Vez
+            => Paulo Ricardo — Como Se Fosse A Primeira Vez   [2947155]
+1999  #27  Daniel — Vai Dar Samba
+            => Daniel — Vai dar samba   [3870242]
+1999  #28  Soweto — Farol das Estrelas
+            => Soweto — Farol Das Estrelas   [3265349]
+1999  #29  Rick & Renner — Cara de Pau
+            => Rick & Renner — Cara de pau   [764152]
+1999  #31  Karametade — Dandá
+            => Karametade — Dandá   [15019721]
+1999  #40  Zezé Di Camargo & Luciano — Será que Foi Saudade
+            => Zezé Di Camargo & Luciano — Será Que Foi Saudade?   [13250838]
+1999  #41  Ivete Sangalo — Tá Tudo Bem
+            => Ivete Sangalo — Ta Tudo Bem   [4678267]
+1999  #47  Phil Collins — You'll Be in My Heart
+            => Phil Collins — You'll Be In My Heart   [561875132]
+1999  #49  Ataíde & Alexandre — Laço Aberto
+            => Ataíde & Alexandre — Laço aberto   [922456502]
+1999  #50  Gian & Giovani — Mil Corações
+            => Gian & Giovani — Mil Corações   [1881336057]
+1999  #51  Paulo Ricardo — Sonho Lindo
+            => Paulo Ricardo — Sonho Lindo   [2947150]
+1999  #53  Mauricio Manieri — Minha Menina
+            => Maurício Manieri — Minha Menina   [13304885]
+1999  #54  Os Travessos — Tu Mandas no Meu Coração
+            => Os Travessos — Tu Mandas No Meu Coração   [66256435]
+1999  #55  Cidade Negra — Eu Também Quero Beijar
+            => Cidade Negra — Eu Também Quero Beijar   [70564519]
+1999  #57  Los Hermanos — Anna Júlia
+            => Los Hermanos — Anna Júlia   [13305147]
+1999  #58  Cheiro de Amor — Simpatia
+            => Cheiro de Amor — Simpatia   [3340179491]
+1999  #61  Pepê & Neném — Mania de Você
+            => Pepê & Neném — Mania De Você   [882442462]
+1999  #63  Bala, Bombom e Chocolate — Fissuras de um Casal
+            => Bala, Bombom e Chocolate — Fissuras de um Casal   [1052759342]
+1999  #64  Tiazinha (participação de Vinny) — Uh! Tiazinha
+            => Tiazinha — Uh! Tiazinha   [1419517542]
+1999  #66  Ricky Martin — She's All I Ever Had
+            => Ricky Martin — She's All I Ever Had   [13111379]
+1999  #68  Vinny — Te Encontrar de Novo
+            => Vinny — Te encontrar de novo   [562558812]
+1999  #69  Chris Durán — Te Perdi
+            => Chris Duran — Te Perdí   [1034080902]
+1999  #71  Lou Bega — Mambo No. 5 (A Little Bit of...)
+            => Lou Bega — Mambo No. 5 (a Little Bit of...)   [434625962]
+1999  #75  Leonardo — Mano
+            => Leonardo — Mano   [13252119]
+1999  #76  Ara Ketu — Mal Acostumado
+            => Ara Ketu — Mal Acostumado   [2349107415]
+1999  #77  Art Popular — Quando Você Me Beija
+            => Art Popular — Quando Você Me Beija   [120224726]
+1999  #81  Gang do Samba — Raimunda
+            => Gang Do Samba — Raimunda   [1776766787]
+1999  #83  Swing & Simpatia — E Aí
+            => Swing & Simpatia — E AÍ   [15022624]
+1999  #84  Leonardo — Boto pra Remexer
+            => Leonardo — Boto Pra Remexer   [13252110]
+1999  #87  Fat Family — Eu Não Vou
+            => Fat Family — Eu Não Vou   [528663771]
+1999  #90  Terra Samba — Banho de Chuveiro
+            => Terra Samba — Banho De Chuveiro   [4681757]
+1999  #93  Ivete Sangalo — Canibal
+            => Ivete Sangalo — Canibal / Citação Musical: Brincar De Índio   [4678266]
+1999  #94  Padre Marcelo Rossi — O Vira de Jesus
+            => Padre Marcelo Rossi — O Vira de Jesus   [71873301]
+1999  #98  Cleiton & Camargo — Na Hora de Amar
+            => Cleiton & Camargo — Na Hora De Amar   [831655792]
+1999  #99  Raimundos — Mulher de Fases
+            => Raimundos — Mulher de fases   [761220]
+1999  #100  Patrulha do Samba — Swing de Rua
+            => Patrulha Do Samba — Swing de Rua   [3984433521]
+1999  #null  Sandy & Junior — As Quatro Estações
+            => Sandy e Junior — As Quatro Estações   [529385751]
+1999  #null  Gilberto Gil — Esperando na Janela
+            => Gilberto Gil — Esperando na janela   [904655022]
+1999  #null  Claudinho & Buchecha — Fico Assim sem Você
+            => Claudinho & Buchecha — Fico Assim Sem Você   [4676020]
+1999  #null  Rionegro & Solimões — Lenha
+            => Rionegro & Solimões — Lenha   [1222674822]
+1999  #null  SNZ — Longe do Mundo
+            => Snz — Longe do mundo   [347750111]
+1999  #null  Rogerio Skylab — Matador de Passarinho
+            => Rogério Skylab — Matador de Passarinho   [144913784]
+1999  #null  Cássia Eller — O Segundo Sol
+            => Cássia Eller — O Segundo Sol   [3121499811]
+1999  #null  Mr. Jam — Rebola na Boa
+            => Mr. Jam — Rebola na Boa   [423147282]
+2000  #2  KLB — A Dor Desse Amor
+            => KLB — A Dor Desse Amor   [1006222812]
+2000  #4  Leonardo — Deixaria Tudo
+            => Leonardo Arantes — Deixaria Tudo   [3825860651]
+2000  #8  Karametade — Morango do Nordeste
+            => Karametade — Morango do Nordeste   [15829164]
+2000  #9  Twister — Perdi Você
+            => Twister — Perdi Você   [96004644]
+2000  #null  Twister — 40 Graus
+            => Twister — 40 Graus   [96004630]
+2000  #null  O Surto — A Cera
+            => O Surto — A Cera   [872377232]
+2000  #null  Eliana — A Força do Mestre
+            => Eliana — A Força do Mestre   [13290257]
+2000  #null  Jay Vaquer — A Miragem
+            => Jay Vaquer — A Miragem   [2464406475]
+2000  #null  Nando Reis — All Star
+            => Nando Reis — All Star   [4113352]
+2000  #null  Marisa Monte — Amor I Love You
+            => Marisa Monte — Amor I Love You / Citação: Trecho da Obra Intitulada "Primo Basilio" De Eça de Queiroz Declamado por Arnaldo Antunes   [953826662]
+2000  #null  Cogumelo Plutão — Esperando na Janela
+            => Cogumelo Plutão — Esperando na Janela   [3118307741]
+2000  #null  Oficina G3 — O Caminho
+            => Oficina G3 — O Caminho   [93548190]
+2000  #null  Mamonas Assassinas — Pelados em Santos
+            => Mamonas Assassinas — Pelados Em Santos   [3105903]
+2000  #null  MV Bill — Soldado do Morro
+            => MV Bill — Soldado do Morro   [3843056731]
+2000  #null  Braga Boys — Uma Bomba
+            => Braga Boys — Uma Bomba   [1506775182]
+2001  #3  Titãs — Epitáfio
+            => Titãs — Epitáfio   [13305103]
+2001  #4  Alcione — Você Me Vira a Cabeça (Me Tira do Sério)
+            => Alcione — Você Me Vira A Cabeça (Me Tira Do Sério)   [4670056]
+2001  #10  Kelly Key — Baba
+            => Kelly Key — Baba   [3906234]
+2001  #null  Cassiane — 500 Graus
+            => Cassiane — 500 Graus   [93548650]
+2001  #null  Sandy & Junior — A Gente Dá Certo
+            => Sandy e Junior — A Gente Dá Certo   [4680348]
+2001  #null  Alcione — A Loba
+            => Alcione — A Loba   [4670062]
+2001  #null  Titãs — A Melhor Banda de Todos os Tempos da Última Semana
+            => Titãs — A Melhor Banda de Todos os Tempos da Última Semana   [13305099]
+2001  #null  Wanessa Camargo — Apaixonada por Você
+            => Wanessa Camargo — Apaixonada por Você   [13304459]
+2001  #null  Gabriel o Pensador — Até Quando?
+            => Gabriel O Pensador — Até Quando?   [13258634]
+2001  #null  Baitaca — Do Fundo da Grota
+            => Baitaca — Do Fundo da Grota   [75146050]
+2001  #null  Marina Lima — Notícias
+            => Marina Lima — Notícias   [96004308]
+2001  #null  CPM 22 — Regina Let's Go!
+            => CPM 22 — Regina Let's Go!   [4676414]
+2001  #null  Amado Batista — Secretária (Assédio Sexual)
+            => Amado Batista — Secretaria   [2136685417]
+2001  #null  CPM 22 — Tarde de Outubro
+            => CPM 22 — Tarde De Outubro   [4676415]
+2002  #1  LS Jack — Carla
+            => LS Jack — Carla   [420017122]
+2002  #1  Tribalistas — Velha Infância
+            => Tribalistas — Velha Infância (2004 Digital Remaster)   [959082392]
+2002  #2  Pedro & Thiago — Toque de Mágica
+            => Pedro & Thiago — Toque de Mágica   [72268147]
+2002  #4  Ivete Sangalo — Festa
+            => Ivete Sangalo — Festa   [564973842]
+2002  #5  Wanessa Camargo — Tanta Saudade (Heaven Came Down)
+            => Wanessa Camargo — Tanta Saudade (Heaven Came Down)   [65723455]
+2002  #7  Zeca Pagodinho — Deixa a Vida Me Levar
+            => Zeca Pagodinho — Deixa A Vida Me Levar   [725664842]
+2002  #8  Os Travessos — Distância
+            => Os Travessos — Distância   [3865400]
+2002  #null  Fernanda Brum — Amo o Senhor
+            => Fernanda Brum — Amo o Senhor   [93548822]
+2002  #null  Kelly Key — Anjo
+            => Kelly Key — Anjo   [391669462]
+2002  #null  CPM 22 — Atordoado
+            => CPM 22 — Atordoado   [4683538]
+2002  #null  Guilherme & Santiago — Azul (Azul)
+            => Guilherme e Santiago — Azul   [13267447]
+2002  #null  Rouge — Brilha la Luna
+            => Rouge — Brilha La Luna   [432899202]
+2002  #null  Luiza Possi — Dias Iguais
+            => Luiza Possi — Dias Iguais   [414938542]
+2002  #null  Tribalistas — Já Sei Namorar
+            => Tribalistas — Já Sei Namorar (2004 Digital Remaster)   [959082482]
+2002  #null  Racionais MC's — Jesus Chorou
+            => Racionais MC's — Jesus Chorou   [140640905]
+2002  #null  Cássia Eller — No Recreio
+            => Cássia Eller — No Recreio   [4679802]
+2002  #null  Fernanda Brum — O Amor Que Cura
+            => Fernanda Brum — O Amor Que Cura   [93548840]
+2002  #null  Fernanda Brum — Quebrantado Coração
+            => Fernanda Brum — Quebrantado Coração   [93548824]
+2002  #null  Jota Quest — Só Hoje
+            => Jota Quest — Só Hoje   [11238033]
+2002  #null  Kelly Key — Só Quero Ficar
+            => Kelly Key — Só quero ficar   [3906231]
+2003  #1  Zezé Di Camargo & Luciano — Nosso Amor é Ouro
+            => Zezé Di Camargo & Luciano — Nosso Amor é Ouro   [46715561]
+2003  #3  Skank — Vou Deixar
+            => Skank — Vou Deixar   [14896725]
+2003  #5  Bruno & Marrone — Deixa
+            => Bruno & Marrone — Deixa   [13252096]
+2003  #6  Zezé Di Camargo & Luciano — Pra Sempre
+            => Zezé Di Camargo & Luciano — Pra Sempre   [70581195]
+2003  #7  Luka — Porta Aberta
+            => Luka — Porta aberta   [3916965]
+2003  #9  Ana Carolina — Encostar na Tua
+            => Ana Carolina — Encostar na Tua   [5674612]
+2003  #null  Kelly Key — Adoleta
+            => Kelly Key — Adoleta   [3924764]
+2003  #null  Calcinha Preta — Agora Estou Sofrendo (Bleeding Heart)
+            => Calcinha Preta — Agora Estou Sofrendo / Bleeding Heart   [2795799872]
+2003  #null  Renato Russo — Boomerang Blues
+            => Renato Russo — Boomerang Blues   [2729473401]
+2003  #null  CPM 22 — Dias Atrás
+            => CPM 22 — Dias Atrás   [4683534]
+2003  #null  Ivete Sangalo — Faz Tempo
+            => Ivete Sangalo — Faz Tempo   [4678645]
+2003  #null  Pitty — Máscara
+            => Pitty — Máscara   [95987828]
+2003  #null  CPM 22 — Não Sei Viver sem Ter Você
+            => CPM 22 — Não Sei Viver Sem Ter Você   [4683537]
+2003  #null  Ivete Sangalo — Sorte Grande
+            => Ivete Sangalo — Sorte Grande   [4678641]
+2003  #null  Luka — Tô Nem Aí
+            => Luka — Tô nem aí   [3916963]
+2003  #null  Ana Carolina — Uma Louca Tempestade
+            => Ana Carolina — Uma Louca Tempestade   [61794871]
+2003  #null  Rouge — Vem Cair na Zueira
+            => Rouge — Vem Cair na Zueira   [432899252]
+2004  #4  Skank — Vamos Fugir
+            => Skank — Vamos Fugir   [63135949]
+2004  #5  Daniel — Os Amantes
+            => Daniel — Os amantes   [684861]
+2004  #10  Roberto Carlos — A Volta
+            => Roberto Carlos — A Volta   [103343788]
+2004  #10  Leonardo — Fantasias
+            => Leonardo — Fantasias   [13287998]
+2004  #13  Ira! (com participação de Pitty) — Eu Quero Sempre Mais
+            => Ira! — Eu Quero Sempre Mais   [1280736012]
+2004  #15  Chitãozinho & Xororó — Sinônimos
+            => Chitãozinho & Xororó — Sinônimos / Pense Em Mim / É o Amor   [674363232]
+2004  #16  Bruno & Marrone — Inevitável
+            => Bruno & Marrone — Inevitável   [15405273]
+2004  #17  Akon — Lonely
+            => Akon — Lonely   [78869181]
+2004  #19  Ivete Sangalo — Céu da Boca
+            => Ivete Sangalo — Céu Da Boca   [1963943207]
+2004  #null  Paulina Rubio — Algo tienes
+            => Paulina Rubio — Algo Tienes   [23338591]
+2004  #null  Fernanda Brum — Apenas um Toque
+            => Fernanda Brum — Apenas um Toque   [93549784]
+2004  #null  Rouge — Blá Blá Blá
+            => Rouge — Blá Blá Blá   [433386802]
+2004  #null  Ivete Sangalo participação Gilberto Gil — Céu da Boca
+            => Ivete Sangalo — Céu Da Boca   [1963943207]
+2004  #null  Ken Matsudaira — Matsuken Samba II
+            => Ken Matsudaira — Matsuken Samba II   [3297883881]
+2004  #null  CPM 22 — Ontem
+            => CPM 22 — Ontem   [4683540]
+2005  #1  Zezé Di Camargo & Luciano — Fui Eu
+            => Zezé Di Camargo & Luciano — Fui Eu   [46715571]
+2005  #1  Ivete Sangalo — Quando a Chuva Passar
+            => Ivete Sangalo — Quando A Chuva Passar   [4680996]
+2005  #3  Rapazolla — Coração
+            => Rapazolla — Coração   [759140842]
+2005  #9  Bruno & Marrone — Quer Casar Comigo?
+            => Bruno & Marrone — Quer Casar Comigo   [13243964]
+2005  #12  CPM 22 — Um Minuto para o Fim do Mundo
+            => CPM 22 — Um Minuto Para O Fim Do Mundo   [4704278]
+2005  #14  Michael Bublé — Home
+            => Michael Bublé — HOME   [3726726232]
+2005  #18  Sorriso Maroto — Me Olha nos Olhos
+            => Sorriso Maroto — Me Olha Nos Olhos / Futuro Prometido / Não Tem Perdão   [2507465021]
+2005  #20  50 Cent — Candy Shop
+            => 50 Cent — Candy Shop   [145429544]
+2005  #null  Jay Vaquer — A Falta que a Falta Faz
+            => Jay Vaquer — A Falta Que a Falta Faz   [2474805031]
+2005  #null  Guilherme & Santiago — Alô, meu povo
+            => Guilherme e Santiago — Alô Meu Povo / Vai Sobrar Mulher / Misturinha / Enrosca   [3360784421]
+2005  #null  Wanessa Camargo — Amor, Amor
+            => Wanessa Camargo — Amor, Amor   [13307224]
+2005  #null  Toque no Altar — Deus de Promessas
+            => Toque no Altar — Deus de Promessas   [2192006887]
+2005  #null  CPM 22 — Irreversível
+            => CPM 22 — Irreversível   [4704280]
+2005  #null  Toque no Altar — Olha pra Mim
+            => Toque no Altar — Olha pra Mim   [2192007007]
+2005  #null  Rouge — Vem Habib (Wala Wala)
+            => Rouge — Vem, Habib (Wala Wala)   [432896152]
+2006  #2  Akon — Don't Matter
+            => Akon — Don't Matter   [979050]
+2006  #4  Papas da Língua — Eu Sei
+            => Papas Da Língua — Eu Sei   [3314335]
+2006  #6  NX Zero — Razões e Emoções
+            => NX Zero — Razões E Emoções   [2424286815]
+2006  #7  JoJo — Too Little Too Late
+            => JoJo — Too Little Too Late   [3380596001]
+2006  #8  Beyoncé — Irreplaceable
+            => Beyoncé — Irreplaceable   [13131048]
+2006  #9  Beyoncé & Shakira — Beautiful Liar
+            => Beyoncé — Beautiful Liar   [13131047]
+2006  #13  Perlla (participação de Belo) — Depois do Amor
+            => Perlla — Depois do Amor   [95946516]
+2006  #17  Belo — Intriga da Oposição
+            => Belo — Intriga da Oposição   [13350350]
+2006  #18  Sorriso Maroto — Futuro Prometido
+            => Sorriso Maroto — Futuro Prometido   [96167236]
+2006  #21  Snow Patrol — Open Your Eyes
+            => Snow Patrol — Open Your Eyes   [2277698]
+2006  #24  Sorriso Maroto — Tenho Medo
+            => Sorriso Maroto — Tenho Medo / O Melhor Pedaço   [2944825311]
+2006  #25  Tânia Mara — Se Quiser
+            => Tânia Mara — Se Quiser   [2729066101]
+2006  #26  Justin Timberlake — What Goes Around... Comes Around
+            => Justin Timberlake — What Goes Around...Comes Around (Radio Edit)   [82299064]
+2006  #29  Victor & Leo — Fada
+            => Victor & Leo — Fada   [13344195]
+2006  #40  Vanessa Hudgens — Say OK
+            => Vanessa Hudgens — Say OK   [3059541]
+2006  #41  Victor & Leo — Amigo Apaixonado
+            => Victor & Leo — Amigo Apaixonado   [13344198]
+2006  #42  Fergie — Fergalicious
+            => Fergie — Fergalicious   [882287]
+2006  #48  Daniel — Amor Absoluto
+            => Daniel — Amor absoluto   [3915127]
+2006  #49  Akon (participação de Snoop Dogg) — I Wanna Love You
+            => Akon — I Wanna Love You   [979042]
+2006  #50  Tânia Mara — Febre de Amor
+            => Tânia Mara — Febre De Amor   [41085191]
+2006  #51  Bruno & Marrone — Não Posso Ter Medo de Amar
+            => Bruno & Marrone — Não Posso Ter Medo de Amar   [13249513]
+2006  #53  Grupo Revelação — Velocidade da Luz
+            => Grupo Revelação — Velocidade da Luz   [95978112]
+2006  #54  Ivete Sangalo — Berimbau Metalizado
+            => Ivete Sangalo — Berimbau Metalizado   [4678459]
+2006  #57  Daniel — A Primeira Letra
+            => Daniel — A primeira letra   [3915119]
+2006  #58  Justin Timberlake — Summer Love
+            => Justin Timberlake — Summer Love   [565134]
+2006  #60  Vanessa Hudgens — Come Back to Me
+            => Vanessa Hudgens — Come Back To Me   [3059539]
+2006  #62  Nelly Furtado (participação de Timbaland) — Promiscuous
+            => Nelly Furtado — Promiscuous   [2430338]
+2006  #63  RBD — Tu Amor
+            => RBD — Tu Amor   [1065541362]
+2006  #65  Ne-Yo — Sexy Love
+            => Ne-Yo — Sexy Love   [1575282]
+2006  #70  Babado Novo — Pensando em Você
+            => Babado Novo — Pensando Em Você   [1088085042]
+2006  #74  Marina Elali — One Last Cry
+            => Marina Elali — One Last Cry   [118686480]
+2006  #75  Grupo Revelação — A Pureza da Flor
+            => Grupo Revelação — A Pureza da Flor   [95978116]
+2006  #78  Zezé Di Camargo & Luciano — Diz pro Meu Olhar
+            => Zezé Di Camargo & Luciano — Diz Pro Meu Olhar   [3960639]
+2006  #79  Skank — Mil Acasos
+            => Skank — Mil Acasos   [7246247]
+2006  #80  Daniel — Quando Acaba uma Paixão
+            => Daniel — Quando acaba uma paixão   [3915121]
+2006  #86  Chimarruts — Saber Voar
+            => Chimarruts — Saber Voar   [911816862]
+2006  #88  Martijn Ten Velden — I Wish U Would
+            => Martijn Ten Velden — I Wish U Would (Radio Edit)   [1238320712]
+2006  #90  Alex Gaudino — Destination Calabria
+            => Alex Gaudino — Destination Calabria (Radio Edit)   [5406699]
+2006  #91  Shakira (participação de Wyclef Jean) — Hips Don't Lie
+            => Shakira — Hips Don't Lie   [3663852612]
+2006  #93  Detonautas Roque Clube — Você Me Faz Tão Bem
+            => Detonautas — Você me faz tão bem   [13359373]
+2006  #94  Ana Carolina — Ruas de Outono
+            => Ana Carolina — Ruas de Outono   [5222946]
+2006  #95  Babado Novo — Insolação do Coração
+            => Babado Novo — Insolação Do Coração   [1088084932]
+2006  #96  Janet Jackson (participação de Nelly) — Call on Me
+            => Janet Jackson — Call On Me   [3121836]
+2006  #99  Cherish — Do It to It
+            => Cherish — Do It To It   [3414898]
+2006  #null  Ivete Sangalo — A Galera
+            => Ivete Sangalo — A Galera   [1963943187]
+2006  #null  CPM 22 — Apostas & Certezas
+            => CPM 22 — Apostas & Certezas   [4704279]
+2006  #null  MC Leozinho — Ela Só Pensa Em Beijar (Se Ela Dança Eu Danço)
+            => Mc Leozinho — Ela Só Pensa Em Beijar   [3420320901]
+2006  #null  Fernanda Brum e Arianne — Jesus, Meu Primeiro Amor
+            => Fernanda Brum — Jesus Meu Primeiro Amor   [3662328742]
+2006  #null  Toque no Altar — Lembra Senhor
+            => Toque no Altar — Lembra Senhor   [2192006877]
+2006  #null  Kelly Key — Me Pega de Jeito
+            => Kelly Key — Me pega de jeito   [3911762]
+2006  #null  Fernanda Brum — Na Corte do Egito
+            => Fernanda Brum — Na Corte do Egito   [93551042]
+2006  #null  Toque no Altar — O Chão Vai Tremer
+            => Toque no Altar — O Chão Vai Tremer   [2192006927]
+2006  #null  Natiruts — Quero Ser Feliz Também
+            => Natiruts — Quero Ser Feliz Também   [49946091]
+2006  #null  Fernanda Brum — Redenção
+            => Fernanda Brum — Redenção   [93551034]
+2007  #2  Rihanna — Don't Stop the Music
+            => Rihanna — Don't Stop The Music   [925108]
+2007  #3  Alicia Keys — No One
+            => Alicia Keys — No One   [2466262]
+2007  #4  James Blunt — Same Mistake
+            => James Blunt — Same Mistake   [3657905]
+2007  #5  Natiruts — Natiruts Reggae Power
+            => Natiruts — Natiruts Reggae Power   [80649012]
+2007  #6  Seu Jorge — Mina do Condomínio
+            => Seu Jorge — Mina do Condomínio   [3261212221]
+2007  #8  Victor & Leo — Tem que Ser Você
+            => Victor & Leo — Tem Que Ser Você   [13344199]
+2007  #10  Rihanna (participação de Jay-Z) — Umbrella
+            => Rihanna — Umbrella   [925106]
+2007  #11  Vanessa da Mata (participação de Ben Harper) — Boa Sorte / Good Luck
+            => Vanessa da Mata — Boa Sorte / Good Luck   [408727932]
+2007  #14  Sean Kingston — Beautiful Girls
+            => Sean Kingston — Beautiful Girls   [13705276]
+2007  #15  Vanessa da Mata — Amado
+            => Vanessa da Mata — Amado   [6032972]
+2007  #17  Danni Carlos — Coisas que Eu Sei
+            => Danni Carlos — Coisas Que Eu Sei   [13344624]
+2007  #20  Rihanna (participação de Ne-Yo) — Hate That I Love You
+            => Rihanna — Hate That I Love You   [925111]
+2007  #20  Jeito Moleque — Sem Radar
+            => Jeito Moleque — Sem Radar   [4675146]
+2007  #23  Pitty — Na Sua Estante
+            => Pitty — Na Sua Estante   [95987682]
+2007  #26  Bruno & Marrone — Não Faz Mais Isso Comigo
+            => Bruno & Marrone — Não Faz Mais Isso Comigo   [5674694]
+2007  #27  Juanes — Para Tu Amor
+            => Juanes — Para Tu Amor   [2445180]
+2007  #28  Fergie — Clumsy
+            => Fergie — Clumsy   [882288]
+2007  #30  Bruno & Marrone — Ficar por Ficar
+            => Bruno & Marrone — Ficar por Ficar   [70024845]
+2007  #31  Victor & Leo — Fotos
+            => Victor & Leo — Fotos   [13344207]
+2007  #33  Ida Corr (participação de Fedde le Grand) — Let Me Think About It
+            => Ida Corr — Let Me Think About It   [67159083]
+2007  #34  Timbaland (participação de Nelly Furtado e Justin Timberlake) — Give It to Me
+            => Timbaland — Give It To Me   [4685512]
+2007  #36  Capital Inicial — Eu Nunca Disse Adeus
+            => Capital Inicial — Eu Nunca Disse Adeus   [2411022285]
+2007  #37  Bruno & Marrone — Marianne
+            => Bruno & Marrone — Marianne   [13249511]
+2007  #38  Avril Lavigne — Girlfriend
+            => Avril Lavigne — Girlfriend   [5495885]
+2007  #38  Sorriso Maroto — Não Tem Perdão
+            => Sorriso Maroto — Não Tem Perdão   [2944825161]
+2007  #41  Britney Spears — Piece of Me
+            => Britney Spears — Piece of Me   [15589894]
+2007  #43  Capital Inicial — Aqui
+            => Capital Inicial — Aqui   [13335261]
+2007  #44  Jeito Moleque — É Mágica
+            => Jeito Moleque — É Mágica   [4675147]
+2007  #46  Ne-Yo — Because of You
+            => Ne-Yo — Because Of You   [1102966]
+2007  #46  Colbie Caillat — Bubbly
+            => Colbie Caillat — Bubbly   [1204618452]
+2007  #47  Charlie Brown Jr. — Senhor do Tempo
+            => Charlie Brown Jr. — Senhor do Tempo   [2020164787]
+2007  #48  Pixote — Insegurança
+            => Pixote — Insegurança   [1201728032]
+2007  #50  Jonas Brothers — When You Look Me in the Eyes
+            => Jonas Brothers — When You Look Me In The Eyes   [2151871307]
+2007  #52  Ashley Tisdale — Be Good to Me
+            => Ashley Tisdale — Be Good to Me   [680312]
+2007  #55  Natiruts — Naticongo
+            => Natiruts — Naticongo   [518484852]
+2007  #57  Charlie Brown Jr. — Uma Criança com Seu Olhar
+            => Charlie Brown Jr. — Uma Criança Com Seu Olhar   [2732815701]
+2007  #59  Yves Larock — Rise Up
+            => Yves Larock — Rise Up   [1855992137]
+2007  #61  Rick & Renner — Credencial
+            => Rick & Renner — Credencial   [3925790]
+2007  #63  Exaltasamba — Jogo de Sedução
+            => Exaltasamba — Jogo De Sedução   [3458226]
+2007  #64  César Menotti & Fabiano — Como um Anjo
+            => César Menotti & Fabiano — Como Um Anjo   [13837217]
+2007  #66  Guilherme & Santiago — Só de Você
+            => Guilherme e Santiago — Só De Você   [3360784361]
+2007  #72  Charlie Brown Jr. — Pontes Indestrutíveis
+            => Charlie Brown Jr. — Pontes Indestrutíveis   [1422461782]
+2007  #74  David Guetta — Love Is Gone
+            => David Guetta — Love Is Gone   [3107315]
+2007  #76  50 Cent (participação de Justin Timberlake) — Ayo Technology
+            => 50 Cent — Ayo Technology   [145429556]
+2007  #81  Edu Ribeiro — De Mais Ninguém
+            => Edu Ribeiro — De Mais Ninguém   [2133151207]
+2007  #83  Leona Lewis — Bleeding Love
+            => Leona Lewis — Bleeding Love   [365067]
+2007  #83  Maskavo — Um Anjo do Céu
+            => Maskavo — Um Anjo do Céu   [96017822]
+2007  #84  Cherish (participação de Yung Joc) — Killa
+            => Cherish — Killa   [4209072]
+2007  #85  Strike — Paraíso Proibido
+            => Strike — Paraíso Proibido   [96189844]
+2007  #85  Avril Lavigne — When You're Gone
+            => Avril Lavigne — When You're Gone   [13705100]
+2007  #87  Chimarruts — Versos Simples
+            => Chimarruts — Versos Simples   [3363826621]
+2007  #88  Snoop Dogg — Sensual Seduction
+            => Snoop Dogg — Sensual Seduction   [917102]
+2007  #89  Jeito Moleque — Teu Segredo
+            => Jeito Moleque — Teu Segredo   [4675155]
+2007  #92  Maroon 5 — Makes Me Wonder
+            => Maroon 5 — Makes Me Wonder   [130688208]
+2007  #96  Latino (participação de Daddy Kall) — Amigo Fura-Olho
+            => Latino — Amigo Fura-Olho   [6446585]
+2007  #97  Timbaland (participação de Keri Hilson e D.O.E.) — The Way I Are
+            => Timbaland — The Way I Are   [4685514]
+2007  #98  Chris Brown — Wall to Wall
+            => Chris Brown — Wall To Wall   [554703]
+2007  #99  Sorriso Maroto — Fica Combinado Assim
+            => Sorriso Maroto — Fica Combinado Assim   [2944825241]
+2007  #100  Linkin Park — What I've Done
+            => Linkin Park — What I've Done   [676847]
+2007  #null  Kelly Key — Analista
+            => Kelly Key — Analista   [3911758]
+2007  #null  Aline Barros — Caminho de Milagres
+            => Aline Barros — Caminho de Milagres   [93551628]
+2007  #null  Arlindo Cruz — Meu Lugar
+            => Arlindo Cruz — Meu Lugar   [96166232]
+2007  #null  Soraya Moraes — Sobre as Águas
+            => Soraya Moraes — Sobre As Águas   [790075632]
+2008  #1  Beyoncé — Halo
+            => Beyoncé — Halo (Radio Edit)   [15593283]
+2008  #9  D'Black (participação de Negra Li) — 1 Minuto
+            => D Black — 1 Minuto   [1203886492]
+2008  #12  NX Zero — Cedo ou Tarde
+            => NX Zero — Cedo Ou Tarde   [2424286805]
+2008  #13  Mariah Carey — Touch My Body
+            => Mariah Carey — Touch My Body   [1225539462]
+2008  #16  Leonardo — Coração Bandido
+            => Leonardo — Coração Bandido / Alucinação / Esse Alguém Sou Eu   [75644360]
+2008  #18  D'Black — Sem Ar
+            => D Black — Sem Ar   [978586862]
+2008  #19  Rihanna — Take a Bow
+            => Rihanna — Take A Bow   [925119]
+2008  #22  Wanessa Camargo (participação de Camila) — Me Abrace (Abrázame)
+            => Wanessa Camargo — Me Abrace (Abrazamé)   [13352470]
+2008  #23  Leonardo — A Fila Anda
+            => Leonardo — A Fila Anda   [4673575]
+2008  #25  Zezé Di Camargo & Luciano — Chega
+            => Zezé Di Camargo & Luciano — Chega   [13250841]
+2008  #32  Rodriguinho (participação de Thiaguinho) — Palavras de Amigo
+            => Rodriguinho — Palavras de Amigo   [134829092]
+2008  #34  Daniel — Difícil Não Falar de Amor
+            => Daniel — Difícil não falar de amor   [4116115]
+2008  #35  Alexandre Pires — Pode Chorar
+            => Alexandre Pires — Pode Chorar   [142746712]
+2008  #37  NX Zero — Pela Última Vez
+            => NX Zero — Pela Última Vez   [923122072]
+2008  #39  Victor & Leo — Borboletas
+            => Victor & Leo — Borboletas   [13245343]
+2008  #40  Eduardo Costa — Eu Aposto
+            => Eduardo Costa — Eu Aposto   [3017722001]
+2008  #43  Padre Marcelo Rossi (participação de Belo) — Noites Traiçoeiras
+            => Padre Marcelo Rossi — Noites Traiçoeiras   [128503847]
+2008  #44  Daniel — Quase Louco
+            => Daniel — Quase louco   [4116127]
+2008  #47  Belo — Pra Ver o Sol Brilhar
+            => Belo — Pra Ver o Sol Brilhar   [13240183]
+2008  #49  Madonna — Give It 2 Me
+            => Madonna — Give It 2 Me   [794026]
+2008  #51  Chris Brown — Forever
+            => Chris Brown — Forever   [15590961]
+2008  #53  Skank (participação de Negra Li) — Ainda Gosto Dela
+            => Skank — Ainda Gosto Dela   [63135951]
+2008  #54  Mariah Carey — Bye Bye
+            => Mariah Carey — Bye Bye   [1225539572]
+2008  #59  Marisa Monte — Não é Proibido
+            => Marisa Monte — Não É Proibido   [968482252]
+2008  #60  Fernando & Sorocaba — Bala de Prata
+            => Fernando & Sorocaba — Bala de Prata   [356113431]
+2008  #61  Guilherme & Santiago — O Amor é Assim
+            => Guilherme e Santiago — O Amor É Assim   [3360784341]
+2008  #65  Rihanna — Disturbia
+            => Rihanna — Disturbia   [925118]
+2008  #67  Ne-Yo — Closer
+            => Ne-Yo — Closer   [1761389607]
+2008  #69  Jammil e Uma Noites — Tchau, I Have To Go Now
+            => Jammil E Uma Noites — Tchau, I Have To Go Now   [1555972102]
+2008  #72  Capital Inicial — Algum Dia
+            => Capital Inicial — Algum Dia   [2411022325]
+2008  #73  Simple Plan — Your Love Is a Lie
+            => Simple Plan — Your Love Is a Lie   [846585]
+2008  #75  Britney Spears — Break the Ice
+            => Britney Spears — Break the Ice   [15589896]
+2008  #77  Fresno — Uma Música
+            => Fresno — Uma Música   [24969601]
+2008  #79  Belo — Desse Jeito é Ruim pra Mim
+            => Belo — Desse Jeito é Ruim pra Mim   [13350351]
+2008  #80  Coldplay — Viva la Vida
+            => Coldplay — Viva La Vida   [3157972]
+2008  #90  João Bosco & Vinícius — Sufoco
+            => João Bosco & Vinícius — Sufoco   [3567686]
+2008  #91  André & Adriano — Beber, Cair e Levantar
+            => André e Adriano — Beber, Cair e Levantar   [2188729057]
+2008  #94  Katy Perry — I Kissed a Girl
+            => Katy Perry — I Kissed A Girl   [3169173]
+2008  #95  Rick & Renner — Negativo, Positivo
+            => Rick & Renner — Negativo positivo   [4116085]
+2008  #97  Ana Carolina — Vai
+            => Ana Carolina — Vai   [5674662]
+2008  #null  Camila — Abrázame
+            => Camila — Abrázame   [6720546]
+2008  #null  Fernanda Brum — Coração Que Sangra
+            => Fernanda Brum — Coração que Sangra   [93543882]
+2008  #null  Fernanda Brum — Cura-me
+            => Fernanda Brum — Cura-me   [93543880]
+2008  #null  MC Créu — Dança do Créu
+            => Mc Créu — Dança do Créu   [1383488592]
+2008  #null  Roberta Campos com participação de Nando Reis — De Janeiro a Janeiro
+            => Roberta Campos — De Janeiro a Janeiro   [95985436]
+2008  #null  Pregador Luo com participação de Trazendo a Arca — Já Posso Suportar
+            => Pregador Luo — Já Posso Suportar   [1024105342]
+2008  #null  Fernanda Brum e Ana Paula Valadão — Não é Tarde
+            => Fernanda Brum — Não é Tarde   [93543900]
+2008  #null  Jorge & Mateus — Pode Chorar
+            => Jorge Veiga — Pode Chorar   [3683225892]
+2009  #1  Mariah Carey — I Want to Know What Love Is
+            => Mariah Carey — I Want To Know What Love Is   [1758946807]
+2009  #1  Charlie Brown Jr. — Me Encontra
+            => Charlie Brown Jr. — Me Encontra   [15738364]
+2009  #1  Bruno Mars — Talking to the Moon
+            => Bruno Mars — Talking to the Moon   [7216940]
+2009  #null  João Bosco & Vinícius — Chora, Me Liga
+            => João Bosco & Vinícius — Chora, Me Liga   [3567685]
+2009  #null  Trazendo a Arca — Invoca-Me
+            => Trazendo a Arca — Invoca-me   [2298907985]
+2009  #null  Trazendo a Arca — Pra Tocar no Manto
+            => Trazendo a Arca — Pra Tocar No Manto   [2172823327]
+2009  #null  Restart — Recomeçar
+            => RestArt — Recomeçar   [70129144]
+2009  #null  Gusttavo Lima — Rosas, Versos e Vinhos
+            => Gusttavo Lima — Rosas, Versos e Vinhos   [737308372]
+2009  #null  Trazendo a Arca — Serás Sempre Deus
+            => Trazendo a Arca — Serás Sempre Deus   [2127088377]
+2009  #null  Grupo Revelação — Tá Escrito
+            => Grupo Revelação — Tá Escrito   [96076196]
+2009  #null  Calcinha Preta — Você Não Vale Nada
+            => Calcinha Preta — Você Não Vale Nada   [535405882]
+2010  #1  Luan Santana — Adrenalina
+            => Luan Santana — Adrenalina   [3713876592]
+2010  #1  Jorge & Mateus — Amo Noite e Dia
+            => Jorge & Mateus — Amo Noite E Dia   [2356508625]
+2010  #1  Exaltasamba — Tá Vendo Aquela Lua
+            => Exaltasamba — Tá Vendo Aquela Lua   [100327064]
+2010  #1  Zezé Di Camargo & Luciano — Tapa na Cara
+            => Zezé Di Camargo & Luciano — Tapa Na Cara   [871740782]
+2010  #null  Claudia Leitte — Água
+            => Claudia Leitte — Água   [6305316]
+2010  #null  Lurdez da Luz com a participação de MC Stefanie — Andei
+            => Lurdez da Luz — Andei   [12105553]
+2010  #null  Victor & Leo — Ao Vivo e em Cores
+            => Victor & Leo — Ao Vivo e em Cores   [4763120]
+2010  #null  Guilherme & Santiago — Do Outro Lado da Cidade
+            => Guilherme e Santiago — Do outro lado da cidade   [5815644]
+2010  #null  Exaltasamba — Fugidinha
+            => Exaltasamba — Fugidinha   [100327070]
+2010  #null  Manu Gavassi — Garoto Errado
+            => Manu Gavassi — Garoto Errado   [34265171]
+2010  #null  Gusttavo Lima com a participação de Jorge & Mateus — Inventor dos Amores
+            => Gusttavo Lima — Inventor dos Amores (feat. Jorge & Mateus)   [767117692]
+2010  #null  Restart — Levo Comigo
+            => RestArt — Levo Comigo   [70129148]
+2010  #null  CPM 22 — Na Medida Certa
+            => CPM 22 — Na Medida Certa   [1016152962]
+2010  #null  Gui Rebustini — Nosso Deus (Our God)
+            => Gui Rebustini — Nosso Deus (Our God)   [61017919]
+2010  #null  Carlinhos Brown — Tantinho
+            => Carlinhos Brown — Tantinho   [3016515391]
+2010  #null  CPM 22 — Vida ou Morte
+            => CPM 22 — Vida ou Morte   [1016152912]
+2010  #null  Demi Lovato com a participação de Joe Jonas — Wouldn't Change a Thing
+            => Demi Lovato — Wouldn't Change a Thing (From "Camp Rock 2: The Final Jam")   [6970228]
+2011  #1  Luan Santana — Amar Não É Pecado
+            => Luan Santana — Amar Não É Pecado   [3713876842]
+2011  #1  Luan Santana — As Lembranças Vão na Mala
+            => Luan Santana — As Lembranças Vão Na Mala   [3713876822]
+2011  #1  Paula Fernandes com Victor & Leo — Não Precisa
+            => Paula Fernandes — Não Precisa   [4229784902]
+2011  #1  Luan Santana — Nêga
+            => Luan Santana — Nega   [3713876602]
+2011  #1  Luan Santana e Ivete Sangalo — Química do Amor
+            => Luan Santana — Química do Amor   [3713876622]
+2011  #1  Zezé Di Camargo & Luciano — Sonho de Amor
+            => Zezé Di Camargo & Luciano — Sonho de Amor   [99549594]
+2011  #1  Luan Santana — Um Beijo
+            => Luan Santana — Um Beijo   [3713876832]
+2011  #1  Rihanna part. Calvin Harris — We Found Love
+            => Rihanna — We Found Love   [14525574]
+2011  #null  Victor & Leo — Água de Oceano
+            => Victor & Leo — Água de Oceano   [7453410]
+2011  #null  Marisa Monte — Ainda Bem
+            => Marisa Monte — Ainda Bem   [950812822]
+2011  #null  Luiza Possi — Ainda é Tudo Seu
+            => Luiza Possi — Ainda É Tudo Seu   [3538931861]
+2011  #null  Gusttavo Lima — Balada
+            => Gusttavo Lima — Balada   [767383202]
+2011  #null  Wanessa Camargo — Blow Me Away
+            => Wanessa Camargo — Blow Me Away   [13040062]
+2011  #null  Charlie Brown Jr. — Céu Azul
+            => Charlie Brown Jr. — Céu Azul   [1509938122]
+2011  #null  Wanessa Camargo — DNA
+            => Wanessa Camargo — DNA   [13040055]
+2011  #null  MC Daleste — Em Teu Olhar
+            => Mc Daleste — Em teu olhar   [2107835877]
+2011  #null  Gusttavo Lima — Fora do Comum
+            => Gusttavo Lima — Fora do Comum   [3027689611]
+2011  #null  João Neto & Frederico — Lê Lê Lê
+            => Joao Neto & Frederico — Lê Lê Lê   [16619093]
+2011  #null  Eduardo Costa — Quem É?
+            => Eduardo Costa — Quem é?   [9992485]
+2011  #null  Wanessa Camargo — Rescue Mission
+            => Wanessa Camargo — Rescue Mission   [13040063]
+2011  #null  Gaby Amarantos — Xirley
+            => Gaby Amarantos — Xirley   [2338524835]
+2012  #1  Thiaguinho — Buque de Flores
+            => Thiaguinho — Buquê De Flores / A Gente Bota Pra Quebra / Ousadia & Alegria   [2951101431]
+2012  #1  Roberto Carlos — Esse Cara Sou Eu
+            => Roberto Carlos — Esse Cara Sou Eu   [103343782]
+2012  #1  João Lucas & Marcelo — Eu Quero Tchu Eu Quero Tcha
+            => João Lucas & Marcelo — Eu Quero Tchu Eu Quero Tcha   [17308568]
+2012  #1  Luan Santana — Incondicional
+            => Luan Santana — Incondicional   [3713876912]
+2012  #1  Gabriel Valim — Piradinha
+            => Gabriel Valim — Piradinha   [4028495261]
+2012  #1  Thiaguinho — Sou o Cara pra Você
+            => Thiaguinho — Sou o Cara Pra Você   [1236919252]
+2012  #1  Luan Santana — Te Vivo
+            => Luan Santana — Te Vivo   [75877685]
+2012  #1  Bruno & Marrone — Vidro Fumê
+            => Bruno & Marrone — Vidro Fumê   [56892231]
+2012  #null  Gusttavo Lima — 60 Segundos
+            => Gusttavo Lima — 60 Segundos   [767383292]
+2012  #null  Fiuk — Abre os Olhos
+            => Fiuk — Abre os olhos   [14662227]
+2012  #null  Naldo Benny — Amor de Chocolate
+            => Naldo Benny — Amor de Chocolate   [1447114802]
+2012  #null  Sorriso Maroto — Assim Você Mata o Papai
+            => Sorriso Maroto — Assim Você Mata o Papai   [1360287552]
+2012  #null  Michel Teló — Bara Bará Bere Berê
+            => Michel Teló — Bara Bará Bere Berê   [1617549102]
+2012  #null  Roberto Carlos — Furdúncio
+            => Roberto Carlos — Furdúncio   [103343784]
+2012  #null  Gusttavo Lima — Gatinha Assanhada
+            => Gusttavo Lima — Gatinha Assanhada / Balada / Bebo Pra Carai   [2320558035]
+2012  #null  Michel Teló — Love Song
+            => Michel Teló — Love Song   [2266742787]
+2012  #null  Anitta — Meiga e Abusada
+            => Anitta — Meiga e abusada   [68530323]
+2012  #null  Restart — Menina Estranha
+            => RestArt — Menina Estranha   [70129167]
+2012  #null  Anitta — Menina Má
+            => Anitta — Menina Má   [1341704272]
+2012  #null  Victor & Leo — Não Me Perdoei
+            => Victor & Leo — Não Me Perdoei   [46239981]
+2012  #null  Victor & Leo — Quando Você Some
+            => Victor Martinez Oficial — Quando Voce Some   [3703897682]
+2012  #null  Ivete Sangalo — Só Num Sonho
+            => Ivete Sangalo — Só Num Sonho   [1087976862]
+2012  #null  Madonna — Superstar
+            => Madonna — Superstar   [3723481292]
+2013  #1  Luan Santana — Cê Topa
+            => Luan Santana — Cê Topa   [3713876652]
+2013  #1  Lucas Lucco — Mozão
+            => Lucas Lucco — Mozão   [73447562]
+2013  #1  Victor & Leo — Na Linha do Tempo
+            => Victor & Leo — Na Linha do Tempo   [70337048]
+2013  #1  Victor & Leo — O Tempo Não Apaga
+            => Victor & Leo — O Tempo Não Apaga   [71407014]
+2013  #1  Luan Santana — Sogrão Caprichou
+            => Luan Santana — Sogrão Caprichou   [3713876662]
+2013  #1  Luan Santana — Te Esperando
+            => Luan Santana — Te Esperando   [67796035]
+2013  #1  Victor & Leo — Tudo com Você
+            => Victor & Leo — Tudo Com Você   [71407012]
+2013  #1  Anitta — Zen
+            => Anitta — Zen   [68530326]
+2013  #null  Michel Teló — Amiga da Minha Irmã
+            => Michel Teló — Amiga Da Minha Irmã   [1617549022]
+2013  #null  O Rappa — Anjos (Pra quem tem fé)
+            => O Rappa — Anjos (Pra quem tem fé)   [70046742]
+2013  #null  O Rappa — Auto-Reverse
+            => O Rappa — Auto-reverse   [70046738]
+2013  #null  Cristiano Araújo — Caso Indefinido
+            => Cristiano Araújo — Caso Indefinido   [70835779]
+2013  #null  Manu Gavassi — Clichê Adolescente
+            => Manu Gavassi — Clichê Adolescente   [69946581]
+2013  #null  Ana Carolina — Combustível
+            => Ana Carolina — Combustível   [75181225]
+2013  #null  Selvagens à Procura de Lei — Despedida
+            => Selvagens à Procura de Lei — Despedida   [445967302]
+2013  #null  Far From Alaska — Dino vs. Dino
+            => Far From Alaska — Dino vs Dino   [95945986]
+2013  #null  Sophia Abrahão — É Você
+            => Sophia Abrahão — É Você   [70049818]
+2013  #null  Sophia Abrahão — Flores
+            => Sophia Abrahão — Flores   [72986581]
+2013  #null  Selvagens à Procura de Lei — Mar Fechado
+            => Selvagens à Procura de Lei — Mar Fechado   [445967332]
+2013  #null  Michel Teló — Maria
+            => Michel Teló — Maria   [68042152]
+2013  #null  Cristiano Araújo — Maus Bocados
+            => Cristiano Araújo — Maus Bocados   [70835778]
+2013  #null  Manu Gavassi com participação de Chay Suede — Segredo
+            => Manu Gavassi — Segredo   [69946583]
+2013  #null  Padre Fábio de Melo — Seja Bem-Vindo
+            => Padre Fábio de Melo — Seja Bem Vindo!   [68351530]
+2013  #null  Anitta — Show das Poderosas
+            => Anitta — Show das Poderosas   [68530321]
+2013  #null  Anitta — Som do Coração
+            => Anitta — Som do coração   [68530338]
+2014  #1  Bruno & Marrone — Agora (Ahora)
+            => Bruno & Marrone — Agora (Ahora)   [80606370]
+2014  #1  Henrique & Juliano — Cuida Bem Dela
+            => Henrique & Felipe — Cuida Bem Dela / Pergunta Boba / Deus Me Livre   [2965479621]
+2014  #1  Marcos & Belutti — Domingo de Manhã
+            => Marcos & Belutti — Domingo de Manhã   [1083838842]
+2014  #1  João Neto & Frederico — Presto Pouco
+            => Joao Neto & Frederico — Presto Pouco   [624465142]
+2014  #1  Leonardo e Eduardo Costa — Um Degrau Na Escada
+            => Leonardo — Um Degrau na Escada   [89387009]
+2014  #1  Bruno & Marrone — Vou Te Amarrar na Minha Cama
+            => Bruno & Marrone — Vou Te Amarrar na Minha Cama   [80606386]
+2014  #null  Gusttavo Lima — 10 Anos
+            => Gusttavo Lima — 10 Anos   [1826941367]
+2014  #null  Lucas Lucco — 11 Vidas
+            => Lucas Lucco — 11 Vidas   [80448800]
+2014  #null  Ludmilla — 24 Horas Por Dia
+            => Ludmilla — 24 horas por dia   [83361172]
+2014  #null  Tiê — A Noite
+            => Tiê — A noite   [84928335]
+2014  #null  Lu Andrade — Amanheceu
+            => Lu Andrade — Amanheceu   [938738792]
+2014  #null  Henrique & Juliano — Até Você Voltar
+            => Henrique & Juliano — Até Você Voltar   [100337424]
+2014  #null  Thiaguinho — Caraca, Muleke!
+            => Thiaguinho — Caraca, Muleke!   [75465379]
+2014  #null  Cristiano Araújo — Cê Que Sabe
+            => Cristiano Araújo — Cê Que Sabe   [78490094]
+2014  #null  Cristiano Araújo — É com Ela que Eu Estou
+            => Cristiano Araújo — É Com Ela Que Eu Estou   [86192931]
+2014  #null  Marcos & Belutti — Então Foge
+            => Marcos & Belutti — Então Foge   [1083849362]
+2014  #null  Manu Gavassi — Esse Amor Tão Errado
+            => Manu Gavassi — Esse Amor Tão Errado   [100642194]
+2014  #null  Valesca Popozuda — Eu Sou a Diva que Você Quer Copiar
+            => Valesca Popozuda — Eu Sou a Diva Que Você Quer Copiar   [90103329]
+2014  #null  Ludmilla — Hoje
+            => Ludmilla — Hoje   [83361154]
+2014  #null  Tribo da Periferia, Hungria Hip Hop — Insônia
+            => Tribo da Periferia — Insônia   [3337376701]
+2014  #null  Naldo Benny com a participação de Flo Rida — Maluquinha
+            => Naldo Benny — Maluquinha   [1447113252]
+2014  #null  Projota com participação de Marlos Vinicius — Mulher
+            => Projota — Mulher   [3705916882]
+2014  #null  Ludmilla — Não Quero Mais
+            => Ludmilla — Não quero mais   [105343740]
+2014  #null  Ana Carolina — Pole Dance
+            => Ana Carolina — Pole Dance   [75181222]
+2014  #null  Lexa — Posso Ser
+            => Lexa — Posso Ser   [92508690]
+2014  #null  Ludmilla — Sem Querer
+            => Ludmilla — Sem querer   [83361152]
+2014  #null  Ludmilla — Te Ensinei Certin
+            => Ludmilla — Te ensinei certin   [83361158]
+2014  #null  Ricky Martin — Vida
+            => Ricky Martin — Vida   [77019865]
+2015  #1  Victor & Leo part. Henrique & Juliano — 10 Minutos Longe de Você
+            => Victor & Leo — 10 Minutos Longe de Você   [98507650]
+2015  #1  Marcos & Belutti part. Wesley Safadão — Aquele 1%
+            => Marcos & Belutti — Aquele 1%   [102345206]
+2015  #1  Luan Santana — Chuva de Arroz
+            => Luan Santana — Chuva de Arroz   [3713876692]
+2015  #1  Luan Santana — Escreve Aí
+            => Luan Santana — Escreve Aí   [96904420]
+2015  #1  Henrique & Diego — Esqueci Você
+            => Henrique & Diego — Esqueci Você   [92171330]
+2015  #1  Luan Santana — Eu Não Merecia Isso
+            => Luan Santana — Eu Não Merecia Isso   [91360504]
+2015  #1  Marília Mendonça — Infiel
+            => Marília Mendonça — Infiel / Amante Não Tem Lar   [2282308427]
+2015  #1  Bruno & Marrone — Isso Cê Num Conta
+            => Bruno & Marrone — Isso Cê Num Conta   [104930570]
+2015  #1  Zé Felipe part. Ludmilla — Não Me Toca
+            => Zé Felipe — Não Me Toca (feat. Ludmilla)   [117100436]
+2015  #1  Gusttavo Lima — Que Pena Que Acabou
+            => Gusttavo Lima — Que Pena Que Acabou   [1826941527]
+2015  #1  Eduardo Costa — Sapequinha
+            => Eduardo Costa — Sapequinha   [103388222]
+2015  #1  Henrique & Diego part. MC Guimê — Suíte 14
+            => Henrique & Diego — Suíte 14   [90181247]
+2015  #1  Marcos & Belutti — Tão Feliz
+            => Marcos & Belutti — Tão Feliz   [1083849332]
+2015  #1  Victor & Leo — Tempo de Amor
+            => Victor & Leo — Tempo de Amor   [108224368]
+2015  #null  Calcinha Preta — A Dona do Barraco
+            => Calcinha Preta — A Dona do Barraco   [752945502]
+2015  #null  Tanlan — A Maior Aventura
+            => Tanlan — A Maior Aventura   [138738141]
+2015  #null  Paula Fernandes — A Paz Desse Amor
+            => Paula Fernandes — A Paz Desse Amor   [109701470]
+2015  #null  Daniela Araújo e Kivitz — Abril
+            => Daniela Araújo — Abril   [1854451437]
+2015  #null  Leonardo Gonçalves — Acredito (We Believe)
+            => Leonardo Gonçalves — Acredito (We Believe)   [367561201]
+2015  #null  Daniela Araújo e Mauro Henrique — Agosto
+            => Daniela Araújo — Agosto   [117072156]
+2015  #null  Tiago Iorc — Amei Te Ver
+            => TIAGO IORC — Amei Te Ver   [103216900]
+2015  #null  João Bosco & Vinícius — Amiga Linda
+            => João Bosco & Vinícius — Amiga Linda   [824526172]
+2015  #null  Hungria Hip Hop com participação especial de Mr. Catra — Bolo Doido
+            => Hungria — Bolo Doido   [1470944892]
+2015  #null  Anahí com participação de Zuzuka Poderosa — Boom Cha
+            => Anahí — Boom Cha   [125968195]
+2015  #null  Wesley Safadão — Camarote
+            => Wesley Safadão — Camarote   [2010133737]
+2015  #null  Manu Gavassi — Camiseta
+            => Manu Gavassi — Camiseta   [114445406]
+2015  #null  Lorena Chaves e Marcos Almeida — Dança
+            => Lorena Chaves — Dança   [98720888]
+2015  #null  Dream Team do Passinho — De Ladin
+            => Dream Team do Passinho — De Ladin   [95225272]
+2015  #null  Lexa — Disponível
+            => Lexa — Disponível   [106044744]
+2015  #null  Silva — Eu Sempre Quis
+            => Silva — Eu Sempre Quis   [110326086]
+2015  #null  Nego do Borel — Não Me Deixe Sozinho
+            => Nego Do Borel — Não Me Deixe Sozinho   [103740550]
+2015  #null  Anitta — No Meu Talento
+            => Anitta — No meu talento   [96822862]
+2015  #null  Duduzinho — O mundo é Nosso
+            => Duduzinho — O mundo é nosso   [98837972]
+2015  #null  Lexa — Para de Marra
+            => Lexa — Para de Marra   [106044742]
+2015  #null  Lexa — Pior que Sinto Falta
+            => Lexa — Pior Que Sinto Falta   [106044752]
+2015  #null  Marcos & Belutti — Poeira da Lua
+            => Marcos & Belutti — Poeira da Lua   [1083849352]
+2015  #null  Claudia Leitte com participação de J. Perry — Shiver Down My Spine
+            => Claudia Leitte — Shiver Down My Spine   [127677159]
+2015  #null  Claudia Leitte — Signs
+            => Claudia Leitte — Signs   [106469256]
+2015  #null  Valesca Popozuda — Sou Dessas
+            => Valesca Popozuda — Sou Dessas   [101585638]
+2015  #null  Fernanda Brum — Suas Digitais
+            => Fernanda Brum — Suas Digitais   [104287116]
+2015  #null  Selvagens à Procura de Lei — Tarde Livre
+            => Selvagens à Procura de Lei — Tarde Livre   [445970672]
+2015  #null  Kelly Key — Turn Around
+            => Kelly Key — Turn Around   [95947006]
+2015  #null  Joelma — Voando pro Pará
+            => Joelma — Voando Pro Pará   [123844396]
+2016  #1  Simone & Simaria — 126 Cabides
+            => Simone & Simaria — 126 Cabides   [130887624]
+2016  #1  Bruno & Barretto — 40 Graus de Amor
+            => Bruno & Barretto — 40 Graus De Amor   [362714891]
+2016  #1  Luan Santana — Dia, Lugar e Hora
+            => Luan Santana — Dia, Lugar e Hora   [134876834]
+2016  #1  Bruninho & Davi part. Luan Santana — E Essa Boca Aí?
+            => Bruninho & Davi — E Essa Boca Aí? (feat. Luan Santana)   [364294021]
+2016  #1  Luan Santana — Eu, Você, o Mar e Ela
+            => Luan Santana — Eu, Você, O Mar e Ela   [134876838]
+2016  #1  Gusttavo Lima — Homem de Família
+            => Gusttavo Lima — Homem de Família   [1826940227]
+2016  #1  Henrique & Diego part. Simone & Simaria — Raspão
+            => Henrique & Diego — Raspão (feat. Simone & Simaria)   [144388354]
+2016  #1  Marcos & Belutti part. Fernando Zor — Romântico Anônimo
+            => Marcos & Belutti — Romântico Anônimo   [1083849372]
+2016  #1  Bruno & Marrone — Seu Polícia
+            => Bruno & Marrone — Seu Polícia   [7365520]
+2016  #1  Lucas Lucco — Só Não Deixa Eu Tomar Birra
+            => Lucas Lucco — Só Não Deixa Eu Tomar Birra   [130008626]
+2016  #1  Bruno & Barretto part. Conrado & Aleksandro — Tô Pouco Me Lixando
+            => Bruno & Barretto — Tô Pouco Me Lixando   [133345428]
+2016  #null  Naiara Azevedo com a participação de Maiara & Maraísa — 50 Reais
+            => Naiara Azevedo — 50 Reais   [123722066]
+2016  #null  Estêvão Queiroga — A Partida e o Norte
+            => Estevão Queiroga — A Partida e o Norte   [128098183]
+2016  #null  Joelma — Ai Coração
+            => Joelma — Ai Coração   [123844386]
+2016  #null  Luiza Possi — Aventura
+            => Luiza Possi — Aventura   [118563026]
+2016  #null  Ludmilla — Bom
+            => Ludmilla — Bom   [126916493]
+2016  #null  Valesca Popozuda — Boy Magia
+            => Valesca Popozuda — Boy Magia   [118380738]
+2016  #null  Roberto Carlos e Jennifer Lopez — Chegaste
+            => Roberto Carlos — Chegaste   [138379927]
+2016  #null  Ludmilla — Cheguei
+            => Ludmilla — Cheguei   [131980072]
+2016  #null  Joelma — Chora Não Coração
+            => Joelma — Chora Não Coração   [123844380]
+2016  #null  Edson & Hudson com a participação de Bruno & Marrone — Contagem Regressiva
+            => Edson Lima e o Forró Gatinha Manhosa — Contagem Regressiva   [84360589]
+2016  #null  Wanessa Camargo — Coração Embriagado
+            => Wanessa Camargo — Coração Embriagado   [129523226]
+2016  #null  Joelma — Debaixo do Mesmo Céu
+            => Joelma — Debaixo Do Mesmo Céu   [123844390]
+2016  #null  Selvagens à Procura de Lei — Dois de Fevereiro
+            => Selvagens à Procura de Lei — Dois de Fevereiro   [445970652]
+2016  #null  Yzalú — Figura Difícil
+            => Yzalú — Figura Difícil   [121097150]
+2016  #null  Alok e Bruno Martini com participação de Zeeba — Hear Me Now
+            => Alok — Hear Me Now   [452769552]
+2016  #null  Fabi Bang — Ironias
+            => Fabi Bang — Ironias   [138294883]
+2016  #null  Hungria Hip Hop — Lembranças
+            => Hungria — Lembranças   [130002884]
+2016  #null  Biel com participação de Ludmilla — Melhor Assim
+            => Biel — Melhor assim (feat. Ludmilla)   [119968170]
+2016  #null  Joelma — Não Teve Amor
+            => Joelma — Não Teve Amor   [123844378]
+2016  #null  Ivete Sangalo — O Doce
+            => Ivete Sangalo — O Doce   [1963943197]
+2016  #null  Zimbra — O Redator
+            => Zimbra — O Redator   [128607563]
+2016  #null  Hungria Hip Hop com participação de Lucas Lucco — Quebra-Cabeça
+            => Hungria — Quebra Cabeça   [1470992752]
+2016  #null  Dilsinho — Refém
+            => Dilsinho — Refém   [126608387]
+2016  #null  Claudia Leitte — Ricos de Amor
+            => Claudia Leitte — Ricos De Amor   [126916491]
+2016  #null  Joelma com participação de Zé Felipe — Se Vira Aí
+            => Joelma — Se Vira Aí   [481123202]
+2016  #null  Ludmilla — Sou Eu
+            => Ludmilla — Sou eu   [131980076]
+2016  #null  Sophia Abrahão — Sou Fatal
+            => Sophia Abrahão — Sou Fatal   [122661926]
+2016  #null  Latino com participação de Well — Todo Seu
+            => Latino — Todo Seu (feat. Well)   [113949090]
+2016  #null  Dilsinho — Trovão
+            => Dilsinho — Trovão   [126608383]
+2017  #1  Gusttavo Lima — Abre o Portão Que Eu Cheguei
+            => Gusttavo Lima — Abre o Portão Que Eu Cheguei   [1826940107]
+2017  #1  Luan Santana — Acordando o Prédio
+            => Luan Santana — Acordando o Prédio   [141145001]
+2017  #1  MC Jhowzinho, MC Kazinho — Agora Vai Sentar
+            => MC Jhowzinho — Agora Vai Sentar   [2768246771]
+2017  #1  Gusttavo Lima — Apelido Carinhoso
+            => Gusttavo Lima — Apelido Carinhoso   [1826940407]
+2017  #1  Wesley Safadão — Ar Condicionado no 15
+            => Wesley Safadão — Ar Condicionado no 15   [2022081487]
+2017  #1  Naiara Azevedo part. Ivete Sangalo — Avisa Que Eu Cheguei
+            => Naiara Azevedo — Avisa Que Eu Cheguei   [360945771]
+2017  #1  Maiara & Maraisa — Bengala e Crochê
+            => Maiara & Maraisa — Bengala e Crochê   [414511592]
+2017  #1  Marcos & Belutti — Eu Era
+            => Marcos & Belutti — Eu Era   [345377621]
+2017  #1  Gusttavo Lima part. Hungria Hip Hop — Eu Vou Te Buscar (Cha La La La La)
+            => Gusttavo Lima — Eu Vou Te Buscar (Cha La La La La)   [400055132]
+2017  #1  Eduardo Costa — Forró e Paixão
+            => Eduardo Costa — Forró e Paixão   [144618600]
+2017  #1  Bruno & Barretto part. DJ Kévin — Lá Se Foi o Boi com a Corda
+            => Bruno & Barretto — Lá Se Foi O Boi Com A Corda   [143177826]
+2017  #1  Naiara Azevedo — Mordida, Beijo e Tapa
+            => Naiara Azevedo — Mordida, Beijo e Tapa   [365529741]
+2017  #1  Bruno & Marrone — Na Conta da Loucura
+            => Bruno & Marrone — Na Conta da Loucura   [357488871]
+2017  #1  Naiara Azevedo — Pegada Que Desgrama
+            => Naiara Azevedo — Pegada Que Desgrama   [432358872]
+2017  #1  Eduardo Costa — Saudade
+            => Eduardo Costa — Saudade   [409619722]
+2017  #1  Marcos & Belutti — Solteiro Apaixonado
+            => Marcos & Belutti — Solteiro Apaixonado   [357711631]
+2017  #1  Henrique & Juliano — Vidinha de Balada
+            => Henrique & Gabriel — Vidinha de Balada   [1778727277]
+2017  #null  Davi Sacer — Acende o Fogo
+            => Davi Sacer — Acende o Fogo   [372944811]
+2017  #null  OutroEu com participação de Sandy — Ai de Mim
+            => OUTROEU — Ai de Mim   [144811974]
+2017  #null  Claudia Leitte — Baldin de Gelo
+            => Claudia Leitte — Baldin de Gelo   [1182373962]
+2017  #null  Dennis DJ com participação de Claudia Leitte — Eu Gosto
+            => DENNIS — Eu Gosto (feat. Claudia Leitte)   [139873023]
+2017  #null  Lucero — Eu Tô de Olho
+            => Lucero — Eu To de Olho   [384204931]
+2017  #null  Luísa Sonza — Good Vibes
+            => Luísa Sonza — Good Vibes   [410053322]
+2017  #null  Simone & Simaria com a participação de Anitta — Loka
+            => Simone & Simaria — Loka   [139404631]
+2017  #null  Sophia Abrahão — O Bom É Que Passa
+            => Sophia Abrahão — O Bom É Que Passa   [965061812]
+2017  #null  Sophia Abrahão com participação de Boss In Drama — Rebola
+            => Sophia Abrahão — Rebola   [427519022]
+2017  #null  Wesley Safadão — Ressaca de Saudade
+            => Wesley Safadão — Ressaca de Saudade   [2022081477]
+2017  #null  Bruno Martini e Timbaland com participação de Johnny Franco — Road
+            => Bruno Martini — Road   [412568392]
+2017  #null  Wesley Safadão — Sonhei Que Tava Me Casando
+            => Wesley Safadão — Sonhei Que Tava Me Casando   [2010076087]
+2017  #null  Danny Bond — Tcheca
+            => Danny Bond — Tcheca   [639256782]
+2017  #null  Baco Exu do Blues e Ellen Andrade — Te Amo Disgraça
+            => Baco Exu Do Blues — Te Amo Disgraça   [445019772]
+2017  #null  Gabily com participação de Ludmilla — Você Gosta Assim
+            => Gabily — Você Gosta Assim   [142405923]
+2018  #1  Luan Santana — 2050
+            => Luan Santana — 2050   [476410412]
+2018  #1  Matheus & Kauan (com a participação de Anitta) — Ao Vivo e A Cores
+            => Matheus & Kauan — Ao Vivo E A Cores   [497488622]
+2018  #1  Naiara Azevedo — Buá Buá
+            => Naiara Azevedo — Buá Buá   [496275882]
+2018  #1  Gusttavo Lima — Cem Mil
+            => Gusttavo Lima — Cem Mil   [1826941427]
+2018  #1  Maiara & Maraisa — Coração Infectado
+            => Maiara & Maraisa — Coração Infectado   [546216022]
+2018  #1  Thiago Brava part. Jorge — Dona Maria
+            => Thiago Brava — Dona Maria   [415315702]
+2018  #1  Eduardo Costa — Olha Ela Aí
+            => Eduardo Costa — Olha Ela Aí   [3284194321]
+2018  #1  Gusttavo Lima — Zé da Recaída
+            => Gusttavo Lima — Zé da Recaída   [1826941347]
+2018  #null  Dilsinho — 12 Horas
+            => Dilsinho — 12 Horas   [470733882]
+2018  #null  Joelma — 18 Quilates
+            => Joelma — 18 Quilates   [553703702]
+2018  #null  Sandy com participação de Lucas Lima — Areia
+            => Sandy — Areia   [543641112]
+2018  #null  Rouge — Bailando
+            => Rouge — Bailando   [453156382]
+2018  #null  Claudia Leitte — Balancinho
+            => Claudia Leitte — Balancinho   [578715392]
+2018  #null  Baco Exu do Blues — Bluesman
+            => Baco Exu Do Blues — Bluesman   [3284207361]
+2018  #null  Luísa Sonza — Boa Menina
+            => Luísa Sonza — Boa Menina   [574299322]
+2018  #null  Pabllo Vittar — Buzina
+            => Pabllo Vittar — Buzina   [559356602]
+2018  #null  Lali com Pabllo Vittar — Caliente
+            => Lali — Caliente (feat. Pabllo Vittar)   [529919551]
+2018  #null  Luísa Sonza — Devagarinho
+            => Luísa Sonza — Devagarinho   [520762132]
+2018  #null  Rouge — Dona da Minha Vida
+            => Rouge — Dona da Minha Vida   [544084702]
+2018  #null  Priscilla Alcantara — Empatia
+            => Priscilla Alcantara — Empatia   [577454942]
+2018  #null  MC Loma e As Gêmeas Lacração — Envolvimento
+            => MC Loma e As Gêmeas Lacração — Envolvimento   [1568082352]
+2018  #null  Theo Rubia — Eu Só Quero Tua Presença
+            => Theo Rubia — Eu Só Quero Tua Presença   [1589529832]
+2018  #null  Blaya — Faz Gostoso
+            => Blaya — Faz Gostoso   [468413062]
+2018  #null  Jão — Imaturo
+            => Jão — Imaturo   [449072022]
+2018  #null  Gabriel Diniz — Jenifer
+            => Gabriel Diniz — Jenifer   [555639262]
+2018  #null  Ludmilla — Jogando Sujo
+            => Ludmilla — Jogando sujo   [528819241]
+2018  #null  Wanessa Camargo — LOKO!
+            => Wanessa Camargo — LOKO!   [2397241195]
+2018  #null  Jão — Me Beija com Raiva
+            => Jão — Me Beija Com Raiva   [540497082]
+2018  #null  Baco Exu do Blues — Me Desculpa, Jay-Z
+            => Baco Exu Do Blues — Me Desculpa Jay Z   [3284207381]
+2018  #null  Priscilla Alcantara — Me Refez
+            => Priscilla Alcantara — Me Refez   [506363182]
+2018  #null  Nego do Borel com participação de DJ Rennan da Penha — Me Solta
+            => Nego Do Borel — Me Solta   [507073112]
+2018  #null  Vitor Kley e Bruno Martini — Morena
+            => Vitor Kley — Morena   [1522309602]
+2018  #null  Wanessa Camargo — Mulher Gato
+            => Wanessa Camargo — Mulher Gato   [2397241185]
+2018  #null  Hugo & Guilherme — Namorada Reserva
+            => Hugo & Guilherme — Namorada Reserva   [823388442]
+2018  #null  Ludmilla — Não Encosta
+            => Ludmilla — Não encosta   [486024332]
+2018  #null  Anitta — Não Perco Meu Tempo
+            => Anitta — Não perco meu tempo   [583316972]
+2018  #null  Vitor Kley — O Sol
+            => Vitor Kley — O Sol   [1522310772]
+2018  #null  Melim — Ouvi Dizer
+            => Melim — Ouvi Dizer   [438865462]
+2018  #null  Seakret com a participação de Anitta e Jojo Maronttinni — Perdendo a Mão
+            => Seakret — Perdendo A Mão   [549245412]
+2018  #null  Joelma com participação de Marília Mendonça — Perdeu a Razão
+            => Joelma — Perdeu a Razão   [469367512]
+2018  #null  Dilsinho — Péssimo Negócio
+            => Dilsinho — Péssimo Negócio   [3491427381]
+2018  #null  Lexa e Gloria Groove — Provocar
+            => Lexa — Provocar   [621998192]
+2018  #null  Wesley Safadão e Anitta — Romance com Safadeza
+            => Wesley Safadão — Romance Com Safadeza   [2010162487]
+2018  #null  Lexa e MC Lan — Sapequinha
+            => Lexa — Sapequinha   [532831332]
+2018  #null  Rouge — Solo tu
+            => Rouge — Solo Tu   [621654792]
+2018  #null  Ludmilla — Solta a Batida
+            => Ludmilla — Solta a batida   [448584972]
+2018  #null  Hugo Del Vecchio — Supera
+            => Hugo Del Vecchio — Supera   [513908152]
+2018  #null  Hugo & Guilherme e Henrique & Juliano — Teste da Mãozinha
+            => Hugo & Guilherme — Teste da Mãozinha   [823388432]
+2018  #null  Ivete Sangalo e Melim — Um Sinal
+            => Ivete Sangalo — Um Sinal   [535133962]
+2018  #null  Jão — Vou Morrer Sozinho
+            => Jão — Vou Morrer Sozinho   [539289942]
+2019  #1  Diego & Victor Hugo part. Zé Neto & Cristiano — A Culpa é do Meu Grau
+            => Diego & Victor Hugo — A Culpa é do Meu Grau (feat. Zé Neto & Cristiano)   [702209972]
+2019  #1  Gusttavo Lima — A Gente Fez Amor
+            => Gusttavo Lima — A Gente Fez Amor   [814814992]
+2019  #1  Maiara & Maraisa — Aí Eu Bebo
+            => Maiara & Maraisa — Aí Eu Bebo   [1493645582]
+2019  #1  Tropkillaz, J Balvin e Anitta (com participação de MC Zaac) — Bola Rebola
+            => Tropkillaz — Bola Rebola   [634481742]
+2019  #1  Gustavo Mioto — Com ou Sem Mim
+            => Gustavo Mioto — Com Ou Sem Mim   [1182131292]
+2019  #1  Gustavo Mioto — Fake News
+            => Gustavo Mioto — Fake News   [1165006172]
+2019  #1  Zé Neto & Cristiano — Ferida Curada
+            => Zé Neto & Cristiano — Ferida Curada   [709149292]
+2019  #1  MC Du Black — Gaiola É o Troco
+            => MC Du Black — Gaiola É o Troco   [684143602]
+2019  #1  Wesley Safadão — Igual Ela, Só Uma
+            => Wesley Safadão — Igual Ela Só Uma   [2010113167]
+2019  #1  João Gustavo & Murilo — Lençol Dobrado
+            => João Gustavo e Murilo — Lençol Dobrado   [730294542]
+2019  #1  Gusttavo Lima — Milu
+            => Gusttavo Lima — Milu   [699569612]
+2019  #1  Maiara & Maraisa — Não Abro Mão
+            => Maiara & Maraisa — Não Abro Mão   [546216082]
+2019  #1  Diego & Arnaldo — Relógio Parado
+            => Diego & Arnaldo — Relógio Parado   [1242848312]
+2019  #null  Guilherme & Benuto — 3 Batidas
+            => Guilherme & Benuto — 3 Batidas   [1591940761]
+2019  #null  Ludmilla com participação de Jão — A Boba Fui Eu
+            => Ludmilla — A boba fui eu   [2423165775]
+2019  #null  Joelma — Ai Baby
+            => Joelma — Ai Baby   [654915872]
+2019  #null  Lexa e MC Kekel — Amor Bandido
+            => Lexa — Amor Bandido   [665851622]
+2019  #null  Tove Lo com participação de MC Zaac — Are U Gonna Tell Her?
+            => Tove Lo — Are U gonna tell her?   [755346272]
+2019  #null  Anitta e MC Cabelinho — Até o Céu
+            => Anitta — Até o céu   [836881632]
+2019  #null  Manu Gavassi — Áudio de Desculpas
+            => Manu Gavassi — áudio de desculpas   [750141662]
+2019  #null  Claudia Leitte — Bandera
+            => Claudia Leitte — Bandera   [1201680362]
+2019  #null  Luísa Sonza e Vitão — Bomba Relógio
+            => Luísa Sonza — Bomba Relógio   [693449202]
+2019  #null  Wanessa Camargo — Cuida de Mim
+            => Wanessa Camargo — Cuida de Mim   [2403896745]
+2019  #null  Joelma — Cupim de Coração
+            => Joelma — Cupim de Coração   [759417112]
+2019  #null  Selvagens à Procura de Lei — Déjà Vu
+            => Selvagens à Procura de Lei — Déjà Vu   [2766782631]
+2019  #null  Wanessa Camargo — Desiste Não
+            => Wanessa Camargo — Desiste Não   [2593555332]
+2019  #null  Joelma — Eclipse de Amor
+            => Joelma — Eclipse de Amor   [759417102]
+2019  #null  Jão — Enquanto Me Beija
+            => Jão — Enquanto Me Beija   [769508742]
+2019  #null  Jão — Essa Eu Fiz Pro Nosso Amor
+            => Jão — Essa Eu Fiz Pro Nosso Amor   [769508752]
+2019  #null  Ludmilla com participação de Anitta — Favela Chegou
+            => Ludmilla — Favela chegou   [727923972]
+2019  #null  Luísa Sonza e Gaab — Fazendo Assim
+            => Luísa Sonza — Fazendo Assim   [693449182]
+2019  #null  BFF Girls — Fica
+            => BFF Girls — Fica   [826997382]
+2019  #null  Priscilla Alcantara — Final da História
+            => Priscilla Alcantara — Final da História   [756686762]
+2019  #null  Pabllo Vittar com participação de Charli XCX — Flash Pose
+            => Pabllo Vittar — Flash Pose   [710628192]
+2019  #null  Priscilla Alcantara e Whindersson Nunes — Girassol
+            => PRISCILLA — Girassol   [830286542]
+2019  #null  Paula Fernandes e Luan Santana — Juntos
+            => Paula Fernandes — Juntos   [680035102]
+2019  #null  Priscilla Alcantara — Linda Bagunça
+            => Priscilla Alcantara — Linda Bagunça   [756686752]
+2019  #null  Jão — Louquinho
+            => Jão — Louquinho   [708122092]
+2019  #null  Claudia Leitte com participação de Mano Walter — Matutinha
+            => Claudia Leitte — Matutinha   [2205559137]
+2019  #null  Gloria Groove — Mil Grau
+            => Gloria Groove — MIL GRAU   [1468628512]
+2019  #null  Luísa Sonza — Não Vou Mais Parar
+            => Luísa Sonza — Não Vou Mais Parar   [693449172]
+2019  #null  Claudia Leitte — Perigosinha
+            => Claudia Leitte — Perigosinha   [1201680392]
+2019  #null  Luísa Sonza — Pior Que Possa Imaginar
+            => Luísa Sonza — Pior Que Possa Imaginar   [693449212]
+2019  #null  Theo Rubia — Pode Morar Aqui
+            => Theo Rubia — Pode Morar Aqui   [1589555122]
+2019  #null  Wanessa Camargo — Por Favor
+            => Wanessa Camargo — Por Favor   [2593555382]
+2019  #null  Anavitória e Vitor Kley — Pupila
+            => ANAVITÓRIA — Pupila   [704736312]
+2019  #null  Edson & Hudson — Quem Me Viu, Quem Me Vê
+            => Edson & Hudson — Quem Me Viu, Quem Me Vê   [746317462]
+2019  #null  Selvagens à Procura de Lei — Sede ao Pote
+            => Selvagens à Procura de Lei — Sede ao Pote   [3246714351]
+2019  #null  Lexa — Só Depois do Carnaval
+            => Lexa — Só Depois do Carnaval   [621998182]
+2019  #null  Anitta e Marília Mendonça — Some que Ele Vem Atrás
+            => Anitta — Some que ele vem atrás   [792122432]
+2019  #null  Hungria Hip Hop — Um Pedido
+            => Hungria — Um Pedido   [679417342]
+2019  #null  Wanessa Camargo — Vou Lembrar
+            => Wanessa Camargo — Vou Lembrar   [2403896755]
+2020  #1  Raffa Torres — A Vida é Um Rio
+            => Raffa Torres — A Vida É um Rio   [1948748587]
+2020  #1  Luan Santana — Asas
+            => Luan Santana — Asas   [986188932]
+2020  #1  Gustavo Mioto — Despedida de Casal
+            => Gustavo Mioto — Despedida De Casal   [1143565352]
+2020  #1  Diego & Victor Hugo (com participação de Bruno & Marrone) — Facas
+            => Diego & Victor Hugo — Facas   [1100416582]
+2020  #1  Guilherme & Benuto — Pulei na Piscina
+            => Guilherme & Benuto — Pulei na Piscina   [1048570032]
+2020  #1  Os Barões da Pisadinha — Recairei
+            => Os Barões Da Pisadinha — Recairei   [924652282]
+2020  #22  Tierry — Rita
+            => Tierry — Rita   [1560902292]
+2020  #23  Felipe Araújo — Você Não Vale
+            => Felipe Araújo — Você Não Vale   [1173604272]
+2020  #25  Simone & Simaria — Foi Pá Pum
+            => Simone & Simaria — Foi Pá Pum   [1148388972]
+2020  #26  Michel Teló — O Tempo Não Espera Ninguém
+            => Michel Teló — O Tempo Não Espera Ninguém   [1148106702]
+2020  #27  Thiaguinho — Era uma Vez
+            => Thiaguinho — Era uma Vez   [1163595842]
+2020  #30  Jorge & Mateus — Lance Individual
+            => Jorge & Mateus — Lance Individual   [1127301412]
+2020  #35  Tierry (com participação de Marília Mendonça) — Hackearam-Me
+            => Tierry — Hackearam-Me   [1560902262]
+2020  #37  Matheus & Kauan — É Problema
+            => Matheus & Kauan — É Problema   [1134675802]
+2020  #43  Wesley Safadão (com participação de Os Barões da Pisadinha) — Ele é Ele, Eu Sou Eu
+            => Wesley Safadão — Ele É Ele, Eu Sou Eu   [2022125277]
+2020  #61  Eduardo Costa — Ainda Tô Aí
+            => Eduardo Costa — Ainda Tô Aí   [1136134682]
+2020  #70  Zé Felipe — Só Tem Eu
+            => Zé Felipe — Só Tem Eu   [1101865142]
+2020  #71  Harry Styles — Watermelon Sugar
+            => Harry Styles — Watermelon Sugar   [830336922]
+2020  #87  Os Barões da Pisadinha (com participação de Xand Avião) — Basta Você Me Ligar
+            => Os Barões Da Pisadinha — Basta Você Me Ligar   [1102523572]
+2020  #91  Marília Mendonça — Deprê
+            => Marília Mendonça — Deprê   [1148315852]
+2020  #93  The Weeknd — Save Your Tears
+            => The Weeknd — Save Your Tears   [908604632]
+2020  #97  Dua Lipa (com participação de DaBaby) — Levitating
+            => Dua Lipa — Levitating   [1124841682]
+2020  #98  The Weeknd — Blinding Lights
+            => The Weeknd — Blinding Lights   [908604612]
+2020  #100  Dilsinho — Misturados
+            => Dilsinho — Misturados   [2950864651]
+2020  #null  Giulia Be — (Não) Era Amor
+            => GIULIA BE — (não) era amor   [873962142]
+2020  #null  Fernanda Brum — Ar
+            => Fernanda Brum — Ar   [1095752922]
+2020  #null  Joelma — Botar pra Chorar
+            => Joelma — Botar Pra Chorar   [1522470662]
+2020  #null  Luísa Sonza — Braba
+            => Luísa Sonza — BRABA   [902673682]
+2020  #null  Pabllo Vittar com a participação de Jerry Smith — Clima Quente
+            => Pabllo Vittar — Clima Quente   [884567062]
+2020  #null  Rina Sawayama — Comme Des Garçons (Like the Boys)
+            => Rina Sawayama — Comme Des Garçons (Like The Boys)   [845442672]
+2020  #null  Zaac com participação de Anitta e Tyga — Desce pro Play (Pa, Pa, Pa)
+            => ZAAC — Desce Pro Play (PA PA PA)   [998867692]
+2020  #null  Manu Gavassi e Gloria Groove — Deve Ser Horrível Dormir Sem Mim
+            => Manu Gavassi — Deve ser horrível dormir sem mim   [1052674362]
+2020  #null  Zeeba e Manu Gavassi — Eu Te Quero
+            => Zeeba — Eu Te Quero   [3684521742]
+2020  #null  David Carreira com participação de Kevinho — Festa
+            => David Carreira — Festa   [994130822]
+2020  #null  Vitão e Luísa Sonza — Flores
+            => Vitão — Flores   [985655892]
+2020  #null  Lagum — Hoje Eu Quero Me Perder
+            => Lagum — Hoje Eu Quero Me Perder   [897014102]
+2020  #null  Gloria Groove com participação de Gina Garcia — Incondicional
+            => Gloria Groove — Incondicional   [1468617382]
+2020  #null  Giulia Be — Inolvidable
+            => GIULIA BE — inolvidable   [1100830362]
+2020  #null  Wanessa Camargo — Lábios de Navalha
+            => Wanessa Camargo — Lábios de Navalha   [2403896785]
+2020  #null  Xamã com participação de Marília Mendonça — Leão
+            => Xamã — Leão   [1174869322]
+2020  #null  Tony Babalu — Lockdown
+            => Tony Babalú — Lockdown   [1173888982]
+2020  #null  Pabllo Vittar com participação de Ivete Sangalo — Lovezinho
+            => Pabllo Vittar — Lovezinho (feat. Ivete Sangalo)   [912116342]
+2020  #null  Anavitória — Me Conta da Tua Janela
+            => ANAVITÓRIA — Me conta da tua janela   [928447182]
+2020  #null  Anitta com participação de Cardi B e Myke Towers — Me Gusta
+            => Anitta — Me Gusta (with Cardi B & Myke Towers)   [1081196312]
+2020  #null  Detonautas Roque Clube — Micheque
+            => Detonautas — Micheque   [1064722682]
+2020  #null  Luísa Sonza e Pabllo Vittar e Anitta — Modo Turbo
+            => Luísa Sonza — MODO TURBO   [1177800012]
+2020  #null  Ivete Sangalo — O Mundo Vai
+            => Ivete Sangalo — O Mundo Vai   [856005142]
+2020  #null  Jerry Smith com participação de Simone & Simaria — Os Boys Amam, o Ex Chora
+            => Jerry Smith — Os Boys Amam O Ex Chora   [949402682]
+2020  #null  Marília Mendonça e Maiara & Maraisa — Quero Você do Jeito Que Quiser
+            => Marília Mendonça — Quero Você do Jeito Que Quiser   [1006151442]
+2020  #null  Pabllo Vittar — Rajadão
+            => Pabllo Vittar — Rajadão   [912116402]
+2020  #null  Titãs — Sonífera Ilha
+            => Titãs — Sonífera ilha   [36364121]
+2020  #null  Wanessa Camargo — Sozinha
+            => Wanessa Camargo — Sozinha   [2403896805]
+2020  #null  Os Barões da Pisadinha — Tá Rocheda
+            => Os Barões Da Pisadinha — Tá Rocheda   [763124462]
+2020  #null  Marília Mendonça — Tentativas
+            => Marília Mendonça — Tentativas   [865795642]
+2020  #null  Kari Jobe, Cody Carnes e Elevation Worship — The Blessing
+            => Kari Jobe Carnes — The Blessing   [963608802]
+2020  #null  Pabllo Vittar e Thalía — Tímida
+            => Pabllo Vittar — Tímida   [902194142]
+2020  #null  Luísa Sonza e Zaac — Toma
+            => Luísa Sonza — TOMA   [1033754342]
+2020  #null  Theo Rubia — Um Milhão de Anos
+            => Theo Rubia — Um Milhão de Anos   [1589539172]
+2020  #null  Marília Mendonça — Vira Homem
+            => Marília Mendonça — Vira Homem   [938976472]
+2021  #1  Israel & Rodolffo — Batom de Cereja
+            => Israel & Rodolffo — Batom De Cereja   [1493645552]
+2021  #1  MC Davi (com a participação de MC Pedrinho e MC Don Juan) — Bipolar
+            => Mc Davi — Bipolar   [1326088292]
+2021  #1  Gusttavo Lima — Bloqueado
+            => Gusttavo Lima — Bloqueado   [1583227252]
+2021  #1  Diego & Victor Hugo — Desbloqueado
+            => Diego & Victor Hugo — Desbloqueado   [1438959432]
+2021  #1  Anitta — Envolver
+            => Anitta — Envolver   [1539306892]
+2021  #1  Marília Mendonça, Maiara & Maraisa — Esqueça-Me Se For Capaz
+            => Marília Mendonça — Esqueça-Me Se For Capaz   [1509453792]
+2021  #1  DJ Ivis (com a participação de Tarcísio do Acordeon) — Esquema Preferido
+            => DJ Ivis — Esquema Preferido   [2009888127]
+2021  #1  Gusttavo Lima — Ficha Limpa
+            => Gusttavo Lima — Ficha Limpa   [1397165102]
+2021  #1  Xamã, Gustah & Neobeats — Malvadão 3
+            => Xamã — Malvadão 3   [1558829232]
+2021  #1  Tarcísio do Acordeon — Meia Noite (Você Tem Meu Whatsapp)
+            => Tarcísio do Acordeon — Meia Noite (Você tem meu Whatsapp)   [1159617832]
+2021  #1  João Gomes — Meu Pedaço de Pecado
+            => João Gomes — Meu Pedaço de Pecado   [2136004987]
+2021  #1  Luan Santana — Morena
+            => Luan Santana — MORENA   [1397354732]
+2021  #1  Gustavo Mioto — Não Parei de Sofrer
+            => Gustavo Mioto — Não Parei De Sofrer   [1408859652]
+2021  #1  Iza — Sem Filtro
+            => IZA — Sem Filtro   [1550618152]
+2021  #1  Guilherme & Benuto — Sigilo
+            => Guilherme & Benuto — Sigilo   [1532579482]
+2021  #8  Bruno & Marrone (com participação de Wesley Safadão) — Último Beijo
+            => Bruno & Marrone — Último Beijo   [3865226851]
+2021  #12  Zé Neto & Cristiano — Você Beberia ou Não Beberia?
+            => Zé Neto & Cristiano — Você Beberia Ou Não Beberia?   [1428722972]
+2021  #14  Theo & Gabriel (com participação de Jorge) — Dependência
+            => Théo e Gabriel — Dependência   [1130741142]
+2021  #16  Sorriso Maroto — Eu Topo
+            => Sorriso Maroto — Eu Topo   [1222676762]
+2021  #17  Pixote — Vou Ver e Te Aviso
+            => Pixote — Vou Ver e Te Aviso   [1285646462]
+2021  #18  Bruno & Marrone — Coração de Isca
+            => Bruno & Marrone — Coração de Isca   [3865228951]
+2021  #24  Marília Mendonça — Troca de Calçada
+            => Marília Mendonça — Troca de Calçada   [1210999572]
+2021  #28  Marília Mendonça (com participação de Maiara & Maraisa) — Todo Mundo Menos Você
+            => Marília Mendonça — Todo Mundo Menos Você   [1490264032]
+2021  #32  Matheus Fernandes (com participação de Dilsinho) — Baby, Me Atende
+            => Matheus Fernandes — Baby Me Atende   [1243010562]
+2021  #36  Matheus & Kauan — Expectativa x Realidade
+            => Matheus & Kauan — Expectativa x Realidade   [1415335102]
+2021  #39  Jorge & Mateus — Paradigmas
+            => Jorge & Mateus — Paradigmas   [1201837112]
+2021  #41  Felipe Araújo (com participação de Gusttavo Lima) — Amando Individual
+            => Felipe Araújo — Amando Individual   [1402092002]
+2021  #42  Turma do Pagode — Faz um Coração Aí
+            => Turma Do Pagode — Faz um Coração Aí   [3329509391]
+2021  #44  Jorge & Mateus — Troca
+            => Jorge & Mateus — Troca   [1339558462]
+2021  #45  Gusttavo Lima — Café e Amor
+            => Gusttavo Lima — Café e Amor   [2030935327]
+2021  #46  Thiaguinho (com participação de Bruno Cardoso e Sorriso Maroto) — Quanto Tempo Faz
+            => Thiaguinho — Quanto Tempo Faz   [2951101421]
+2021  #49  Yasmin Santos — Abstinência
+            => Yasmin Santos — Abstinência   [1053694522]
+2021  #50  Os Barões da Pisadinha — Esquema Preferido
+            => Os Barões Da Pisadinha — Esquema Preferido   [3135976351]
+2021  #51  Jonas Esticado — Investe em Mim
+            => Jonas Esticado — Investe Em Mim   [818815932]
+2021  #52  Gusttavo Lima — Espetinho
+            => Gusttavo Lima — Espetinho   [3060636201]
+2021  #53  Zezé Di Camargo & Luciano — 1 Hora e Meia
+            => Zezé Di Camargo & Luciano — 1 Hora e Meia   [1214525282]
+2021  #54  Juan Marcus & Vinicius (com participação de Lauana Prado) — Volta Marcada
+            => Juan Marcus & Vinícius — Volta Marcada   [1157007372]
+2021  #55  Mumuzinho — Playlist
+            => Mumuzinho — Playlist   [1170639182]
+2021  #57  Dilsinho — Porre
+            => Dilsinho — Porre / Trovão / Controle Remoto   [3283258541]
+2021  #59  Gusttavo Lima — De Menina pra Mulher
+            => Gusttavo Lima — De Menina pra Mulher   [3060636361]
+2021  #62  Raí Saia Rodada — Tapão na Raba
+            => Raí Saia Rodada — Tapão Na Raba   [1201837132]
+2021  #63  Simone & Simaria (com participação de Sebastián Yatra) — No Llores Más
+            => Simone & Simaria — No Llores Más   [1421748642]
+2021  #65  Anitta — Girl from Rio
+            => Anitta — Girl From Rio   [1336315542]
+2021  #69  Leo & Raphael — Os Menino da Pecuária
+            => Léo & Raphael — Os Menino da Pecuária   [3261322711]
+2021  #75  Simone & Simaria — Baldinho
+            => Simone & Simaria — Baldinho   [1524711062]
+2021  #76  Sorriso Maroto — Nosso Flow
+            => Sorriso Maroto — Nosso Flow   [1356911552]
+2021  #79  Wesley Safadão — Passatempo
+            => Wesley Safadão — Passatempo   [2046013187]
+2021  #80  Mari Fernandez — Não, Não Vou
+            => Mari Fernandez — Não, Não Vou   [1470101232]
+2021  #81  Luísa Sonza (com participação de Thiaguinho) — Cansar Você
+            => Luísa Sonza — Cansar Você   [1234478212]
+2021  #86  Leo Chaves — Por Causa de Você
+            => Leo Chaves — Por Causa de Você   [1459799492]
+2021  #88  Vitor Fernandes — Acaso (Vai Ver que um Dia a Gente Se Encontra)
+            => Vitor Fernandes — Acaso   [1043122742]
+2021  #89  Mumuzinho (com participação de Matheus & Kauan) — Tomara
+            => Mumuzinho — Tomara   [1360418832]
+2021  #92  Cleber & Cauan — Cabo de Guerra
+            => Cleber & Cauan — Cabo de Guerra   [1485049292]
+2021  #94  Ávine Vinny (com participação de Matheus Fernandes) — Coração Cachorro
+            => Avine Vinny — Coração Cachorro   [1480339722]
+2021  #99  João Neto & Frederico — Arrependimento
+            => Joao Neto & Frederico — Arrependimento   [1437164062]
+2021  #null  Gloria Groove — A Queda
+            => Gloria Groove — A QUEDA   [1513462012]
+2021  #null  Dulce María — Amigos Con Derechos
+            => Dulce María — Amigos con derechos   [2715915612]
+2021  #null  Jão — Amor Pirata
+            => Jão — AMOR PIRATA   [1256694962]
+2021  #null  Melody — Assalto Perigoso
+            => Melody — Assalto Perigoso   [1518464152]
+2021  #null  Pedro Sampaio e Luísa Sonza — Atenção
+            => PEDRO SAMPAIO — ATENÇÃO   [1364673042]
+2021  #null  Pabllo Vittar — Bang Bang
+            => Pabllo Vittar — Bang Bang   [1407354872]
+2021  #null  Ana Castela — Boiadeira
+            => Ana Castela — Boiadeira   [2306216635]
+2021  #null  Gloria Groove — Bonekinha
+            => Gloria Groove — BONEKINHA   [1638702392]
+2021  #null  Iggy Azalea — Brazil
+            => Iggy Azalea — Brazil   [1296127902]
+2021  #null  Manu Gavassi — Catarina
+            => Manu Gavassi — Catarina   [1543714642]
+2021  #null  Joelma — Coração Vencedor
+            => Joelma — Coração Vencedor   [1296907252]
+2021  #null  Jão — Coringa
+            => Jão — Coringa   [1519015602]
+2021  #null  Karol Conká — Dilúvio
+            => Karol Conká — Dilúvio   [1356911692]
+2021  #null  Fernanda Brum — Escreve
+            => Fernanda Brum — Escreve   [1425959302]
+2021  #null  Manu Gavassi e Voyou — Eu Nunca Fui Tão Sozinha Assim
+            => Manu Gavassi — Eu nunca fui tão sozinha assim   [1543714582]
+2021  #null  Marília Mendonça e Maiara & Maraisa — Fã Clube
+            => Marília Mendonça — Fã Clube   [3776796192]
+2021  #null  Anitta com participação de Saweetie — Faking Love
+            => Anitta — Faking Love (feat. Saweetie)   [1516162902]
+2021  #null  Pedro Sampaio, Daniel Caon e Wesley Safadão — Fala Mal de Mim
+            => PEDRO SAMPAIO — FALA MAL DE MIM   [1225298162]
+2021  #null  Luísa Sonza e Jão — Fugitivos
+            => Luísa Sonza — fugitivos :)   [1532665492]
+2021  #null  Pedro Sampaio — Galopa
+            => PEDRO SAMPAIO — GALOPA   [1492202522]
+2021  #null  Jão — Idiota
+            => Jão — Idiota   [1519015552]
+2021  #null  Luan Santana — Ilha
+            => Luan Santana — ILHA   [1532579902]
+2021  #null  Aline Barros — Imensurável
+            => Aline Barros — Imensurável   [1484759702]
+2021  #null  Luísa Sonza — Intere$$eira
+            => Luísa Sonza — INTERE$$EIRA   [1537412472]
+2021  #null  Aline Barros — Jeová Jireh
+            => Aline Barros — Jeová Jireh   [1563019072]
+2021  #null  Gloria Groove — Leilão
+            => Gloria Groove — LEILÃO   [1534215322]
+2021  #null  Karol Conká com participação de WC no Beat — Louca e Sagaz
+            => Karol Conká — Louca e Sagaz   [1222731812]
+2021  #null  Marina Sena — Me Toca
+            => Marina Sena — Me Toca   [3255414561]
+2021  #null  Luísa Sonza — Melhor Sozinha
+            => Luísa Sonza — melhor sozinha :-)-:   [1470819762]
+2021  #null  Jão — Meninos e Meninas
+            => Jão — Meninos e Meninas   [1519015592]
+2021  #null  Dadju com participação de Anitta — Mon Soleil
+            => Dadju — Mon soleil   [1390738122]
+2021  #null  Clarissa Müller — Nada Contra (Ciúme)
+            => Clarissa — nada contra (ciúme)   [1714196377]
+2021  #null  Jão — Não Te Amo
+            => Jão — Não Te Amo   [1519015542]
+2021  #null  Anitta e Pedro Sampaio — No Chão Novinha
+            => Anitta — NO CHÃO NOVINHA   [1574892042]
+2021  #null  Luísa Sonza — O Conto dos Dois Mundos (Hipocrisia)
+            => Luísa Sonza — o conto dos dois mundos (hipocrisia)   [1537412592]
+2021  #null  Luísa Sonza — Penhasco
+            => Luísa Sonza — penhasco.   [1537412572]
+2021  #null  Marina Sena — Por Supuesto
+            => Marina Sena — Por Supuesto   [3258198881]
+2021  #null  Marília Mendonça e Maiara & Maraisa — Presepada
+            => Marília Mendonça — Presepada   [3666233412]
+2021  #null  Rennan da Penha e Anitta — Sextou
+            => Rennan da Penha — SexToU   [1425000462]
+2021  #null  Ludmilla com Mariah Angeliq, Topo La Maskara e participação de Mr. Vegas — Socadona
+            => Ludmilla — Socadona   [1549801502]
+2021  #null  Aline Barros — Sol da Justiça
+            => Aline Barros — Sol da Justiça   [1617019122]
+2021  #null  Halessia — Supermodel
+            => Halessia — Supermodel   [1252656342]
+2021  #null  Davi Sacer — Tudo Podes
+            => Davi Sacer — Tudo Podes   [1284781412]
+2021  #null  Fred De Palma com participação de Anitta — Un altro ballo
+            => Fred De Palma — Un altro ballo (feat. Anitta)   [1408343792]
+2021  #null  David Carreira com a participação de Ludmilla, Giulia Be e Preto Show — Vamos Com Tudo
+            => David Carreira — Vamos com tudo   [1389334732]
+2021  #null  Luísa Sonza e 6lack — VIP
+            => Luísa Sonza — VIP *-*   [1537412482]
+2021  #null  Priscilla Alcantara — Você é um Perigo
+            => PRISCILLA — Você É Um Perigo   [1516980452]
+2021  #null  Carolina Gaitán, Mauro Castillo, Adassa, Rhenzy Feliz, Diane Guerrero, Stephanie Beatriz e elenco de Encanto — We Don't Talk About Bruno
+            => Carolina Gaitán - La Gaita — We Don't Talk About Bruno   [1550821762]
+2022  #1  Luan Santana — Abalo Emocional
+            => Luan Santana — ABALO EMOCIONAL   [1632413712]
+2022  #1  Jovem Dionisio — Acorda Pedrinho
+            => Jovem Dionisio — ACORDA PEDRINHO   [1671809807]
+2022  #1  L7nnon, DJ Biel do Furduncinho & Bianca — Ai Preto
+            => L7NNON — Ai preto   [3465893501]
+2022  #1  Ju Moraes — Aí Vou Dizer
+            => Ju Moraes — Ai Vou Dizer   [1791538437]
+2022  #1  Zé Felipe e MC Mari — Bandido
+            => Zé Felipe — Bandido   [1776108317]
+2022  #1  Diego & Victor Hugo (com participação de Jorge & Mateus) — Beijo de Glicose
+            => Diego & Victor Hugo — Beijo de Glicose   [1877967247]
+2022  #1  MC Paiva ZS & MC Ryan SP — Casei Com a Putaria
+            => Mc Paiva ZS — Casei Com a Putaria   [1805332687]
+2022  #1  Diego & Victor Hugo (com a participação de Maiara & Maraísa) — Conselho Bom
+            => Diego & Victor Hugo — Conselho Bom   [1909860827]
+2022  #1  Pedro Sampaio & MC Pedrinho — Dançarina
+            => PEDRO SAMPAIO — DANÇARINA   [1638787832]
+2022  #1  Pedro Sampaio e MC Pedrinho — Dançarina
+            => PEDRO SAMPAIO — DANÇARINA   [1638787832]
+2022  #1  Ju Moraes — É a Sua Fé
+            => Ju Moraes — É a Sua Fé   [1688374297]
+2022  #1  Ju Moraes — Essa Minha Canção
+            => Ju Moraes — Essa Minha Canção   [1514343252]
+2022  #1  Guilherme & Benuto (com participação de Matheus & Kauan) — Esse B.O. é Meu
+            => Guilherme & Benuto — Esse B.O é Meu   [1978324467]
+2022  #1  MC Menor HR, MC Menor SG e Dj Escobar — Evoque Prata
+            => Mc Menor HR — Evoque Prata   [1912395697]
+2022  #1  Guilherme & Benuto (com participação de Hugo & Guilherme) — Haja Colírio
+            => Guilherme & Benuto — Haja Colírio / Louca de Saudade   [4300988262]
+2022  #1  Marília Mendonça — Leão
+            => Marília Mendonça — Leão   [2056080287]
+2022  #1  Alok ft. Ixã — Meu Amor
+            => Alok — Meu Amor   [1665610592]
+2022  #1  Iza ft. Ivandro — Mó Paz
+            => IZA — Mó Paz (feat. Ivandro)   [1881681007]
+2022  #1  Felipe Amorim — No Ouvidinho
+            => Felipe Amorim — No Ouvidinho   [1695947867]
+2022  #1  Projota e Lourena — Pássaros
+            => Projota — Pássaros   [1614706502]
+2022  #1  Ana Castela, MC Melody & DJ Chris No Beat — Pipoco
+            => Ana Castela — Pipoco   [1733341617]
+2022  #1  Gustavo Mioto — Sofrimento Antecipado
+            => Gustavo Mioto — Sofrimento Antecipado   [1883763787]
+2022  #1  Gusttavo Lima — Termina Comigo Antes
+            => Gusttavo Lima — Termina Comigo Antes   [1693252897]
+2022  #1  Leo Santana — Zona de Perigo
+            => Léo Santana — Zona De Perigo   [2074433447]
+2022  #null  Naiara Azevedo e Marília Mendonça — 50 por Cento
+            => Naiara Azevedo — 50 por Cento   [1661104012]
+2022  #null  Luiza Possi com participação de Grag Queen — Amor Sem Pausa
+            => Luiza Possi — Amor Sem Pausa   [2036954857]
+2022  #null  Pedro Sampaio — Bagunça
+            => PEDRO SAMPAIO — BAGUNÇA   [1638787802]
+2022  #null  Rebecca com participação de Lexa, Pocah e Danny Bond — Barbie
+            => Rebecca — Barbie (feat. Danny Bond)   [1609426102]
+2022  #null  Anitta — Boys Don't Cry
+            => Anitta — Boys Don't Cry   [1629163382]
+2022  #null  Grag Queen com participação de Rani Kohenur — Brazindia
+            => Grag Queen — Brazindia   [1817171437]
+2022  #null  Luísa Sonza — Cachorrinhas
+            => Luísa Sonza — CACHORRINHAS   [1821817557]
+2022  #null  Luan Santana com a participação de Luísa Sonza — Coração Cigano
+            => Luan Santana — CORAÇÃO CIGANO   [1845011997]
+2022  #null  Grag Queen — Dinner
+            => Grag Queen — Dinner   [1783045187]
+2022  #null  Anitta e Maluma — El Que Espera
+            => Anitta — El Que Espera   [1852557317]
+2022  #null  Eyshila, Fernanda Brum e Aline Barros — Ele Se Move
+            => Eyshila — Ele Se Move   [1690503547]
+2022  #null  Luan Santana com a participação de Henrique & Juliano — Erro Planejado
+            => Luan Santana — ERRO PLANEJADO   [1708756967]
+2022  #null  Grag Queen — Fim de Tarde
+            => Grag Queen — Fim de Tarde   [1696888917]
+2022  #null  Anitta com participação de Chencho Corleone — Gata
+            => Anitta — Gata (feat. Chencho Corleone)   [1713103747]
+2022  #null  Baco Exu do Blues e Luísa Sonza — Hotel Caro
+            => Baco Exu Do Blues — Hotel Caro   [3261216921]
+2022  #null  Grag Queen — Libélula
+            => Grag Queen — Libélula   [1935824297]
+2022  #null  Anitta e Missy Elliott — Lobby
+            => Anitta — Lobby   [1855628277]
+2022  #null  Luísa Sonza e Xamã — Mama.cita (Hasta la Vista)
+            => Luísa Sonza — MAMA.CITA (hasta la vista)   [2068307567]
+2022  #null  Gaby Amarantos — Não Vou Te Deixar
+            => Gaby Amarantos — Não Vou Te Deixar   [2055589117]
+2022  #null  Pedro Sampaio e Zé Felipe — Olhadinha
+            => PEDRO SAMPAIO — OLHADINHA   [1950616747]
+2022  #null  Ivete Sangalo com a participação de Gloria Groove — Onda Poderosa
+            => Ivete Sangalo — Onda Poderosa / Citação: Abalou   [1622563342]
+2022  #null  Grag Queen — Party Everyday
+            => Grag Queen — Party Everyday   [1670913102]
+2022  #null  Luan Santana — Perigo Noturno
+            => Luan Santana — PERIGO NOTURNO   [1797932297]
+2022  #null  Luan Santana — Perigosa
+            => Luan Santana — PERIGOSA   [1993518227]
+2022  #null  Joelma — Rei da Festa
+            => Joelma — Rei da Festa   [1711488167]
+2022  #null  Pedro Sampaio e Pabllo Vittar — Sal
+            => PEDRO SAMPAIO — SAL   [2001690627]
+2022  #null  Davi Kneip, MC Frog e DJ Gabriel do Borel — Sentadona (Ai Calica)
+            => Davi Kneip — Sentadona (Ai Calica)   [1571656182]
+2022  #null  Gaby Amarantos — Toca DJ
+            => Gaby Amarantos — Toca DJ   [2055589097]
+2022  #null  DJ LK da Escócia, MC RF, MC Jhenny, MC Carol, Tchakabum, MC Ryan SP e MC Daniel — Tubarão Te Amo
+            => Dj LK da Escócia — Tubarão Te Amo   [1941372167]
+2022  #null  Ivete Sangalo e Vanessa da Mata — Tudo Bateu
+            => Ivete Sangalo — Tudo Bateu   [1632562072]
+2022  #null  Alok, Luis Fonsi e Lunay com participação de Lenny Tavárez e Juliette — Un Ratito
+            => Alok — Un Ratito   [1614069902]
+2022  #null  Gloria Groove — Vermelho
+            => Gloria Groove — VERMELHO   [1638702402]
+2022  #null  Grag Queen — You Betta
+            => Grag Queen — YOU BETTA   [1725227977]
+2023  #1  Tropa do Bruxo, DJ Ws da Igrejinha, SMU, Triz e MC Menor Thalis — Baile do Bruxo
+            => Tropa do Bruxo — Baile do Bruxo   [2445991785]
+2023  #1  Gusttavo Lima e Ana Castela — Canudinho
+            => Gusttavo Lima — Canudinho   [2422612575]
+2023  #1  Luísa Sonza — Chico
+            => Luísa Sonza — Chico   [2428168345]
+2023  #1  Manu Bahtidão e Simone Mendes — Daqui pra Sempre
+            => Manu — Daqui pra Sempre   [2451113965]
+2023  #1  Luan Santana e Ana Castela — Deja Vu
+            => Luan Santana — DEJA VU   [2560773972]
+2023  #1  Kadu Martins — Halls na Língua
+            => Kadu Martins — Halls na Língua   [2874740542]
+2023  #1  DJ GBR, MC IG, MC Ryan SP, MC PH, Mc Davi, MC Luki, MC Don Juan, MC Kadu, TrapLaudo, MC GP e MC GH do 7 — Let's Go 4
+            => DJ GBR — Let's Go 4   [2448820055]
+2023  #1  Ivete Sangalo e Ludmilla — Macetando
+            => Ivete Sangalo — Macetando   [3234732701]
+2023  #1  Agroplay & Ana Castela — Nosso Quadro
+            => AgroPlay — Nosso Quadro   [2130336177]
+2023  #1  Ana Castela — Nosso Quadro
+            => Ana Castela — Nosso Quadro   [2674356952]
+2023  #1  Parangolé e Leo Santana — Perna Bamba
+            => Parangolé — Perna Bamba   [2575186332]
+2023  #1  Dennis & MC Kevin o Chris — Tá OK
+            => DENNIS — Tá OK   [2254883767]
+2023  #1  Dennis DJ e Kevin o Chris — Tá OK
+            => DENNIS — Tá OK   [2254883767]
+2023  #null  Luísa Sonza — A Dona Aranha
+            => Luísa Sonza — A Dona Aranha   [2428168225]
+2023  #null  Jão — Alinhamento Milenar
+            => Jão — Alinhamento Milenar   [2403953175]
+2023  #null  Luan Santana — Ambiente Errado
+            => Luan Santana — AMBIENTE ERRADO   [2513105641]
+2023  #null  Bibi Babydoll, DJ Brunin XM — Automotivo Bibi Fogosa
+            => Bibi Babydoll — Automotivo Bibi Fogosa   [2533530141]
+2023  #null  Tomorrow X Together e Anitta — Back for More
+            => TOMORROW X TOGETHER — Back for More (with Anitta)   [2451391865]
+2023  #null  Anitta — Casi Casi
+            => Anitta — Casi Casi   [2406270835]
+2023  #null  Marina Sena — Dano Sarrada
+            => Marina Sena — Dano Sarrada   [2582837372]
+2023  #null  Luan Santana — Deus É Muito Bom
+            => Luan Santana — DEUS É MUITO BOM   [2513105611]
+2023  #null  Jorge & Mateus — Dói
+            => Jorge & Mateus — Dói   [2381288785]
+2023  #null  Pedro Sampaio e Thaysa Maravilha — Ensaio das Maravilhas
+            => PEDRO SAMPAIO — ENSAIO DAS MARAVILHAS   [2146075727]
+2023  #null  Vic Brow com participação de Grag Queen — Fofoca
+            => Vic Brow — Fofoca   [2281254407]
+2023  #null  Anitta — Funk Rave
+            => Anitta — Funk Rave   [2757533551]
+2023  #null  Luísa Sonza — Iguaria
+            => Luísa Sonza — Iguaria   [2428168335]
+2023  #null  Anitta, Dennis e Pedro Sampaio — Joga pra Lua
+            => Anitta — Joga Pra Lua   [2582671492]
+2023  #null  Luísa Sonza — Lança Menina
+            => Luísa Sonza — Lança Menina   [2428168475]
+2023  #null  Luísa Sonza — Luísa Manequim
+            => Luísa Sonza — Luísa Manequim   [2428168235]
+2023  #null  Jão — Me Lambe
+            => Jão — Me Lambe   [2403953155]
+2023  #null  Luan Santana — Meio Termo
+            => Luan Santana — MEIO TERMO   [2513105631]
+2023  #null  Thiago Pantaleão — Mente Pra Mim
+            => Thiago Pantaleão — Mente Pra Mim   [1906733147]
+2023  #null  Anitta — Mil Veces
+            => Anitta — Mil Veces   [2496474661]
+2023  #null  Grag Queen — Milkshake
+            => Grag Queen — Milkshake   [2094577467]
+2023  #null  PinkPantheress — Mosquito
+            => PinkPantheress — Mosquito   [2526890961]
+2023  #null  Luan Santana — Mulher Segura
+            => Luan Santana — MULHER SEGURA   [2513105621]
+2023  #null  Marina Sena — Olho no Gato
+            => Marina Sena — Olho no Gato   [2243385897]
+2023  #null  Fernanda Brum — Onde o Fogo Não Apaga
+            => Fernanda Brum — Onde o Fogo Não Apaga   [2094138757]
+2023  #null  Luísa Sonza e Demi Lovato — Penhasco2
+            => Luísa Sonza — Penhasco2   [2428168405]
+2023  #null  Jão e Anitta — Pilantra
+            => Jão — Pilantra   [2180425197]
+2023  #null  Pedro Sampaio — PocPoc
+            => PEDRO SAMPAIO — POCPOC   [2531743191]
+2023  #null  Gloria Groove, Anitta e Valesca Popozuda — Proibidona
+            => Gloria Groove — PROIBIDONA   [2106620697]
+2023  #null  Juliette e Marina Sena — Quase Não Namoro
+            => Juliette — Quase Não Namoro   [2386410305]
+2023  #null  Grag Queen — Que Passa
+            => Grag Queen — Que Passa   [2267099337]
+2023  #null  Marina Sena e Fleezus — Que Tal
+            => Marina Sena — Que Tal   [2243385947]
+2023  #null  Priscilla com participação de Bonde do Tigrão — Quer Dançar
+            => PRISCILLA — QUER DANÇAR   [2521481531]
+2023  #null  Fernanda Brum — Romanos 8:26
+            => Fernanda Brum — Romanos 8:26   [2373577455]
+2023  #null  Sophia Chablau e Uma Enorme Perda de Tempo — Segredo
+            => Sophia Chablau e Uma Enorme Perda de Tempo — Segredo   [3262655581]
+2023  #null  Manu Gavassi — Sexo, Poder e Arte
+            => Manu Gavassi — Sexo, poder e arte   [2587204942]
+2023  #null  Grag Queen — Sirene
+            => Grag Queen — Sirene   [2547274032]
+2023  #null  Luan Santana — Solteirou
+            => Luan Santana — SOLTEIROU   [2102083837]
+2023  #null  Luísa Sonza e Baco Exu do Blues — Surreal
+            => Luísa Sonza — Surreal   [2428168325]
+2023  #null  Dennis e Kevin O Chris — Tá OK
+            => DENNIS — Tá OK   [2254883767]
+2023  #null  Lexa com participação de Grag Queen — Tapa
+            => Lexa — Tapa   [2540790951]
+2023  #null  Marina Sena — Tudo pra Amar Você
+            => Marina Sena — Tudo Pra Amar Você   [2243385907]
+2023  #null  Anitta — Used to Be
+            => Anitta — Used To Be   [2406270855]
+2024  #1  Matuê — Crack com Mussilon
+            => Matuê — Crack com Mussilon   [3926128911]
+2024  #1  MC IG, MC Ryan SP, Oruam, MC GH do 7, MC GP, MC Luki, MC Nego Micha, MC PH, MC Poze do Rodo, Murillo e LT no Beat e TrapLaudo — Diz Aí Qual é o Plano?
+            => Mc IG — Diz Aí Qual é o Plano?   [2672689062]
+2024  #1  Felipe e Rodrigo — Gosta de Rua
+            => Felipe e Rodrigo — Gosta De Rua   [3772802182]
+2024  #1  Felipe & Rodrigo — Gosta de Rua
+            => Felipe e Rodrigo — Gosta De Rua   [3772802182]
+2024  #1  DJ Topo — MTG Quem Não Quer Sou Eu
+            => Dj Topo — MTG QUEM NÃO QUER SOU EU   [2803369412]
+2024  #1  DJ Jz, DJ Lg Prod, Humberto & Ronaldo, MC Mininin e Silvanno Salles — Mtg Quero Te Encontrar
+            => DJ JZ — Mtg Quero Te Encontrar   [2675236872]
+2024  #1  J. Eskine e Alef Donk — Resenha do Arrocha
+            => J. Eskine — Resenha do Arrocha   [3105164311]
+2024  #1  Kaique & Felipe e Luan Pereira — Saveiro
+            => Kaique e Felipe — Saveiro   [2892029312]
+2024  #1  Grelo — Só Fé
+            => Grelo — Só Fé   [2898260631]
+2024  #1  The Box, MC Brinquedo, MC Cebezinho, MC Tuto e MC Laranjinha — The Box Medley Funk 2
+            => The Box — THE BOX MEDLEY FUNK 2   [2743019481]
+2024  #1  Henrique & Juliano — Última Saudade
+            => Henrique — Ultima Saudade   [3506569521]
+2024  #1  Jorge & Mateus e Henrique & Juliano — Xonei
+            => Jorge & Mateus — Xonei   [2935875381]
+2024  #null  Tiago PZK, Anitta e Emilia — Alegría
+            => Tiago PZK — Alegría   [2925907271]
+2024  #null  Paula Fernandes — Anota Aí
+            => Paula Fernandes — Anota Aí   [2836081932]
+2024  #null  Luísa Sonza e Maiara & Maraisa — Bêbada Favorita
+            => Luísa Sonza — Bêbada Favorita   [2428168245]
+2024  #null  Anitta, Brray e Bad Gyal — Double Team
+            => Anitta — Double Team   [2757533601]
+2024  #null  Ivete Sangalo — Energia de Gostosa
+            => Ivete Sangalo — Energia de Gostosa   [3280747941]
+2024  #null  Pedro Sampaio e Marina Sena — Escada do Prédio
+            => PEDRO SAMPAIO — ESCADA DO PRÉDIO   [2972931331]
+2024  #null  Anitta — Grip
+            => Anitta — Grip   [2757533541]
+2024  #null  Alejandro Fernández e Anitta — La Tóxica
+            => Alejandro Fernández — La Tóxica   [2806051802]
+2024  #null  Anitta — Lose Ya Breath
+            => Anitta — Lose Ya Breath   [2757533531]
+2024  #null  Pedro Sampaio e DJ Topo — Pedrin
+            => PEDRO SAMPAIO — PEDRIN   [2906938741]
+2024  #null  Luan Santana com a participação de MC Kevin O Chris — Pega Escandaloso
+            => Luan Santana — PEGA ESCANDALOSO   [2710681292]
+2024  #null  Luísa Sonza e KayBlack — Sagrado Profano
+            => Luísa Sonza — Sagrado Profano   [2428168355]
+2024  #null  The Weeknd e Anitta — São Paulo
+            => The Weeknd — São Paulo   [3210598411]
+2024  #null  Anitta — Savage Funk
+            => Anitta — Savage Funk   [2757533611]
+2025  #1  DG e Batidão Stronda, Mc Davi, J. Eskine — Mãe Solteira
+            => DG e Batidão Stronda — Mãe Solteira   [3257054531]
+2025  #1  Grupo Menos é Mais e Simone Mendes — P do Pecado (Ao Vivo)
+            => Grupo Menos É Mais — P do Pecado (Ao Vivo)   [3329623921]
+2025  #1  Diego & Victor Hugo — Tubarões
+            => Diego & Victor Hugo — Tubarões   [3648749602]
+2025  #null  Bruno Mars — Bonde do Brunão
+            => Bruno Mars — Bonde do Brunão   [3376536751]
+2025  #null  Grag Queen — Boogie Brasil
+            => Grag Queen — Boogie Brasil   [3431381771]
+2025  #null  Emilia e Luísa Sonza — Bunda
+            => Emilia — bunda ?   [3239684031]
+2025  #null  Fernanda Brum — Lamparina
+            => Fernanda Brum — Lamparina   [3155353061]
+2025  #null  Zaynara — Perfume da Bôta
+            => Zaynara — Perfume da Bôta   [3272364681]
+2025  #null  Anitta — Romeo
+            => Anitta — ROMEO   [3210670571]
+2025  #null  Grag Queen — Sideral
+            => Grag Queen — Sideral   [3493840291]
+2025  #null  Fernanda Brum — Único
+            => Fernanda Brum — Único   [3212578901]
+2026  #null  Majur e J. Eskine — Andarilho Deluxe
+            => Majur — Andarilho Deluxe   [4382644431]
+2026  #null  Enhypen — Bloody Paradise
+            => ENHYPEN — Bloody Paradise   [4232461262]
+2026  #null  Jão — Catedral
+            => Jão — Catedral   [4170795612]
+2026  #null  Anitta e Shakira — Choka Choka
+            => Anitta — Choka Choka   [3948851331]
+2026  #null  Shakira e Burna Boy — Dai Dai
+            => Shakira — Dai Dai   [4015341011]
+2026  #null  Anitta — Desgraça
+            => Anitta — Desgraça   [4171206002]
+2026  #null  Luísa Sonza — Fruto do Tempo
+            => Luísa Sonza — Fruto do Tempo   [3939249961]
+2026  #null  Lisa, Anitta e Rema — Goals
+            => LISA — Goals   [4022865081]
+2026  #null  Luísa Sonza — Loira Gelada
+            => Luísa Sonza — Loira Gelada   [3939249991]
+2026  #null  Anitta e Marina Sena — Mandinga
+            => Anitta — Mandinga   [4171206012]
+2026  #null  Gloria Groove — O Chá
+            => Gloria Groove — O Chá   [4005356841]
+2026  #null  Viviane Batidão e Zaynara — Seu Novo Eu
+            => Viviane Batidão — Seu Novo Eu   [4051087791]
+2026  #null  Luísa Sonza — Telefone
+            => Luísa Sonza — Telefone   [3886666021]
+2026  #null  Luísa Sonza e Roberto Menescal — Um Pouco de Mim
+            => Luísa Sonza — Um Pouco de Mim   [3871956551]

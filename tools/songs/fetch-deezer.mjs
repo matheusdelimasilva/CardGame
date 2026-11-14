@@ -2,7 +2,8 @@
 // Resumable: results are cached, re-running only looks up songs with no result yet.
 // A song with no confident match is cached as null ("missing") and the run carries on.
 // Fix those later in deezer-overrides.json: a Deezer track id, or null to drop the song.
-// Usage: node fetch-deezer.mjs [--top N]   (--top 5: only each year's chart top 5)
+// Usage: node fetch-deezer.mjs [--top N] [--file songs-br.json]
+//        (--top 5: only each year's chart top 5; --file: another dataset in out/)
 //        then node build-songs.mjs to write deezerId into songs.json
 // Output: .cache/deezer.json -> { "<norm artist>|<norm title>": {id, title, artist} | null }
 //         out/deezer-review.txt -> every match side by side, plus the missing list
@@ -36,7 +37,10 @@ async function politeDeezerFetch(url, init) {
   }
 }
 
-const songs = (await readJson(join(OUT_DIR, "songs.json"))).filter((s) => s.chartRank <= TOP);
+const fileArg = process.argv.indexOf("--file");
+const FILE = fileArg > -1 ? process.argv[fileArg + 1] : "songs.json"; // e.g. songs-br.json
+// Songs without a chart rank (Brazilian Wikipedia-category songs) are skipped by --top only.
+const songs = (await readJson(join(OUT_DIR, FILE))).filter((s) => (s.chartRank ?? Infinity) <= TOP);
 const cachePath = join(CACHE_DIR, "deezer.json");
 const cache = await readJson(cachePath, {});
 const deezer = new Deezer(politeDeezerFetch);
@@ -70,9 +74,10 @@ for (const s of songs) {
   matched++;
   lines.push(`${s.year}  #${s.chartRank}  ${label(s)}\n            => ${hit.artist} — ${hit.title}   [${hit.id}]`);
 }
+const reviewFile = FILE === "songs.json" ? "deezer-review.txt" : `deezer-review-${FILE.replace(/\.json$/, "")}.txt`;
 await writeFile(
-  join(OUT_DIR, "deezer-review.txt"),
+  join(OUT_DIR, reviewFile),
   `Deezer matches${TOP < Infinity ? ` (chart top ${TOP} per year)` : ""}: ${matched} matched, ${missing.length} missing\n\n` +
     `== Missing ==\n${missing.join("\n") || "(none)"}\n\n== Matched ==\n${lines.join("\n")}\n`,
 );
-console.log(`\n${matched} matched, ${missing.length} missing of ${songs.length} -> out/deezer-review.txt`);
+console.log(`\n${matched} matched, ${missing.length} missing of ${songs.length} -> out/${reviewFile}`);
