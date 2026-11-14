@@ -87,7 +87,7 @@ export const CURATED = [
   [1984, "Bete Balanço", "Barão Vermelho", "rock", "curated", "high"],
   [1984, "Sonífera Ilha", "Titãs", "rock", "curated", "high"],
   [1985, "Exagerado", "Cazuza", "rock", "curated", "high"],
-  [1985, "Inútil", "Ultraje a Rigor", "rock", "curated", "high"],
+  [1983, "Inútil", "Ultraje a Rigor", "rock", "curated", "high"],
   [1986, "Eduardo e Mônica", "Legião Urbana", "rock", "curated", "high"],
   [1986, "Alagados", "Os Paralamas do Sucesso", "rock", "curated", "high"],
   [1987, "Faroeste Caboclo", "Legião Urbana", "rock", "curated", "high"],
@@ -100,7 +100,7 @@ export const CURATED = [
   [1994, "Jackie Tequila", "Skank", "pop-rock", "curated", "low", "álbum Calango, 1994"],
   [1995, "Pelados em Santos", "Mamonas Assassinas", "rock", "curated", "high"],
   [1996, "Garota Nacional", "Skank", "pop-rock", "curated", "high"],
-  [1997, "Lourinha Bombril", "Os Paralamas do Sucesso", "rock", "curated", "medium"],
+  [1996, "Lourinha Bombril", "Os Paralamas do Sucesso", "rock", "curated", "medium"],
   [1998, "Sozinho", "Caetano Veloso", "MPB", "curated", "medium"],
   [1999, "Anna Júlia", "Los Hermanos", "rock", "curated", "high"],
   [1999, "Sozinho", "Caetano Veloso", "MPB", "buscape", "medium"],
@@ -144,6 +144,9 @@ export const CURATED = [
 // Individually verified hit recordings, not a blanket permission to use live takes.
 // Applies to chart/category rows too; evidence is in verification-br.md.
 export const LIVE_HITS = [
+  ["Gosta de Rua", "Felipe & Rodrigo"],
+  ["P do Pecado", "Grupo Menos é Mais"],
+  ["Tubarões", "Diego & Victor Hugo"],
   ["Largado às Traças", "Zé Neto & Cristiano"],
   ["Propaganda", "Jorge & Mateus"],
   ["Mal Feito", "Hugo & Guilherme"],

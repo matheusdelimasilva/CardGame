@@ -66,6 +66,7 @@ node tools/songs/brazil/build-songs-br.mjs
 node tools/songs/fetch-deezer.mjs --br                 # every Brazilian dataset row
 node tools/songs/brazil/build-songs-br.mjs
 node tools/songs/brazil/verify-songs-br.mjs
+node --test tools/songs/brazil/pipeline-br.node-test.mjs # offline script regression checks
 ```
 
 The Deezer step imports the server's TypeScript matcher, so use a Node version

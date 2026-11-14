@@ -86,3 +86,69 @@ scraped chart/category entries. This does not allow live takes of other songs:
 - Curated release years take precedence over conflicting inferred category
   years, so the verified **Jura / Mário Reis / 1928** correction survives the
   category's 1929 date.
+- **Garota de Ipanema / Stan Getz & João Gilberto**: use the label's title
+  **The Girl from Ipanema** and **1964**, not the 1962 composition category.
+  [Verve's release description and track list](https://store.ververecords.com/products/stan-getz-joao-gilberto-getz-gilberto-lp).
+- **Marvada Pinga**: use Raul Torres for the 1937 recording, rather than the
+  article's combined list of interpreters across decades. [Historical archive
+  report hosted by Unisagrado](https://unisagrado.edu.br/uploads/2008/wp-content/antigo/2015/04/11-03-15.pdf).
+- **Dear Someone / Johnny Restivo** is excluded from category input: its article
+  mixes the US original with a later Brazilian version and is therefore tagged
+  as Brazilian rock. [Article](https://pt.wikipedia.org/wiki/Dear_Someone).
+
+Act credits written with `e` and `&` are unified only when the complete act also
+occurs with `&` in the input; guests in parentheses are preserved. Two additional
+alias pairs were found to resolve to identical Deezer track IDs: **MC Paiva ZS /
+MC Paiva** on Casei com a Putaria (1805332687), and **Dennis DJ e Kevin o Chris /
+Dennis & MC Kevin o Chris** on Tá OK (2254883767). Those credits are canonicalised
+to prevent duplicate cards for the same recording.
+- **Inútil / Ultraje a Rigor**: first single release **1983**, not the later 1985
+  album year. [The band's own history and discography](https://ultraje.com/).
+  The Deezer matcher cannot distinguish untagged studio takes, so single-versus-
+  album recording identity still warrants listening verification.
+- **Amarillo by Morning / Terry Stafford** is likewise excluded from categories:
+  a Brazilian-cover category was applied to an article whose infobox is the US
+  original. [Texas State historical research](https://gato-docs.its.txst.edu/jcr%3Aa226c461-11cf-4c43-acce-7deb590036ab/5_JTMH_V15_The_Life_and_Songs_of_Terry_Stafford.pdf).
+- **Enrosca / Sandy & Junior**: use the **2000** release, not the composition's
+  1975 category. It is a studio bonus track on a live album; no live exception
+  is needed. [Universal's album listing](https://www.umusicstore.com/cd-sandy-e-junior-quatro-estacoes-ao-vivo-1340/p), [label-supplied track credits](https://www.qobuz.com/gb-en/album/as-quatro-estacoes-sandy-e-junior/0073145482112).
+- **Positivismo**: Noel Rosa performs the 1933 recording; Orestes Barbosa is a
+  co-composer. [IMS recording](https://discografiabrasileira.com.br/fonograma/55912/positivismo), [Cravo Albin](https://dicionariompb.com.br/artista/orestes-barbosa/).
+- **Chão de Giz**: remove the infobox's stray final apostrophe, using the page's
+  title. This is a formatting correction, not a change of song.
+- Generic performer fields such as **Vários** / **vários artistas** are excluded
+  alongside empty performer fields; they do not identify a recording to match.
+- **Ti Ti Ti / Metrô**: **1985**, not Rita Lee's earlier 1982 version.
+  [Sony-supplied recording on the artist's channel](https://www.youtube.com/watch?v=AVTi7QiJwBQ).
+- **Lourinha Bombril / Os Paralamas do Sucesso**: **1996**, not 1997.
+  [Original album catalog](https://immub.org/album/9-luas), [contemporary interview
+  with Herbert Vianna](https://www1.folha.uol.com.br/fsp/1996/7/23/ilustrada/23.html).
+
+The 2009 and 2010 Brasil Hot Popular Songs pages use **Cantor(es)** rather than
+**Artista(s)** as their table header. The scraper now recognises Cantor and
+Intérprete headers and retries cached chart pages with zero parsed rows, so
+those pages can be recovered on a resumable run.
+
+The **Tá OK** entry crediting Maluma and Karol G is the **Remix**, not the
+original DENNIS / Kevin o Chris recording. It is now explicitly titled **Tá OK
+(Remix)**, and requesting a remix rejects an untagged original candidate.
+[Artist-channel / Sony recording credits](https://www.youtube.com/watch?v=pJPmdSkO6RE)
+identify its release as August 3, 2023. The previously reused original Deezer ID
+is discarded and this row is looked up again.
+
+Bare **participação** credits (without “de”) are also recognised when deriving
+source deduplication keys. This merges the duplicate Céu da Boca entries with
+and without the Gilberto Gil credit, which resolved to the same Deezer recording
+(1963943207), while retaining the selected source's full artist credit.
+
+Quote cleanup now removes a wrapper around an entire title, rather than stripping
+only an opening quote from a quoted word. **"P" da Vida** and **"Oretachi" no
+Theme** are restored from their article titles in existing caches; future scrapes
+preserve these balanced quotes directly. A focused offline parser test covers
+both whole-title quotation and quotation around a word inside the title.
+
+The final full-catalog audit found the same Tá OK original under **Dennis e
+Kevin O Chris**, and Dançarina under **Pedro Sampaio & MC Pedrinho** versus
+**Pedro Sampaio com participação de MC Pedrinho**. Each pair had the same Deezer
+ID (2254883767 and 1638787832 respectively); their exact credits are canonicalised
+so each recording appears once.

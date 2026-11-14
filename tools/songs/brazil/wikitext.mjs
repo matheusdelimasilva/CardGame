@@ -42,7 +42,8 @@ export function plain(s) {
     .replace(/<[^>]+>/g, "")
     .replace(/&nbsp;/g, " ")
     .replace(/\s+/g, " ")
-    .replace(/^["“”\s]+|["“”\s]+$/g, "")
+    .trim()
+    .replace(/^["“]([\s\S]*)["”]$/, "$1") // strip a whole-title wrapper, not the quote in '"P" da Vida'
     .trim();
 }
 

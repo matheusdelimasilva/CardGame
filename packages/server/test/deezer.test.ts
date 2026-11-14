@@ -10,6 +10,11 @@ const t = (id: number, title: string, artist: string, rank = 500_000, preview = 
 });
 
 describe("scoreCandidate", () => {
+  it("does not substitute the original recording for a requested remix", () => {
+    const song = { title: "Tá OK (Remix)", artist: "DENNIS" };
+    expect(scoreCandidate(song, t(1, "Tá OK", "DENNIS"))).toBeNull();
+    expect(scoreCandidate(song, t(2, "Tá OK (Remix)", "DENNIS"))).not.toBeNull();
+  });
   it("handles Brazilian participation credits without splitting duo names", () => {
     for (const credit of ["Kevinho com a participação de Anitta", "Kevinho (com a participação de Anitta)", "Kevinho part. Anitta"]) {
       expect(primaryArtist(credit)).toBe("Kevinho");

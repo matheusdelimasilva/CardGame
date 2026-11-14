@@ -30,8 +30,11 @@ for (const s of songs) {
 }
 const min = Math.min(...songs.map((s) => s.year));
 const max = Math.max(...songs.map((s) => s.year));
-for (let i = 0; samples.size < Math.min(15, songs.length) && i < 100; i++) {
-  const target = min + (max - min) * ((i + 0.5) / 15 % 1);
+const latest = songs.filter((s) => s.year === max).at(-1);
+samples.set(`${latest.title}|${latest.artist}`, latest);
+const extra = Math.min(15, songs.length) - samples.size;
+for (let i = 0; i < extra; i++) {
+  const target = min + (max - min) * (i + 1) / (extra + 1);
   const s = songs.filter((s) => !samples.has(`${s.title}|${s.artist}`))
     .sort((a, b) => Math.abs(a.year - target) - Math.abs(b.year - target))[0];
   if (s) samples.set(`${s.title}|${s.artist}`, s);

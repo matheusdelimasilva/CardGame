@@ -113,6 +113,7 @@ export function scoreCandidate(want: SongQuery, t: ApiTrack): number | null {
   if (VARIANT.test(t.title) && !VARIANT.test(want.title)) return null;
   // An explicitly requested Brazilian live hit must not fall back to a studio take.
   if (/\bao vivo\b/i.test(want.title) && !/\b(ao vivo|live)\b/i.test(t.title)) return null;
+  if (/\b(remix|rmx)\b/i.test(want.title) && !/\b(remix|rmx)\b/i.test(t.title)) return null;
 
   const wanted = titleForms(want.title);
   const got = [...titleForms(t.title), ...titleForms(t.title_short ?? t.title)];
