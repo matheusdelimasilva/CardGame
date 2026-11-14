@@ -1,0 +1,744 @@
+Deezer matches (chart top 5 per year): 357 matched, 25 missing
+
+== Missing ==
+1950  #1  Gordon Jenkins & The Weavers — Goodnight Irene
+1950  #4  Gary & Bing Crosby with Matty Matlock — Sam's Song
+1953  #5  Ames Brothers with Hugo Winterhalter — You, You, You
+1954  #2  Perry Como with Hugo Winterhalter — Wanted
+1958  #1  Domenico Modugno — Volare (Nel blu dipinto di blu)
+1958  #3  Elvis Presley — Don't" / "I Beg of You
+1958  #4  Ross Bagdasarian — Witch Doctor
+1969  #2  The 5th Dimension — Aquarius/Let the Sunshine In
+1976  #1  Wings — Silly Love Songs
+1990  #3  C+C Music Factory — Gonna Make You Sweat (Everybody Dance Now)
+1991  #1  Bryan Adams — (Everything I Do) I Do It for You
+1991  #2  Color Me Badd — I Wanna Sex You Up
+1993  #3  UB40 — Can't Help Falling in Love
+1996  #5  Puff Daddy featuring Mase — Can't Nobody Hold Me Down
+1997  #2  Jewel — You Were Meant for Me" / "Foolish Games
+1997  #3  Puff Daddy and Faith Evans featuring 112 — I'll Be Missing You
+2007  #4  Fergie — Big Girls Don't Cry
+2009  #3  Lady Gaga featuring Colby O'Donis — Just Dance
+2009  #5  Taylor Swift — Love Story
+2010  #1  Kesha — Tik Tok
+2010  #2  Lady Antebellum — Need You Now
+2011  #1  Adele — Rolling in the Deep
+2014  #5  OneRepublic — Counting Stars
+2017  #5  The Chainsmokers and Coldplay — Something Just Like This
+2019  #2  Post Malone and Swae Lee — Sunflower
+
+== Matched ==
+1949  #1  Vaughn Monroe — Riders in the Sky
+            => Vaughn Monroe — Riders In the Sky   [4046433]
+1949  #2  Frankie Laine — That Lucky Old Sun
+            => Frankie Laine — That Lucky Old Sun   [4269639922]
+1949  #3  Vic Damone — You're Breaking My Heart
+            => Vic Damone — You're Breaking My Heart   [715976092]
+1949  #4  Perry Como — Some Enchanted Evening
+            => Perry Como — Some Enchanted Evening   [2485851]
+1949  #5  Jimmy Wakely and Margaret Whiting — Slippin' Around
+            => Jimmy Wakely — Slippin' Around   [1187548082]
+1950  #2  Nat King Cole — Mona Lisa
+            => Nat King Cole — Mona Lisa (Remastered 2003)   [3095162]
+1950  #3  Anton Karas — Third Man Theme
+            => Anton Karas — The Third Man Theme   [12013931]
+1950  #5  Gary & Bing Crosby with Matty Matlock — Play a Simple Melody
+            => Gary Crosby & Friend — Play A Simple Melody (Single Version)   [1178313]
+1951  #1  Nat King Cole with Les Baxter — Too Young
+            => Nat King Cole — Too Young (Remastered 2003)   [3095150]
+1951  #2  Tony Bennett with Percy Faith — Because of You
+            => Tony Bennett — Because of You   [2168794]
+1951  #3  Les Paul and Mary Ford — How High the Moon
+            => Les Paul & Mary Ford — How High The Moon   [13022671]
+1951  #4  Rosemary Clooney — Come On-a My House
+            => Rosemary Clooney — Come On-A My House   [586332]
+1951  #5  Mario Lanza with Ray Sinatra and Jeff Alexander — Be My Love
+            => Mario Lanza — Be My Love (from "The Toast of New Orleans") (2006 Remaster)   [1363772002]
+1952  #1  Leroy Anderson — Blue Tango
+            => Leroy Anderson — Blue Tango   [407134662]
+1952  #2  Kay Starr — Wheel of Fortune
+            => Kay Starr — Wheel Of Fortune   [3109533]
+1952  #3  Johnnie Ray & The Four Lads — Cry
+            => Johnnie Ray — Cry   [1068564]
+1952  #4  Jo Stafford with Paul Weston — You Belong to Me
+            => Jo Stafford — You Belong To Me   [3098857]
+1952  #5  Vera Lynn with Her Majesty's Forces and Roland Shaw — Auf Wiederseh'n, Sweetheart
+            => Vera Lynn — Auf Wiederseh'n Sweetheart   [4244323]
+1953  #1  Percy Faith featuring Felicia Sanders — The Song from Moulin Rouge
+            => Percy Faith — The Song From "Moulin Rouge"   [516230772]
+1953  #2  Les Paul and Mary Ford — Vaya con Dios
+            => Les Paul — Vaya Con Dios   [3532600]
+1953  #3  Patti Page — (How Much Is) That Doggie in the Window?
+            => Patti Page — (How Much Is) That Doggie in the Window   [1067996]
+1953  #4  Eddie Fisher with Hugo Winterhalter — I'm Walking Behind You
+            => Eddie Fisher — I'm Walking Behind You (2001 Remastered)   [13202576]
+1953  #5  Jo Stafford with Paul Weston — Make Love to Me
+            => Jo Stafford — Make Love To Me!   [3276811531]
+1954  #1  Kitty Kallen with Jack Pleis — Little Things Mean a Lot
+            => Kitty Kallen — Little Things Mean A Lot   [10378839]
+1954  #3  Rosemary Clooney with Buddy Cole — Hey There
+            => Rosemary Clooney — Hey There (Single Version)   [586360]
+1954  #4  The Crew-Cuts with David Carroll — Sh-Boom
+            => The Crew Cuts — Sh-Boom   [118048622]
+1955  #1  Perez Prado — Cherry Pink And Apple Blossom White
+            => Perez Prado — Cherry Pink And Apple Blossom White   [11859302]
+1955  #2  Bill Haley & His Comets — Rock Around the Clock
+            => Bill Haley & His Comets — Rock Around The Clock   [1743102]
+1955  #3  Mitch Miller — The Yellow Rose of Texas
+            => Mitch Miller — The Yellow Rose of Texas (Single Version)   [13205291]
+1955  #4  Roger Williams — Autumn Leaves
+            => Roger Williams — Autumn Leaves   [63771556]
+1955  #5  Les Baxter — Unchained Melody
+            => Les Baxter — Unchained Melody   [116260666]
+1956  #1  Elvis Presley — Heartbreak Hotel
+            => Elvis Presley — Heartbreak Hotel   [7675085]
+1956  #2  Elvis Presley — Don't Be Cruel
+            => Elvis Presley — Don't Be Cruel   [7675086]
+1956  #3  Nelson Riddle — Lisbon Antigua
+            => Nelson Riddle — Lisbon Antigua   [344981831]
+1956  #4  The Platters — My Prayer
+            => The Platters — My Prayer   [6403117]
+1956  #5  Gogi Grant — The Wayward Wind
+            => Gogi Grant — The Wayward Wind   [6071762]
+1957  #1  Elvis Presley — All Shook Up
+            => Elvis Presley — All Shook Up   [13210872]
+1957  #2  Pat Boone — Love Letters in the Sand
+            => Pat Boone — Love Letters In The Sand   [568487752]
+1957  #3  The Diamonds — Little Darlin'
+            => The Diamonds — Little Darlin'   [68791717]
+1957  #4  Tab Hunter — Young Love
+            => Tab Hunter — Young Love   [14813694]
+1957  #5  Jimmy Dorsey — So Rare
+            => Jimmy Dorsey — So Rare   [73014182]
+1958  #2  The Everly Brothers — All I Have to Do Is Dream" / "Claudette
+            => The Everly Brothers — All I Have to Do Is Dream   [74494813]
+1958  #5  Perez Prado — Patricia
+            => Perez Prado — Patricia   [11859308]
+1959  #1  Johnny Horton — The Battle of New Orleans
+            => Johnny Horton — The Battle Of New Orleans   [1129044]
+1959  #2  Bobby Darin — Mack the Knife
+            => Bobby Darin — Mack the Knife (Edit; 2006 Remaster)   [691342]
+1959  #3  Lloyd Price — Personality
+            => Lloyd Price — Personality   [86830371]
+1959  #4  Frankie Avalon — Venus
+            => Frankie Avalon — Vênus   [131271202]
+1959  #5  Paul Anka — Lonely Boy
+            => Paul Anka — Lonely Boy   [964946]
+1960  #1  Percy Faith — Theme from A Summer Place
+            => Percy Faith — The Theme from "A Summer Place"   [10023392]
+1960  #2  Jim Reeves — He'll Have to Go
+            => Jim Reeves — He'll Have To Go   [1584493562]
+1960  #3  The Everly Brothers — Cathy's Clown
+            => The Everly Brothers — Cathy's Clown   [846293]
+1960  #3  The Highwaymen — Michael
+            => Highwaymen — Michael   [2064429]
+1960  #4  Johnny Preston — Running Bear
+            => Johnny Preston — Running Bear   [1632289552]
+1960  #5  Mark Dinning — Teen Angel
+            => Mark Dinning — Teen Angel   [732438832]
+1961  #1  Bobby Lewis — Tossin' and Turnin'
+            => Bobby Lewis — Tossin' And Turnin' (Stereo)   [11577305]
+1961  #2  Patsy Cline — I Fall to Pieces
+            => Patsy Cline — I Fall To Pieces (Single Version)   [780601662]
+1961  #4  Roy Orbison — Crying
+            => Roy Orbison — Crying   [7675276]
+1961  #5  Del Shannon — Runaway
+            => Del Shannon — Runaway   [6800394]
+1962  #1  Acker Bilk — Stranger on the Shore
+            => Acker Bilk — Stranger On The Shore   [3803602752]
+1962  #2  Ray Charles — I Can't Stop Loving You
+            => Ray Charles — I Can't Stop Loving You   [3878892041]
+1962  #3  Dee Dee Sharp — Mashed Potato Time
+            => Dee Dee Sharp — Mashed Potato Time   [2796561]
+1962  #4  Bobby Vinton — Roses Are Red (My Love)
+            => Bobby Vinton — Roses Are Red (My Love) (Single Version)   [595115]
+1962  #5  David Rose — The Stripper
+            => David Rose Orchestra — The Stripper   [38381391]
+1963  #1  The Beach Boys — Surfin' U.S.A.
+            => The Beach Boys — Surfin' U.S.A. (Remastered 2001)   [3091966]
+1963  #2  Skeeter Davis — The End of the World
+            => Skeeter Davis — The End of the World   [1044571]
+1963  #3  The Cascades — Rhythm of the Rain
+            => The Cascades — Rhythm of the Rain   [742211]
+1963  #4  The Chiffons — He's So Fine
+            => The Chiffons — He's So Fine   [926430652]
+1963  #5  Bobby Vinton — Blue Velvet
+            => Bobby Vinton — Blue Velvet   [595121]
+1964  #1  The Beatles — I Want to Hold Your Hand
+            => The Beatles — I Want To Hold Your Hand (Remastered 2015)   [116348598]
+1964  #2  The Beatles — She Loves You
+            => The Beatles — She Loves You (Mono / Remastered)   [116348596]
+1964  #3  Louis Armstrong — Hello, Dolly!
+            => Louis Armstrong — Hello Dolly   [1297057]
+1964  #4  Roy Orbison — Oh, Pretty Woman
+            => Roy Orbison — Oh, Pretty Woman   [78033230]
+1964  #5  The Beach Boys — I Get Around
+            => The Beach Boys — I Get Around (Remastered 2001)   [3091964]
+1965  #1  Sam the Sham and the Pharaohs — Wooly Bully
+            => Sam The Sham & The Pharaohs — Wooly Bully   [1844097487]
+1965  #2  Four Tops — I Can't Help Myself (Sugar Pie Honey Bunch)
+            => Four Tops — I Can't Help Myself (Sugar Pie, Honey Bunch)   [1582310]
+1965  #3  The Rolling Stones — (I Can't Get No) Satisfaction
+            => The Rolling Stones — (I Can't Get No) Satisfaction (Mono)   [7677778]
+1965  #4  We Five — You Were on My Mind
+            => We Five — You Were On My Mind   [1762957237]
+1965  #5  The Righteous Brothers — You've Lost That Lovin' Feelin'
+            => The Righteous Brothers — You've Lost That Lovin' Feelin' (Single Version)   [1370938632]
+1966  #1  The Mamas & the Papas — California Dreamin'
+            => The Mamas & The Papas — California Dreamin' (Single Version)   [2321278]
+1966  #2  ? and the Mysterians — 96 Tears
+            => ? and The Mysterians — 96 Tears (Mono)   [2950821]
+1966  #3  Jimmy Ruffin — What Becomes of the Brokenhearted
+            => Jimmy Ruffin — What Becomes Of The Brokenhearted (Single Version)   [2516764]
+1966  #4  The Monkees — Last Train to Clarksville
+            => The Monkees — Last Train to Clarksville   [13549167]
+1966  #5  Four Tops — Reach Out I'll Be There
+            => Four Tops — Reach Out I'll Be There   [90265961]
+1967  #1  Lulu — To Sir With Love
+            => Lulu — To Sir With Love (2002 Remastered Version)   [439049552]
+1967  #2  The Box Tops — The Letter
+            => The Box Tops — The Letter   [1093255]
+1967  #2  Paul Mauriat — Love is Blue
+            => Paul Mauriat — Love Is Blue (Remastered)   [540409592]
+1967  #3  Bobbie Gentry — Ode to Billie Joe
+            => Bobbie Gentry — Ode To Billie Joe   [3102672]
+1967  #4  The Association — Windy
+            => The Association — Windy   [6630450]
+1967  #5  The Monkees — I'm a Believer
+            => The Monkees — I'm a Believer (2006 Remaster)   [764920]
+1968  #1  The Beatles — Hey Jude
+            => The Beatles — Hey Jude (Remastered 2015)   [116348632]
+1968  #3  Bobby Goldsboro — Honey
+            => Bobby Goldsboro — Honey   [3402894]
+1968  #4  Otis Redding — (Sittin' On) The Dock of the Bay
+            => Otis Redding — (Sittin' On) the Dock of the Bay   [495824392]
+1968  #5  The Rascals — People Got to Be Free
+            => The Rascals — People Got to Be Free   [66174413]
+1968  #5  Sly and the Family Stone — Everyday People
+            => Sly & The Family Stone — Everyday People   [534508]
+1969  #1  The Archies — Sugar, Sugar
+            => The Archies — Sugar, Sugar   [1254117]
+1969  #3  The Temptations — I Can't Get Next to You
+            => The Temptations — I Can't Get Next To You   [4243636]
+1969  #4  The Rolling Stones — Honky Tonk Women
+            => The Rolling Stones — Honky Tonk Women (Mono Version)   [16702525]
+1969  #4  B.J. Thomas — Raindrops Keep Fallin' on My Head
+            => B. J. Thomas — Raindrops Keep Fallin' On My Head   [108312866]
+1970  #1  Simon & Garfunkel — Bridge Over Troubled Water
+            => Simon & Garfunkel — Bridge Over Troubled Water   [13174764]
+1970  #1  Three Dog Night — Joy to the World
+            => Three Dog Night — Joy To The World   [391360542]
+1970  #2  The Carpenters — (They Long to Be) Close to You
+            => Carpenters — (They Long To Be) Close To You   [548725742]
+1970  #3  The Guess Who — American Woman
+            => The Guess Who — American Woman   [1051986]
+1970  #5  Edwin Starr — War
+            => Edwin Starr — War   [646312932]
+1971  #2  Rod Stewart — Maggie May"/"Reason to Believe
+            => Rod Stewart — Maggie May   [538641872]
+1971  #3  Carole King — It's Too Late"/"I Feel the Earth Move
+            => Carole King — It's Too Late   [119819702]
+1971  #4  The Osmonds — One Bad Apple
+            => The Osmonds — One Bad Apple   [465642722]
+1971  #5  Bee Gees — How Can You Mend a Broken Heart
+            => Bee Gees — How Can You Mend A Broken Heart   [7556562]
+1972  #1  Roberta Flack — The First Time Ever I Saw Your Face
+            => Roberta Flack — The First Time Ever I Saw Your Face   [14615239]
+1972  #2  Gilbert O'Sullivan — Alone Again (Naturally)
+            => Gilbert O'Sullivan — Alone Again (Naturally)   [3782948092]
+1972  #3  Don McLean — American Pie
+            => Don McLean — American Pie   [3156285]
+1972  #4  Harry Nilsson — Without You
+            => Harry Nilsson — Without You   [717104332]
+1972  #5  Sammy Davis Jr. — The Candy Man
+            => Sammy Davis Jr. — The Candy Man   [2428103]
+1973  #1  Tony Orlando and Dawn — Tie a Yellow Ribbon Round the Ole Oak Tree
+            => Tony Orlando — Tie A Yellow Ribbon ‘Round The Ole Oak Tree   [1280035242]
+1973  #1  Barbra Streisand — The Way We Were
+            => Barbra Streisand — The Way We Were   [626294]
+1973  #2  Jim Croce — Bad, Bad Leroy Brown
+            => Jim Croce — Bad, Bad Leroy Brown   [3726761962]
+1973  #2  Terry Jacks — Seasons in the Sun
+            => Terry Jacks — Seasons in the Sun   [1353054752]
+1973  #3  Roberta Flack — Killing Me Softly with His Song
+            => Roberta Flack — Killing Me Softly With His Song   [14615242]
+1973  #4  Marvin Gaye — Let's Get It On
+            => Marvin Gaye — Let's Get It On   [2432823]
+1973  #4  Redbone — Come and Get Your Love
+            => Redbone — Come and Get Your Love (Single Version)   [392284592]
+1973  #5  Paul McCartney & Wings — My Love
+            => Paul McCartney — My Love   [126367783]
+1974  #3  Love Unlimited Orchestra — Love's Theme
+            => The Love Unlimited Orchestra — Love's Theme   [537988652]
+1974  #5  The Jackson 5 — Dancing Machine
+            => Jackson 5 — Dancing Machine (Single Version)   [4188301]
+1975  #1  Captain & Tennille — Love Will Keep Us Together
+            => Captain & Tennille — Love Will Keep Us Together   [75163472]
+1975  #2  Glen Campbell — Rhinestone Cowboy
+            => Glen Campbell — Rhinestone Cowboy   [3476217]
+1975  #3  Elton John — Philadelphia Freedom
+            => Elton John — Philadelphia Freedom   [2230069]
+1975  #4  Freddy Fender — Before the Next Teardrop Falls
+            => Freddy Fender — Before the Next Teardrop Falls   [6634650]
+1975  #5  Frankie Valli — My Eyes Adored You
+            => Frankie Valli — My Eyes Adored You   [725695]
+1976  #1  Rod Stewart — Tonight's the Night (Gonna Be Alright)
+            => Rod Stewart — Tonight's the Night (Gonna Be Alright)   [723771]
+1976  #2  Elton John & Kiki Dee — Don't Go Breaking My Heart
+            => Elton John — Don't Go Breaking My Heart   [1162676]
+1976  #3  Johnnie Taylor — Disco Lady
+            => Johnnie Taylor — Disco Lady   [854570]
+1976  #4  The Four Seasons — December, 1963 (Oh, What a Night)
+            => Four Seasons — December 1963 (Oh What A Night)   [1808316017]
+1976  #5  Wild Cherry — Play That Funky Music
+            => Wild Cherry — Play That Funky Music   [1067076]
+1976  #5  Hot — Angel in Your Arms
+            => Hot — Angel In Your Arms   [1867383337]
+1977  #2  Andy Gibb — I Just Want to Be Your Everything
+            => Andy Gibb — I Just Want To Be Your Everything   [483554552]
+1977  #2  Bee Gees — Night Fever
+            => Bee Gees — Night Fever (From "Saturday Night Fever" Soundtrack)   [139138751]
+1977  #3  The Emotions — Best of My Love
+            => The Emotions — Best of My Love   [1026366]
+1977  #3  Debby Boone — You Light Up My Life
+            => Debby Boone — You Light Up My Life   [75782993]
+1977  #4  Barbra Streisand — Evergreen (Love Theme from A Star Is Born)
+            => Barbra Streisand — Evergreen (Love Theme from "A Star Is Born")   [848945]
+1978  #1  Andy Gibb — Shadow Dancing
+            => Andy Gibb — Shadow Dancing   [386159401]
+1978  #4  Bee Gees — Stayin' Alive
+            => Bee Gees — Stayin' Alive (From "Saturday Night Fever" Soundtrack)   [427219162]
+1978  #4  Rod Stewart — Da Ya Think I'm Sexy?
+            => Rod Stewart — Da Ya Think I'm Sexy?   [2550736]
+1978  #5  Exile — Kiss You All Over
+            => Exile — Kiss You All Over   [1069077]
+1978  #5  Peaches & Herb — Reunited
+            => Peaches & Herb — Reunited   [549284352]
+1979  #1  The Knack — My Sharona
+            => The Knack — My Sharona   [3248376]
+1979  #2  Donna Summer — Bad Girls
+            => Donna Summer — Bad Girls   [131742252]
+1979  #2  Pink Floyd — Another Brick in the Wall, Part II
+            => Pink Floyd — Another Brick in the Wall, Pt. 2   [116914094]
+1979  #3  Chic — Le Freak
+            => Chic — Le Freak   [72060062]
+1979  #4  Michael Jackson — Rock with You
+            => Michael Jackson — Rock with You (Single Version)   [15586286]
+1979  #5  Captain & Tennille — Do That to Me One More Time
+            => Captain & Tennille — Do That To Me One More Time   [75162619]
+1980  #1  Blondie — Call Me
+            => Blondie — Call Me (Theme From "American Gigolo" / Remastered 2001)   [3167203]
+1980  #3  Olivia Newton-John — Magic
+            => Olivia Newton-John — Magic (Remastered 2022)   [3838467901]
+1980  #3  Kenny Rogers — Lady
+            => Kenny Rogers — Lady   [555636562]
+1980  #5  Rick Springfield — Jessie's Girl
+            => Rick Springfield — Jessie's Girl   [454843722]
+1981  #1  Kim Carnes — Bette Davis Eyes
+            => Kim Carnes — Bette Davis Eyes   [3153065]
+1981  #1  Olivia Newton-John — Physical
+            => Olivia Newton-John — Physical (Remastered 2021)   [3837084801]
+1981  #2  Diana Ross & Lionel Richie — Endless Love
+            => Diana Ross — Endless Love (Edited Version)   [96459590]
+1981  #3  Joan Jett & The Blackhearts — I Love Rock 'n Roll
+            => Joan Jett and the Blackhearts — I Love Rock 'N Roll   [3795205892]
+1981  #4  John Lennon — (Just Like) Starting Over
+            => John Lennon — (Just Like) Starting Over (Remastered 2010)   [122210000]
+1982  #2  Survivor — Eye of the Tiger
+            => Survivor — Eye of the Tiger   [576431]
+1982  #4  Paul McCartney and Stevie Wonder — Ebony and Ivory
+            => Paul McCartney — Ebony And Ivory   [5664754]
+1982  #5  The J. Geils Band — Centerfold
+            => The J. Geils Band — Centerfold   [3168236]
+1983  #1  The Police — Every Breath You Take
+            => The Police — Every Breath You Take   [2525864]
+1983  #2  Michael Jackson — Billie Jean
+            => Michael Jackson — Billie Jean   [4603408]
+1983  #3  Irene Cara — Flashdance... What a Feeling
+            => Irene Cara — Flashdance...What a Feeling (Radio Edit)   [62419007]
+1983  #3  Paul McCartney and Michael Jackson — Say, Say, Say
+            => Paul McCartney — Say Say Say   [5664764]
+1983  #4  Men at Work — Down Under
+            => Men At Work — Down Under   [1030221]
+1983  #5  Michael Jackson — Beat It
+            => Michael Jackson — Beat It   [4763165]
+1984  #1  Prince — When Doves Cry
+            => Prince — When Doves Cry   [2806039672]
+1984  #1  George Michael — Careless Whisper
+            => George Michael — Careless Whisper   [14525086]
+1984  #2  Tina Turner — What's Love Got to Do with It
+            => Tina Turner — What's Love Got to Do with It   [3120266]
+1984  #4  Kenny Loggins — Footloose
+            => Kenny Loggins — Footloose   [72004656]
+1984  #4  Foreigner — I Want to Know What Love Is
+            => Foreigner — I Want to Know What Love Is (1999 Remaster)   [675818]
+1984  #5  Phil Collins — Against All Odds (Take a Look at Me Now)
+            => Phil Collins — Against All Odds (Take a Look at Me Now) (2016 Remaster)   [134036426]
+1984  #5  Chaka Khan — I Feel for You
+            => Chaka Khan — I Feel for You   [685227]
+1985  #2  Madonna — Like a Virgin
+            => Madonna — Like a Virgin   [678336]
+1985  #2  Lionel Richie — Say You, Say Me
+            => Lionel Richie — Say You, Say Me   [905697]
+1985  #3  Wham! — Wake Me Up Before You Go-Go
+            => Wham! — Wake Me Up Before You Go-Go   [15194531]
+1985  #3  Klymaxx — I Miss You
+            => Klymaxx — I Miss You   [1758524947]
+1986  #1  Dionne and Friends (Dionne Warwick, Gladys Knight, Elton John and Stevie Wonder) — That's What Friends Are For
+            => Dionne Warwick — That's What Friends Are For   [107655500]
+1986  #4  Patti LaBelle and Michael McDonald — On My Own
+            => Patti LaBelle — On My Own   [25856691]
+1986  #5  Mr. Mister — Broken Wings
+            => Mr. Mister — Broken Wings   [15391705]
+1987  #1  The Bangles — Walk Like an Egyptian
+            => The Bangles — Walk Like an Egyptian   [610231]
+1987  #1  George Michael — Faith
+            => George Michael — Faith (Remastered)   [8146779]
+1987  #2  Heart — Alone
+            => Heart — Alone   [3127630]
+1987  #3  Gregory Abbott — Shake You Down
+            => Gregory Abbott — Shake You Down   [851161]
+1987  #3  George Harrison — Got My Mind Set on You
+            => George Harrison — Got My Mind Set on You   [3164587]
+1987  #4  Whitney Houston — I Wanna Dance with Somebody (Who Loves Me)
+            => Whitney Houston — I Wanna Dance with Somebody (Who Loves Me)   [75981528]
+1987  #5  Starship — Nothing's Gonna Stop Us Now
+            => Starship — Nothing's Gonna Stop Us Now   [602137932]
+1988  #1  Chicago — Look Away
+            => Chicago — Look Away   [3616320]
+1988  #2  INXS — Need You Tonight
+            => INXS — Need You Tonight (2017 Remaster)   [428612492]
+1988  #3  Poison — Every Rose Has Its Thorn
+            => Poison — Every Rose Has Its Thorn (2003 Remaster)   [3874974]
+1988  #4  Rick Astley — Never Gonna Give You Up
+            => Rick Astley — Never Gonna Give You Up   [3786363472]
+1988  #4  Paula Abdul — Straight Up
+            => Paula Abdul — Straight Up   [3109328]
+1988  #5  Guns N' Roses — Sweet Child o' Mine
+            => Guns N' Roses — Sweet Child O' Mine   [518458172]
+1989  #2  Bobby Brown — My Prerogative
+            => Bobby Brown — My Prerogative   [921945582]
+1989  #4  Bell Biv DeVoe — Poison
+            => Bell Biv DeVoe — Poison   [765887552]
+1989  #5  Janet Jackson — Miss You Much
+            => Janet Jackson — Miss You Much (7" Edit)   [755500082]
+1990  #1  Wilson Phillips — Hold On
+            => Wilson Phillips — Hold On   [3090950]
+1990  #2  Roxette — It Must Have Been Love
+            => Roxette — It Must Have Been Love (From the Film "Pretty Woman")   [3098301]
+1990  #3  Sinéad O'Connor — Nothing Compares 2 U
+            => Sinéad O'Connor — Nothing Compares 2 U   [1787569267]
+1990  #5  Madonna — Vogue
+            => Madonna — Vogue   [723903]
+1991  #4  Paula Abdul — Rush Rush
+            => Paula Abdul — Rush Rush   [3311534]
+1991  #4  Vanessa Williams — Save the Best for Last
+            => Vanessa Williams — Save The Best For Last   [1121716]
+1991  #5  Timmy T — One More Try
+            => Timmy T — One More Try   [125235508]
+1992  #1  Boyz II Men — End of the Road
+            => Boyz II Men — End Of The Road   [2426056]
+1992  #1  Whitney Houston — I Will Always Love You
+            => Whitney Houston — I Will Always Love You   [7675403]
+1992  #2  Sir Mix-a-Lot — Baby Got Back
+            => Sir Mix-A-Lot — Baby Got Back   [65690395]
+1992  #3  Kris Kross — Jump
+            => Kris Kross — Jump   [1056838]
+1992  #5  TLC — Baby-Baby-Baby
+            => TLC — Baby-Baby-Baby   [1076496]
+1993  #1  Ace of Base — The Sign
+            => Ace of Base — The Sign   [93851026]
+1993  #2  Tag Team — Whoomp! (There It Is)
+            => Tag Team — Whoomp! There It Is (Radio Edit)   [1558003142]
+1993  #4  Janet Jackson — That's the Way Love Goes
+            => Janet Jackson — That's The Way Love Goes   [3501645]
+1993  #4  Celine Dion — The Power of Love
+            => Céline Dion — The Power of Love   [70627953]
+1993  #5  Silk — Freak Me
+            => Silk — Freak Me   [3822013]
+1993  #5  Mariah Carey — Hero
+            => Mariah Carey — Hero   [2442224775]
+1994  #2  All-4-One — I Swear
+            => All-4-One — I Swear   [4086654]
+1994  #3  Boyz II Men — I'll Make Love to You
+            => Boyz II Men — I'll Make Love To You   [7314701]
+1994  #4  Seal — Kiss from a Rose
+            => Seal — Kiss from a Rose   [730428]
+1995  #1  Coolio featuring L.V. — Gangsta's Paradise
+            => Coolio — Gangsta's Paradise   [1584416372]
+1995  #2  TLC — Waterfalls
+            => TLC — Waterfalls   [1043894]
+1995  #2  Mariah Carey and Boyz II Men — One Sweet Day
+            => Mariah Carey — One Sweet Day   [1013811]
+1995  #3  TLC — Creep
+            => TLC — Creep   [1043879]
+1995  #3  Celine Dion — Because You Loved Me
+            => Céline Dion — Because You Loved Me (Theme from "Up Close and Personal")   [14552288]
+1995  #4  The Tony Rich Project — Nobody Knows
+            => The Tony Rich Project — Nobody Knows   [15411881]
+1995  #5  Boyz II Men — On Bended Knee
+            => Boyz II Men — On Bended Knee   [2426063]
+1995  #5  Mariah Carey — Always Be My Baby
+            => Mariah Carey — Always Be My Baby   [1012940]
+1996  #1  Los del Río — Macarena (Bayside Boys Mix)
+            => Los Del Río — Macarena   [990761]
+1996  #4  Toni Braxton — Un-Break My Heart
+            => Toni Braxton — Un-Break My Heart   [67163992]
+1997  #1  Elton John — Candle in the Wind 1997" / "Something About the Way You Look Tonight
+            => Elton John — Candle In The Wind 1997   [1103313]
+1997  #4  Savage Garden — Truly Madly Deeply
+            => Savage Garden — Truly Madly Deeply   [15177682]
+1997  #5  LeAnn Rimes — How Do I Live
+            => LeAnn Rimes — How Do I Live   [75778882]
+1998  #1  Next — Too Close
+            => Next — Too Close   [1043576]
+1998  #2  Brandy and Monica — The Boy Is Mine
+            => Brandy — The Boy Is Mine   [662355]
+1998  #3  Shania Twain — You're Still the One
+            => Shania Twain — You're Still The One   [731732292]
+1998  #3  Monica — Angel of Mine
+            => Monica — Angel of Mine   [958976]
+1999  #1  Cher — Believe
+            => Cher — Believe   [786717]
+1999  #1  Faith Hill — Breathe
+            => Faith Hill — Breathe   [6641040]
+1999  #2  TLC — No Scrubs
+            => TLC — No Scrubs   [1075781]
+1999  #2  Santana featuring Rob Thomas — Smooth
+            => Santana — Smooth (feat. Rob Thomas)   [82241402]
+1999  #4  Whitney Houston featuring Faith Evans and Kelly Price — Heartbreak Hotel
+            => Whitney Houston — Heartbreak Hotel (feat. Faith Evans & Kelly Price)   [967311]
+1999  #5  Britney Spears — ...Baby One More Time
+            => Britney Spears — ...Baby One More Time   [540175]
+1999  #5  Vertical Horizon — Everything You Want
+            => Vertical Horizon — Everything You Want   [7410392]
+2000  #3  Santana featuring The Product G&B — Maria Maria
+            => Santana — Maria Maria (feat. The Product G&B)   [82241406]
+2000  #4  Joe — I Wanna Know
+            => Joe — I Wanna Know   [2221574]
+2001  #1  Lifehouse — Hanging by a Moment
+            => Lifehouse — Hanging By A Moment   [1762986557]
+2001  #1  Nickelback — How You Remind Me
+            => Nickelback — How You Remind Me   [71828723]
+2001  #2  Alicia Keys — Fallin'
+            => Alicia Keys — Fallin'   [959183]
+2001  #3  Janet — All for You
+            => Janet Jackson — All For You   [3168996]
+2001  #4  Train — Drops of Jupiter (Tell Me)
+            => Train — Drops of Jupiter (Tell Me)   [68908956]
+2001  #5  Jennifer Lopez featuring Ja Rule — I'm Real (Murder Remix)
+            => Jennifer Lopez — I'm Real (feat. Ja Rule) (Murder Remix)   [625530]
+2001  #5  The Calling — Wherever You Will Go
+            => The Calling — Wherever You Will Go   [573437]
+2002  #1  50 Cent — In da Club
+            => 50 Cent — In Da Club   [1045832682]
+2002  #2  Ashanti — Foolish
+            => Ashanti — Foolish   [1125953]
+2002  #3  Nelly — Hot in Herre
+            => Nelly — Hot In Herre   [2447436]
+2002  #4  Nelly featuring Kelly Rowland — Dilemma
+            => Nelly — Dilemma   [2447443]
+2002  #4  Maroon 5 — This Love
+            => Maroon 5 — This Love   [1165301]
+2002  #5  3 Doors Down — When I'm Gone
+            => 3 Doors Down — When I'm Gone   [62294829]
+2003  #2  R. Kelly — Ignition (Remix)
+            => R. Kelly — Ignition (Remix)   [576455]
+2003  #3  Sean Paul — Get Busy
+            => Sean Paul — Get Busy   [364292561]
+2003  #3  Alicia Keys — If I Ain't Got You
+            => Alicia Keys — If I Ain't Got You   [629466]
+2003  #4  Beyoncé featuring Jay-Z — Crazy in Love
+            => Beyoncé — Crazy In Love (feat. JAŸ-Z)   [609244]
+2003  #4  Kelly Clarkson — Since U Been Gone
+            => Kelly Clarkson — Since U Been Gone   [15392707]
+2003  #5  OutKast featuring Sleepy Brown — The Way You Move
+            => OutKast — The Way You Move (feat. Sleepy Brown)   [628247]
+2004  #1  Usher featuring Lil Jon and Ludacris — Yeah!
+            => USHER — Yeah! (feat. Lil Jon & Ludacris)   [13783449]
+2004  #2  Usher — Burn
+            => USHER — Burn   [13783453]
+2004  #3  Mario — Let Me Love You
+            => Mario — Let Me Love You   [597166]
+2004  #5  Ciara featuring Missy Elliott — 1, 2 Step
+            => Ciara — 1, 2 Step (feat. Missy Elliott)   [13145326]
+2005  #1  Mariah Carey — We Belong Together
+            => Mariah Carey — We Belong Together   [1217611482]
+2005  #2  Gwen Stefani — Hollaback Girl
+            => Gwen Stefani — Hollaback Girl   [2426753]
+2006  #1  Daniel Powter — Bad Day
+            => Daniel Powter — Bad Day   [6685848]
+2006  #2  Sean Paul — Temperature
+            => Sean Paul — Temperature   [63394297]
+2006  #3  Nelly Furtado featuring Timbaland — Promiscuous
+            => Nelly Furtado — Promiscuous   [2430338]
+2006  #4  James Blunt — You're Beautiful
+            => James Blunt — You're Beautiful   [2659940]
+2006  #5  Shakira featuring Wyclef Jean — Hips Don't Lie
+            => Shakira — Hips Don't Lie   [3663852612]
+2007  #1  Beyoncé — Irreplaceable
+            => Beyoncé — Irreplaceable   [13131048]
+2007  #2  Rihanna featuring Jay-Z — Umbrella
+            => Rihanna — Umbrella   [925106]
+2007  #3  Gwen Stefani featuring Akon — The Sweet Escape
+            => Gwen Stefani — The Sweet Escape   [7553575]
+2007  #5  T-Pain featuring Yung Joc — Buy U a Drank (Shawty Snappin')
+            => T-Pain — Buy U a Drank (Shawty Snappin') (feat. Yung Joc)   [87675727]
+2008  #1  Flo Rida featuring T-Pain — Low
+            => Flo Rida — Low (feat. T-Pain)   [717358]
+2008  #2  Leona Lewis — Bleeding Love
+            => Leona Lewis — Bleeding Love   [365067]
+2008  #3  Alicia Keys — No One
+            => Alicia Keys — No One   [2466262]
+2008  #4  Lil Wayne featuring Static Major — Lollipop
+            => Lil Wayne — Lollipop   [884266]
+2008  #5  OneRepublic — Apologize
+            => OneRepublic — Apologize   [646330632]
+2009  #1  The Black Eyed Peas — Boom Boom Pow
+            => The Black Eyed Peas — Boom Boom Pow (Radio Edit)   [3328204051]
+2009  #2  Lady Gaga — Poker Face
+            => Lady Gaga — Poker Face   [2733703]
+2009  #4  The Black Eyed Peas — I Gotta Feeling
+            => The Black Eyed Peas — I Gotta Feeling (Edit)   [1443750112]
+2010  #3  Train — Hey, Soul Sister
+            => Train — Hey, Soul Sister   [563683852]
+2010  #4  Katy Perry featuring Snoop Dogg — California Gurls
+            => Katy Perry — California Gurls   [17135110]
+2010  #5  Usher featuring will.i.am — OMG
+            => USHER — OMG (feat. will.i.am)   [15597227]
+2011  #2  LMFAO featuring Lauren Bennett and GoonRock — Party Rock Anthem
+            => LMFAO — Party Rock Anthem (Radio Edit)   [2494401221]
+2011  #3  Katy Perry — Firework
+            => Katy Perry — Firework   [3892384211]
+2011  #4  Katy Perry featuring Kanye West — E.T.
+            => Katy Perry — E.T.   [17135115]
+2011  #5  Pitbull featuring Ne-Yo, Afrojack and Nayer — Give Me Everything
+            => Pitbull — Give Me Everything (feat. Nayer)   [12270340]
+2012  #1  Gotye featuring Kimbra — Somebody That I Used to Know
+            => Gotye — Somebody That I Used To Know   [119615552]
+2012  #2  Carly Rae Jepsen — Call Me Maybe
+            => Carly Rae Jepsen — Call Me Maybe   [16670786]
+2012  #3  Fun featuring Janelle Monáe — We Are Young
+            => fun. — We Are Young (feat. Janelle Monáe)   [16501728]
+2012  #4  Maroon 5 featuring Wiz Khalifa — Payphone
+            => Maroon 5 — Payphone   [1394186132]
+2012  #5  Ellie Goulding — Lights
+            => Ellie Goulding — Lights (Single Version)   [7667349]
+2013  #1  Macklemore & Ryan Lewis featuring Wanz — Thrift Shop
+            => Macklemore & Ryan Lewis — Thrift Shop (feat. Wanz)   [61424042]
+2013  #2  Robin Thicke featuring T.I. and Pharrell Williams — Blurred Lines
+            => Robin Thicke — Blurred Lines   [70335406]
+2013  #3  Imagine Dragons — Radioactive
+            => Imagine Dragons — Radioactive   [74506420]
+2013  #4  Baauer — Harlem Shake
+            => Baauer — Harlem Shake   [64734097]
+2013  #5  Macklemore & Ryan Lewis featuring Ray Dalton — Can't Hold Us
+            => Macklemore — Can't Hold Us (feat. Ray Dalton)   [61424044]
+2014  #1  Pharrell Williams — Happy
+            => Pharrell Williams — Happy (From "Despicable Me 2")   [701326562]
+2014  #2  Katy Perry featuring Juicy J — Dark Horse
+            => Katy Perry — Dark Horse   [71645436]
+2014  #3  John Legend — All of Me
+            => John Legend — All of Me   [70079770]
+2014  #4  Iggy Azalea featuring Charli XCX — Fancy
+            => Iggy Azalea — Fancy   [77485391]
+2015  #1  Mark Ronson featuring Bruno Mars — Uptown Funk
+            => Mark Ronson — Uptown Funk (feat. Bruno Mars)   [92734438]
+2015  #2  Ed Sheeran — Thinking Out Loud
+            => Ed Sheeran — Thinking out Loud   [79875064]
+2015  #3  Wiz Khalifa featuring Charlie Puth — See You Again
+            => Wiz Khalifa — See You Again (feat. Charlie Puth)   [95813354]
+2015  #4  Fetty Wap — Trap Queen
+            => Fetty Wap — Trap Queen   [91934728]
+2015  #5  Maroon 5 — Sugar
+            => Maroon 5 — Sugar   [100052800]
+2016  #1  Justin Bieber — Love Yourself
+            => Justin Bieber — Love Yourself   [112662368]
+2016  #2  Justin Bieber — Sorry
+            => Justin Bieber — Sorry   [112662366]
+2016  #3  Drake featuring Wizkid and Kyla — One Dance
+            => Drake — One Dance   [124603270]
+2016  #4  Rihanna featuring Drake — Work
+            => Rihanna — Work   [118190298]
+2016  #5  Twenty One Pilots — Stressed Out
+            => Twenty One Pilots — Stressed Out   [99976952]
+2017  #1  Ed Sheeran — Shape of You
+            => Ed Sheeran — Shape of You   [139470659]
+2017  #2  Luis Fonsi and Daddy Yankee featuring Justin Bieber — Despacito (Remix)
+            => Luis Fonsi — Despacito   [623698142]
+2017  #3  Bruno Mars — That's What I Like
+            => Bruno Mars — That's What I Like   [136336116]
+2017  #4  Kendrick Lamar — Humble
+            => Kendrick Lamar — HUMBLE.   [350171311]
+2018  #1  Drake — God's Plan
+            => Drake — God's Plan   [533609232]
+2018  #2  Ed Sheeran — Perfect
+            => Ed Sheeran — Perfect   [142986206]
+2018  #3  Bebe Rexha featuring Florida Georgia Line — Meant to Be
+            => Bebe Rexha — Meant to Be (feat. Florida Georgia Line)   [391786232]
+2018  #4  Camila Cabello featuring Young Thug — Havana
+            => Camila Cabello — Havana (feat. Young Thug)   [447098092]
+2018  #5  Post Malone featuring 21 Savage — Rockstar
+            => Post Malone — rockstar   [491446942]
+2019  #1  Lil Nas X featuring Billy Ray Cyrus — Old Town Road
+            => Lil Nas X — Old Town Road   [699056262]
+2019  #3  Halsey — Without Me
+            => Halsey — Without Me   [1088873812]
+2019  #4  Billie Eilish — Bad Guy
+            => Billie Eilish — bad guy   [655095912]
+2019  #5  Post Malone — Wow
+            => Post Malone — Wow.   [607452332]
+2020  #1  The Weeknd — Blinding Lights
+            => The Weeknd — Blinding Lights   [908604612]
+2020  #2  Post Malone — Circles
+            => Post Malone — Circles   [742744952]
+2020  #3  Roddy Ricch — The Box
+            => Roddy Ricch — The Box   [825986992]
+2020  #4  Dua Lipa — Don't Start Now
+            => Dua Lipa — Don't Start Now   [1124841652]
+2020  #5  DaBaby featuring Roddy Ricch — Rockstar
+            => DaBaby — ROCKSTAR   [932661672]
+2021  #1  Dua Lipa — Levitating
+            => Dua Lipa — Levitating   [1124841682]
+2021  #2  The Weeknd and Ariana Grande — Save Your Tears
+            => The Weeknd — Save Your Tears   [908604632]
+2021  #4  24kGoldn featuring Iann Dior — Mood
+            => 24kGoldn — Mood (feat. iann dior)   [1283264632]
+2021  #5  Olivia Rodrigo — Good 4 U
+            => Olivia Rodrigo — good 4 u   [1378342622]
+2022  #1  Glass Animals — Heat Waves
+            => Glass Animals — Heat Waves   [1040154662]
+2022  #2  Harry Styles — As It Was
+            => Harry Styles — As It Was   [1703487577]
+2022  #3  The Kid Laroi and Justin Bieber — Stay
+            => The Kid LAROI — STAY   [1425844092]
+2022  #4  Adele — Easy on Me
+            => Adele — Easy On Me   [1522223672]
+2022  #5  Ed Sheeran — Shivers
+            => Ed Sheeran — Shivers   [1529509452]
+2023  #1  Morgan Wallen — Last Night
+            => Morgan Wallen — Last Night   [3398329531]
+2023  #2  Miley Cyrus — Flowers
+            => Miley Cyrus — Flowers   [2105158337]
+2023  #3  SZA — Kill Bill
+            => SZA — Kill Bill   [2055292027]
+2023  #4  Taylor Swift — Anti-Hero
+            => Taylor Swift — Anti-Hero   [1976903157]
+2023  #5  Metro Boomin, the Weeknd and 21 Savage — Creepin'
+            => Metro Boomin — Creepin'   [2047662477]
+2024  #1  Teddy Swims — Lose Control
+            => Teddy Swims — Lose Control   [2319265555]
+2024  #2  Shaboozey — A Bar Song (Tipsy)
+            => Shaboozey — A Bar Song (Tipsy)   [2729273551]
+2024  #3  Benson Boone — Beautiful Things
+            => Benson Boone — Beautiful Things   [2704682202]
+2024  #4  Post Malone featuring Morgan Wallen — I Had Some Help
+            => Post Malone — I Had Some Help   [2780753191]
+2024  #5  Jack Harlow — Lovin on Me
+            => Jack Harlow — Lovin On Me   [2535000521]
+2025  #1  Lady Gaga and Bruno Mars — Die with a Smile
+            => Lady Gaga — Die With A Smile   [2947516331]
+2025  #2  Kendrick Lamar and SZA — Luther
+            => Kendrick Lamar — luther   [3106586641]
+2025  #5  Billie Eilish — Birds of a Feather
+            => Billie Eilish — BIRDS OF A FEATHER   [2801558052]
