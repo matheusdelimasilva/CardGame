@@ -99,6 +99,8 @@ export interface MoveOptions {
   visibleTo?: Visibility;
   /** Put the card under the pile instead of on top. */
   toBottom?: boolean;
+  /** Insert at this position, counted from the bottom (0 = first). Wins over toBottom. */
+  index?: number;
 }
 
 export function moveCard(t: TableState, cardId: CardId, to: ZoneId, opts: MoveOptions = {}): TableState {
@@ -107,7 +109,12 @@ export function moveCard(t: TableState, cardId: CardId, to: ZoneId, opts: MoveOp
   const target = zoneOf(next, to);
   zone.cards.splice(index, 1);
   if (opts.visibleTo !== undefined) card.visibleTo = structuredClone(opts.visibleTo);
-  if (opts.toBottom) target.cards.unshift(card);
+  if (opts.index !== undefined) {
+    if (!Number.isInteger(opts.index) || opts.index < 0 || opts.index > target.cards.length) {
+      throw new EngineError(`Position ${opts.index} is outside zone ${to}`);
+    }
+    target.cards.splice(opts.index, 0, card);
+  } else if (opts.toBottom) target.cards.unshift(card);
   else target.cards.push(card);
   return next;
 }

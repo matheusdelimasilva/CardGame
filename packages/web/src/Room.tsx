@@ -136,14 +136,15 @@ export function Room({ code }: { code: string }) {
             )
           )}
         </div>
-        {playing && ui && gameProps && (
+        {playing && ui && gameProps && ui.Dock && (
+          <div className="dock-wide">
+            <ui.Dock {...gameProps} />
+          </div>
+        )}
+        {playing && ui && gameProps && !ui.Dock && (
           <>
-            <div className="dock-hand">
-              <ui.Hand {...gameProps} />
-            </div>
-            <div className="dock-actions">
-              <ui.Actions {...gameProps} />
-            </div>
+            <div className="dock-hand">{ui.Hand && <ui.Hand {...gameProps} />}</div>
+            <div className="dock-actions">{ui.Actions && <ui.Actions {...gameProps} />}</div>
           </>
         )}
       </footer>

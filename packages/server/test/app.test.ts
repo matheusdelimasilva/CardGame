@@ -91,7 +91,7 @@ describe("a table over the network", () => {
     await boot();
     const session = await signIn();
     const listed = (await api("/api/games")).body.games;
-    expect(listed.map((g: { id: string }) => g.id)).toEqual(["demo"]);
+    expect(listed.map((g: { id: string }) => g.id)).toEqual(["hitster", "demo"]);
     expect((await api("/api/rooms", {}, session)).status).toBe(400);
     expect((await api("/api/rooms", { gameId: "__proto__" }, session)).status).toBe(400);
     const { code } = (await api("/api/rooms", { gameId: "demo", settings: { tiebreaker: "S" } }, session)).body;

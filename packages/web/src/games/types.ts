@@ -20,9 +20,14 @@ export interface GameUI {
   /** Short label under a player's name, such as a score. */
   seatTag(game: GameView, playerId: string): string | null;
   /** Your own cards, large, at the bottom of the screen. */
-  Hand(props: GameProps): ReactNode;
+  Hand?(props: GameProps): ReactNode;
   /** Status line and buttons for your possible moves. */
-  Actions(props: GameProps): ReactNode;
+  Actions?(props: GameProps): ReactNode;
+  /**
+   * Replaces Hand and Actions with one full-width area, for games where your
+   * cards and your buttons share state or need the whole width of a phone.
+   */
+  Dock?(props: GameProps): ReactNode;
   /** Short-lived announcement, such as a round result. null shows nothing. */
   announcement(game: GameView, nameOf: (id: string) => string): { key: string; title: string; detail: string } | null;
 }
