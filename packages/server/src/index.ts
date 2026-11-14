@@ -22,14 +22,26 @@ const app = createApp({
   staticDir: existsSync(staticDir) ? staticDir : undefined,
 });
 
+try {
+  await app.ready;
+} catch (err) {
+  await app.close().catch(() => {});
+  throw err;
+}
+
 app.server.listen(port, () => {
   console.log(`CardGame server on http://localhost:${port}`);
   if (!apiKey) console.log("No RESEND_API_KEY set: sign-in codes are returned by the API (development mode).");
 });
 
 for (const signal of ["SIGINT", "SIGTERM"] as const) {
-  process.on(signal, () => {
-    app.close();
-    process.exit(0);
+  process.once(signal, () => {
+    void app.close().then(
+      () => process.exit(0),
+      (err) => {
+        console.error("Flushing server data failed:", err);
+        process.exit(1);
+      },
+    );
   });
 }

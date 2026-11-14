@@ -8,10 +8,10 @@ import { Auth, normalizeEmail, type SendEmail } from "./auth";
 import { Deezer } from "./deezer";
 import * as rooms from "./rooms";
 import type { Member, Room } from "./rooms";
-import { Store } from "./store";
+import { createStore } from "./store";
 
 export interface AppOptions {
-  /** JSON file for sessions, history and room snapshots. null keeps everything in memory. */
+  /** JSON fallback when DATABASE_URL is unset. null always keeps everything in memory. */
   dataFile: string | null;
   /** null returns sign-in codes in the API response, for local development. */
   sendEmail: SendEmail | null;
@@ -34,27 +34,31 @@ const MIME: Record<string, string> = {
   ".json": "application/json",
 };
 
-export function createApp(options: AppOptions): { server: Server; close: () => void } {
-  const store = new Store(options.dataFile);
+export function createApp(options: AppOptions): { server: Server; ready: Promise<void>; close: () => Promise<void> } {
+  const store = createStore(options.dataFile);
   const auth = new Auth(store, options.sendEmail);
   const deezer = new Deezer(options.fetch);
   const roomsByCode = new Map<string, Room>();
   const sockets = new Map<Room, Map<WebSocket, Member>>();
 
-  // Rooms restored from a snapshot start with everybody disconnected.
-  for (const room of store.data.rooms) {
-    if (!games[room.gameId]) continue; // saved by an older version with a game that no longer exists
-    room.settings ??= {};
-    if (room.game && !games[room.game.gameId]) room.game = null;
-    if (room.game) {
-      // Fields added after some snapshots were written.
-      room.game.trackKey ??= "";
-      room.game.trackNonce ??= null;
-      rooms.syncTrack(room);
+  let loaded = false;
+  const ready = store.ready.then(() => {
+    // Rooms restored from a snapshot start with everybody disconnected.
+    for (const room of store.data.rooms) {
+      if (!games[room.gameId]) continue; // saved by an older version with a game that no longer exists
+      room.settings ??= {};
+      if (room.game && !games[room.game.gameId]) room.game = null;
+      if (room.game) {
+        // Fields added after some snapshots were written.
+        room.game.trackKey ??= "";
+        room.game.trackNonce ??= null;
+        rooms.syncTrack(room);
+      }
+      for (const m of room.members) m.connected = false;
+      roomsByCode.set(room.code, room);
     }
-    for (const m of room.members) m.connected = false;
-    roomsByCode.set(room.code, room);
-  }
+    loaded = true;
+  });
 
   const persist = () => {
     store.data.rooms = [...roomsByCode.values()];
@@ -134,6 +138,7 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
     const url = new URL(req.url ?? "/", "http://localhost");
     const route = `${req.method} ${url.pathname}`;
     try {
+      await ready;
       if (route === "POST /api/auth/request") {
         const email = normalizeEmail((await readBody(req)).email);
         if (!email) return json(res, 400, { error: "Enter a valid email address." });
@@ -210,7 +215,12 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
 
   // ---- WebSocket: /ws?room=CODE ----
 
-  const wss = new WebSocketServer({ server, path: "/ws", maxPayload: 16 * 1024 });
+  const wss = new WebSocketServer({
+    server, path: "/ws", maxPayload: 16 * 1024,
+    verifyClient: (_info, done) => {
+      void ready.then(() => done(true), () => done(false, 503));
+    },
+  });
 
   wss.on("connection", (ws, req) => {
     const code = new URL(req.url ?? "/", "http://localhost").searchParams.get("room")?.toUpperCase() ?? "";
@@ -302,6 +312,7 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
 
   // Turn timers: play the default move for anyone who has run out of time.
   const clock = setInterval(() => {
+    if (!loaded) return;
     for (const room of roomsByCode.values()) {
       if (!room.game || room.game.deadline === null) continue;
       const wasFinished = room.game.result !== null;
@@ -313,6 +324,7 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
   clock.unref();
 
   const sweep = setInterval(() => {
+    if (!loaded) return;
     const cutoff = Date.now() - ROOM_IDLE_MS;
     for (const [code, room] of roomsByCode) {
       if (room.updatedAt < cutoff && !sockets.get(room)?.size) {
@@ -326,13 +338,16 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
 
   return {
     server,
-    close: () => {
+    ready,
+    close: async () => {
       clearInterval(sweep);
       clearInterval(clock);
       for (const ws of wss.clients) ws.terminate();
-      wss.close();
-      server.close();
-      store.flush();
+      await Promise.all([
+        new Promise<void>((resolve) => wss.close(() => resolve())),
+        new Promise<void>((resolve) => server.close(() => resolve())),
+      ]);
+      await store.close();
     },
   };
 }
