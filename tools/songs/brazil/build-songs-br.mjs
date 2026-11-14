@@ -11,6 +11,9 @@ const MIN_SCORE = 80;
 const MAX_YEARS_BEFORE_CHART = 2;
 
 const mb = await readJson(join(CACHE_DIR, "br", "musicbrainz.json"), {});
+const deezer = await readJson(join(CACHE_DIR, "br", "deezer.json"), {});
+// Match the server's Deezer cache normalisation without requiring TS support to build.
+const deezerNorm = (s) => norm(s.replace(/\(.*?\)|\[.*?\]/g, " ").replace(/\s+-\s+.*$/, "")).replace(/^the /, "");
 const yearOf = (d) => (d && /^\d{4}/.test(d) ? Number(d.slice(0, 4)) : null);
 
 function mbMatches(song) {
@@ -47,8 +50,11 @@ for (const song of await allSongs()) {
   const chartOf = (x) => (x.chartYear ? [x.chartYear, x.rank ?? 999] : [9999, 999]);
   const [a, b] = [chartOf(prev), chartOf(r)];
   const chartBest = b[0] < a[0] || (b[0] === a[0] && b[1] < a[1]) ? r : prev;
-  // ...and the most trustworthy release year: a known one, else the earliest found.
-  const yearBest = KNOWN_YEAR.has(prev.yearSource) ? prev
+  // Explicit curated release years override inferred Wikipedia category years
+  // (e.g. Jura is categorised as 1929, but Mário Reis released it in 1928).
+  const yearBest = prev.yearSource === "curated" ? prev
+    : r.yearSource === "curated" ? r
+    : KNOWN_YEAR.has(prev.yearSource) ? prev
     : KNOWN_YEAR.has(r.yearSource) ? r
     : r.year < prev.year ? r : prev;
   merged.set(key, {
@@ -69,6 +75,7 @@ const final = [...merged.values()]
     chartYear: s.chartYear ?? null,
     chartRank: s.rank ?? null,
     mbid: s.mbid,
+    deezerId: deezer[`${deezerNorm(s.artist)}|${deezerNorm(s.title)}`]?.id ?? null,
     source: s.source,
   }))
   .sort((a, b) => a.year - b.year || (a.chartRank ?? 999) - (b.chartRank ?? 999) || a.title.localeCompare(b.title, "pt"));
@@ -82,6 +89,7 @@ const missing = [];
 for (let y = 1917; y <= Math.max(...years); y++) if (!perYear[y]) missing.push(y);
 const count = (k) => Object.entries(final.reduce((m, s) => ((m[s[k]] = (m[s[k]] ?? 0) + 1), m), {}));
 console.log(`songs: ${final.length}`);
+console.log(`Deezer matched: ${final.filter((s) => s.deezerId != null).length}/${final.length}`);
 console.log("by yearSource:", Object.fromEntries(count("yearSource")));
 console.log("by source:", Object.fromEntries(count("source")));
 console.log("per year:", Object.entries(perYear).map(([y, n]) => `${y}:${n}`).join(" "));

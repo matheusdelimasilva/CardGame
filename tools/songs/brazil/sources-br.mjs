@@ -3,7 +3,7 @@
 import { join } from "node:path";
 import { CACHE_DIR, readJson } from "../lib.mjs";
 import { norm } from "../normalize.mjs";
-import { CURATED } from "./curated-br.mjs";
+import { CURATED, LIVE_HITS } from "./curated-br.mjs";
 
 const BR_CACHE = join(CACHE_DIR, "br");
 
@@ -18,7 +18,7 @@ export function primaryArtistBr(artist = "") {
 
 // A "Canções de <ano>" page counts as Brazilian if a category says so, or if the article's
 // first paragraph calls it Brazilian and no category marks it as foreign-language.
-const BR_CAT = /portugu[êe]s|Brasil|brasileir|samba|bossa nova|MPB|sertanej|ax[ée]|forr[óo]|bai[ãa]o|frevo|marchinha|pagode|funk carioca|funk ostenta|brega|tropic[áa]lia|choro|piseiro|arrocha|Jovem Guarda/i;
+const BR_CAT = /Brasil|brasileir|samba|bossa nova|MPB|sertanej|ax[ée]|forr[óo]|bai[ãa]o|frevo|marchinha|pagode|funk carioca|funk ostenta|brega|tropic[áa]lia|choro|piseiro|arrocha|Jovem Guarda/i;
 const FOREIGN_CAT = /em (ingl[êe]s|espanhol|castelhano|italiano|franc[êe]s|alem[ãa]o|japon[êe]s|coreano)|Estados Unidos|Reino Unido|Portugal/i;
 const BR_LEAD = /brasileir|\bBrasil\b|samba|marchinha|baião|bossa nova/i;
 export function isBrazilian(p) {
@@ -28,6 +28,15 @@ export function isBrazilian(p) {
 
 export const songKey =(s) => `${norm(s.title)}|${norm(primaryArtistBr(s.artist))}`;
 
+// Category dates can describe the composition while the infobox credits a cover.
+// These individual corrections are documented in verification-br.md.
+const CATEGORY_CORRECTIONS = {
+  "No Rancho Fundo": { year: 1989 },
+  "Brasileirinho": { year: 1949 },
+  "Aquarela do Brasil": { artist: "Francisco Alves", year: 1939 },
+  "O Que É que a Baiana Tem?": { artist: "Carmen Miranda e Dorival Caymmi", year: 1939 },
+};
+
 export async function allSongs() {
   const out = [];
   const charts = await readJson(join(BR_CACHE, "charts.json"), { pages: {} });
@@ -36,7 +45,13 @@ export async function allSongs() {
   }
   const cats = await readJson(join(BR_CACHE, "categories.json"), { years: {} });
   for (const { songs } of Object.values(cats.years)) {
-    for (const s of songs.filter(isBrazilian)) out.push({ title: s.title, artist: s.artist, year: s.year, source: "wikipedia-category", page: s.page });
+    // Categories also contain compositions with no recorded performer (e.g. folk songs).
+    // Do not invent an artist or emit an unplayable, invalid dataset row.
+    for (const raw of songs.filter(isBrazilian)) {
+      const s = { ...raw, ...CATEGORY_CORRECTIONS[raw.page] };
+      if (!s.title.trim() || !s.artist.trim()) continue;
+      out.push({ title: s.title, artist: s.artist, year: s.year, source: "wikipedia-category", page: s.page });
+    }
   }
   // Hand-picked list: "curated" rows carry a release year; the others are a year's #1
   // as reported by the press (Buscapé, Crowley, Pro-Música, Spotify), i.e. a chart year.
@@ -44,5 +59,7 @@ export async function allSongs() {
     if (src === "curated") out.push({ title, artist, year, source: "curated" });
     else out.push({ title, artist, chartYear: year, rank: 1, source: `press:${src}` });
   }
-  return out;
+  const liveHits = new Set(LIVE_HITS.map(([title, artist]) => songKey({ title, artist })));
+  return out.map((s) => liveHits.has(songKey(s)) && !/\bao vivo\b/i.test(s.title)
+    ? { ...s, title: `${s.title} (Ao Vivo)` } : s);
 }

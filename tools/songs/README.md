@@ -54,3 +54,31 @@ A song that charted in two consecutive years appears once.
 - US-only, and chart-popular rather than streaming-popular.
 - Years marked `chart-year` can be off by one (e.g. a December release that charted next year).
 - Billboard/Wikipedia content is used for factual metadata only (titles, artists, ranks).
+
+## Brazil
+
+Run from the repo root (network stages are resumable; do not commit `.cache/`):
+
+```bash
+node tools/songs/brazil/scrape-br.mjs                 # all chart pages + 1900-current year categories
+node tools/songs/brazil/fetch-musicbrainz-br.mjs       # at least 1.1 seconds between requests
+node tools/songs/brazil/build-songs-br.mjs
+node tools/songs/fetch-deezer.mjs --br                 # every Brazilian dataset row
+node tools/songs/brazil/build-songs-br.mjs
+node tools/songs/brazil/verify-songs-br.mjs
+```
+
+The Deezer step imports the server's TypeScript matcher, so use a Node version
+with native type stripping (this build used Node 26). The other Brazilian steps
+remain plain JavaScript. `--br --top N` selects chart-ranked rows only, excluding
+category/curated rows without a rank; omit `--top` to attempt all rows. Brazil
+uses `.cache/br/deezer.json` and `out/deezer-review-br.txt`; US paths are unchanged.
+The Brazilian builder emits `deezerId: null` for misses or unqueried songs and
+prints the matched count. It can build from partial MusicBrainz caches, retaining
+`chart-year` fallbacks.
+
+The sources cover Brazilian charts, which include international artists, as well
+as Brazilian song categories and a curated historical list. They are not a
+verified Brazilian-artists-only catalog. Categories without a performer are
+excluded. See [verification notes](brazil/verification-br.md) for corrections,
+recording-specific live-hit decisions, and remaining historical uncertainties.
