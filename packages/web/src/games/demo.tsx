@@ -1,7 +1,7 @@
 import type { DemoView } from "@cardgame/games";
 import type { GameView } from "@cardgame/protocol";
 import { Card, faceLabel } from "../Card";
-import type { GameProps, GameUI } from "./types";
+import type { GameUI } from "./types";
 
 const viewOf = (game: GameView) => game.view as DemoView;
 const cardOf = (game: GameView, playerId: string) => viewOf(game).table.zones[`slot:${playerId}`]?.cards[0] ?? null;

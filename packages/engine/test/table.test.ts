@@ -54,7 +54,9 @@ describe("table", () => {
   });
 
   it("moves a card to the top or the bottom, keeping visibility unless told otherwise", () => {
-    let { table: t, cardId } = deal(table(), "deck", "hand:a", ["a"]);
+    const dealt = deal(table(), "deck", "hand:a", ["a"]);
+    const { cardId } = dealt;
+    let t = dealt.table;
     t = moveCard(t, cardId, "deck", { toBottom: true });
     expect(t.zones.deck!.cards[0]).toMatchObject({ id: cardId, visibleTo: ["a"] });
     t = moveCard(t, cardId, "discard", { visibleTo: FACE_UP });
@@ -93,7 +95,9 @@ describe("visibility", () => {
   });
 
   it("peek adds one viewer; reveal shows everyone", () => {
-    let { table: t, cardId } = deal(table(), "deck", "hand:a", FACE_DOWN);
+    const dealt = deal(table(), "deck", "hand:a", FACE_DOWN);
+    const { cardId } = dealt;
+    let t = dealt.table;
     const seenBy = (viewer: string | null) => viewTable(t, viewer).zones["hand:a"]!.cards[0]!.face !== null;
     expect(seenBy("a")).toBe(false);
     t = peek(t, cardId, "a");

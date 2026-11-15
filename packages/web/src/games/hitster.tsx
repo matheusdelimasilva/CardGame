@@ -150,9 +150,9 @@ function describeSpot(line: SongCardView[], index: number): string {
 
 function Dock({ game, you, nameOf, move }: GameProps) {
   const view = viewOf(game);
-  const [selected, setSelected] = useState<number | null>(null);
-  // A choice made for one song must not carry over to the next.
-  useEffect(() => setSelected(null), [view.turnNumber]);
+  const [choice, setChoice] = useState<{ turn: number; index: number | null } | null>(null);
+  const selected = choice?.turn === view.turnNumber ? choice.index : null;
+  const setSelected = (index: number | null) => setChoice({ turn: view.turnNumber, index });
   if (!you) return null;
 
   const line = view.timelines[you] ?? [];

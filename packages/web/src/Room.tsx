@@ -273,16 +273,15 @@ function Lobby({ room, send, nameOf }: { room: RoomView; send: ReturnType<typeof
 
 /** Counts down a turn timer locally between server updates. null when the turn is not timed. */
 function useSecondsLeft(timer: { remainingMs: number } | null): number | null {
-  const [left, setLeft] = useState<number | null>(null);
+  const [countdown, setCountdown] = useState<{ timer: typeof timer; left: number } | null>(null);
   useEffect(() => {
-    if (!timer) return setLeft(null);
+    if (!timer) return;
     const end = performance.now() + timer.remainingMs;
-    const tick = () => setLeft(Math.max(0, Math.ceil((end - performance.now()) / 1000)));
-    tick();
+    const tick = () => setCountdown({ timer, left: Math.max(0, Math.ceil((end - performance.now()) / 1000)) });
     const id = setInterval(tick, 250);
     return () => clearInterval(id);
   }, [timer]);
-  return left;
+  return timer ? countdown?.timer === timer ? countdown.left : Math.ceil(timer.remainingMs / 1000) : null;
 }
 
 function Announcement({ info }: { info: { key: string; title: string; detail: string } | null }) {

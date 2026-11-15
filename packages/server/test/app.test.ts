@@ -1,6 +1,6 @@
 import type { AddressInfo } from "node:net";
 import { afterEach, describe, expect, it } from "vitest";
-import type { ClientMessage, RoomView, ServerMessage } from "@cardgame/protocol";
+import type { ClientMessage, GameInfo, HistoryEntry, RoomView, ServerMessage } from "@cardgame/protocol";
 import { WebSocket } from "ws";
 import { createApp } from "../src/app";
 
@@ -43,7 +43,10 @@ const api = async (path: string, body?: unknown, token?: string) => {
     headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  return { status: res.status, body: (await res.json()) as Record<string, any> };
+  return { status: res.status, body: (await res.json()) as {
+    token: string; devCode: string; code: string; email: string;
+    games: GameInfo[]; history: HistoryEntry[]; exists: boolean; error: string;
+  } };
 };
 
 async function signIn(email = "host@example.com") {

@@ -6,13 +6,28 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "pnpm -r exec tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "dev": "pnpm -r --parallel dev",
     "build": "pnpm --filter @cardgame/web build",
     "start": "pnpm --filter @cardgame/server start",
     "songs": "node tools/songs/scrape-billboard.mjs 1949 2025 && node tools/songs/fetch-musicbrainz.mjs && node tools/songs/build-songs.mjs"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"],
+    "overrides": {
+      "@typescript-eslint/typescript-estree>minimatch": "^11.0.8"
+    }
+  },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.15.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.14.0",
+    "prettier": "^3.10.1",
     "typescript": "^5.6.0",
-    "vitest": "^2.1.0"
+    "typescript-eslint": "^8.72.2",
+    "vitest": "^4.1.12"
   }
 }

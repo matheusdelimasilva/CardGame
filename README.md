@@ -126,7 +126,18 @@ See `packages/games/src/demo.ts` for a complete example.
 
 ## Checks
 
+Use Node 22 and the pinned pnpm version (via Corepack). CI runs these checks on
+pushes and pull requests:
+
 ```
-pnpm test
+pnpm install --frozen-lockfile
 pnpm typecheck
+pnpm lint
+pnpm format:check
+pnpm test
+pnpm build
 ```
+
+Run `pnpm format` to apply Prettier formatting. Generated song datasets and caches
+are excluded. Run `node --test tools/songs/brazil/*.node-test.mjs` for the offline
+song pipeline regression tests, and `pnpm audit` to check dependencies.
