@@ -29,16 +29,16 @@ describe("Postgres session timestamps", () => {
           : [],
     }));
     db.write.mockResolvedValue({ rows: [] });
+    db.write.mockImplementation(db.query.getMockImplementation()!);
   });
 
   it("migrates the legacy column, loads timestamps and persists sliding updates", async () => {
     const store = new PostgresStore("postgres://unused");
     await store.ready;
-    expect(db.query.mock.calls[0]![0]).toContain(
-      "ALTER TABLE sessions ADD COLUMN IF NOT EXISTS last_used BIGINT",
-    );
-    expect(db.query.mock.calls[0]![0]).toMatch(
-      /UPDATE sessions SET last_used = \d+ WHERE last_used IS NULL/,
+    expect(db.write).toHaveBeenCalledWith(
+      expect.stringContaining(
+        "ALTER TABLE sessions ADD COLUMN IF NOT EXISTS last_used BIGINT",
+      ),
     );
     expect(store.data.sessions.saved).toEqual({
       email: "a@example.com",

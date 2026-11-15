@@ -1,3 +1,4 @@
+import { z } from "zod";
 import {
   FACE_DOWN,
   FACE_UP,
@@ -124,6 +125,10 @@ function finishRound(state: DemoState): void {
 
 export const demo: GameModule<DemoState, DemoMove, DemoView> = {
   id: "demo",
+  moveSchema: z.discriminatedUnion("type", [
+    z.object({ type: z.literal("peek") }),
+    z.object({ type: z.literal("reveal") }),
+  ]),
   name: "Demo",
   minPlayers: 2,
   maxPlayers: 8,

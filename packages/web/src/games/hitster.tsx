@@ -1,6 +1,5 @@
 // Types only: the song list (with its years) must never be bundled into the client.
-import type { HitsterView, SongCardView } from "@cardgame/games";
-import type { GameView } from "@cardgame/protocol";
+import type { HitsterView, HitsterMove, SongCardView } from "@cardgame/games";
 import {
   useEffect,
   useLayoutEffect,
@@ -9,9 +8,9 @@ import {
   type CSSProperties,
 } from "react";
 import type { TrackAudio } from "../audio";
-import type { GameProps, GameUI } from "./types";
+import type { GameProps, GameUI, TypedGameView } from "./types";
 
-const viewOf = (game: GameView) => game.view as HitsterView;
+const viewOf = (game: TypedGameView<HitsterView>) => game.view;
 
 // Card colours and layout follow docs/design/song-cards.html (the Vinyl design and its deck back).
 const DECADES: [number, string][] = [
@@ -181,7 +180,12 @@ function describeSpot(line: SongCardView[], index: number): string {
   return `between ${line[index - 1]!.year} and ${line[index]!.year}`;
 }
 
-function Dock({ game, you, nameOf, move }: GameProps) {
+function Dock({
+  game,
+  you,
+  nameOf,
+  move,
+}: GameProps<HitsterView, HitsterMove>) {
   const view = viewOf(game);
   const [choice, setChoice] = useState<{
     turn: number;
@@ -258,7 +262,7 @@ function Dock({ game, you, nameOf, move }: GameProps) {
   );
 }
 
-export const hitsterUI: GameUI = {
+export const hitsterUI: GameUI<HitsterView, HitsterMove> = {
   Center({ game, you, nameOf, audio }) {
     const view = viewOf(game);
     const player = view.currentPlayer;
