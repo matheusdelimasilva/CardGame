@@ -4,7 +4,17 @@ import {
   dropIndex,
   edgeScroll,
   shiftPlacement,
+  crossedDragThreshold,
 } from "./hitster-placement";
+
+it("distinguishes taps from drags using distance in either direction", () => {
+  expect(crossedDragThreshold(0, 0)).toBe(false);
+  expect(crossedDragThreshold(7, 0)).toBe(false);
+  expect(crossedDragThreshold(4, 4)).toBe(false);
+  expect(crossedDragThreshold(8, 0)).toBe(true);
+  expect(crossedDragThreshold(0, -8)).toBe(true);
+  expect(crossedDragThreshold(-5, -5)).toBe(true);
+});
 
 describe("pointer insertion boundary", () => {
   it.each([

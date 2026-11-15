@@ -7,12 +7,14 @@ import type {
 import {
   Fragment,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type ReactNode,
   type RefObject,
 } from "react";
 import type { GameProps } from "./types";
+import type { TrackAudio } from "../audio";
 import { SongBack, SongCard } from "./hitster-cards";
 import { describeSpot, shiftPlacement } from "./hitster-placement";
 import { useSongPlacement } from "./useSongPlacement";
@@ -58,24 +60,32 @@ function TimelineCards({
 export function Placement({
   line,
   move,
+  audio,
 }: {
   line: SongCardView[];
   move: (move: HitsterMove) => void;
+  audio: TrackAudio;
 }) {
   const [selected, setSelected] = useState<number | null>(null);
   const [preview, setPreview] = useState<number | null>(null);
   const [dragging, setDragging] = useState(false);
   const card = useRef<HTMLButtonElement>(null);
-  const home = useRef<HTMLDivElement>(null);
+  const home = useRef<HTMLDivElement | null>(null);
   const timeline = useRef<HTMLDivElement>(null);
   const gap = useRef<HTMLDivElement>(null);
   const active = dragging ? preview : selected;
+  useLayoutEffect(() => {
+    home.current = document.querySelector("[data-mystery-home]");
+  }, []);
   useSongPlacement(
     { card, home, timeline, gap },
     selected,
     setSelected,
     setPreview,
     setDragging,
+    () => {
+      if (!audio.muted) audio.toggle();
+    },
   );
   const confirm = () => {
     if (selected !== null) move({ type: "place", index: selected });
@@ -97,7 +107,6 @@ export function Placement({
         </button>
       </div>
       <div className="placement-row">
-        <div className="mystery-home" ref={home} aria-hidden="true" />
         <div
           className="timeline placement-timeline"
           ref={timeline}
@@ -111,8 +120,8 @@ export function Placement({
         ref={card}
         type="button"
         className="mystery-card"
-        aria-label={`Mystery song${selected === null ? "" : `, ${describeSpot(line, selected)}`}. Drag to place, or use Left and Right to choose a spot and Enter to place. Escape returns it.`}
-        aria-keyshortcuts="ArrowLeft ArrowRight Enter Escape"
+        aria-label={`Mystery song${selected === null ? "" : `, ${describeSpot(line, selected)}`}. Tap to pause or resume. Drag to place, or use Left and Right to choose a spot and Enter to place. Escape returns it to the center.`}
+        aria-keyshortcuts="ArrowLeft ArrowRight Enter Escape Space"
         onKeyDown={(event) => {
           if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
             event.preventDefault();
@@ -136,10 +145,13 @@ export function Placement({
           } else if (event.key === "Escape") {
             event.preventDefault();
             setSelected(null);
+          } else if (event.key === " ") {
+            event.preventDefault();
+            if (!audio.muted) audio.toggle();
           }
         }}
       >
-        <SongBack timeline />
+        <SongBack timeline playing={audio.status === "playing"} />
       </button>
     </>
   );
@@ -171,6 +183,7 @@ export function HitsterDock({
   you,
   nameOf,
   move,
+  audio,
 }: GameProps<HitsterView, HitsterMove>) {
   const view = game.view;
   const last = view.lastTurn;
@@ -214,7 +227,12 @@ export function HitsterDock({
         </span>
       </div>
       {myTurn ? (
-        <Placement key={view.turnNumber} line={line} move={move} />
+        <Placement
+          key={view.turnNumber}
+          line={line}
+          move={move}
+          audio={audio}
+        />
       ) : (
         <>
           {!view.revealing && (
@@ -236,9 +254,6 @@ export function HitsterDock({
             </div>
           )}
           <div className="placement-row">
-            {reveal && (
-              <div className="mystery-home reveal-home" aria-hidden="true" />
-            )}
             <div
               className="timeline placement-timeline"
               role="list"

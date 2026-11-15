@@ -43,6 +43,7 @@ let snapshot: {
 let frames: Map<number, FrameRequestCallback>;
 let time: number;
 let frameId: number;
+let toggleAudio = vi.fn<() => void>();
 
 beforeEach(() => {
   card = new ElementStub(30, 100, 120);
@@ -50,6 +51,7 @@ beforeEach(() => {
   frames = new Map();
   time = performance.now();
   frameId = 0;
+  toggleAudio = vi.fn<() => void>();
   vi.stubGlobal("window", new EventTarget());
   vi.stubGlobal(
     "requestAnimationFrame",
@@ -76,7 +78,14 @@ beforeEach(() => {
     const [selected, setSelected] = useState<number | null>(null);
     const [preview, setPreview] = useState<number | null>(null);
     const [dragging, setDragging] = useState(false);
-    useSongPlacement(refs, selected, setSelected, setPreview, setDragging);
+    useSongPlacement(
+      refs,
+      selected,
+      setSelected,
+      setPreview,
+      setDragging,
+      toggleAudio,
+    );
     useLayoutEffect(() => {
       snapshot = { selected, preview, dragging };
     });
@@ -125,8 +134,43 @@ it("captures the pointer, follows it, previews a gap and commits only on an insi
   expect(card.style.setProperty).toHaveBeenCalledWith("--drag-x", "500px");
   pointer("pointerdown", 80);
   pointer("pointerup", 50, 400);
-  expect(snapshot.selected).toBe(1);
+  expect(snapshot.selected).toBeNull();
+  expect(toggleAudio).not.toHaveBeenCalled();
   expect(card.classList.toggle).toHaveBeenLastCalledWith("is-returning", true);
+});
+
+it("taps below the threshold toggle audio once, never on down or the following click", () => {
+  pointer("pointerdown", 80);
+  expect(toggleAudio).not.toHaveBeenCalled();
+  pointer("pointermove", 84, 153);
+  frame();
+  expect(snapshot.dragging).toBe(false);
+  pointer("pointerup", 84, 153);
+  expect(toggleAudio).toHaveBeenCalledOnce();
+  const click = new Event("click", { cancelable: true });
+  card.dispatchEvent(click);
+  expect(click.defaultPrevented).toBe(true);
+  expect(toggleAudio).toHaveBeenCalledOnce();
+});
+
+it.each(["pointercancel", "lostpointercapture"])(
+  "a pending tap cancelled by %s never toggles audio",
+  (type) => {
+    pointer("pointerdown", 80);
+    pointer(type, 80);
+    expect(toggleAudio).not.toHaveBeenCalled();
+  },
+);
+
+it("crossing the threshold then returning to the starting point is still a drag, not a tap", () => {
+  pointer("pointerdown", 80);
+  pointer("pointermove", 88);
+  expect(snapshot.dragging).toBe(true);
+  pointer("pointermove", 80);
+  pointer("pointerup", 80);
+  card.dispatchEvent(new Event("click", { cancelable: true }));
+  expect(toggleAudio).not.toHaveBeenCalled();
+  expect(snapshot.selected).toBeNull();
 });
 
 it.each(["pointercancel", "lostpointercapture"])(

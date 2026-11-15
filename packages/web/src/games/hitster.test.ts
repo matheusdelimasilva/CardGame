@@ -57,7 +57,7 @@ function propsFor(
 }
 let renderer: ReactTestRenderer | undefined;
 beforeEach(() => {
-  vi.stubGlobal("document", {});
+  vi.stubGlobal("document", { querySelector: vi.fn() });
   vi.stubGlobal("addEventListener", vi.fn());
   vi.stubGlobal("removeEventListener", vi.fn());
 });
@@ -69,6 +69,31 @@ afterEach(() => {
 });
 
 describe("Hitster reveal presentation", () => {
+  it("uses an empty center anchor for the active player's single draggable record, and tap-only for others", () => {
+    const props = propsFor(game());
+    props.game.view.revealing = false;
+    props.game.view.current = { id: "current", title: null, artist: null };
+    act(() => {
+      renderer = create(createElement(hitsterUI.Center, props));
+    });
+    expect(
+      renderer!.root.findAllByProps({ "data-mystery-home": true }),
+    ).toHaveLength(1);
+    expect(renderer!.root.findAllByType("button")).toHaveLength(0);
+    props.you = "b";
+    act(() => {
+      renderer!.update(createElement(hitsterUI.Center, { ...props }));
+    });
+    expect(
+      renderer!.root.findAllByProps({ "data-mystery-home": true }),
+    ).toHaveLength(0);
+    expect(
+      renderer!.root.findAllByProps({ className: "mystery-card" }),
+    ).toHaveLength(0);
+    act(() => renderer!.root.findByType("button").props.onClick());
+    expect(props.audio.toggle).toHaveBeenCalledOnce();
+  });
+
   it.each([
     ["correct", "Ana got it!"],
     ["wrong", "Ana missed"],
@@ -117,7 +142,9 @@ describe("Hitster reveal presentation", () => {
     expect(
       renderer!.root.findByProps({ role: "img" }).props["aria-label"],
     ).toBe("The song, The artist, 1987");
-    expect(renderer!.root.findAllByType("button")).toHaveLength(0);
+    expect(renderer!.root.findAllByType("button")).toHaveLength(1);
+    act(() => renderer!.root.findByType("button").props.onClick());
+    expect(props.audio.toggle).toHaveBeenCalledOnce();
     act(() => {
       renderer!.update(createElement(hitsterUI.Dock!, props));
     });
@@ -219,7 +246,13 @@ describe("keyboard song placement", () => {
         }),
       );
       act(() => {
-        renderer = create(createElement(Placement, { line, move }));
+        renderer = create(
+          createElement(Placement, {
+            line,
+            move,
+            audio: propsFor(game()).audio,
+          }),
+        );
       });
       const key = (key: string) =>
         act(() => {

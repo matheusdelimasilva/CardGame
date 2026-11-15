@@ -35,9 +35,17 @@ export const hitsterUI: GameUI<HitsterView, HitsterMove> = {
     if (view.revealing && view.lastTurn) {
       return (
         <div className="center-game">
-          <SongCard
-            song={{ id: `reveal-${view.turnNumber}`, ...view.lastTurn.song }}
-          />
+          <button
+            className="song-back-button"
+            onClick={audio.muted ? undefined : audio.toggle}
+            aria-label={
+              audio.status === "playing" ? "Pause the song" : "Play the song"
+            }
+          >
+            <SongCard
+              song={{ id: `reveal-${view.turnNumber}`, ...view.lastTurn.song }}
+            />
+          </button>
         </div>
       );
     }
@@ -46,13 +54,27 @@ export const hitsterUI: GameUI<HitsterView, HitsterMove> = {
     return (
       <div className="center-game">
         <div className="now-playing">
-          <SongBack
-            playing={audio.status === "playing"}
-            onTap={audio.muted ? undefined : audio.toggle}
-            tapLabel={
-              audio.status === "playing" ? "Pause the song" : "Play the song"
-            }
-          />
+          {player === you ? (
+            <div
+              className="center-mystery-slot"
+              data-mystery-home
+              aria-label="Song slot"
+            >
+              <span>
+                Drag the record
+                <br />
+                into your timeline
+              </span>
+            </div>
+          ) : (
+            <SongBack
+              playing={audio.status === "playing"}
+              onTap={audio.muted ? undefined : audio.toggle}
+              tapLabel={
+                audio.status === "playing" ? "Pause the song" : "Play the song"
+              }
+            />
+          )}
           <div className="now-text">
             <span className="now-label">
               ♪ {player === you ? "your song" : `${nameOf(player)}'s song`}

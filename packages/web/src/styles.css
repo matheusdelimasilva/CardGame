@@ -1115,7 +1115,8 @@ button.seat.open:not(:disabled):hover .avatar {
     transform: scaleY(1);
   }
 }
-.hitster-dock {
+.hitster-dock,
+.center-mystery-slot {
   --timeline-card-width: clamp(6.6rem, 27vw, 7.8rem);
 }
 .placement-row {
@@ -1124,16 +1125,18 @@ button.seat.open:not(:disabled):hover .avatar {
   gap: 0.65rem;
   align-items: flex-start;
 }
-.mystery-home {
+.center-mystery-slot {
   flex: none;
   width: var(--timeline-card-width);
   height: calc(var(--timeline-card-width) * 1.4);
   margin-top: 0.3rem;
   border: 2px dashed rgba(255, 216, 74, 0.3);
   border-radius: 10px;
-}
-.reveal-home {
-  visibility: hidden;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
 }
 .placement-timeline {
   flex: 1;
