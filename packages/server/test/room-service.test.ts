@@ -177,6 +177,18 @@ describe("socket-free room service", () => {
 });
 
 describe("room registry", () => {
+  it("does not find or dirty inherited object keys as rooms", async () => {
+    const store = new JsonStore(null);
+    const registry = new RoomRegistry(store);
+    await registry.ready;
+    const save = vi.spyOn(store, "save");
+    for (const code of ["__proto__", "constructor", "toString"]) {
+      expect(registry.get(code)).toBeUndefined();
+      registry.delete(code);
+    }
+    expect(save).not.toHaveBeenCalled();
+    await store.close();
+  });
   it("does not dirty an unchanged restored room", async () => {
     const store = new JsonStore(null);
     store.data.rooms = [rooms.createRoom("ABC234", "host@example.com", "demo")];

@@ -113,7 +113,9 @@ export class PostgresStore extends BufferedStore {
         const row =
           table === "rooms"
             ? this.data.rooms.find((room) => room.code === id)
-            : this.data[table][id];
+            : Object.hasOwn(this.data[table], id)
+              ? this.data[table][id]
+              : undefined;
         if (row === undefined) {
           queries.push({
             sql: `DELETE FROM ${table} WHERE ${key} = $1`,

@@ -16,10 +16,12 @@ export interface Data {
 
 export const ROOM_VERSION = 1;
 export const DATA_VERSION = 1;
+const dictionary = <T>(values: Record<string, T> = {}): Record<string, T> =>
+  Object.assign(Object.create(null) as Record<string, T>, values);
 export const emptyData = (): Data => ({
   version: DATA_VERSION,
-  sessions: {},
-  history: {},
+  sessions: dictionary<Session>(),
+  history: dictionary<HistoryEntry[]>(),
   rooms: [],
 });
 
@@ -95,6 +97,8 @@ export function migrateData(input: unknown, now = Date.now()): Data {
     data.version = v + 1;
   }
   data.rooms = data.rooms.map(migrateRoom);
+  data.sessions = dictionary(data.sessions);
+  data.history = dictionary(data.history);
   return data;
 }
 

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   DATA_VERSION,
+  emptyData,
   ROOM_VERSION,
   migrateData,
   migrateRoom,
@@ -35,6 +36,23 @@ const v0 = {
 };
 
 describe("snapshot migrations", () => {
+  it("uses null-prototype dictionaries for new and loaded sessions and history", () => {
+    for (const data of [
+      emptyData(),
+      migrateData({}),
+      migrateData({
+        version: DATA_VERSION,
+        sessions: {},
+        history: {},
+        rooms: [],
+      }),
+    ]) {
+      expect(Object.getPrototypeOf(data.sessions)).toBeNull();
+      expect(Object.getPrototypeOf(data.history)).toBeNull();
+      expect(data.sessions.__proto__).toBeUndefined();
+      expect(data.history.constructor).toBeUndefined();
+    }
+  });
   it("upgrades a main-format v0 fixture and preserves identities and game state", () => {
     const data = migrateData(structuredClone(v0), 1234);
     expect(data.version).toBe(DATA_VERSION);

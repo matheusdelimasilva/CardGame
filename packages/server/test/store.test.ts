@@ -232,6 +232,69 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     });
   });
 
+  it("persists a normal room after unauthenticated sign-out of inherited session keys", async () => {
+    const store = await open();
+    const auth = new Auth(store, null);
+    for (const token of ["__proto__", "constructor", "toString"]) {
+      expect(auth.emailFor(token)).toBeNull();
+      auth.signOut(token);
+    }
+    const room = runningRoom();
+    store.data.rooms = [room];
+    store.save({ rooms: [room.code] });
+    await expect(store.flush()).resolves.toBeUndefined();
+    expect(
+      (await sql.query("SELECT snapshot FROM rooms")).rows[0].snapshot,
+    ).toEqual(room);
+    expect((await sql.query("SELECT * FROM sessions")).rows).toEqual([]);
+  });
+
+  it("ignores inherited session and history values even if dirty keys are passed directly", async () => {
+    const store = await open();
+    store.data.sessions = {};
+    store.data.history = {};
+    const room = runningRoom();
+    store.data.rooms = [room];
+    store.save({
+      rooms: [room.code],
+      sessions: ["__proto__", "constructor"],
+      history: ["__proto__", "constructor"],
+    });
+    await store.flush();
+    expect(
+      (await sql.query("SELECT snapshot FROM rooms")).rows[0].snapshot,
+    ).toEqual(room);
+    expect((await sql.query("SELECT * FROM sessions")).rows).toEqual([]);
+    expect((await sql.query("SELECT * FROM history")).rows).toEqual([]);
+  });
+
+  it("drops a repeatedly failing batch so later dirty rows can persist", async () => {
+    const store = await open();
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    await sql.query(
+      "ALTER TABLE rooms ADD CONSTRAINT reject_test_room CHECK (code <> 'ABC234')",
+    );
+    store.data.rooms = [runningRoom()];
+    store.save({ rooms: ["ABC234"] });
+    for (let attempt = 0; attempt < 3; attempt++)
+      await expect(store.flush()).rejects.toThrow(/reject_test_room/);
+    expect(log).toHaveBeenCalledWith(
+      "Dropping persistence batch after 3 failed attempts:",
+      expect.objectContaining({ rooms: ["ABC234"] }),
+      expect.any(Error),
+    );
+    const good = runningRoom("DEF567");
+    store.data.rooms.push(good);
+    store.save({ rooms: [good.code] });
+    await store.flush();
+    expect(
+      (await sql.query("SELECT snapshot FROM rooms")).rows.map(
+        (row) => row.snapshot,
+      ),
+    ).toEqual([good]);
+    log.mockRestore();
+  });
+
   it("debounces in-place room mutations and never rewrites unchanged rooms", async () => {
     const store = await open();
     const changed = runningRoom();

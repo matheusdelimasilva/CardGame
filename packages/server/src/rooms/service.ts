@@ -169,7 +169,15 @@ export class RoomService {
       winners: running.result.winners.map(nameOf),
       endedAt: new Date().toISOString(),
     };
-    const list = (this.store.data.history[room.hostEmail] ??= []);
+    const history = this.store.data.history;
+    if (!Object.hasOwn(history, room.hostEmail))
+      Object.defineProperty(history, room.hostEmail, {
+        value: [],
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    const list = history[room.hostEmail]!;
     list.unshift(entry);
     list.length = Math.min(list.length, 100);
     this.store.save({ history: [room.hostEmail] });

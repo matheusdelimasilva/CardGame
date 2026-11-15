@@ -138,6 +138,7 @@ export class Auth {
   }
 
   signOut(token: string): void {
+    if (!Object.hasOwn(this.store.data.sessions, token)) return;
     delete this.store.data.sessions[token];
     this.store.save({ sessions: [token] });
   }

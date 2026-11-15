@@ -22,6 +22,7 @@ export const dirtyKeys = () => ({
   metadata: false,
 });
 export type Dirty = ReturnType<typeof dirtyKeys>;
+const MAX_WRITE_ATTEMPTS = 3;
 
 /** Debounced dirty keys and a failure-safe queue shared by both persistence backends. */
 export abstract class BufferedStore implements Store {
@@ -31,6 +32,7 @@ export abstract class BufferedStore implements Store {
   private timer: NodeJS.Timeout | null = null;
   private writes: Promise<void> = Promise.resolve();
   private closing = false;
+  private failures = 0;
 
   save(changes: Changes): void {
     for (const table of ["rooms", "sessions", "history"] as const)
@@ -40,14 +42,23 @@ export abstract class BufferedStore implements Store {
   }
 
   private schedule(): void {
-    if (this.closing || this.timer) return;
+    if (this.closing || this.timer || !this.hasDirty()) return;
     this.timer = setTimeout(() => {
       this.timer = null;
       void this.flush().catch((err) => {
-        console.error("Saving data failed; retrying:", err);
+        console.error("Saving data failed:", err);
         this.schedule();
       });
     }, 300);
+  }
+
+  private hasDirty(): boolean {
+    return (
+      this.dirty.metadata ||
+      this.dirty.rooms.size > 0 ||
+      this.dirty.sessions.size > 0 ||
+      this.dirty.history.size > 0
+    );
   }
 
   flush(): Promise<void> {
@@ -68,8 +79,23 @@ export abstract class BufferedStore implements Store {
           return;
         try {
           await this.write(batch);
+          this.failures = 0;
         } catch (err) {
-          this.save(batch);
+          if (++this.failures < MAX_WRITE_ATTEMPTS) {
+            this.save(batch);
+          } else {
+            this.failures = 0;
+            console.error(
+              "Dropping persistence batch after 3 failed attempts:",
+              {
+                rooms: [...batch.rooms],
+                sessions: batch.sessions.size,
+                history: batch.history.size,
+                metadata: batch.metadata,
+              },
+              err,
+            );
+          }
           throw err;
         }
       });
