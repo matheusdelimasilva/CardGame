@@ -222,7 +222,7 @@ describe("rooms", () => {
     expect(rooms.trackFor(room, "anything")).toBeNull();
   });
 
-  it("gives each Hitster song its own secret URL that dies when the turn ends", () => {
+  it("keeps the Hitster recording through the reveal, changing its URL only when the next song is drawn", () => {
     const { room, members, host } = table(["Ana", "Bo"], {}, "hitster");
     rooms.start(room, host, 7);
     const url = () => rooms.viewFor(room, members[1]!).game!.track!.url;
@@ -235,6 +235,9 @@ describe("rooms", () => {
     expect(rooms.trackFor(room, "0".repeat(48))).toBeNull();
 
     expect(rooms.move(room, host, { type: "pass" })).toBeNull();
+    expect(url()).toBe(first);
+    expect(rooms.trackFor(room, nonce(first))).toEqual(song);
+    expect(rooms.expireTurn(room, room.game!.resumeAt!)).toBe(true);
     const second = url();
     expect(second).not.toBe(first);
     expect(rooms.trackFor(room, nonce(first))).toBeNull();

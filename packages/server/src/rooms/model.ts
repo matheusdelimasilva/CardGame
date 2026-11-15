@@ -20,6 +20,8 @@ export interface RunningGame {
   turnKey: string;
   /** When the current turn runs out (epoch ms), or null if it is not timed. */
   deadline: number | null;
+  /** When a held state resumes (epoch ms), or null when not paused. */
+  resumeAt: number | null;
   turnMs: number;
   /** Which recording the nonce below stands for; "" when nothing is playing. */
   trackKey: string;

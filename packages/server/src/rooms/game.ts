@@ -17,7 +17,10 @@ function syncClock(room: Room, now: number): void {
   const running = room.game;
   if (!running) return;
   const game = requireGame(running.gameId);
-  const key = running.result ? "" : game.activePlayers(running.state).join(",");
+  const key =
+    running.result || running.resumeAt !== null
+      ? ""
+      : game.activePlayers(running.state).join(",");
   if (key === running.turnKey) return;
   running.turnKey = key;
   const seconds = key ? (game.turnTimeLimit?.(running.state) ?? null) : null;
@@ -28,6 +31,16 @@ function syncClock(room: Room, now: number): void {
 function currentTrack(running: RunningGame): Track | null {
   if (running.result) return null;
   return requireGame(running.gameId).currentTrack?.(running.state) ?? null;
+}
+
+function syncGame(room: Room, now: number): void {
+  const running = room.game!;
+  const game = requireGame(running.gameId);
+  running.result = game.result(running.state);
+  const pause = running.result ? null : game.pauseMs?.(running.state);
+  running.resumeAt = pause && pause > 0 ? now + pause : null;
+  syncClock(room, now);
+  syncTrack(room);
 }
 
 /** Gives the table a fresh, unguessable URL whenever the recording to play changes. */
@@ -54,14 +67,15 @@ export function trackFor(room: Room, nonce: string): Track | null {
 /** Plays the default move for anyone whose turn has run out. Returns true if the game changed. */
 export function expireTurn(room: Room, now = Date.now()): boolean {
   const running = room.game;
-  if (
-    !running ||
-    running.result ||
-    running.deadline === null ||
-    now < running.deadline
-  )
-    return false;
+  if (!running || running.result) return false;
   const game = requireGame(running.gameId);
+  if (running.resumeAt !== null) {
+    if (now < running.resumeAt) return false;
+    running.state = game.resume?.(running.state) ?? running.state;
+    syncGame(room, now);
+    return true;
+  }
+  if (running.deadline === null || now < running.deadline) return false;
   let changed = false;
   for (const playerId of game.activePlayers(running.state)) {
     const auto = game.autoMove?.(running.state, playerId) ?? null;
@@ -98,12 +112,12 @@ export function start(
     result: null,
     turnKey: "",
     deadline: null,
+    resumeAt: null,
     turnMs: 0,
     trackKey: "",
     trackNonce: null,
   };
-  syncClock(room, now);
-  syncTrack(room);
+  syncGame(room, now);
   return null;
 }
 
@@ -114,6 +128,7 @@ function apply(
   now: number,
 ): Refusal {
   const running = room.game!;
+  if (running.resumeAt !== null) return "The game is paused.";
   const game = requireGame(running.gameId);
   let outcome;
   try {
@@ -124,9 +139,7 @@ function apply(
   }
   if (!outcome.ok) return outcome.error;
   running.state = outcome.state;
-  running.result = game.result(outcome.state);
-  syncClock(room, now);
-  syncTrack(room);
+  syncGame(room, now);
   return null;
 }
 
@@ -149,6 +162,7 @@ export function skip(
 ): Refusal {
   if (!member.isHost) return "Only the host can skip a player.";
   if (!isRunning(room)) return "No game is running.";
+  if (room.game!.resumeAt !== null) return "The game is paused.";
   const target = room.members.find((m) => m.id === playerId);
   if (!target || !room.game!.players.includes(playerId))
     return "That player is not in the game.";

@@ -121,7 +121,11 @@ export class RoomService {
     guard(
       room.code,
       () => {
-        if (!room.game || room.game.deadline === null) return;
+        if (
+          !room.game ||
+          (room.game.deadline === null && room.game.resumeAt === null)
+        )
+          return;
         const deadline = room.game.deadline;
         const wasFinished = room.game.result !== null;
         if (!rooms.expireTurn(room)) {

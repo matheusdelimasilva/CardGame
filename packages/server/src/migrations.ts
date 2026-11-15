@@ -14,7 +14,7 @@ export interface Data {
   rooms: Room[];
 }
 
-export const ROOM_VERSION = 1;
+export const ROOM_VERSION = 2;
 export const DATA_VERSION = 1;
 const dictionary = <T>(values: Record<string, T> = {}): Record<string, T> =>
   Object.assign(Object.create(null) as Record<string, T>, values);
@@ -56,6 +56,18 @@ const roomMigrations: ((room: Room) => void)[] = [
     ) {
       const state = room.game.state as { songList?: string };
       state.songList ??= "international";
+    }
+  },
+  (room) => {
+    if (!room.game) return;
+    room.game.resumeAt ??= null;
+    if (
+      room.game.gameId === "hitster" &&
+      typeof room.game.state === "object" &&
+      room.game.state !== null
+    ) {
+      const state = room.game.state as { revealing?: boolean };
+      state.revealing ??= false;
     }
   },
 ];

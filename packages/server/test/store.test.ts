@@ -10,6 +10,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createApp } from "../src/app";
 import { Auth } from "../src/auth";
 import * as rooms from "../src/rooms";
+import { startClock } from "../src/rooms/clock";
+import { RoomRegistry } from "../src/rooms/registry";
+import { RoomService } from "../src/rooms/service";
 import { createStore, JsonStore, PostgresStore } from "../src/store";
 
 const email = "host@example.com";
@@ -403,6 +406,7 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     delete legacy.settings;
     delete legacy.game.trackKey;
     delete legacy.game.trackNonce;
+    delete legacy.game.resumeAt;
     await sql.query("INSERT INTO rooms VALUES ($1, $2)", [
       room.code,
       JSON.stringify(legacy),
@@ -422,6 +426,59 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     ).toEqual(store.data.rooms[0]);
     await close(store);
     expect((await open()).data.rooms).toEqual(store.data.rooms);
+  });
+
+  it("persists a reveal deadline and resumes an overdue restored Hitster game on the next clock tick", async () => {
+    const store = await open();
+    const room = rooms.createRoom("PAUSE1", email, "hitster");
+    for (const [i, name] of ["Ana", "Bo"].entries()) {
+      const member = rooms.join(room, undefined, i === 0);
+      rooms.setName(room, member, name);
+      rooms.sit(room, member, i);
+    }
+    const host = room.members[0]!;
+    rooms.start(room, host, 7, 1000);
+    const nonce = room.game!.trackNonce;
+    expect(rooms.move(room, host, { type: "pass" }, 1000)).toBeNull();
+    expect(room.game!.resumeAt).toBe(5000);
+    store.data.rooms = [room];
+    store.save({ rooms: [room.code] });
+    await close(store);
+
+    const restored = await open();
+    const registry = new RoomRegistry(restored);
+    await registry.ready;
+    const loaded = registry.get(room.code)!;
+    expect(loaded.game).toEqual(room.game);
+    expect(loaded.game).toMatchObject({
+      resumeAt: 5000,
+      trackNonce: nonce,
+      state: { revealing: true },
+    });
+    const service = new RoomService(registry, restored);
+    const changed = vi.fn();
+    service.onChange(changed);
+    const intervals = vi.spyOn(globalThis, "setInterval");
+    const stop = startClock(registry, service);
+    try {
+      const clock = intervals.mock.calls.at(-1)![0] as () => void;
+      expect(changed).not.toHaveBeenCalled();
+      clock();
+      expect(loaded.game).toMatchObject({
+        resumeAt: null,
+        state: { revealing: false, turnNumber: 2 },
+      });
+      expect(loaded.game!.trackNonce).not.toBe(nonce);
+      expect(changed).toHaveBeenCalledExactlyOnceWith(loaded);
+      clock();
+      expect(changed).toHaveBeenCalledOnce();
+      await restored.flush();
+    } finally {
+      stop();
+      intervals.mockRestore();
+    }
+    await close(restored);
+    expect((await open()).data.rooms[0]!.game).toEqual(loaded.game);
   });
 
   it("refuses future data versions without changing the database", async () => {

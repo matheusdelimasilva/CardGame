@@ -99,6 +99,10 @@ export interface GameModule<S, M, V> {
   turnTimeLimit?(state: S): number | null;
   /** The recording to play for everyone at this point in the game, if any. */
   currentTrack?(state: S): Track | null;
+  /** Milliseconds to hold this state before resuming, or null for no pause. */
+  pauseMs?(state: S): number | null;
+  /** Advances a held state without mutating it. */
+  resume?(state: S): S;
   /** null while the game is still running. */
   result(state: S): GameResult | null;
 }
@@ -118,6 +122,8 @@ export function defineGame<S, M, V>(module: GameModule<S, M, V>): AnyGame {
     autoMove: (state, player) => module.autoMove?.(state as S, player) ?? null,
     turnTimeLimit: (state) => module.turnTimeLimit?.(state as S) ?? null,
     currentTrack: (state) => module.currentTrack?.(state as S) ?? null,
+    pauseMs: (state) => module.pauseMs?.(state as S) ?? null,
+    resume: (state) => (module.resume ? module.resume(state as S) : state),
     result: (state) => module.result(state as S),
   };
 }

@@ -53,6 +53,8 @@ export interface GameView {
   track: { url: string } | null;
   /** Time left on the current turn when this view was sent, if the turn is timed. */
   timer: { remainingMs: number; totalMs: number } | null;
+  /** Time left before the held game state resumes when this view was sent. */
+  pause: { remainingMs: number } | null;
 }
 
 export interface RoomView {

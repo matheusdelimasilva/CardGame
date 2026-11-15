@@ -34,6 +34,8 @@ export {
 
 /** Songs dealt into one game, drawn at random from the full list. Keeps saved games small. */
 export const DECK_SIZE = 300;
+export const REVEAL_MS = 4000;
+export const WIN_REVEAL_MS = 6000;
 
 /**
  * Hitster. Every player builds a timeline of songs in order of release year.
@@ -60,6 +62,8 @@ export interface HitsterState {
   /** Whether the title and artist of the current song are shown. */
   showSongInfo: boolean;
   lastTurn: TurnSummary | null;
+  /** Absent in legacy saved games, which are not paused. */
+  revealing?: boolean;
   winners: PlayerId[] | null;
 }
 
@@ -68,6 +72,7 @@ export interface TurnSummary {
   player: PlayerId;
   song: RevealedSong;
   outcome: "correct" | "wrong" | "passed";
+  index?: number;
 }
 
 export type HitsterMove =
@@ -115,6 +120,8 @@ export interface HitsterView {
   /** The song being placed. It never includes the year. */
   current: { id: string; title: string | null; artist: string | null } | null;
   currentPlayer: PlayerId | null;
+  revealing: boolean;
+  nextPlayer: PlayerId | null;
   turnNumber: number;
   deckCount: number;
   discardCount: number;
@@ -144,6 +151,22 @@ const yearsOf = (state: HitsterState, player: PlayerId) =>
   state.table.zones[timeline(player)]!.cards.map(
     (c) => songOf(c.face, state.songList).year,
   );
+
+function turnWinners(state: HitsterState): PlayerId[] | null {
+  const player = state.players[state.turn]!;
+  if (state.table.zones[timeline(player)]!.cards.length >= state.cardsToWin)
+    return [player];
+  if (
+    state.table.zones.deck!.cards.length ||
+    state.table.zones.discard!.cards.length
+  )
+    return null;
+  const sizes = state.players.map(
+    (p) => state.table.zones[timeline(p)]!.cards.length,
+  );
+  const most = Math.max(...sizes);
+  return state.players.filter((_, i) => sizes[i] === most);
+}
 
 /** Draws the next song for the player whose turn it is, or ends the game if no songs are left. */
 function drawSong(state: HitsterState): void {
@@ -236,6 +259,7 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       cardsToWin: Number(settings.cardsToWin),
       showSongInfo: settings.showSongInfo === true,
       lastTurn: null,
+      revealing: false,
       winners: null,
     };
     drawSong(state);
@@ -244,6 +268,8 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
 
   applyMove(current, player, move) {
     if (current.winners) return { ok: false, error: "The game is over." };
+    if (current.revealing)
+      return { ok: false, error: "The previous turn is still being revealed." };
     if (current.players[current.turn] !== player)
       return { ok: false, error: "It is not your turn." };
     const state = structuredClone(current);
@@ -275,16 +301,36 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
             visibleTo: FACE_UP,
           })
         : moveCard(state.table, card.id, "discard", { visibleTo: FACE_UP });
-    state.lastTurn = { turnNumber: state.turnNumber, player, song, outcome };
-
-    if (state.table.zones[timeline(player)]!.cards.length >= state.cardsToWin) {
-      state.winners = [player];
-      return { ok: true, state };
-    }
-    state.turn = (state.turn + 1) % state.players.length;
-    state.turnNumber += 1;
-    drawSong(state);
+    state.lastTurn = {
+      turnNumber: state.turnNumber,
+      player,
+      song,
+      outcome,
+      ...(move.type === "place" ? { index: move.index } : {}),
+    };
+    state.revealing = true;
     return { ok: true, state };
+  },
+
+  pauseMs(state) {
+    return state.revealing
+      ? turnWinners(state)
+        ? WIN_REVEAL_MS
+        : REVEAL_MS
+      : null;
+  },
+
+  resume(current) {
+    const state = structuredClone(current);
+    if (!state.revealing) return state;
+    state.revealing = false;
+    state.winners = turnWinners(state);
+    if (!state.winners) {
+      state.turn = (state.turn + 1) % state.players.length;
+      state.turnNumber += 1;
+      drawSong(state);
+    }
+    return state;
   },
 
   validateState(state) {
@@ -295,9 +341,10 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
 
   view(state) {
     // Built field by field rather than from the raw table, so the current song's year cannot slip out.
-    const card = state.winners
-      ? undefined
-      : state.table.zones.current!.cards[0];
+    const card =
+      state.winners || state.revealing
+        ? undefined
+        : state.table.zones.current!.cards[0];
     const song = card ? songForView(card.face, state.songList) : null;
     return {
       players: state.players,
@@ -319,6 +366,11 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
             }
           : null,
       currentPlayer: state.winners ? null : state.players[state.turn]!,
+      revealing: state.revealing === true,
+      nextPlayer:
+        state.revealing && !turnWinners(state)
+          ? state.players[(state.turn + 1) % state.players.length]!
+          : null,
       turnNumber: state.turnNumber,
       deckCount: state.table.zones.deck!.cards.length,
       discardCount: state.table.zones.discard!.cards.length,
@@ -329,14 +381,25 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
   },
 
   activePlayers(state) {
-    return state.winners ? [] : [state.players[state.turn]!];
+    return state.winners || state.revealing ? [] : [state.players[state.turn]!];
   },
 
   autoMove(state, player) {
-    return state.players[state.turn] === player ? { type: "pass" } : null;
+    return !state.winners &&
+      !state.revealing &&
+      state.players[state.turn] === player
+      ? { type: "pass" }
+      : null;
   },
 
   currentTrack(state) {
+    if (state.revealing && state.lastTurn) {
+      const { title, artist, deezerId } = songOf(
+        songKey(state.lastTurn.song),
+        state.songList,
+      );
+      return { title, artist, deezerId };
+    }
     const card = state.winners
       ? undefined
       : state.table.zones.current!.cards[0];

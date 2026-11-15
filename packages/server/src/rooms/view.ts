@@ -33,6 +33,12 @@ export function viewFor(
       active: game.activePlayers(room.game.state),
       view: game.view(room.game.state, viewer),
       result: room.game.result,
+      pause:
+        room.game.resumeAt === null
+          ? null
+          : {
+              remainingMs: Math.max(0, room.game.resumeAt - now),
+            },
       track: room.game.trackNonce
         ? { url: `/api/rooms/${room.code}/track/${room.game.trackNonce}` }
         : null,
