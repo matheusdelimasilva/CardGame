@@ -162,6 +162,8 @@ function soundHint(audio: TrackAudio): string {
     case "loading":
       return "loading the song...";
     case "paused":
+      return "tap the record to keep listening";
+    case "ended":
       return "tap the record to hear it again";
     case "blocked":
       return "tap the record to hear it";
