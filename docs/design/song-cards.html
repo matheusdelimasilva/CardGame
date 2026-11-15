@@ -965,13 +965,18 @@
       </div>
       <span class="group-label">Sound</span>
       <div class="row">
-        <button class="chip" type="button" id="sound" aria-pressed="false">
-          ♪ Play songs on hover
+        <button
+          class="chip"
+          type="button"
+          id="sound"
+          aria-pressed="false"
+          disabled
+        >
+          ♪ Sound available in a live game
         </button>
       </div>
       <p class="sound-note" id="sound-note" aria-live="polite">
-        Hover a card to hear its 30-second Deezer preview. On a phone, tap the
-        card.
+        This design preview does not play audio. Join a live room to hear songs.
       </p>
     </div>
   </section>
@@ -1166,7 +1171,6 @@
   }
 
   function render() {
-    stopPreview();
     const host = document.getElementById("designs");
     host.innerHTML = DESIGNS.map(
       (d) => `
@@ -1219,8 +1223,6 @@
       .forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
     render();
   });
-  // Card hover/tap listeners cover the whole page, so the deck backs below the designs play too.
-  const designsEl = document.querySelector(".page");
   document.getElementById("t-hide").addEventListener("change", (e) => {
     state.hide = e.target.checked;
     render();
@@ -1229,124 +1231,7 @@
     state.rank = e.target.checked;
     render();
   });
-  // ---------- Song previews ----------
-  // Audio comes from the game server's GET /api/preview (a 30s Deezer preview, streamed same-origin).
-  // That needs the local dev server: the published artifact page can't reach it.
-  var preview = {
-    audio: new Audio(),
-    on: false,
-    card: null,
-    timer: 0,
-    fade: 0,
-  };
-  preview.audio.preload = "none";
-  const soundBtn = document.getElementById("sound");
-  const soundNote = document.getElementById("sound-note");
-  const onDevServer =
-    /^(localhost|127\.0\.0\.1|\[::1\]|\d+\.\d+\.\d+\.\d+)$/.test(
-      location.hostname,
-    );
-  function note(text, warn = false) {
-    soundNote.textContent = text;
-    soundNote.classList.toggle("warn", warn);
-  }
-  if (!onDevServer) {
-    soundBtn.disabled = true;
-    note(
-      "Sound needs the game server. Run pnpm dev and open this page from the local dev server.",
-      true,
-    );
-  }
-  function fadeTo(target, ms, done) {
-    cancelAnimationFrame(preview.fade);
-    const a = preview.audio,
-      from = a.volume,
-      t0 = performance.now();
-    const step = (t) => {
-      // The first frame's timestamp can be slightly before t0, so clamp k and the volume (must stay in 0..1).
-      const k = Math.max(0, Math.min(1, (t - t0) / ms));
-      a.volume = Math.max(0, Math.min(1, from + (target - from) * k));
-      if (k < 1) preview.fade = requestAnimationFrame(step);
-      else if (done) done();
-    };
-    preview.fade = requestAnimationFrame(step);
-  }
-  function startPreview(cardEl) {
-    if (!preview.on || preview.card === cardEl) return;
-    stopPreview();
-    clearTimeout(preview.pauseTimer);
-    preview.card = cardEl;
-    cardEl.classList.add("loading");
-    const a = preview.audio;
-    a.src = `/api/preview?title=${encodeURIComponent(cardEl.dataset.title)}&artist=${encodeURIComponent(cardEl.dataset.artist)}`;
-    a.volume = 0;
-    a.play()
-      .then(() => {
-        if (preview.card !== cardEl) return;
-        cardEl.classList.replace("loading", "playing");
-        note(`Playing ${cardEl.dataset.title} by ${cardEl.dataset.artist}.`);
-        fadeTo(1, 300);
-      })
-      .catch((err) => {
-        if (err.name === "AbortError" || preview.card !== cardEl) return; // a newer hover took over
-        cardEl.classList.remove("loading");
-        preview.card = null;
-        note(
-          `No preview for ${cardEl.dataset.title}. Deezer may not have it, or the game server isn't running.`,
-          true,
-        );
-      });
-  }
-  function stopPreview() {
-    clearTimeout(preview.timer);
-    const cardEl = preview.card;
-    if (!cardEl) return;
-    preview.card = null;
-    cardEl.classList.remove("loading", "playing");
-    fadeTo(0, 180);
-    // Pause on a timer, not at the end of the fade: animation frames don't run in a background tab.
-    clearTimeout(preview.pauseTimer);
-    preview.pauseTimer = setTimeout(() => {
-      if (!preview.card) preview.audio.pause();
-    }, 200);
-  }
-  preview.audio.addEventListener("ended", stopPreview);
-  soundBtn.addEventListener("click", () => {
-    preview.on = !preview.on;
-    soundBtn.setAttribute("aria-pressed", String(preview.on));
-    if (!preview.on) stopPreview();
-    note(
-      preview.on
-        ? "Sound on. Hover a card to hear it."
-        : "Hover a card to hear its 30-second Deezer preview. On a phone, tap the card.",
-    );
-  });
-  // Mouse: a short delay so sweeping across the hand doesn't fire off every song.
-  designsEl.addEventListener("pointerover", (e) => {
-    if (e.pointerType !== "mouse") return;
-    const cardEl = e.target.closest(".sc[data-title]");
-    if (!cardEl || cardEl.contains(e.relatedTarget)) return;
-    clearTimeout(preview.timer);
-    preview.timer = setTimeout(() => startPreview(cardEl), 220);
-  });
-  designsEl.addEventListener("pointerout", (e) => {
-    if (e.pointerType !== "mouse") return;
-    const cardEl = e.target.closest(".sc[data-title]");
-    if (!cardEl || cardEl.contains(e.relatedTarget)) return;
-    clearTimeout(preview.timer);
-    if (preview.card === cardEl) stopPreview();
-  });
-  // Touch: tap to play, tap again to stop.
-  designsEl.addEventListener("pointerup", (e) => {
-    if (e.pointerType === "mouse") return;
-    const cardEl = e.target.closest(".sc[data-title]");
-    if (!cardEl) return;
-    if (preview.card === cardEl) stopPreview();
-    else startPreview(cardEl);
-  });
-
   // ---------- Deck backs ----------
-  // Each back still carries its song (for the preview), but shows none of it.
   function backCard(s, playing) {
     return `<div class="sc lg v-vinyl v-back${playing ? " demo-playing" : ""}" style="--acc:var(--gold)" role="img"
     aria-label="Face-down song card${playing ? ", playing" : ""}" data-title="${esc(s.title)}" data-artist="${esc(s.artist)}">
