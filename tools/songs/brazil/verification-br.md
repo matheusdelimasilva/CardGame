@@ -210,3 +210,19 @@ These releases and performers were checked against the linked sources. Each Deez
 | 1955 | Jorge Goulart — A Voz do Morro | [Discografia Brasileira](https://discografiabrasileira.com.br/en/posts/243577/radames-gnattali-de-aquarela-do-brasil-a-chapeuzinho-vermelho-uma-selecao-de-arranjos-emblematicos-do-maestro) |
 | 1958 | Maysa — Bouquet de Izabel | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/250191/maysa-em-78-rpm-memorias-da-cinderela-as-avessas-que-inaugurou-a-voz-feminina-nas-letras-da-musica-brasileira) |
 | 1960 | Elza Soares — Edmundo (In the Mood) | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244953/viva-elza-soares-os-sucessos-da-voz-do-milenio-em-78-rotacoes) |
+
+## Earlier-year follow-up, checked 2026-11-15
+
+Each track returned HTTP 206 with audio/mpeg from its Deezer preview. Release evidence is performer-specific; the recording-match limitations above also apply to this batch. Fita Amarela was excluded from the 1932 candidates: IMS dates the release to January 1933 despite the December 1932 session.
+
+| Year | Song and performer | Release evidence |
+| --- | --- | --- |
+| 1930 | Noel Rosa — Com Que Roupa? | [IMS](https://discografiabrasileira.com.br/fonograma/49971/-) |
+| 1930 | Noel Rosa — Malandro Medroso | [IMS](https://discografiabrasileira.com.br/fonograma/49975/malandro-medroso) |
+| 1931 | Noel Rosa — Gago Apaixonado | [IMS](https://discografiabrasileira.com.br/fonograma/46171/gago-apaixonado) |
+| 1931 | Francisco Alves e Mário Reis — O Que Será de Mim? | [IMS](https://discografiabrasileira.com.br/posts/243992/a-malandragem-segundo-ismael-silva-e-nilton-bastos-os-90-anos-de-um-samba-historico) |
+| 1932 | Noel Rosa — São Coisas Nossas | [IMS](https://discografiabrasileira.com.br/fonograma/54086/coisas-nossas) |
+| 1932 | Gastão Formenti — Maringá | [IMS](https://discografiabrasileira.com.br/posts/245508/maringa-maringa-ha-90-anos-estreava-em-disco-a-cancao-que-virou-nome-de-cidade) |
+| 1944 | Ciro Monteiro — Falsa Baiana | [IMS](https://discografiabrasileira.com.br/en/posts/247511/ha-80-anos-uma-baiana-sincopada-e-cheia-de-bossa-deu-a-geraldo-pereira-o-seu-primeiro-e-maior-sucesso) |
+| 1945 | Ciro Monteiro — Boogie Woogie na Favela | [IMS](https://discografiabrasileira.com.br/fonograma/75022/boogie-woogie-na-favela) |
+| 1948 | Roberto Silva — Mandei Fazer um Patuá | [IMS](https://discografiabrasileira.com.br/posts/242655/viva-roberto-silva-os-100-anos-do-principe-do-samba) |

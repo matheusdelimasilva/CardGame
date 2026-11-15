@@ -42,4 +42,58 @@ export const VERIFIED_ADDITIONS = [
   { year: 1955, title: "A Voz do Morro", artist: "Jorge Goulart", deezerId: 29784101 },
   { year: 1958, title: "Bouquet de Izabel", artist: "Maysa", deezerId: 134427186 },
   { year: 1960, title: "Edmundo (In the Mood)", artist: "Elza Soares", deezerId: 1726938487 },
+  {
+    year: 1930,
+    title: "Com Que Roupa?",
+    artist: "Noel Rosa",
+    deezerId: 679418982,
+  },
+  {
+    year: 1930,
+    title: "Malandro Medroso",
+    artist: "Noel Rosa",
+    deezerId: 1501109312,
+  },
+  {
+    year: 1931,
+    title: "Gago Apaixonado",
+    artist: "Noel Rosa",
+    deezerId: 2258769987,
+  },
+  {
+    year: 1931,
+    title: "O Que Será de Mim?",
+    artist: "Francisco Alves e Mário Reis",
+    deezerId: 2544431121,
+  },
+  {
+    year: 1932,
+    title: "São Coisas Nossas",
+    artist: "Noel Rosa",
+    deezerId: 3881984251,
+  },
+  {
+    year: 1932,
+    title: "Maringá",
+    artist: "Gastão Formenti",
+    deezerId: 622972942,
+  },
+  {
+    year: 1944,
+    title: "Falsa Baiana",
+    artist: "Ciro Monteiro",
+    deezerId: 13304285,
+  },
+  {
+    year: 1945,
+    title: "Boogie Woogie na Favela",
+    artist: "Ciro Monteiro",
+    deezerId: 1879600377,
+  },
+  {
+    year: 1948,
+    title: "Mandei Fazer um Patuá",
+    artist: "Roberto Silva",
+    deezerId: 1014096102,
+  },
 ];
