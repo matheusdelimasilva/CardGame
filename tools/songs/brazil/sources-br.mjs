@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { CACHE_DIR, readJson } from "../lib.mjs";
 import { norm } from "../normalize.mjs";
 import { CURATED, LIVE_HITS } from "./curated-br.mjs";
+import { VERIFIED_ADDITIONS } from "./verified-additions.mjs";
 
 const BR_CACHE = join(CACHE_DIR, "br");
 
@@ -56,7 +57,9 @@ const CATEGORY_CORRECTIONS = {
 };
 
 export async function allSongs() {
-  const out = [];
+  const out = VERIFIED_ADDITIONS.map(({ year, title, artist }) => ({
+    year, title, artist, source: "curated",
+  }));
   const charts = await readJson(join(BR_CACHE, "charts.json"), { pages: {} });
   for (const { rows } of Object.values(charts.pages)) {
     for (const r of rows) out.push({ ...r, source: r.chart });

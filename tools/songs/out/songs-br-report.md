@@ -1,6 +1,6 @@
 # Brazilian song dataset build report
 
-Snapshot: 2026-11-14. Branch: songs-brazil.
+Snapshot: 2026-11-14. Branch: songs-brazil. This historical report predates the 2026-11-15 sparse-year additions; see [verification notes](../brazil/verification-br.md) for those additions and current counts in songs-br.json.
 
 **1663 songs; 1290 Deezer IDs (77.6%).**
 
