@@ -6,6 +6,7 @@ import type { ClientMessage, HistoryEntry, ServerMessage } from "@cardgame/proto
 import { WebSocket, WebSocketServer } from "ws";
 import { Auth, normalizeEmail, type SendEmail } from "./auth";
 import { Deezer } from "./deezer";
+import { guard } from "./guard";
 import * as rooms from "./rooms";
 import type { Member, Room } from "./rooms";
 import { createStore } from "./store";
@@ -45,19 +46,28 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
   const ready = store.ready.then(() => {
     // Rooms restored from a snapshot start with everybody disconnected.
     for (const room of store.data.rooms) {
-      if (!games[room.gameId]) continue; // saved by an older version with a game that no longer exists
+      if (!Object.hasOwn(games, room.gameId)) {
+        console.error(`Room ${room.code}: unknown game ${room.gameId}`);
+        continue;
+      }
       room.settings ??= {};
-      if (room.game && !games[room.game.gameId]) room.game = null;
-      if (room.game) {
+      guard(room.code, () => {
+        if (!room.game) return;
+        if (!Object.hasOwn(games, room.game.gameId)) throw new Error(`Unknown game ${room.game.gameId}`);
         // Fields added after some snapshots were written.
         room.game.trackKey ??= "";
         room.game.trackNonce ??= null;
         rooms.syncTrack(room);
-      }
+        const game = games[room.game.gameId]!;
+        game.validateState?.(room.game.state);
+        game.activePlayers(room.game.state);
+        game.view(room.game.state, null);
+      }, () => { room.game = null; });
       for (const m of room.members) m.connected = false;
       roomsByCode.set(room.code, room);
     }
     loaded = true;
+    persist();
   });
 
   const persist = () => {
@@ -69,12 +79,24 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
     if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(msg));
   };
 
-  const broadcast = (room: Room) => {
-    room.updatedAt = Date.now();
-    for (const [ws, member] of sockets.get(room) ?? []) {
-      send(ws, { type: "state", room: rooms.viewFor(room, member) });
-    }
-    persist();
+  const recover = (room: Room): void => {
+    room.game = null;
+    broadcast(room);
+  };
+
+  const broadcast = (room: Room): void => {
+    guard(room.code, () => {
+      room.updatedAt = Date.now();
+      if (room.game) games[room.game.gameId]!.validateState?.(room.game.state);
+      const views = [...(sockets.get(room) ?? [])].map(([ws, member]) =>
+        [ws, rooms.viewFor(room, member)] as const);
+      for (const [ws, view] of views) {
+        guard(room.code, () => send(ws, { type: "state", room: view }));
+      }
+      persist();
+    }, () => {
+      if (room.game) recover(room);
+    });
   };
 
   const recordHistory = (room: Room) => {
@@ -135,9 +157,11 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
   };
 
   const server = createServer(async (req, res) => {
-    const url = new URL(req.url ?? "/", "http://localhost");
-    const route = `${req.method} ${url.pathname}`;
+    let code = "HTTP";
     try {
+      const url = new URL(req.url ?? "/", "http://localhost");
+      code = /^\/api\/rooms\/([^/]+)/.exec(url.pathname)?.[1]?.toUpperCase() ?? "HTTP";
+      const route = `${req.method} ${url.pathname}`;
       await ready;
       if (route === "POST /api/auth/request") {
         const email = normalizeEmail((await readBody(req)).email);
@@ -208,8 +232,14 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
       if (req.method === "GET") return serveStatic(url.pathname, res);
       json(res, 405, { error: "Method not allowed." });
     } catch (err) {
-      console.error(err);
-      json(res, 500, { error: "Something went wrong." });
+      guard(code, () => { throw err; }, () => {
+        const room = roomsByCode.get(code);
+        if (room) recover(room);
+      });
+      guard(code, () => {
+        if (res.headersSent) res.destroy();
+        else json(res, 500, { error: "Something went wrong." });
+      });
     }
   });
 
@@ -231,7 +261,8 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
     }
     let member: Member | null = null;
 
-    ws.on("message", (raw) => {
+    ws.on("error", (err) => { console.error(`Room ${code}:`, err); });
+    ws.on("message", (raw) => guard(code, () => {
       let msg: ClientMessage;
       try {
         msg = JSON.parse(String(raw));
@@ -295,9 +326,9 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
       if (refusal !== null) return send(ws, { type: "error", message: refusal });
       if (!wasFinished && room.game?.result) recordHistory(room);
       broadcast(room);
-    });
+    }, () => recover(room)));
 
-    ws.on("close", () => {
+    ws.on("close", () => guard(code, () => {
       const roomSockets = sockets.get(room);
       if (!member || !roomSockets?.delete(ws)) return;
       const current = member;
@@ -307,33 +338,37 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
         room.members = room.members.filter((m) => m !== current);
       }
       broadcast(room);
-    });
+    }, () => recover(room)));
   });
 
   // Turn timers: play the default move for anyone who has run out of time.
   const clock = setInterval(() => {
     if (!loaded) return;
     for (const room of roomsByCode.values()) {
-      if (!room.game || room.game.deadline === null) continue;
-      const wasFinished = room.game.result !== null;
-      if (!rooms.expireTurn(room)) continue;
-      if (!wasFinished && room.game.result) recordHistory(room);
-      broadcast(room);
+      guard(room.code, () => {
+        if (!room.game || room.game.deadline === null) return;
+        const wasFinished = room.game.result !== null;
+        if (!rooms.expireTurn(room)) return;
+        if (!wasFinished && room.game.result) recordHistory(room);
+        broadcast(room);
+      }, () => recover(room));
     }
   }, 250);
   clock.unref();
 
-  const sweep = setInterval(() => {
+  const sweep = setInterval(() => guard("idle sweep", () => {
     if (!loaded) return;
     const cutoff = Date.now() - ROOM_IDLE_MS;
     for (const [code, room] of roomsByCode) {
-      if (room.updatedAt < cutoff && !sockets.get(room)?.size) {
-        roomsByCode.delete(code);
-        sockets.delete(room);
-      }
+      guard(code, () => {
+        if (room.updatedAt < cutoff && !sockets.get(room)?.size) {
+          roomsByCode.delete(code);
+          sockets.delete(room);
+        }
+      }, () => recover(room));
     }
     persist();
-  }, 60 * 60 * 1000);
+  }), 60 * 60 * 1000);
   sweep.unref();
 
   return {

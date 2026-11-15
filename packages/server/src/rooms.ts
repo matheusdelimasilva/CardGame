@@ -191,7 +191,8 @@ function apply(room: Room, playerId: string, gameMove: unknown, now: number): Re
   let outcome;
   try {
     outcome = game.applyMove(running.state, playerId, gameMove);
-  } catch {
+  } catch (err) {
+    console.error(`Room ${room.code}:`, err);
     return "That move is not valid.";
   }
   if (!outcome.ok) return outcome.error;

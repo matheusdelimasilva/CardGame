@@ -13,7 +13,7 @@ import {
   type PlayerId,
   type TableState,
 } from "@cardgame/engine";
-import { SONGS, songKey, songOf, type Song } from "./songs";
+import { SONGS, songKey, songOf, songForView, type Song } from "./songs";
 
 export { SONGS, songKey, songOf, type Song } from "./songs";
 
@@ -223,17 +223,23 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
     return { ok: true, state };
   },
 
+  validateState(state) {
+    for (const zone of Object.values(state.table.zones)) {
+      for (const card of zone.cards) songOf(card.face);
+    }
+  },
+
   view(state) {
     // Built field by field rather than from the raw table, so the current song's year cannot slip out.
     const card = state.winners ? undefined : state.table.zones.current!.cards[0];
-    const song = card ? songOf(card.face) : null;
+    const song = card ? songForView(card.face) : null;
     return {
       players: state.players,
       timelines: Object.fromEntries(
         state.players.map((p) => [
           p,
           state.table.zones[timeline(p)]!.cards.map((c) => {
-            const { title, artist, year } = songOf(c.face);
+            const { title, artist, year } = songForView(c.face);
             return { id: c.id, title, artist, year };
           }),
         ]),
