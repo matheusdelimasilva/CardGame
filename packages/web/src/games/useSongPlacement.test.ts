@@ -139,6 +139,21 @@ it("captures the pointer, follows it, previews a gap and commits only on an insi
   expect(card.classList.toggle).toHaveBeenLastCalledWith("is-returning", true);
 });
 
+function click(detail = 1) {
+  const event = Object.assign(new Event("click", { cancelable: true }), {
+    detail,
+  });
+  card.dispatchEvent(event);
+  return event;
+}
+
+it("clicks without a pointer gesture toggle audio", () => {
+  click(0);
+  expect(toggleAudio).toHaveBeenCalledOnce();
+  click();
+  expect(toggleAudio).toHaveBeenCalledTimes(2);
+});
+
 it("taps below the threshold toggle audio once, never on down or the following click", () => {
   pointer("pointerdown", 80);
   expect(toggleAudio).not.toHaveBeenCalled();
@@ -147,9 +162,7 @@ it("taps below the threshold toggle audio once, never on down or the following c
   expect(snapshot.dragging).toBe(false);
   pointer("pointerup", 84, 153);
   expect(toggleAudio).toHaveBeenCalledOnce();
-  const click = new Event("click", { cancelable: true });
-  card.dispatchEvent(click);
-  expect(click.defaultPrevented).toBe(true);
+  expect(click().defaultPrevented).toBe(true);
   expect(toggleAudio).toHaveBeenCalledOnce();
 });
 
@@ -168,9 +181,19 @@ it("crossing the threshold then returning to the starting point is still a drag,
   expect(snapshot.dragging).toBe(true);
   pointer("pointermove", 80);
   pointer("pointerup", 80);
-  card.dispatchEvent(new Event("click", { cancelable: true }));
+  expect(click().defaultPrevented).toBe(true);
   expect(toggleAudio).not.toHaveBeenCalled();
   expect(snapshot.selected).toBeNull();
+  click(0);
+  expect(toggleAudio).toHaveBeenCalledOnce();
+});
+
+it("does not suppress a later plain click when a cancelled gesture generated no click", async () => {
+  pointer("pointerdown", 80);
+  pointer("pointercancel", 80);
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  click();
+  expect(toggleAudio).toHaveBeenCalledOnce();
 });
 
 it.each(["pointercancel", "lostpointercapture"])(
