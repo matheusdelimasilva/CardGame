@@ -2,15 +2,18 @@ import { describe, expect, it } from "vitest";
 import {
   DECK_SIZE,
   SONGS,
+  SONG_LISTS,
   fitsAt,
   hitster,
   songKey,
   songOf,
   type HitsterState,
+  type SongListId,
 } from "../src";
 
 const players = ["a", "b", "c"];
 const defaults = { cardsToWin: "10", showSongInfo: true };
+const lists: SongListId[] = ["international", "brasil"];
 const start = (
   seed = 11,
   settings: Record<string, string | boolean> = defaults,
@@ -19,9 +22,9 @@ const start = (
 
 const cards = (s: HitsterState, zone: string) => s.table.zones[zone]!.cards;
 const years = (s: HitsterState, p: string) =>
-  cards(s, `timeline:${p}`).map((c) => songOf(c.face).year);
+  cards(s, `timeline:${p}`).map((c) => songOf(c.face, s.songList).year);
 const currentYear = (s: HitsterState) =>
-  songOf(cards(s, "current")[0]!.face).year;
+  songOf(cards(s, "current")[0]!.face, s.songList).year;
 const current = (s: HitsterState) => s.players[s.turn]!;
 
 function apply(s: HitsterState, player: string, move: unknown): HitsterState {
@@ -80,34 +83,147 @@ describe("fitsAt", () => {
 });
 
 describe("song list", () => {
-  it("renders unknown timeline and current cards as placeholders but rejects them for play", () => {
-    const state = start();
-    cards(state, "timeline:a")[0]!.face = "Removed|Artist";
-    cards(state, "current")[0]!.face = "Removed|Artist";
-    const view = hitster.view(state, null);
-    expect(view.timelines.a![0]).toMatchObject({
-      title: "Unknown song",
-      artist: "Unknown artist",
-      year: 0,
-    });
-    expect(view.current).toMatchObject({
-      title: "Unknown song",
-      artist: "Unknown artist",
-    });
-    expect(() => hitster.validateState!(state)).toThrow("Unknown song card");
-  });
+  it.each(lists)(
+    "renders stale %s cards as placeholders but rejects them for play",
+    (songList) => {
+      const state = start(11, { ...defaults, songList });
+      cards(state, "timeline:a")[0]!.face = "Removed|Artist";
+      cards(state, "current")[0]!.face = "Removed|Artist";
+      const view = hitster.view(state, null);
+      expect(view.timelines.a![0]).toMatchObject({
+        title: "Unknown song",
+        artist: "Unknown artist",
+        year: 0,
+      });
+      expect(view.current).toMatchObject({
+        title: "Unknown song",
+        artist: "Unknown artist",
+      });
+      expect(() => hitster.validateState!(state)).toThrow("Unknown song card");
+    },
+  );
 
-  it("has plenty of well-formed songs, each with its own key", () => {
-    expect(SONGS.length).toBeGreaterThanOrEqual(DECK_SIZE);
-    expect(new Set(SONGS.map(songKey)).size).toBe(SONGS.length);
-    for (const s of SONGS) {
-      expect(s.title && s.artist).toBeTruthy();
-      expect(Number.isInteger(s.year) && s.year >= 1900 && s.year <= 2100).toBe(
-        true,
+  it.each(lists)(
+    "has plenty of well-formed %s songs, each with its own key",
+    (songList) => {
+      const songs = SONG_LISTS[songList];
+      expect(songs.length).toBeGreaterThanOrEqual(DECK_SIZE);
+      expect(new Set(songs.map(songKey)).size).toBe(songs.length);
+      for (const s of songs) {
+        expect(s.title && s.artist).toBeTruthy();
+        expect(
+          Number.isInteger(s.year) && s.year >= 1900 && s.year <= 2100,
+        ).toBe(true);
+        expect(s.deezerId === null || s.deezerId > 0).toBe(true);
+        expect(songOf(songKey(s), songList)).toBe(s);
+      }
+    },
+  );
+
+  it.each(lists)(
+    "sets up, restores and plays using only the %s list",
+    (songList) => {
+      const initial = start(11, { ...defaults, songList });
+      expect(initial.songList).toBe(songList);
+      const state: HitsterState = JSON.parse(JSON.stringify(initial));
+      expect(() => hitster.validateState!(state)).not.toThrow();
+      expect(totalCards(state)).toBe(DECK_SIZE);
+      for (const zone of Object.values(state.table.zones)) {
+        for (const card of zone.cards) {
+          const song = songOf(card.face, songList);
+          expect(SONG_LISTS[songList]).toContain(song);
+          expect(song.deezerId).not.toBeNull();
+        }
+      }
+      const song = songOf(cards(state, "current")[0]!.face, songList);
+      expect(hitster.currentTrack!(state)).toEqual({
+        title: song.title,
+        artist: song.artist,
+        deezerId: song.deezerId,
+      });
+      expect(hitster.view(state, null).timelines.a![0]!.year).toBe(
+        years(state, "a")[0],
       );
-      expect(s.deezerId === null || s.deezerId > 0).toBe(true);
-      expect(songOf(songKey(s))).toBe(s);
-    }
+      const next = apply(state, "a", {
+        type: "place",
+        index: spot(state, true)!,
+      });
+      expect(next.lastTurn).toMatchObject({
+        outcome: "correct",
+        song: { title: song.title, artist: song.artist, year: song.year },
+      });
+      expect(next.songList).toBe(songList);
+    },
+  );
+
+  it.each(lists)(
+    "does not accept a key that exists only in the other list for %s",
+    (songList) => {
+      const other = songList === "brasil" ? "international" : "brasil";
+      const keys = new Set(SONG_LISTS[songList].map(songKey));
+      const foreign = SONG_LISTS[other].find(
+        (song) => !keys.has(songKey(song)),
+      )!;
+      const state = start(11, { ...defaults, songList });
+      cards(state, "current")[0]!.face = songKey(foreign);
+      expect(() => hitster.validateState!(state)).toThrow("Unknown song card");
+      expect(() => hitster.currentTrack!(state)).toThrow("Unknown song card");
+      expect(hitster.view(state, null).current!.title).toBe("Unknown song");
+    },
+  );
+
+  it.each(lists)(
+    "resolves shared song keys against the saved %s list",
+    (songList) => {
+      const shared = SONGS.find((song) =>
+        SONG_LISTS.brasil.some(
+          (other) =>
+            songKey(song) === songKey(other) && song.year !== other.year,
+        ),
+      )!;
+      expect(shared).toBeDefined();
+      const key = songKey(shared);
+      const song = songOf(key, songList);
+      const state = start(11, { ...defaults, songList });
+      cards(state, "current")[0]!.face = key;
+      cards(state, "timeline:a")[0]!.face = key;
+      expect(hitster.view(state, null).timelines.a![0]).toMatchObject({
+        title: song.title,
+        artist: song.artist,
+        year: song.year,
+      });
+      expect(hitster.currentTrack!(state)).toEqual({
+        title: song.title,
+        artist: song.artist,
+        deezerId: song.deezerId,
+      });
+      for (const index of [0, 1]) {
+        const next = apply(state, "a", { type: "place", index });
+        expect(next.lastTurn).toMatchObject({
+          outcome: "correct",
+          song: { year: song.year },
+        });
+      }
+    },
+  );
+
+  it("defaults to International for new and legacy saved games", () => {
+    const state = start();
+    expect(state.songList).toBe("international");
+    expect(state).toEqual(
+      start(11, { ...defaults, songList: "international" }),
+    );
+    const legacy = structuredClone(state);
+    delete legacy.songList;
+    expect(() => hitster.validateState!(legacy)).not.toThrow();
+    expect(hitster.view(legacy, null)).toEqual(hitster.view(state, null));
+    expect(hitster.currentTrack!(legacy)).toEqual(hitster.currentTrack!(state));
+    expect(
+      hitster.applyMove(legacy, "a", {
+        type: "place",
+        index: spot(state, true)!,
+      }),
+    ).toMatchObject({ ok: true, state: { lastTurn: { outcome: "correct" } } });
   });
 
   it("deals a different sample of songs for a different seed, and the same one for the same seed", () => {

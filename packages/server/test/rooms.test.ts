@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { DemoView } from "@cardgame/games";
+import type { DemoView, HitsterState } from "@cardgame/games";
 import * as rooms from "../src/rooms";
 
 function table(
@@ -21,6 +21,28 @@ const gameView = (room: rooms.Room, m: rooms.Member) =>
   rooms.viewFor(room, m).game!.view as DemoView;
 
 describe("rooms", () => {
+  it("exposes Hitster song-list choices and carries the host selection into the game", () => {
+    expect(rooms.gameInfo("hitster").settings).toContainEqual({
+      type: "select",
+      id: "songList",
+      label: "Song list",
+      options: [
+        { value: "international", label: "International" },
+        { value: "brasil", label: "Brasil" },
+      ],
+      default: "international",
+    });
+    for (const [raw, expected] of [
+      [{}, "international"],
+      [{ songList: "brasil" }, "brasil"],
+      [{ songList: "invalid" }, "international"],
+    ] as const) {
+      const { room, host } = table(["Ana", "Bo"], raw, "hitster");
+      expect(room.settings.songList).toBe(expected);
+      expect(rooms.start(room, host, 11)).toBeNull();
+      expect((room.game!.state as HitsterState).songList).toBe(expected);
+    }
+  });
   it("gives a returning token the same member and seat", () => {
     const { room, members } = table();
     const again = rooms.join(room, members[1]!.token, false);

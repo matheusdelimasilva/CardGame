@@ -13,9 +13,23 @@ import {
   type PlayerId,
   type TableState,
 } from "@cardgame/engine";
-import { SONGS, songKey, songOf, songForView, type Song } from "./songs";
+import {
+  SONG_LISTS,
+  songKey,
+  songOf,
+  songForView,
+  type Song,
+  type SongListId,
+} from "./songs";
 
-export { SONGS, songKey, songOf, type Song } from "./songs";
+export {
+  SONGS,
+  SONG_LISTS,
+  songKey,
+  songOf,
+  type Song,
+  type SongListId,
+} from "./songs";
 
 /** Songs dealt into one game, drawn at random from the full list. Keeps saved games small. */
 export const DECK_SIZE = 300;
@@ -34,6 +48,8 @@ export const DECK_SIZE = 300;
 
 export interface HitsterState {
   table: TableState;
+  /** Absent in legacy saved games, which use the International list. */
+  songList?: SongListId;
   players: PlayerId[];
   /** Index into players of whoever is placing a song. */
   turn: number;
@@ -75,9 +91,10 @@ export type RevealedSong = Pick<Song, "title" | "artist" | "year">;
  * replayed exactly. Only songs that can be played (they have a Deezer id) are
  * used, unless there are too few of them to fill a deck.
  */
-function sampleSongs(seed: number, count: number): Song[] {
-  const playable = SONGS.filter((s) => s.deezerId !== null);
-  const pool = playable.length >= count ? playable : [...SONGS];
+function sampleSongs(seed: number, count: number, list: SongListId): Song[] {
+  const songs = SONG_LISTS[list];
+  const playable = songs.filter((s) => s.deezerId !== null);
+  const pool = playable.length >= count ? playable : [...songs];
   let rng = seed | 0;
   const picked: Song[] = [];
   while (picked.length < count && pool.length > 0) {
@@ -123,7 +140,9 @@ export function fitsAt(
 }
 
 const yearsOf = (state: HitsterState, player: PlayerId) =>
-  state.table.zones[timeline(player)]!.cards.map((c) => songOf(c.face).year);
+  state.table.zones[timeline(player)]!.cards.map(
+    (c) => songOf(c.face, state.songList).year,
+  );
 
 /** Draws the next song for the player whose turn it is, or ends the game if no songs are left. */
 function drawSong(state: HitsterState): void {
@@ -153,6 +172,16 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
   settings: [
     {
       type: "select",
+      id: "songList",
+      label: "Song list",
+      options: [
+        { value: "international", label: "International" },
+        { value: "brasil", label: "Brasil" },
+      ],
+      default: "international",
+    },
+    {
+      type: "select",
       id: "cardsToWin",
       label: "Cards to win",
       description:
@@ -175,13 +204,19 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
   ],
 
   setup({ players, seed, settings }) {
+    const songList =
+      settings.songList === "brasil" ? "brasil" : "international";
     let table = createTable(seed);
     for (const zone of ["deck", "discard", "current"])
       table = addZone(table, zone);
     for (const player of players)
       table = addZone(table, timeline(player), player);
     table = shuffle(
-      addCards(table, "deck", sampleSongs(seed, DECK_SIZE).map(songKey)),
+      addCards(
+        table,
+        "deck",
+        sampleSongs(seed, DECK_SIZE, songList).map(songKey),
+      ),
       "deck",
     );
     for (const player of players)
@@ -189,6 +224,7 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
 
     const state: HitsterState = {
       table,
+      songList,
       players: [...players],
       turn: 0,
       turnNumber: 1,
@@ -207,7 +243,7 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       return { ok: false, error: "It is not your turn." };
     const state = structuredClone(current);
     const card = state.table.zones.current!.cards[0]!;
-    const { title, artist, year } = songOf(card.face);
+    const { title, artist, year } = songOf(card.face, state.songList);
     const song: RevealedSong = { title, artist, year };
     let outcome: TurnSummary["outcome"];
 
@@ -248,7 +284,7 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
 
   validateState(state) {
     for (const zone of Object.values(state.table.zones)) {
-      for (const card of zone.cards) songOf(card.face);
+      for (const card of zone.cards) songOf(card.face, state.songList);
     }
   },
 
@@ -257,14 +293,14 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
     const card = state.winners
       ? undefined
       : state.table.zones.current!.cards[0];
-    const song = card ? songForView(card.face) : null;
+    const song = card ? songForView(card.face, state.songList) : null;
     return {
       players: state.players,
       timelines: Object.fromEntries(
         state.players.map((p) => [
           p,
           state.table.zones[timeline(p)]!.cards.map((c) => {
-            const { title, artist, year } = songForView(c.face);
+            const { title, artist, year } = songForView(c.face, state.songList);
             return { id: c.id, title, artist, year };
           }),
         ]),
@@ -300,7 +336,7 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       ? undefined
       : state.table.zones.current!.cards[0];
     if (!card) return null;
-    const { title, artist, deezerId } = songOf(card.face);
+    const { title, artist, deezerId } = songOf(card.face, state.songList);
     return { title, artist, deezerId };
   },
 
