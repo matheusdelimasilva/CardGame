@@ -1,14 +1,9 @@
-import {
-  MAX_NAME_LENGTH,
-  SEAT_COUNT,
-  type RoomView,
-  type SeatView,
-} from "@cardgame/protocol";
+import { MAX_NAME_LENGTH, SEAT_COUNT, type SeatView } from "@cardgame/protocol";
 import { useEffect, useState, type FormEvent } from "react";
 import { navigate } from "./App";
 import { useTrackAudio } from "./audio";
 import { gameUIs } from "./games";
-import { describeSettings } from "./settings";
+import { TableLobby } from "./lobby/TableLobby";
 import { Avatar, OpenSeat, Seat } from "./Seat";
 import { KEYS, storage } from "./storage";
 import { useRoom } from "./useRoom";
@@ -53,6 +48,16 @@ export function Room({ code }: { code: string }) {
     move: (move: unknown) => send({ type: "move", move }),
     audio,
   };
+
+  if (!running) {
+    return (
+      <TableLobby room={room} send={send} connection={connection} error={error}>
+        {!you.name && (
+          <NamePrompt onSubmit={(name) => send({ type: "setName", name })} />
+        )}
+      </TableLobby>
+    );
+  }
 
   // Seats are drawn clockwise starting from the viewer, who sits at the bottom.
   const first = you.seat ?? 0;
@@ -112,9 +117,7 @@ export function Room({ code }: { code: string }) {
                 />
               )}
             </>
-          ) : (
-            <Lobby room={room} send={send} nameOf={nameOf} />
-          )}
+          ) : null}
         </div>
 
         {around.map((seat, i) => {
@@ -313,70 +316,7 @@ export function Room({ code }: { code: string }) {
           {error}
         </div>
       )}
-    </div>
-  );
-}
-
-function Lobby({
-  room,
-  send,
-  nameOf,
-}: {
-  room: RoomView;
-  send: ReturnType<typeof useRoom>["send"];
-  nameOf: (id: string) => string;
-}) {
-  const info = room.gameInfo;
-  const seated = room.seats.filter((s) => s !== null).length;
-  const winners = room.game?.result?.winners.map(nameOf) ?? null;
-  const missing = info.minPlayers - seated;
-
-  return (
-    <div className="lobby">
-      {winners ? (
-        <>
-          <div className="lobby-label">game over</div>
-          <h2 className="lobby-winner">
-            ★ {winners.join(" & ")} {winners.length > 1 ? "win" : "wins"}! ★
-          </h2>
-          <div className="lobby-label">{info.name}</div>
-        </>
-      ) : (
-        <>
-          <div className="lobby-label">now playing</div>
-          <div className="lobby-game">{info.name}</div>
-          <div className="lobby-label">
-            {seated} seated · {info.minPlayers} to {info.maxPlayers} players
-          </div>
-          {info.settings.length > 0 && (
-            <ul className="lobby-settings">
-              {describeSettings(info, room.settings).map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ul>
-          )}
-        </>
-      )}
-      {room.you.isHost ? (
-        <>
-          <button
-            className="btn gold big"
-            disabled={missing > 0}
-            onClick={() => send({ type: "start" })}
-          >
-            {winners ? "Play again" : "Start game"}
-          </button>
-          {missing > 0 && (
-            <div className="lobby-hint">
-              {seated === 0
-                ? "Take a seat, then share the link."
-                : `Needs ${missing} more player${missing > 1 ? "s" : ""}.`}
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="lobby-hint">Waiting for the host to start...</div>
-      )}
+      <div className="crt" aria-hidden="true" />
     </div>
   );
 }

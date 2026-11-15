@@ -23,12 +23,5 @@ export function App() {
   const code = roomCode(path);
   // Home and the host's setup steps are one animated scene; the CRT
   // scanlines only belong on the table.
-  return code ? (
-    <>
-      <Room key={code} code={code} />
-      <div className="crt" aria-hidden="true" />
-    </>
-  ) : (
-    <HomeFlow path={path} />
-  );
+  return code ? <Room key={code} code={code} /> : <HomeFlow path={path} />;
 }

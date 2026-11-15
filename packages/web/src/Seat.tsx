@@ -1,7 +1,7 @@
 import type { SeatView } from "@cardgame/protocol";
 import type { ReactNode } from "react";
 
-const ANIMALS = ["🐼", "🐻", "🐰", "🐸", "🐱", "🐷", "🦊", "🐵"];
+export const ANIMALS = ["🐼", "🐻", "🐰", "🐸", "🐱", "🐷", "🦊", "🐵"];
 // Gold is reserved for "it is this player's turn", so it is not a seat colour.
 const COLORS = [
   "#ef4a3c",
