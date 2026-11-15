@@ -122,8 +122,12 @@ export class RoomService {
       room.code,
       () => {
         if (!room.game || room.game.deadline === null) return;
+        const deadline = room.game.deadline;
         const wasFinished = room.game.result !== null;
-        if (!rooms.expireTurn(room)) return;
+        if (!rooms.expireTurn(room)) {
+          if (room.game.deadline !== deadline) this.registry.persist(room);
+          return;
+        }
         if (!wasFinished && room.game.result) this.recordHistory(room);
         this.notify(room);
       },
@@ -139,7 +143,7 @@ export class RoomService {
         if (room.game)
           requireGame(room.game.gameId).validateState?.(room.game.state);
         for (const listener of this.listeners) listener(room);
-        this.registry.persist();
+        this.registry.persist(room);
       },
       () => {
         if (room.game) this.recover(room);
@@ -165,8 +169,17 @@ export class RoomService {
       winners: running.result.winners.map(nameOf),
       endedAt: new Date().toISOString(),
     };
-    const list = (this.store.data.history[room.hostEmail] ??= []);
+    const history = this.store.data.history;
+    if (!Object.hasOwn(history, room.hostEmail))
+      Object.defineProperty(history, room.hostEmail, {
+        value: [],
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    const list = history[room.hostEmail]!;
     list.unshift(entry);
     list.length = Math.min(list.length, 100);
+    this.store.save({ history: [room.hostEmail] });
   }
 }

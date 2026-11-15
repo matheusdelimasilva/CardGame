@@ -5,6 +5,18 @@ import { JsonStore } from "../src/store";
 const day = 24 * 60 * 60 * 1000;
 
 describe("auth security", () => {
+  it("does not authenticate or dirty missing and inherited session keys", async () => {
+    const store = new JsonStore(null);
+    store.data.sessions = {};
+    const save = vi.spyOn(store, "save");
+    const auth = new Auth(store, null);
+    for (const token of ["__proto__", "constructor", "toString", "missing"]) {
+      expect(auth.emailFor(token)).toBeNull();
+      auth.signOut(token);
+    }
+    expect(save).not.toHaveBeenCalled();
+    await store.close();
+  });
   it("limits each IP to five requests per fixed window", () => {
     const auth = new Auth(new JsonStore(null), null);
     for (let i = 0; i < 5; i++) expect(auth.allowRequest("ip1", i)).toBe(true);

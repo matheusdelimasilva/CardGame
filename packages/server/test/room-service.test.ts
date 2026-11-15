@@ -25,6 +25,25 @@ async function setup(gameId = "demo") {
 afterEach(() => vi.restoreAllMocks());
 
 describe("socket-free room service", () => {
+  it("marks only the changed room and does not dirty unchanged timer ticks", async () => {
+    const { store, service, room, host } = await setup();
+    await store.flush();
+    const save = vi.spyOn(store, "save");
+    service.command(room, host, { type: "setName", name: "Updated" });
+    expect(save).toHaveBeenCalledExactlyOnceWith({ rooms: [room.code] });
+    save.mockClear();
+    room.game!.deadline = Date.now() + 60_000;
+    service.expire(room);
+    expect(save).not.toHaveBeenCalled();
+    room.game!.deadline = Date.now() - 1;
+    vi.spyOn(rooms, "expireTurn").mockImplementationOnce((r) => {
+      r.game!.deadline = null;
+      return false;
+    });
+    service.expire(room);
+    expect(save).toHaveBeenCalledExactlyOnceWith({ rooms: [room.code] });
+    await store.close();
+  });
   it.each(["demo", "hitster"])(
     "rejects invalid %s moves before calling the game or notifying",
     async (gameId) => {
@@ -158,6 +177,26 @@ describe("socket-free room service", () => {
 });
 
 describe("room registry", () => {
+  it("does not find or dirty inherited object keys as rooms", async () => {
+    const store = new JsonStore(null);
+    const registry = new RoomRegistry(store);
+    await registry.ready;
+    const save = vi.spyOn(store, "save");
+    for (const code of ["__proto__", "constructor", "toString"]) {
+      expect(registry.get(code)).toBeUndefined();
+      registry.delete(code);
+    }
+    expect(save).not.toHaveBeenCalled();
+    await store.close();
+  });
+  it("does not dirty an unchanged restored room", async () => {
+    const store = new JsonStore(null);
+    store.data.rooms = [rooms.createRoom("ABC234", "host@example.com", "demo")];
+    const save = vi.spyOn(store, "save");
+    await new RoomRegistry(store).ready;
+    expect(save).not.toHaveBeenCalled();
+    await store.close();
+  });
   it("evicts only inactive idle rooms and notifies deletion listeners", async () => {
     const { registry, room } = await setup();
     const active = registry.create("active@example.com", "demo", {});

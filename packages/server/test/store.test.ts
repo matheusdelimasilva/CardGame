@@ -38,7 +38,7 @@ function runningRoom(code = "ABC234") {
 describe("JSON store and selection", () => {
   afterEach(() => vi.unstubAllEnvs());
 
-  it("migrates legacy sessions at load time and persists sliding timestamps", () => {
+  it("migrates legacy sessions at load time and persists sliding timestamps", async () => {
     const dir = mkdtempSync(join(tmpdir(), "cardgame-legacy-"));
     try {
       const file = join(dir, "db.json");
@@ -63,13 +63,13 @@ describe("JSON store and selection", () => {
       const auth = new Auth(store, null);
       const later = Date.now() + 1000;
       expect(auth.emailFor("old", later)).toBe(email);
-      store.close();
+      await store.close();
       expect(new JsonStore(file).data.sessions.old).toEqual({
         email,
         lastUsed: later,
       });
       expect(auth.emailFor("old", later + 30 * 24 * 60 * 60 * 1000)).toBeNull();
-      store.close();
+      await store.close();
       expect(new JsonStore(file).data.sessions.old).toBeUndefined();
     } finally {
       rmSync(dir, { recursive: true, force: true });
@@ -85,11 +85,12 @@ describe("JSON store and selection", () => {
       expect(store).toBeInstanceOf(JsonStore);
       const room = runningRoom();
       store.data = {
+        version: 1,
         sessions: { token: session },
         history: { [email]: [entry] },
         rooms: [room],
       };
-      store.save();
+      store.save({ rooms: [room.code], sessions: ["token"], history: [email] });
       await store.close();
       const restored = new JsonStore(file);
       expect(restored.data).toEqual(store.data);
@@ -107,7 +108,7 @@ describe("JSON store and selection", () => {
     const store = createStore(null);
     expect(store).toBeInstanceOf(JsonStore);
     store.data.sessions.token = { ...session };
-    store.save();
+    store.save({ sessions: ["token"] });
     await store.close();
     expect(createStore(null).data.sessions).toEqual({});
     const app = createApp({ dataFile: null, sendEmail: null });
@@ -185,7 +186,7 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
       { ...entry, endedAt: "2026-11-13T12:00:00.000Z" },
     ];
     store.data.rooms = [room];
-    store.save();
+    store.save({ rooms: [room.code], history: [email] });
     await close(store as PostgresStore);
 
     const restored = await open();
@@ -197,7 +198,7 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     ).toMatch(/expired/);
     restartedAuth.signOut(token!);
     restored.data.rooms = [];
-    restored.save();
+    restored.save({ rooms: [room.code] });
     await close(restored);
     const final = await open();
     expect(final.data.sessions).toEqual({});
@@ -231,11 +232,126 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     });
   });
 
+  it("persists a normal room after unauthenticated sign-out of inherited session keys", async () => {
+    const store = await open();
+    const auth = new Auth(store, null);
+    for (const token of ["__proto__", "constructor", "toString"]) {
+      expect(auth.emailFor(token)).toBeNull();
+      auth.signOut(token);
+    }
+    const room = runningRoom();
+    store.data.rooms = [room];
+    store.save({ rooms: [room.code] });
+    await expect(store.flush()).resolves.toBeUndefined();
+    expect(
+      (await sql.query("SELECT snapshot FROM rooms")).rows[0].snapshot,
+    ).toEqual(room);
+    expect((await sql.query("SELECT * FROM sessions")).rows).toEqual([]);
+  });
+
+  it("ignores inherited session and history values even if dirty keys are passed directly", async () => {
+    const store = await open();
+    store.data.sessions = {};
+    store.data.history = {};
+    const room = runningRoom();
+    store.data.rooms = [room];
+    store.save({
+      rooms: [room.code],
+      sessions: ["__proto__", "constructor"],
+      history: ["__proto__", "constructor"],
+    });
+    await store.flush();
+    expect(
+      (await sql.query("SELECT snapshot FROM rooms")).rows[0].snapshot,
+    ).toEqual(room);
+    expect((await sql.query("SELECT * FROM sessions")).rows).toEqual([]);
+    expect((await sql.query("SELECT * FROM history")).rows).toEqual([]);
+  });
+
+  it("isolates a permanently bad row without blocking good rows or dropping pending data", async () => {
+    const store = await open();
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    await sql.query(
+      "ALTER TABLE rooms ADD CONSTRAINT reject_test_room CHECK (code <> 'ABC234')",
+    );
+    const bad = runningRoom();
+    const good = runningRoom("DEF567");
+    store.data.rooms = [bad, good];
+    store.data.sessions.token = { ...session };
+    store.data.history[email] = [entry];
+    store.save({
+      rooms: [bad.code, good.code],
+      sessions: ["token"],
+      history: [email],
+    });
+    for (let attempt = 0; attempt < 4; attempt++)
+      await expect(store.flush()).rejects.toThrow(/reject_test_room/);
+    expect(log).toHaveBeenCalledWith(
+      "Saving Postgres row failed; retained for retry:",
+      { table: "rooms", code: bad.code },
+      expect.any(Error),
+    );
+    expect(
+      (await sql.query("SELECT snapshot FROM rooms")).rows.map(
+        (row) => row.snapshot,
+      ),
+    ).toEqual([good]);
+    expect((await sql.query("SELECT token FROM sessions")).rows).toEqual([
+      { token: "token" },
+    ]);
+    expect((await sql.query("SELECT entries FROM history")).rows).toEqual([
+      { entries: [entry] },
+    ]);
+    good.members[0]!.name = "Updated";
+    store.save({ rooms: [good.code] });
+    await expect(store.flush()).rejects.toThrow(/reject_test_room/);
+    expect(
+      (await sql.query("SELECT snapshot FROM rooms")).rows.map(
+        (row) => row.snapshot,
+      ),
+    ).toEqual([good]);
+    await sql.query("ALTER TABLE rooms DROP CONSTRAINT reject_test_room");
+    await store.flush();
+    expect(
+      (await sql.query("SELECT snapshot FROM rooms ORDER BY code")).rows.map(
+        (row) => row.snapshot,
+      ),
+    ).toEqual([bad, good]);
+    log.mockRestore();
+  });
+
+  it("retains sessions, history and rooms through a temporary database write outage", async () => {
+    const store = await open();
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    await sql.query(`CREATE FUNCTION reject_outage() RETURNS trigger LANGUAGE plpgsql AS $$
+      BEGIN RAISE EXCEPTION 'temporary storage outage'; END $$`);
+    for (const table of ["sessions", "history", "rooms"])
+      await sql.query(
+        `CREATE TRIGGER unavailable BEFORE INSERT OR UPDATE OR DELETE ON ${table} FOR EACH ROW EXECUTE FUNCTION reject_outage()`,
+      );
+    const room = runningRoom();
+    store.data.sessions.token = { ...session };
+    store.data.history[email] = [entry];
+    store.data.rooms = [room];
+    store.save({ sessions: ["token"], history: [email], rooms: [room.code] });
+    for (let attempt = 0; attempt < 4; attempt++)
+      await expect(store.flush()).rejects.toThrow(/temporary storage outage/);
+    for (const table of ["sessions", "history", "rooms"]) {
+      expect((await sql.query(`SELECT * FROM ${table}`)).rows).toEqual([]);
+      await sql.query(`DROP TRIGGER unavailable ON ${table}`);
+    }
+    await store.flush();
+    await close(store);
+    expect((await open()).data).toEqual(store.data);
+    log.mockRestore();
+  });
+
   it("debounces in-place room mutations and never rewrites unchanged rooms", async () => {
     const store = await open();
     const changed = runningRoom();
     const untouched = runningRoom("DEF567");
     store.data.rooms = [changed, untouched];
+    store.save({ rooms: [changed.code, untouched.code] });
     await store.flush();
     const versions = async () =>
       (
@@ -244,10 +360,14 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
         )
       ).rows;
     const before = await versions();
+    const serialized = vi.fn(() => {
+      throw new Error("Untouched room was serialized");
+    });
+    Object.defineProperty(untouched, "toJSON", { value: serialized });
     changed.members[0]!.name = "Changed";
-    store.save();
+    store.save({ rooms: [changed.code] });
     changed.members[0]!.name = "Latest";
-    store.save();
+    store.save({ rooms: [changed.code] });
     expect(await versions()).toEqual(before);
     await expect
       .poll(
@@ -263,25 +383,113 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     expect(after[0]!.version).not.toBe(before[0]!.version);
     expect(after[1]).toEqual(before[1]);
     store.data.sessions.another = { ...session };
-    store.save();
+    store.save({ sessions: ["another"] });
     await store.flush();
     expect(await versions()).toEqual(after);
     store.data.rooms = [untouched];
+    store.save({ rooms: [changed.code] });
     await store.flush();
     expect(await versions()).toEqual([before[1]]);
+    expect(serialized).not.toHaveBeenCalled();
   });
 
-  it("rolls back failed batches and retries all changes without losing the baseline", async () => {
+  it("migrates unversioned Postgres room snapshots and records versions atomically", async () => {
+    await sql.query(
+      "CREATE TABLE rooms (code TEXT PRIMARY KEY, snapshot JSONB NOT NULL)",
+    );
+    const room = runningRoom();
+    const legacy = JSON.parse(JSON.stringify(room));
+    delete legacy.version;
+    delete legacy.settings;
+    delete legacy.game.trackKey;
+    delete legacy.game.trackNonce;
+    await sql.query("INSERT INTO rooms VALUES ($1, $2)", [
+      room.code,
+      JSON.stringify(legacy),
+    ]);
     const store = await open();
+    expect(store.data.version).toBe(1);
+    expect(store.data.rooms[0]).toEqual({
+      ...room,
+      settings: {},
+      game: { ...room.game, trackKey: "", trackNonce: null },
+    });
+    expect(
+      (await sql.query("SELECT version FROM store_metadata")).rows,
+    ).toEqual([{ version: 1 }]);
+    expect(
+      (await sql.query("SELECT snapshot FROM rooms")).rows[0].snapshot,
+    ).toEqual(store.data.rooms[0]);
+    await close(store);
+    expect((await open()).data.rooms).toEqual(store.data.rooms);
+  });
+
+  it("refuses future data versions without changing the database", async () => {
+    await sql.query(
+      "CREATE TABLE store_metadata (id INTEGER PRIMARY KEY, version INTEGER NOT NULL); INSERT INTO store_metadata VALUES (1, 99)",
+    );
+    const store = new PostgresStore(url);
+    await expect(store.ready).rejects.toThrow(
+      /version 99 is newer than supported/,
+    );
+    await expect(store.close()).rejects.toThrow(/version 99/);
+    expect(
+      (await sql.query("SELECT version FROM store_metadata")).rows,
+    ).toEqual([{ version: 99 }]);
+    expect(
+      (await sql.query("SELECT to_regclass('sessions') AS table_name")).rows[0]
+        .table_name,
+    ).toBeNull();
+  });
+
+  it("refuses future room versions and rolls back startup migrations", async () => {
+    await sql.query(
+      "CREATE TABLE sessions (token TEXT PRIMARY KEY, email TEXT NOT NULL); CREATE TABLE rooms (code TEXT PRIMARY KEY, snapshot JSONB NOT NULL)",
+    );
+    const future = { ...runningRoom(), version: 99 };
+    await sql.query("INSERT INTO rooms VALUES ($1, $2)", [
+      future.code,
+      JSON.stringify(future),
+    ]);
+    const store = new PostgresStore(url);
+    await expect(store.ready).rejects.toThrow(/Room snapshot version 99/);
+    await expect(store.close()).rejects.toThrow(/Room snapshot version 99/);
+    expect(
+      (await sql.query("SELECT snapshot FROM rooms")).rows[0].snapshot,
+    ).toEqual(future);
+    expect(
+      (await sql.query("SELECT to_regclass('store_metadata') AS table_name"))
+        .rows[0].table_name,
+    ).toBeNull();
+    expect(
+      (
+        await sql.query(
+          "SELECT column_name FROM information_schema.columns WHERE table_schema = $1 AND table_name = 'sessions' ORDER BY column_name",
+          [schema],
+        )
+      ).rows.map((row) => row.column_name),
+    ).toEqual(["email", "token"]);
+  });
+
+  it("rolls back failed batches, saves valid rows and retries only failed rows", async () => {
+    const store = await open();
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
     await sql.query(
       "ALTER TABLE rooms ADD CONSTRAINT reject_test_room CHECK (code <> 'ABC234')",
     );
     store.data.sessions.token = { ...session };
     store.data.history[email] = [entry];
     store.data.rooms = [runningRoom()];
+    store.save({ sessions: ["token"], history: [email], rooms: ["ABC234"] });
     await expect(store.flush()).rejects.toThrow(/reject_test_room/);
-    expect((await sql.query("SELECT * FROM sessions")).rows).toEqual([]);
-    expect((await sql.query("SELECT * FROM history")).rows).toEqual([]);
+    expect((await sql.query("SELECT * FROM sessions")).rows).toEqual([
+      { token: "token", email, last_used: String(session.lastUsed) },
+    ]);
+    expect((await sql.query("SELECT entries FROM history")).rows).toEqual([
+      { entries: [entry] },
+    ]);
+    expect((await sql.query("SELECT * FROM rooms")).rows).toEqual([]);
+    const before = (await sql.query("SELECT xmin::text FROM sessions")).rows;
     await sql.query("ALTER TABLE rooms DROP CONSTRAINT reject_test_room");
     await store.flush();
     expect((await sql.query("SELECT * FROM sessions")).rows).toEqual([
@@ -290,12 +498,44 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     expect(
       (await sql.query("SELECT snapshot FROM rooms")).rows[0].snapshot,
     ).toEqual(store.data.rooms[0]);
+    expect((await sql.query("SELECT xmin::text FROM sessions")).rows).toEqual(
+      before,
+    );
+    log.mockRestore();
+  });
+
+  it("isolates serialization errors without blocking other rooms", async () => {
+    const store = await open();
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    const bad = runningRoom();
+    const good = runningRoom("DEF567");
+    Object.defineProperty(bad, "toJSON", {
+      configurable: true,
+      value: () => {
+        throw new Error("cannot serialize room");
+      },
+    });
+    store.data.rooms = [bad, good];
+    store.save({ rooms: [bad.code, good.code] });
+    await expect(store.flush()).rejects.toThrow("cannot serialize room");
+    expect(
+      (await sql.query("SELECT snapshot FROM rooms")).rows.map(
+        (row) => row.snapshot,
+      ),
+    ).toEqual([good]);
+    Reflect.deleteProperty(bad, "toJSON");
+    await store.flush();
+    expect(
+      (await sql.query("SELECT code FROM rooms ORDER BY code")).rows,
+    ).toEqual([{ code: bad.code }, { code: good.code }]);
+    log.mockRestore();
   });
 
   it("serializes overlapping flushes and preserves mutations made during database IO", async () => {
     const store = await open();
     const room = runningRoom();
     store.data.rooms = [room];
+    store.save({ rooms: [room.code] });
     await store.flush();
     const lock = await sql.connect();
     await lock.query("BEGIN");
@@ -304,6 +544,7 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     let second: Promise<void> | undefined;
     try {
       room.members[0]!.name = "First";
+      store.save({ rooms: [room.code] });
       first = store.flush();
       await expect
         .poll(async () =>
@@ -317,6 +558,7 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
         )
         .toBeGreaterThan(0);
       room.members[0]!.name = "Second";
+      store.save({ rooms: [room.code] });
       second = store.flush();
     } finally {
       await lock.query("ROLLBACK");
@@ -333,10 +575,12 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     const store = await open();
     const room = runningRoom();
     store.data = {
+      version: 1,
       sessions: { token: session },
       history: { [email]: [entry] },
       rooms: [room],
     };
+    store.save({ rooms: [room.code], sessions: ["token"], history: [email] });
     await close(store);
     vi.stubEnv("DATABASE_URL", url);
     const app = createApp({ dataFile: "unused.json", sendEmail: null });

@@ -38,7 +38,11 @@ export function roomRoutes({
       handler(req, res) {
         const email = sessionEmail(req, auth);
         if (!email) return json(res, 401, { error: "Not signed in." });
-        json(res, 200, { history: store.data.history[email] ?? [] });
+        json(res, 200, {
+          history: Object.hasOwn(store.data.history, email)
+            ? store.data.history[email]
+            : [],
+        });
       },
     },
     {
