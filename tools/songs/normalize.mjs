@@ -12,7 +12,11 @@ export function norm(s) {
 
 // "Mariah Carey featuring Boyz II Men" -> "Mariah Carey"; "Simon & Garfunkel" is kept whole.
 export function primaryArtist(artist) {
-  return artist.split(/\s+(?:featuring|feat\.?|ft\.?|with|duet with|x)\s+|\s*\/\s*|,\s+/i)[0].trim();
+  return artist
+    .split(
+      /\s+(?:featuring|feat\.?|ft\.?|with|duet with|x)\s+|\s*\/\s*|,\s+/i,
+    )[0]
+    .trim();
 }
 
 export function stripThe(s) {

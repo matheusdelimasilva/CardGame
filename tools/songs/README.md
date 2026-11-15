@@ -5,10 +5,10 @@ Builds `out/songs.json`: popular songs grouped by the year they were **created**
 
 ## Sources
 
-| Data | Source | Notes |
-|---|---|---|
-| Which songs were popular | Billboard Year-End singles lists, via the Wikipedia pages | 1959+ is the Hot 100 (100/yr). 1949-1958 are Billboard's smaller year-end lists (30-51/yr). |
-| Original release year | [MusicBrainz](https://musicbrainz.org) recording search (`first-release-date`) | Data is CC0. |
+| Data                     | Source                                                                         | Notes                                                                                       |
+| ------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| Which songs were popular | Billboard Year-End singles lists, via the Wikipedia pages                      | 1959+ is the Hot 100 (100/yr). 1949-1958 are Billboard's smaller year-end lists (30-51/yr). |
+| Original release year    | [MusicBrainz](https://musicbrainz.org) recording search (`first-release-date`) | Data is CC0.                                                                                |
 
 ## Run
 

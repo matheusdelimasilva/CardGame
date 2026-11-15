@@ -69,7 +69,12 @@ interface Snapshot {
 function snapshot(data: Data): Snapshot {
   return {
     sessions: new Map(Object.entries(data.sessions)),
-    history: new Map(Object.entries(data.history).map(([email, entries]) => [email, JSON.stringify(entries)])),
+    history: new Map(
+      Object.entries(data.history).map(([email, entries]) => [
+        email,
+        JSON.stringify(entries),
+      ]),
+    ),
     rooms: new Map(data.rooms.map((room) => [room.code, JSON.stringify(room)])),
   };
 }
@@ -84,8 +89,13 @@ export class PostgresStore implements Store {
   private closing = false;
 
   constructor(databaseUrl: string) {
-    this.pool = new Pool({ connectionString: databaseUrl, connectionTimeoutMillis: 10_000 });
-    this.pool.on("error", (err) => console.error("Postgres connection failed:", err));
+    this.pool = new Pool({
+      connectionString: databaseUrl,
+      connectionTimeoutMillis: 10_000,
+    });
+    this.pool.on("error", (err) =>
+      console.error("Postgres connection failed:", err),
+    );
     this.ready = this.load();
   }
 
@@ -105,13 +115,21 @@ export class PostgresStore implements Store {
       );
     `);
     const [sessions, history, rooms] = await Promise.all([
-      this.pool.query<{ token: string; email: string }>("SELECT token, email FROM sessions"),
-      this.pool.query<{ host_email: string; entries: HistoryEntry[] }>("SELECT host_email, entries FROM history"),
+      this.pool.query<{ token: string; email: string }>(
+        "SELECT token, email FROM sessions",
+      ),
+      this.pool.query<{ host_email: string; entries: HistoryEntry[] }>(
+        "SELECT host_email, entries FROM history",
+      ),
       this.pool.query<{ snapshot: Room }>("SELECT snapshot FROM rooms"),
     ]);
     this.data = {
-      sessions: Object.fromEntries(sessions.rows.map((row) => [row.token, row.email])),
-      history: Object.fromEntries(history.rows.map((row) => [row.host_email, row.entries])),
+      sessions: Object.fromEntries(
+        sessions.rows.map((row) => [row.token, row.email]),
+      ),
+      history: Object.fromEntries(
+        history.rows.map((row) => [row.host_email, row.entries]),
+      ),
       rooms: rooms.rows.map((row) => row.snapshot),
     };
     this.saved = snapshot(this.data);
@@ -133,10 +151,12 @@ export class PostgresStore implements Store {
     if (this.timer) clearTimeout(this.timer);
     this.timer = null;
     // Serialize transactions. A failed write must not poison subsequent flushes.
-    const write = this.writes.catch(() => {}).then(async () => {
-      await this.ready;
-      await this.writeChanges();
-    });
+    const write = this.writes
+      .catch(() => {})
+      .then(async () => {
+        await this.ready;
+        await this.writeChanges();
+      });
     this.writes = write;
     return write;
   }
@@ -159,7 +179,11 @@ export class PostgresStore implements Store {
         });
       }
       for (const id of this.saved[table].keys()) {
-        if (!next[table].has(id)) queries.push({ sql: `DELETE FROM ${table} WHERE ${key} = $1`, values: [id] });
+        if (!next[table].has(id))
+          queries.push({
+            sql: `DELETE FROM ${table} WHERE ${key} = $1`,
+            values: [id],
+          });
       }
     }
     if (!queries.length) return;
@@ -188,6 +212,11 @@ export class PostgresStore implements Store {
 }
 
 /** Explicit in-memory options take precedence over the process environment. */
-export function createStore(dataFile: string | null, databaseUrl = process.env.DATABASE_URL): Store {
-  return dataFile !== null && databaseUrl ? new PostgresStore(databaseUrl) : new JsonStore(dataFile);
+export function createStore(
+  dataFile: string | null,
+  databaseUrl = process.env.DATABASE_URL,
+): Store {
+  return dataFile !== null && databaseUrl
+    ? new PostgresStore(databaseUrl)
+    : new JsonStore(dataFile);
 }

@@ -2,7 +2,12 @@
 
 import type { SettingDef, SettingValues } from "@cardgame/engine";
 
-export type { SelectSetting, SettingDef, SettingValues, ToggleSetting } from "@cardgame/engine";
+export type {
+  SelectSetting,
+  SettingDef,
+  SettingValues,
+  ToggleSetting,
+} from "@cardgame/engine";
 
 export const SEAT_COUNT = 8;
 export const MAX_NAME_LENGTH = 14;

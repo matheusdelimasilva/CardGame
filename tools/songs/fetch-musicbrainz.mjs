@@ -4,7 +4,13 @@
 // Usage: node fetch-musicbrainz.mjs [--limit N]
 // Output: .cache/musicbrainz.json -> { "<chartYear>|<rank>": [candidate...] }
 import { join } from "node:path";
-import { CACHE_DIR, USER_AGENT, politeFetch, readJson, writeJson } from "./lib.mjs";
+import {
+  CACHE_DIR,
+  USER_AGENT,
+  politeFetch,
+  readJson,
+  writeJson,
+} from "./lib.mjs";
 import { primaryArtist } from "./normalize.mjs";
 
 const limitArg = process.argv.indexOf("--limit");
@@ -24,19 +30,26 @@ for (const song of songs) {
   if (done >= LIMIT) break;
   const query = `recording:"${esc(song.title)}" AND artist:"${esc(primaryArtist(song.artist))}"`;
   const url = `https://musicbrainz.org/ws/2/recording?query=${encodeURIComponent(query)}&fmt=json&limit=15`;
-  const res = await politeFetch(url, { minGapMs: 1100, headers: { "User-Agent": USER_AGENT } });
+  const res = await politeFetch(url, {
+    minGapMs: 1100,
+    headers: { "User-Agent": USER_AGENT },
+  });
   const json = await res.json();
   cache[key] = (json.recordings ?? []).map((r) => ({
     id: r.id,
     score: r.score,
     title: r.title,
-    artist: (r["artist-credit"] ?? []).map((a) => (a.name ?? "") + (a.joinphrase ?? "")).join(""),
+    artist: (r["artist-credit"] ?? [])
+      .map((a) => (a.name ?? "") + (a.joinphrase ?? ""))
+      .join(""),
     firstRelease: r["first-release-date"] ?? null,
   }));
   done++;
   if (done % 25 === 0) {
     await writeJson(cachePath, cache);
-    console.log(`${Object.keys(cache).length}/${songs.length} cached (at ${key})`);
+    console.log(
+      `${Object.keys(cache).length}/${songs.length} cached (at ${key})`,
+    );
   }
 }
 await writeJson(cachePath, cache);

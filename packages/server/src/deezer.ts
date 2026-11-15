@@ -44,7 +44,8 @@ const VARIANT =
 const HARMLESS =
   /^((\d{4} )?(digital(ly)? )?remaster(ed)?( version)?( \d{4})?|single( version| edit)?|radio edit|(7|12)"? (inch )?(single )?edit|edit(ed)?( version)?|mono( version)?|stereo( version)?|original( mix| version)?|(love )?theme from .*|(from|music from) (the )?(original )?(motion picture|film|movie|musical|soundtrack|ost|tv|series)\b.*|from ["“].*|.*\bsoundtrack\b.*)$/i;
 /** Sound-alike / cover uploads that put the real artist's name in their own. */
-const IMPOSTOR = /\b(karaoke|tribute|made famous|originally performed|in the style of|cover|hello i['’]?m|as made popular|vs\.? the hits)\b/i;
+const IMPOSTOR =
+  /\b(karaoke|tribute|made famous|originally performed|in the style of|cover|hello i['’]?m|as made popular|vs\.? the hits)\b/i;
 
 export function norm(s: string): string {
   return s
@@ -61,7 +62,12 @@ export function norm(s: string): string {
 
 /** "Mariah Carey featuring Boyz II Men" -> "Mariah Carey". */
 export function primaryArtist(artist: string): string {
-  return artist.split(/\s+\(?(?:featuring|feat\.?|ft\.?|with|duet with|com (?:a )?participação de|participação de|part\.?|x)\s+|\s*\/\s*|,\s+/i)[0]!.trim().replace(/\s*\($/, "");
+  return artist
+    .split(
+      /\s+\(?(?:featuring|feat\.?|ft\.?|with|duet with|com (?:a )?participação de|participação de|part\.?|x)\s+|\s*\/\s*|,\s+/i,
+    )[0]!
+    .trim()
+    .replace(/\s*\($/, "");
 }
 
 /**
@@ -75,14 +81,19 @@ function titleForms(title: string): Set<string> {
   const parts = (s: string) =>
     norm(s)
       .replace(/\bpart\b/g, "pt")
-      .replace(/\bpt (i{1,3}|iv)\b/g, (_, r: string) => `pt ${["i", "ii", "iii", "iv"].indexOf(r) + 1}`);
+      .replace(
+        /\bpt (i{1,3}|iv)\b/g,
+        (_, r: string) => `pt ${["i", "ii", "iii", "iv"].indexOf(r) + 1}`,
+      );
   return new Set([parts(first), parts(keep)].filter(Boolean));
 }
 
 /** Same act: identical names, or one is the other plus words ("David Rose Orchestra"). */
 function sameArtist(want: string, got: string): boolean {
   if (!want || !got) return false; // non-Latin names normalise to "" and would match anything
-  return got === want || got.startsWith(want + " ") || want.startsWith(got + " ");
+  return (
+    got === want || got.startsWith(want + " ") || want.startsWith(got + " ")
+  );
 }
 
 /**
@@ -91,14 +102,28 @@ function sameArtist(want: string, got: string): boolean {
  */
 function cleanTags(want: SongQuery, title: string): boolean {
   const wantedTitle = norm(want.title.replace(/[()[\]]/g, " "));
-  const wantedArtists = new Set(norm((want.credit ?? want.artist).replace(/[()[\]]/g, " ")).split(" "));
-  const tags = [...title.matchAll(/\(([^)]*)\)|\[([^\]]*)\]|\s-\s(.+)$/g)].map((m) => (m[1] ?? m[2] ?? m[3])!.trim());
+  const wantedArtists = new Set(
+    norm((want.credit ?? want.artist).replace(/[()[\]]/g, " ")).split(" "),
+  );
+  const tags = [...title.matchAll(/\(([^)]*)\)|\[([^\]]*)\]|\s-\s(.+)$/g)].map(
+    (m) => (m[1] ?? m[2] ?? m[3])!.trim(),
+  );
   return tags.every((tag) => {
     for (const part of tag.split(/\s*[/;]\s*/)) {
       const p = part.trim();
-      if (!p || HARMLESS.test(p) || (norm(p) && wantedTitle.includes(norm(p)))) continue;
-      const feat = /^(feat\.?|featuring|ft\.?|with|com (?:a )?participação de|participação de|part\.?)\s+(.*)$/i.exec(p);
-      if (feat && norm(feat[2]!).split(" ").every((w) => w === "and" || w === "e" || wantedArtists.has(w))) continue;
+      if (!p || HARMLESS.test(p) || (norm(p) && wantedTitle.includes(norm(p))))
+        continue;
+      const feat =
+        /^(feat\.?|featuring|ft\.?|with|com (?:a )?participação de|participação de|part\.?)\s+(.*)$/i.exec(
+          p,
+        );
+      if (
+        feat &&
+        norm(feat[2]!)
+          .split(" ")
+          .every((w) => w === "and" || w === "e" || wantedArtists.has(w))
+      )
+        continue;
       return false;
     }
     return true;
@@ -108,12 +133,18 @@ function cleanTags(want: SongQuery, title: string): boolean {
 /** Higher is better; null means "not this song". */
 export function scoreCandidate(want: SongQuery, t: ApiTrack): number | null {
   if (!t.preview || t.readable === false) return null;
-  if (IMPOSTOR.test(t.artist.name) || (IMPOSTOR.test(t.title) && !IMPOSTOR.test(want.title))) return null;
+  if (
+    IMPOSTOR.test(t.artist.name) ||
+    (IMPOSTOR.test(t.title) && !IMPOSTOR.test(want.title))
+  )
+    return null;
   // Remixes, live takes, re-recordings etc. are other recordings: a miss beats a wrong one.
   if (VARIANT.test(t.title) && !VARIANT.test(want.title)) return null;
   // An explicitly requested Brazilian live hit must not fall back to a studio take.
-  if (/\bao vivo\b/i.test(want.title) && !/\b(ao vivo|live)\b/i.test(t.title)) return null;
-  if (/\b(remix|rmx)\b/i.test(want.title) && !/\b(remix|rmx)\b/i.test(t.title)) return null;
+  if (/\bao vivo\b/i.test(want.title) && !/\b(ao vivo|live)\b/i.test(t.title))
+    return null;
+  if (/\b(remix|rmx)\b/i.test(want.title) && !/\b(remix|rmx)\b/i.test(t.title))
+    return null;
 
   const wanted = titleForms(want.title);
   const got = [...titleForms(t.title), ...titleForms(t.title_short ?? t.title)];
@@ -152,7 +183,8 @@ export class Deezer {
     const res = await this.fetchImpl(`${API}${path}`);
     if (!res.ok) throw new Error(`Deezer ${path}: HTTP ${res.status}`);
     const body = (await res.json()) as T & { error?: { message?: string } };
-    if (body.error) throw new Error(`Deezer ${path}: ${body.error.message ?? "error"}`);
+    if (body.error)
+      throw new Error(`Deezer ${path}: ${body.error.message ?? "error"}`);
     return body;
   }
 
@@ -160,7 +192,9 @@ export class Deezer {
     // Deezer search sometimes answers {"data":[],"total":11}: results exist but the page
     // came back empty. It is transient, so retry a few times before believing it.
     for (let attempt = 0; ; attempt++) {
-      const body = await this.get<{ data?: ApiTrack[]; total?: number }>(`/search?limit=${limit}&q=${encodeURIComponent(q)}`);
+      const body = await this.get<{ data?: ApiTrack[]; total?: number }>(
+        `/search?limit=${limit}&q=${encodeURIComponent(q)}`,
+      );
       const data = body.data ?? [];
       if (data.length || !body.total || attempt >= 3) return data;
       await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
@@ -177,7 +211,9 @@ export class Deezer {
     if (!match) return [];
     const tracks: ApiTrack[] = [];
     for (let index = 0; index < 300; index += 100) {
-      const page = await this.get<{ data?: ApiTrack[] }>(`/artist/${match.id}/top?limit=100&index=${index}`);
+      const page = await this.get<{ data?: ApiTrack[] }>(
+        `/artist/${match.id}/top?limit=100&index=${index}`,
+      );
       tracks.push(...(page.data ?? []));
       if ((page.data?.length ?? 0) < 100) break;
     }
@@ -195,7 +231,12 @@ export class Deezer {
   }
 
   private remember(t: ApiTrack): DeezerTrack {
-    const track = { id: t.id, title: t.title, artist: t.artist.name, previewUrl: t.preview! };
+    const track = {
+      id: t.id,
+      title: t.title,
+      artist: t.artist.name,
+      previewUrl: t.preview!,
+    };
     this.previews.set(t.id, track);
     return track;
   }
@@ -203,7 +244,11 @@ export class Deezer {
   /** Fresh track data (with an unexpired preview URL) by Deezer id. */
   async trackById(id: number): Promise<DeezerTrack | null> {
     const cached = this.previews.get(id);
-    if (cached && previewExpiry(cached.previewUrl) - EXPIRY_MARGIN_MS > Date.now()) return cached;
+    if (
+      cached &&
+      previewExpiry(cached.previewUrl) - EXPIRY_MARGIN_MS > Date.now()
+    )
+      return cached;
     const t = await this.get<ApiTrack>(`/track/${id}`).catch(() => null);
     return t?.preview ? this.remember(t) : null;
   }
@@ -222,7 +267,11 @@ export class Deezer {
     const lead = full.split(/\s+(?:and|&|e)\s+/i)[0]!.trim();
     let hit: ApiTrack | null = null;
     for (const artist of lead && lead !== full ? [full, lead] : [full]) {
-      const want = { title: song.title, artist, credit: song.credit ?? song.artist };
+      const want = {
+        title: song.title,
+        artist,
+        credit: song.credit ?? song.artist,
+      };
       hit ??= this.best(want, await this.search(`${artist} ${song.title}`, 25));
       // Fallback: some artist spellings derail the combined query; title-only, then filter by artist.
       hit ??= this.best(want, await this.search(song.title, 50));
@@ -239,11 +288,20 @@ export class Deezer {
    * Streams the song's 30s MP3 preview into an HTTP response, passing Range requests
    * through so browsers can seek. Responds 404 when the song is not on Deezer.
    */
-  async streamPreview(song: SongQuery | { deezerId: number }, req: IncomingMessage, res: ServerResponse): Promise<void> {
-    const track = "deezerId" in song ? await this.trackById(song.deezerId) : await this.findTrack(song);
+  async streamPreview(
+    song: SongQuery | { deezerId: number },
+    req: IncomingMessage,
+    res: ServerResponse,
+  ): Promise<void> {
+    const track =
+      "deezerId" in song
+        ? await this.trackById(song.deezerId)
+        : await this.findTrack(song);
     if (!track) {
       res.writeHead(404, { "Content-Type": "application/json" });
-      return void res.end(JSON.stringify({ error: "No preview found for this song." }));
+      return void res.end(
+        JSON.stringify({ error: "No preview found for this song." }),
+      );
     }
 
     const abort = new AbortController();
@@ -262,7 +320,9 @@ export class Deezer {
     if (!upstream.ok || !upstream.body) {
       this.previews.delete(track.id); // maybe expired; next call re-resolves
       res.writeHead(502, { "Content-Type": "application/json" });
-      return void res.end(JSON.stringify({ error: "Could not load the preview." }));
+      return void res.end(
+        JSON.stringify({ error: "Could not load the preview." }),
+      );
     }
 
     const headers: Record<string, string> = {
@@ -275,6 +335,8 @@ export class Deezer {
       if (v) headers[h] = v;
     }
     res.writeHead(upstream.status, headers);
-    Readable.fromWeb(upstream.body as import("node:stream/web").ReadableStream).on("error", () => res.destroy()).pipe(res);
+    Readable.fromWeb(upstream.body as import("node:stream/web").ReadableStream)
+      .on("error", () => res.destroy())
+      .pipe(res);
   }
 }

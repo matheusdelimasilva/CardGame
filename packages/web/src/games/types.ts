@@ -32,5 +32,8 @@ export interface GameUI {
    */
   Dock?(props: GameProps): ReactNode;
   /** Short-lived announcement, such as a round result. null shows nothing. */
-  announcement(game: GameView, nameOf: (id: string) => string): { key: string; title: string; detail: string } | null;
+  announcement(
+    game: GameView,
+    nameOf: (id: string) => string,
+  ): { key: string; title: string; detail: string } | null;
 }

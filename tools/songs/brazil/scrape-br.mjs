@@ -5,7 +5,13 @@
 // Output: ../.cache/br/charts.json, ../.cache/br/categories.json
 import { join } from "node:path";
 import { CACHE_DIR, readJson, writeJson } from "../lib.mjs";
-import { getWikitext, infobox, parseTables, plain, wikiApi } from "./wikitext.mjs";
+import {
+  getWikitext,
+  infobox,
+  parseTables,
+  plain,
+  wikiApi,
+} from "./wikitext.mjs";
 import { isBrazilian } from "./sources-br.mjs";
 
 const BR_CACHE = join(CACHE_DIR, "br");
@@ -23,7 +29,13 @@ const CHART_PREFIXES = [
 const SKIP = /Hot Pop Songs|Pop Internacional/;
 
 async function listPages(prefix) {
-  const j = await wikiApi({ action: "query", list: "allpages", aplimit: "500", apfilterredir: "nonredirects", apprefix: prefix });
+  const j = await wikiApi({
+    action: "query",
+    list: "allpages",
+    aplimit: "500",
+    apfilterredir: "nonredirects",
+    apprefix: prefix,
+  });
   return j.query.allpages.map((p) => p.title);
 }
 
@@ -36,14 +48,21 @@ function rowsFromTables(tables, chartYear, chart) {
   const out = [];
   for (const rows of tables) {
     const artistHeader = /^(artista|cantor|int[ée]rprete)/i;
-    const hi = rows.findIndex((r) => r.some((c) => /^(can[çc][ãa]o|single|t[íi]tulo)/i.test(c)) && r.some((c) => artistHeader.test(c)));
+    const hi = rows.findIndex(
+      (r) =>
+        r.some((c) => /^(can[çc][ãa]o|single|t[íi]tulo)/i.test(c)) &&
+        r.some((c) => artistHeader.test(c)),
+    );
     if (hi < 0) continue;
     const h = rows[hi];
-    const iTitle = h.findIndex((c) => /^(can[çc][ãa]o|single|t[íi]tulo)/i.test(c));
+    const iTitle = h.findIndex((c) =>
+      /^(can[çc][ãa]o|single|t[íi]tulo)/i.test(c),
+    );
     const iArtist = h.findIndex((c) => artistHeader.test(c));
     const iRank = h.findIndex((c) => /^(posi|#|n\.?º|rank)/i.test(c));
     for (const r of rows.slice(hi + 1)) {
-      const title = r[iTitle], artist = r[iArtist];
+      const title = r[iTitle],
+        artist = r[iArtist];
       if (!title || !artist) continue;
       const rank = iRank >= 0 ? Number(r[iRank]) : 1;
       if (!Number.isInteger(rank)) continue;
@@ -65,7 +84,9 @@ for (const prefix of CHART_PREFIXES) {
     if (SKIP.test(page) || charts.pages[page]?.rows.length) continue;
     const chartYear = Number(/em (\d{4})/.exec(page)?.[1]);
     const wt = await getWikitext(page);
-    const rows = wt ? rowsFromTables(parseTables(wt), chartYear, chartName(page)) : [];
+    const rows = wt
+      ? rowsFromTables(parseTables(wt), chartYear, chartName(page))
+      : [];
     charts.pages[page] = { chartYear, rows };
     await writeJson(chartsPath, charts);
     console.log(`${page}: ${rows.length}`);
@@ -84,7 +105,14 @@ async function categoryMembers(year) {
   const titles = [];
   let cont = {};
   do {
-    const j = await wikiApi({ action: "query", list: "categorymembers", cmtitle: `Categoria:Canções de ${year}`, cmnamespace: "0", cmlimit: "500", ...cont });
+    const j = await wikiApi({
+      action: "query",
+      list: "categorymembers",
+      cmtitle: `Categoria:Canções de ${year}`,
+      cmnamespace: "0",
+      cmlimit: "500",
+      ...cont,
+    });
     titles.push(...(j.query?.categorymembers ?? []).map((m) => m.title));
     cont = j.continue ?? null;
   } while (cont);
@@ -99,12 +127,25 @@ async function pageDetails(titles) {
     const pages = new Map();
     do {
       const j = await wikiApi({
-        action: "query", titles: batch.join("|"), prop: "revisions|categories",
-        rvprop: "content", rvslots: "main", cllimit: "max", ...cont,
+        action: "query",
+        titles: batch.join("|"),
+        prop: "revisions|categories",
+        rvprop: "content",
+        rvslots: "main",
+        cllimit: "max",
+        ...cont,
       });
       for (const p of j.query?.pages ?? []) {
-        const cur = pages.get(p.title) ?? { title: p.title, cats: [], text: "" };
-        cur.cats.push(...(p.categories ?? []).map((c) => c.title.replace(/^Categoria:/, "")));
+        const cur = pages.get(p.title) ?? {
+          title: p.title,
+          cats: [],
+          text: "",
+        };
+        cur.cats.push(
+          ...(p.categories ?? []).map((c) =>
+            c.title.replace(/^Categoria:/, ""),
+          ),
+        );
         cur.text ||= p.revisions?.[0]?.slots?.main?.content ?? "";
         pages.set(p.title, cur);
       }
@@ -135,5 +176,7 @@ for (let year = FROM; year <= TO; year++) {
   });
   cats.years[year] = { total: titles.length, songs };
   await writeJson(catPath, cats);
-  console.log(`Canções de ${year}: ${songs.filter(isBrazilian).length}/${titles.length} brasileiras`);
+  console.log(
+    `Canções de ${year}: ${songs.filter(isBrazilian).length}/${titles.length} brasileiras`,
+  );
 }
