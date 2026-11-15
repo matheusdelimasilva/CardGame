@@ -58,7 +58,10 @@ const CATEGORY_CORRECTIONS = {
 
 export async function allSongs() {
   const out = VERIFIED_ADDITIONS.map(({ year, title, artist }) => ({
-    year, title, artist, source: "curated",
+    year,
+    title,
+    artist,
+    source: "curated",
   }));
   const charts = await readJson(join(BR_CACHE, "charts.json"), { pages: {} });
   for (const { rows } of Object.values(charts.pages)) {
