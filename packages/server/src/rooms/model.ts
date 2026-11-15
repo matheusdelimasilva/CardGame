@@ -28,6 +28,7 @@ export interface RunningGame {
 }
 
 export interface Room {
+  version: number;
   code: string;
   hostEmail: string;
   gameId: string;

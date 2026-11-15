@@ -64,7 +64,7 @@ export class Auth {
     for (const [token, session] of Object.entries(this.store.data.sessions)) {
       if (now - session.lastUsed >= SESSION_TTL_MS) {
         delete this.store.data.sessions[token];
-        this.store.save();
+        this.store.save({ sessions: [token] });
       }
     }
   }
@@ -119,7 +119,7 @@ export class Auth {
     this.pending.delete(email);
     const token = randomBytes(32).toString("hex");
     this.store.data.sessions[token] = { email, lastUsed: now };
-    this.store.save();
+    this.store.save({ sessions: [token] });
     return { token };
   }
 
@@ -129,16 +129,16 @@ export class Auth {
     const session = this.store.data.sessions[token]!;
     if (now - session.lastUsed >= SESSION_TTL_MS) {
       delete this.store.data.sessions[token];
-      this.store.save();
+      this.store.save({ sessions: [token] });
       return null;
     }
     session.lastUsed = now;
-    this.store.save();
+    this.store.save({ sessions: [token] });
     return session.email;
   }
 
   signOut(token: string): void {
     delete this.store.data.sessions[token];
-    this.store.save();
+    this.store.save({ sessions: [token] });
   }
 }

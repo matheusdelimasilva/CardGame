@@ -3,6 +3,7 @@ import { resolveSettings } from "@cardgame/engine";
 import { requireGame } from "@cardgame/games";
 import { MAX_NAME_LENGTH, SEAT_COUNT, type GameInfo } from "@cardgame/protocol";
 import { inRunningGame, type Room, type Member, type Refusal } from "./model";
+import { ROOM_VERSION } from "../migrations";
 
 /** Lobby metadata, member identity and seating rules. */
 const CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -31,6 +32,7 @@ export function createRoom(
   settings: unknown = {},
 ): Room {
   return {
+    version: ROOM_VERSION,
     code,
     hostEmail,
     gameId,

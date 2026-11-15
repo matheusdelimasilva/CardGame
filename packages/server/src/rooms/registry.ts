@@ -29,7 +29,7 @@ export class RoomRegistry {
     while (this.roomsByCode.has(code)) code = rooms.newRoomCode();
     const room = rooms.createRoom(code, hostEmail, gameId, settings);
     this.roomsByCode.set(code, room);
-    this.persist();
+    this.persist(room);
     return room;
   }
 
@@ -37,6 +37,8 @@ export class RoomRegistry {
     const room = this.get(code);
     if (!room) return;
     this.roomsByCode.delete(code);
+    this.store.data.rooms = [...this.values()];
+    this.store.save({ rooms: [code] });
     for (const listener of this.deleted) listener(room);
   }
 
@@ -47,25 +49,27 @@ export class RoomRegistry {
     };
   }
 
-  persist(): void {
+  persist(room: Room): void {
     this.store.data.rooms = [...this.values()];
-    this.store.save();
+    this.store.save({ rooms: [room.code] });
   }
 
   private restore(): void {
     for (const room of this.store.data.rooms) {
       if (!getGame(room.gameId)) {
         console.error(`Room ${room.code}: unknown game ${room.gameId}`);
+        this.store.save({ rooms: [room.code] });
         continue;
       }
-      room.settings ??= {};
+      const gameBefore = room.game;
+      const trackKey = room.game?.trackKey;
+      const trackNonce = room.game?.trackNonce;
+      const connected = room.members.some((member) => member.connected);
       guard(
         room.code,
         () => {
           if (!room.game) return;
           const game = requireGame(room.game.gameId);
-          room.game.trackKey ??= "";
-          room.game.trackNonce ??= null;
           rooms.syncTrack(room);
           game.validateState?.(room.game.state);
           game.activePlayers(room.game.state);
@@ -77,9 +81,16 @@ export class RoomRegistry {
       );
       for (const member of room.members) member.connected = false;
       this.roomsByCode.set(room.code, room);
+      if (
+        connected ||
+        room.game !== gameBefore ||
+        room.game?.trackKey !== trackKey ||
+        room.game?.trackNonce !== trackNonce
+      )
+        this.store.save({ rooms: [room.code] });
     }
     this.loaded = true;
-    this.persist();
+    this.store.data.rooms = [...this.values()];
   }
 
   startIdleSweep(
@@ -101,7 +112,6 @@ export class RoomRegistry {
               () => recover(room),
             );
           }
-          this.persist();
         }),
       60 * 60 * 1000,
     );

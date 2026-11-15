@@ -71,6 +71,18 @@ including rooms mutated in place. Shutdown waits for pending writes. Sign-in cod
 stay in memory and are never persisted. Run one server process per database; active
 rooms and sessions are cached in that process. Existing JSON data is not imported automatically.
 
+Snapshots have a data version and a per-room version. Ordered startup migrations
+upgrade unversioned (v0) data, including legacy sessions, room settings/audio fields
+and Hitster's International song-list default. Postgres records the data version in
+`store_metadata` and applies migrations transactionally. Newer-than-supported versions
+refuse startup; upgrade the server instead of editing version numbers.
+
+The service, registry and authentication layer mark dirty room/session/history keys;
+Postgres only serializes and upserts/deletes those rows. JSON writes the whole file
+asynchronously through a serialized temporary-file/rename queue, also debounced by
+300 ms and flushed on shutdown. Only a missing JSON file starts empty: corrupt or
+unreadable snapshots abort startup with the path and are never silently overwritten.
+
 Stop the database with `docker stop cardgame-postgres`; restart it with
 `docker start cardgame-postgres`. The named volume preserves data between containers.
 
@@ -83,6 +95,7 @@ TEST_DATABASE_URL=postgres://cardgame:cardgame@localhost:5432/cardgame pnpm test
 Use a local/test database account that can create schemas. Each integration test creates
 and removes its own isolated schema. `createApp({ dataFile: null, ... })` always uses
 an in-memory JSON store, even when `DATABASE_URL` is set, keeping existing tests isolated.
+CI supplies a PostgreSQL 17 service and sets `TEST_DATABASE_URL`, so these tests run there too.
 
 ## Layout
 
