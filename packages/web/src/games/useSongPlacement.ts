@@ -5,7 +5,11 @@ import {
   type RefObject,
   type SetStateAction,
 } from "react";
-import { dropIndex, edgeScroll } from "./hitster-placement";
+import {
+  crossedDragThreshold,
+  dropIndex,
+  edgeScroll,
+} from "./hitster-placement";
 
 interface PlacementRefs {
   card: RefObject<HTMLButtonElement>;
@@ -21,8 +25,10 @@ export function useSongPlacement(
   setSelected: Dispatch<SetStateAction<number | null>>,
   setPreview: Dispatch<SetStateAction<number | null>>,
   setDragging: Dispatch<SetStateAction<boolean>>,
+  onTap: () => void,
 ) {
   const latest = useRef(selected);
+  const tap = useRef(onTap);
   const reposition = useRef<(() => void) | null>(null);
   const {
     card: cardRef,
@@ -32,7 +38,8 @@ export function useSongPlacement(
   } = refs;
   useLayoutEffect(() => {
     latest.current = selected;
-  }, [selected]);
+    tap.current = onTap;
+  }, [selected, onTap]);
   useLayoutEffect(() => {
     const card = cardRef.current;
     const timeline = timelineRef.current;
@@ -43,6 +50,9 @@ export function useSongPlacement(
       y: number;
       dx: number;
       dy: number;
+      startX: number;
+      startY: number;
+      active: boolean;
     } | null = null;
     let frame: number | null = null;
     let until = 0;
@@ -78,7 +88,7 @@ export function useSongPlacement(
     };
     const tick = (time: number) => {
       frame = null;
-      if (drag) {
+      if (drag?.active) {
         position(drag.x - drag.dx, drag.y - drag.dy);
         const over = inside(drag.x, drag.y);
         if (over) {
@@ -91,7 +101,7 @@ export function useSongPlacement(
         setPreview(over ? indexAt(drag.x) : null);
       } else align();
       previous = time;
-      if (drag || time < until) frame = requestAnimationFrame(tick);
+      if (drag?.active || time < until) frame = requestAnimationFrame(tick);
     };
     const animate = () => {
       until = performance.now() + 650;
@@ -108,24 +118,37 @@ export function useSongPlacement(
         y: event.clientY,
         dx: event.clientX - box.left,
         dy: event.clientY - box.top,
+        startX: event.clientX,
+        startY: event.clientY,
+        active: false,
       };
       card.setPointerCapture(event.pointerId);
-      card.classList.add("is-dragging");
-      card.classList.remove("is-returning");
-      card.style.clipPath = "none";
-      setDragging(true);
-      animate();
     };
     const move = (event: PointerEvent) => {
       if (drag?.id !== event.pointerId) return;
       drag.x = event.clientX;
       drag.y = event.clientY;
+      if (
+        !drag.active &&
+        crossedDragThreshold(drag.x - drag.startX, drag.y - drag.startY)
+      ) {
+        drag.active = true;
+        card.classList.add("is-dragging");
+        card.classList.remove("is-returning");
+        card.style.clipPath = "none";
+        setDragging(true);
+        animate();
+      }
     };
     const finish = (event: PointerEvent) => {
       if (drag?.id !== event.pointerId) return;
+      if (event.type === "pointerup") move(event);
       const placed =
-        event.type === "pointerup" && inside(event.clientX, event.clientY);
-      if (placed) setSelected(indexAt(event.clientX));
+        drag.active &&
+        event.type === "pointerup" &&
+        inside(event.clientX, event.clientY);
+      const tapped = !drag.active && event.type === "pointerup";
+      if (drag.active) setSelected(placed ? indexAt(event.clientX) : null);
       drag = null;
       setPreview(null);
       setDragging(false);
@@ -133,8 +156,15 @@ export function useSongPlacement(
       card.classList.toggle("is-returning", !placed);
       if (card.hasPointerCapture(event.pointerId))
         card.releasePointerCapture(event.pointerId);
+      if (tapped) tap.current();
       animate();
     };
+    const suppressClick = (event: MouseEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.detail === 0) tap.current();
+    };
+    card.addEventListener("click", suppressClick);
     card.addEventListener("pointerdown", down);
     card.addEventListener("pointermove", move);
     card.addEventListener("pointerup", finish);
@@ -154,6 +184,7 @@ export function useSongPlacement(
       card.removeEventListener("pointerup", finish);
       card.removeEventListener("pointercancel", finish);
       card.removeEventListener("lostpointercapture", finish);
+      card.removeEventListener("click", suppressClick);
       reposition.current = null;
       window.removeEventListener("scroll", animate, true);
       window.removeEventListener("resize", animate);

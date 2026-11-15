@@ -225,6 +225,7 @@ describe("rooms", () => {
   it("keeps the Hitster recording through the reveal, changing its URL only when the next song is drawn", () => {
     const { room, members, host } = table(["Ana", "Bo"], {}, "hitster");
     rooms.start(room, host, 7);
+    rooms.expireTurn(room, room.game!.resumeAt!);
     const url = () => rooms.viewFor(room, members[1]!).game!.track!.url;
     const nonce = (u: string) => u.split("/").at(-1)!;
     const first = url();
@@ -254,6 +255,7 @@ describe("rooms", () => {
   it("stops offering a track when the game ends", () => {
     const { room, host } = table(["Ana", "Bo"], {}, "hitster");
     rooms.start(room, host, 7);
+    rooms.expireTurn(room, room.game!.resumeAt!);
     const old = rooms.viewFor(room, host).game!.track!.url.split("/").at(-1)!;
     rooms.endGame(room, host);
     expect(rooms.trackFor(room, old)).toBeNull();

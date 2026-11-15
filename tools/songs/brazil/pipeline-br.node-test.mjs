@@ -127,7 +127,10 @@ test("Brazil build merges verified years and Deezer IDs, preserves live hits, an
     "mario reis|jura": { id: 123, title: "Jura", artist: "Mário Reis" },
     "test artist|example": { id: 456, title: "Example", artist: "Test Artist" },
   });
-  assert.match(f.run("brazil/build-songs-br.mjs"), new RegExp(`Deezer matched: ${VERIFIED_ADDITIONS.length + 2}/`));
+  assert.match(
+    f.run("brazil/build-songs-br.mjs"),
+    new RegExp(`Deezer matched: ${VERIFIED_ADDITIONS.length + 2}/`),
+  );
   const songs = await f.read("out/songs-br.json");
   assert.equal(songs.filter((s) => s.title === "Jura").length, 1);
   const jura = songs.find((s) => s.title === "Jura");

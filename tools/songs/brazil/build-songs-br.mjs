@@ -19,7 +19,9 @@ const deezerNorm = (s) =>
     /^the /,
     "",
   );
-const verifiedIds = new Map(VERIFIED_ADDITIONS.map((s) => [songKey(s), s.deezerId]));
+const verifiedIds = new Map(
+  VERIFIED_ADDITIONS.map((s) => [songKey(s), s.deezerId]),
+);
 const yearOf = (d) => (d && /^\d{4}/.test(d) ? Number(d.slice(0, 4)) : null);
 
 function mbMatches(song) {
@@ -103,7 +105,9 @@ const final = [...merged.values()]
     chartRank: s.rank ?? null,
     mbid: s.mbid,
     deezerId:
-      verifiedIds.get(songKey(s)) ?? deezer[`${deezerNorm(s.artist)}|${deezerNorm(s.title)}`]?.id ?? null,
+      verifiedIds.get(songKey(s)) ??
+      deezer[`${deezerNorm(s.artist)}|${deezerNorm(s.title)}`]?.id ??
+      null,
     source: s.source,
   }))
   .sort(

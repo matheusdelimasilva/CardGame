@@ -163,66 +163,66 @@ date. Historical Deezer compilations do not establish recording identity by
 itself: the historic tracks remain provisional with respect to later unlabelled
 re-recordings. Availability can change by region or over time.
 
-| Year | Performer and song | Release evidence |
-| --- | --- | --- |
-| 1943 | Isaura Garcia — Duas Mulheres e um Homem; Anjos do Inferno — Chô Chô | [IMS](https://discografiabrasileira.com.br/posts/244831/os-110-anos-de-ciro-de-sousa-um-dos-inventores-do-telecoteco) |
-| 1948 | Aracy de Almeida — Não Me Diga Adeus | [IMS](https://discografiabrasileira.com.br/en/posts/247875/de-xavante-a-voz-do-samba-entre-noel-e-silvio-santos-parangoles-de-aracy-de-almeida-nos-110-anos-de-seu-nascimento) |
-| 1948 | Dick Farney — Um Cantinho e Você | [IMS](https://discografiabrasileira.com.br/posts/249586/nobreza-esquecida-memorias-de-jose-maria-de-abreu-o-rei-da-valsa-e-das-melodias-que-o-brasil-ja-soube-cantar-de-cor) |
-| 1951 | Linda Batista — Me Deixa em Paz | [IMS](https://discografiabrasileira.com.br/en/posts/248106/mora-nos-sambas-de-monsueto-o-showman-do-leblon-que-cantou-as-mazelas-sociais-as-girias-e-claro-a-dor-de-cotovelo) (original title Me Deixe em Paz) |
-| 1952 | Dircinha Batista — Nunca | [IMS](https://discografiabrasileira.com.br/posts/245146/dircinha-batista-patrimonio-nacional-uma-selecao-musical-comentada-no-centenario-da-cantora) |
-| 1952 | Dircinha Batista — Alguém Como Tu | [IMS](https://discografiabrasileira.com.br/posts/249586/nobreza-esquecida-memorias-de-jose-maria-de-abreu-o-rei-da-valsa-e-das-melodias-que-o-brasil-ja-soube-cantar-de-cor) |
-| 1954 | Dircinha Batista — A Mulher Que É Mulher | [IMS](https://discografiabrasileira.com.br/posts/245146/dircinha-batista-patrimonio-nacional-uma-selecao-musical-comentada-no-centenario-da-cantora) |
-| 1954 | Lúcio Alves — Valsa de uma Cidade | [IMS](https://discografiabrasileira.com.br/posts/247771/lucio-alves-1954-sozinho-ou-com-o-rival-dick-farney-o-apogeu-em-duas-gravacoes-eternas) |
-| 1961 | Ivon Curi — Palhaçada | [IMS](https://discografiabrasileira.com.br/posts/243888/em-1961-so-deu-palhacada-o-samba-de-luiz-reis-e-haroldo-barbosa-lancado-em-10-discos-de-78-rotacoes) |
-| 1994 | Marisa Monte — Segue o Seco; Chico Science — A Cidade and A Praieira | [Album history](https://www.metro1.com.br/noticias/cultura/150360,1994-ha-30-anos-uma-safra-incrivel-de-discos-sacudiu-a-musica-brasileira); Deezer identifies the original albums. |
+| Year | Performer and song                                                   | Release evidence                                                                                                                                                                                               |
+| ---- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1943 | Isaura Garcia — Duas Mulheres e um Homem; Anjos do Inferno — Chô Chô | [IMS](https://discografiabrasileira.com.br/posts/244831/os-110-anos-de-ciro-de-sousa-um-dos-inventores-do-telecoteco)                                                                                          |
+| 1948 | Aracy de Almeida — Não Me Diga Adeus                                 | [IMS](https://discografiabrasileira.com.br/en/posts/247875/de-xavante-a-voz-do-samba-entre-noel-e-silvio-santos-parangoles-de-aracy-de-almeida-nos-110-anos-de-seu-nascimento)                                 |
+| 1948 | Dick Farney — Um Cantinho e Você                                     | [IMS](https://discografiabrasileira.com.br/posts/249586/nobreza-esquecida-memorias-de-jose-maria-de-abreu-o-rei-da-valsa-e-das-melodias-que-o-brasil-ja-soube-cantar-de-cor)                                   |
+| 1951 | Linda Batista — Me Deixa em Paz                                      | [IMS](https://discografiabrasileira.com.br/en/posts/248106/mora-nos-sambas-de-monsueto-o-showman-do-leblon-que-cantou-as-mazelas-sociais-as-girias-e-claro-a-dor-de-cotovelo) (original title Me Deixe em Paz) |
+| 1952 | Dircinha Batista — Nunca                                             | [IMS](https://discografiabrasileira.com.br/posts/245146/dircinha-batista-patrimonio-nacional-uma-selecao-musical-comentada-no-centenario-da-cantora)                                                           |
+| 1952 | Dircinha Batista — Alguém Como Tu                                    | [IMS](https://discografiabrasileira.com.br/posts/249586/nobreza-esquecida-memorias-de-jose-maria-de-abreu-o-rei-da-valsa-e-das-melodias-que-o-brasil-ja-soube-cantar-de-cor)                                   |
+| 1954 | Dircinha Batista — A Mulher Que É Mulher                             | [IMS](https://discografiabrasileira.com.br/posts/245146/dircinha-batista-patrimonio-nacional-uma-selecao-musical-comentada-no-centenario-da-cantora)                                                           |
+| 1954 | Lúcio Alves — Valsa de uma Cidade                                    | [IMS](https://discografiabrasileira.com.br/posts/247771/lucio-alves-1954-sozinho-ou-com-o-rival-dick-farney-o-apogeu-em-duas-gravacoes-eternas)                                                                |
+| 1961 | Ivon Curi — Palhaçada                                                | [IMS](https://discografiabrasileira.com.br/posts/243888/em-1961-so-deu-palhacada-o-samba-de-luiz-reis-e-haroldo-barbosa-lancado-em-10-discos-de-78-rotacoes)                                                   |
+| 1994 | Marisa Monte — Segue o Seco; Chico Science — A Cidade and A Praieira | [Album history](https://www.metro1.com.br/noticias/cultura/150360,1994-ha-30-anos-uma-safra-incrivel-de-discos-sacudiu-a-musica-brasileira); Deezer identifies the original albums.                            |
 
 ## Expanded sparse-year pass, checked 2026-11-15
 
 These releases and performers were checked against the linked sources. Each Deezer ID returned an audio preview; compilation metadata alone does not prove the historical recording, so those matches remain provisional. “De Conversa em Conversa” was originally a duet with Namorados da Lua, although Deezer credits Isaura Garcia.
 
-| Year | Song and performer | Release evidence |
-| --- | --- | --- |
-| 1942 | Vassourinha — E o Juiz Apitou | [Discografia Brasileira](https://discografiabrasileira.com.br/en/posts/243667/flamengo-campeao-tambem-entre-os-times-homenageados-em-78-rotacoes) |
-| 1946 | Isaura Garcia — Mensagem | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/246282/bossa-fossa-e-outros-babados-cem-anos-da-personalissima-isaurinha-garcia) |
-| 1946 | Aracy de Almeida — Saia do Caminho | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/248677/custodio-mesquita-em-78-rpm-memorias-do-melodista-que-inspirou-tom-jobim-johnny-alf-e-outros-mestres) |
-| 1947 | Isaura Garcia — De Conversa em Conversa | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/246282/bossa-fossa-e-outros-babados-cem-anos-da-personalissima-isaurinha-garcia) |
-| 1947 | Dick Farney — Marina | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/245254/marina-faz-75-anos-a-queixa-que-deu-samba-num-pareo-entre-quatro-vozes) |
-| 1950 | Luiz Gonzaga — Chofer de Praça | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/246350/evaldo-rui-110-anos-memorias-de-um-mestre-da-dor-de-cotovelo) |
-| 1950 | Linda Batista — General da Banda | [Discografia Brasileira](https://discografiabrasileira.com.br/en/posts/248338/dos-terreiros-pros-bailes-de-carnaval-ha-75-anos-chegava-o-general-da-banda-e-e) |
-| 1951 | Ademilde Fonseca — Delicado | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/243330/ha-70-anos-waldir-azevedo-lancava-delicado-o-baiao-que-rodou-o-planeta) |
-| 1951 | João Dias — Sino de Belém | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/246350/evaldo-rui-110-anos-memorias-de-um-mestre-da-dor-de-cotovelo) |
-| 1952 | Nora Ney — Ninguém Me Ama | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/245097/samba-cancao-era-com-ela-100-anos-de-nora-ney) |
-| 1953 | Dircinha Batista — Se Eu Morresse Amanhã de Manhã | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/245146/dircinha-batista-patrimonio-nacional-uma-selecao-musical-comentada-no-centenario-da-cantora) |
-| 1953 | Nora Ney — É Tão Gostoso Seu Moço | [Discografia Brasileira](https://discografiabrasileira.com.br/en/posts/244718/ai-que-saudades-do-mario-lago-uma-playlist-comentada-nos-110-anos-do-criador-de-aurora-amelia-e-outros-sucessos) |
-| 1954 | Isaura Garcia — Vento Vadio | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/246350/evaldo-rui-110-anos-memorias-de-um-mestre-da-dor-de-cotovelo) |
-| 1955 | Roberto Silva — Samba Rubro-Negro | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/246668/nos-110-anos-de-wilson-batista-e-dez-de-sua-biografia-um-viva-a-memoria-do-maior-sambista-de-todos-os-tempos) |
-| 1956 | Sylvia Telles — Foi a Noite | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244949/tom-jobim-antes-da-bossa-newton-mendonca-o-clube-da-chave-e-as-primeiras-gravacoes-em-78-rpm) |
-| 1956 | Maysa — Resposta | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/250191/maysa-em-78-rpm-memorias-da-cinderela-as-avessas-que-inaugurou-a-voz-feminina-nas-letras-da-musica-brasileira) |
-| 1956 | Maysa — Tarde Triste | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/250191/maysa-em-78-rpm-memorias-da-cinderela-as-avessas-que-inaugurou-a-voz-feminina-nas-letras-da-musica-brasileira) |
-| 1957 | Sérgio Ricardo — Cafezinho | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/245383/sergio-ricardo-em-78-rpm-a-fase-romantica-que-abriu-caminho-para-o-artista-das-causas-sociais) |
-| 1957 | Sérgio Ricardo — Rosa do Mato | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/245383/sergio-ricardo-em-78-rpm-a-fase-romantica-que-abriu-caminho-para-o-artista-das-causas-sociais) |
-| 1958 | Maysa — Meu Mundo Caiu | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/250191/maysa-em-78-rpm-memorias-da-cinderela-as-avessas-que-inaugurou-a-voz-feminina-nas-letras-da-musica-brasileira) |
-| 1960 | Elza Soares — Era Bom | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244953/viva-elza-soares-os-sucessos-da-voz-do-milenio-em-78-rotacoes) |
-| 1961 | Elza Soares — Boato | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244953/viva-elza-soares-os-sucessos-da-voz-do-milenio-em-78-rotacoes) |
-| 1961 | Elizeth Cardoso — Nossos Momentos | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/243888/em-1961-so-deu-palhacada-o-samba-de-luiz-reis-e-haroldo-barbosa-lancado-em-10-discos-de-78-rotacoes) |
-| 1962 | Elza Soares — Aconteceu um Novo Amor | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244953/viva-elza-soares-os-sucessos-da-voz-do-milenio-em-78-rotacoes) |
-| 1962 | Elza Soares — Avec no Leblon | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244953/viva-elza-soares-os-sucessos-da-voz-do-milenio-em-78-rotacoes) |
-| 1955 | Jorge Goulart — A Voz do Morro | [Discografia Brasileira](https://discografiabrasileira.com.br/en/posts/243577/radames-gnattali-de-aquarela-do-brasil-a-chapeuzinho-vermelho-uma-selecao-de-arranjos-emblematicos-do-maestro) |
-| 1958 | Maysa — Bouquet de Izabel | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/250191/maysa-em-78-rpm-memorias-da-cinderela-as-avessas-que-inaugurou-a-voz-feminina-nas-letras-da-musica-brasileira) |
-| 1960 | Elza Soares — Edmundo (In the Mood) | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244953/viva-elza-soares-os-sucessos-da-voz-do-milenio-em-78-rotacoes) |
+| Year | Song and performer                                | Release evidence                                                                                                                                                                               |
+| ---- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1942 | Vassourinha — E o Juiz Apitou                     | [Discografia Brasileira](https://discografiabrasileira.com.br/en/posts/243667/flamengo-campeao-tambem-entre-os-times-homenageados-em-78-rotacoes)                                              |
+| 1946 | Isaura Garcia — Mensagem                          | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/246282/bossa-fossa-e-outros-babados-cem-anos-da-personalissima-isaurinha-garcia)                                           |
+| 1946 | Aracy de Almeida — Saia do Caminho                | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/248677/custodio-mesquita-em-78-rpm-memorias-do-melodista-que-inspirou-tom-jobim-johnny-alf-e-outros-mestres)               |
+| 1947 | Isaura Garcia — De Conversa em Conversa           | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/246282/bossa-fossa-e-outros-babados-cem-anos-da-personalissima-isaurinha-garcia)                                           |
+| 1947 | Dick Farney — Marina                              | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/245254/marina-faz-75-anos-a-queixa-que-deu-samba-num-pareo-entre-quatro-vozes)                                             |
+| 1950 | Luiz Gonzaga — Chofer de Praça                    | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/246350/evaldo-rui-110-anos-memorias-de-um-mestre-da-dor-de-cotovelo)                                                       |
+| 1950 | Linda Batista — General da Banda                  | [Discografia Brasileira](https://discografiabrasileira.com.br/en/posts/248338/dos-terreiros-pros-bailes-de-carnaval-ha-75-anos-chegava-o-general-da-banda-e-e)                                 |
+| 1951 | Ademilde Fonseca — Delicado                       | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/243330/ha-70-anos-waldir-azevedo-lancava-delicado-o-baiao-que-rodou-o-planeta)                                             |
+| 1951 | João Dias — Sino de Belém                         | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/246350/evaldo-rui-110-anos-memorias-de-um-mestre-da-dor-de-cotovelo)                                                       |
+| 1952 | Nora Ney — Ninguém Me Ama                         | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/245097/samba-cancao-era-com-ela-100-anos-de-nora-ney)                                                                      |
+| 1953 | Dircinha Batista — Se Eu Morresse Amanhã de Manhã | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/245146/dircinha-batista-patrimonio-nacional-uma-selecao-musical-comentada-no-centenario-da-cantora)                        |
+| 1953 | Nora Ney — É Tão Gostoso Seu Moço                 | [Discografia Brasileira](https://discografiabrasileira.com.br/en/posts/244718/ai-que-saudades-do-mario-lago-uma-playlist-comentada-nos-110-anos-do-criador-de-aurora-amelia-e-outros-sucessos) |
+| 1954 | Isaura Garcia — Vento Vadio                       | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/246350/evaldo-rui-110-anos-memorias-de-um-mestre-da-dor-de-cotovelo)                                                       |
+| 1955 | Roberto Silva — Samba Rubro-Negro                 | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/246668/nos-110-anos-de-wilson-batista-e-dez-de-sua-biografia-um-viva-a-memoria-do-maior-sambista-de-todos-os-tempos)       |
+| 1956 | Sylvia Telles — Foi a Noite                       | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244949/tom-jobim-antes-da-bossa-newton-mendonca-o-clube-da-chave-e-as-primeiras-gravacoes-em-78-rpm)                       |
+| 1956 | Maysa — Resposta                                  | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/250191/maysa-em-78-rpm-memorias-da-cinderela-as-avessas-que-inaugurou-a-voz-feminina-nas-letras-da-musica-brasileira)      |
+| 1956 | Maysa — Tarde Triste                              | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/250191/maysa-em-78-rpm-memorias-da-cinderela-as-avessas-que-inaugurou-a-voz-feminina-nas-letras-da-musica-brasileira)      |
+| 1957 | Sérgio Ricardo — Cafezinho                        | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/245383/sergio-ricardo-em-78-rpm-a-fase-romantica-que-abriu-caminho-para-o-artista-das-causas-sociais)                      |
+| 1957 | Sérgio Ricardo — Rosa do Mato                     | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/245383/sergio-ricardo-em-78-rpm-a-fase-romantica-que-abriu-caminho-para-o-artista-das-causas-sociais)                      |
+| 1958 | Maysa — Meu Mundo Caiu                            | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/250191/maysa-em-78-rpm-memorias-da-cinderela-as-avessas-que-inaugurou-a-voz-feminina-nas-letras-da-musica-brasileira)      |
+| 1960 | Elza Soares — Era Bom                             | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244953/viva-elza-soares-os-sucessos-da-voz-do-milenio-em-78-rotacoes)                                                      |
+| 1961 | Elza Soares — Boato                               | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244953/viva-elza-soares-os-sucessos-da-voz-do-milenio-em-78-rotacoes)                                                      |
+| 1961 | Elizeth Cardoso — Nossos Momentos                 | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/243888/em-1961-so-deu-palhacada-o-samba-de-luiz-reis-e-haroldo-barbosa-lancado-em-10-discos-de-78-rotacoes)                |
+| 1962 | Elza Soares — Aconteceu um Novo Amor              | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244953/viva-elza-soares-os-sucessos-da-voz-do-milenio-em-78-rotacoes)                                                      |
+| 1962 | Elza Soares — Avec no Leblon                      | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244953/viva-elza-soares-os-sucessos-da-voz-do-milenio-em-78-rotacoes)                                                      |
+| 1955 | Jorge Goulart — A Voz do Morro                    | [Discografia Brasileira](https://discografiabrasileira.com.br/en/posts/243577/radames-gnattali-de-aquarela-do-brasil-a-chapeuzinho-vermelho-uma-selecao-de-arranjos-emblematicos-do-maestro)   |
+| 1958 | Maysa — Bouquet de Izabel                         | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/250191/maysa-em-78-rpm-memorias-da-cinderela-as-avessas-que-inaugurou-a-voz-feminina-nas-letras-da-musica-brasileira)      |
+| 1960 | Elza Soares — Edmundo (In the Mood)               | [Discografia Brasileira](https://discografiabrasileira.com.br/posts/244953/viva-elza-soares-os-sucessos-da-voz-do-milenio-em-78-rotacoes)                                                      |
 
 ## Earlier-year follow-up, checked 2026-11-15
 
 Each track returned HTTP 206 with audio/mpeg from its Deezer preview. Release evidence is performer-specific; the recording-match limitations above also apply to this batch. Fita Amarela was excluded from the 1932 candidates: IMS dates the release to January 1933 despite the December 1932 session.
 
-| Year | Song and performer | Release evidence |
-| --- | --- | --- |
-| 1930 | Noel Rosa — Com Que Roupa? | [IMS](https://discografiabrasileira.com.br/fonograma/49971/-) |
-| 1930 | Noel Rosa — Malandro Medroso | [IMS](https://discografiabrasileira.com.br/fonograma/49975/malandro-medroso) |
-| 1931 | Noel Rosa — Gago Apaixonado | [IMS](https://discografiabrasileira.com.br/fonograma/46171/gago-apaixonado) |
-| 1931 | Francisco Alves e Mário Reis — O Que Será de Mim? | [IMS](https://discografiabrasileira.com.br/posts/243992/a-malandragem-segundo-ismael-silva-e-nilton-bastos-os-90-anos-de-um-samba-historico) |
-| 1932 | Noel Rosa — São Coisas Nossas | [IMS](https://discografiabrasileira.com.br/fonograma/54086/coisas-nossas) |
-| 1932 | Gastão Formenti — Maringá | [IMS](https://discografiabrasileira.com.br/posts/245508/maringa-maringa-ha-90-anos-estreava-em-disco-a-cancao-que-virou-nome-de-cidade) |
-| 1944 | Ciro Monteiro — Falsa Baiana | [IMS](https://discografiabrasileira.com.br/en/posts/247511/ha-80-anos-uma-baiana-sincopada-e-cheia-de-bossa-deu-a-geraldo-pereira-o-seu-primeiro-e-maior-sucesso) |
-| 1945 | Ciro Monteiro — Boogie Woogie na Favela | [IMS](https://discografiabrasileira.com.br/fonograma/75022/boogie-woogie-na-favela) |
-| 1948 | Roberto Silva — Mandei Fazer um Patuá | [IMS](https://discografiabrasileira.com.br/posts/242655/viva-roberto-silva-os-100-anos-do-principe-do-samba) |
+| Year | Song and performer                                | Release evidence                                                                                                                                                  |
+| ---- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1930 | Noel Rosa — Com Que Roupa?                        | [IMS](https://discografiabrasileira.com.br/fonograma/49971/-)                                                                                                     |
+| 1930 | Noel Rosa — Malandro Medroso                      | [IMS](https://discografiabrasileira.com.br/fonograma/49975/malandro-medroso)                                                                                      |
+| 1931 | Noel Rosa — Gago Apaixonado                       | [IMS](https://discografiabrasileira.com.br/fonograma/46171/gago-apaixonado)                                                                                       |
+| 1931 | Francisco Alves e Mário Reis — O Que Será de Mim? | [IMS](https://discografiabrasileira.com.br/posts/243992/a-malandragem-segundo-ismael-silva-e-nilton-bastos-os-90-anos-de-um-samba-historico)                      |
+| 1932 | Noel Rosa — São Coisas Nossas                     | [IMS](https://discografiabrasileira.com.br/fonograma/54086/coisas-nossas)                                                                                         |
+| 1932 | Gastão Formenti — Maringá                         | [IMS](https://discografiabrasileira.com.br/posts/245508/maringa-maringa-ha-90-anos-estreava-em-disco-a-cancao-que-virou-nome-de-cidade)                           |
+| 1944 | Ciro Monteiro — Falsa Baiana                      | [IMS](https://discografiabrasileira.com.br/en/posts/247511/ha-80-anos-uma-baiana-sincopada-e-cheia-de-bossa-deu-a-geraldo-pereira-o-seu-primeiro-e-maior-sucesso) |
+| 1945 | Ciro Monteiro — Boogie Woogie na Favela           | [IMS](https://discografiabrasileira.com.br/fonograma/75022/boogie-woogie-na-favela)                                                                               |
+| 1948 | Roberto Silva — Mandei Fazer um Patuá             | [IMS](https://discografiabrasileira.com.br/posts/242655/viva-roberto-silva-os-100-anos-do-principe-do-samba)                                                      |

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   DECK_SIZE,
+  INTRO_MS,
   REVEAL_MS,
   WIN_REVEAL_MS,
   SONGS,
@@ -20,7 +21,7 @@ const start = (
   seed = 11,
   settings: Record<string, string | boolean> = defaults,
   who = players,
-) => hitster.setup({ players: who, seed, settings });
+) => hitster.resume!(hitster.setup({ players: who, seed, settings }));
 
 const cards = (s: HitsterState, zone: string) => s.table.zones[zone]!.cards;
 const years = (s: HitsterState, p: string) =>
@@ -242,6 +243,52 @@ describe("song list", () => {
 });
 
 describe("hitster", () => {
+  it("starts with a silent intro, refuses moves, then resumes the first player's fresh song without advancing", () => {
+    const state = hitster.setup({ players, seed: 11, settings: defaults });
+    const original = structuredClone(state);
+    expect(state.intro).toBe(true);
+    expect(hitster.pauseMs!(state)).toBe(INTRO_MS);
+    expect(INTRO_MS).toBe(12000);
+    expect(hitster.currentTrack!(state)).toBeNull();
+    expect(hitster.view(state, null)).toMatchObject({
+      intro: true,
+      current: null,
+      currentPlayer: "a",
+      turnNumber: 1,
+    });
+    expect(hitster.activePlayers(state)).toEqual([]);
+    for (const player of players) {
+      expect(hitster.autoMove!(state, player)).toBeNull();
+      expect(hitster.applyMove(state, player, { type: "pass" }).ok).toBe(false);
+      expect(
+        hitster.applyMove(state, player, { type: "place", index: 0 }).ok,
+      ).toBe(false);
+    }
+    const resumed = hitster.resume!(state);
+    expect(state).toEqual(original);
+    expect(resumed).toMatchObject({
+      intro: false,
+      turn: 0,
+      turnNumber: 1,
+      lastTurn: null,
+    });
+    expect(hitster.currentTrack!(resumed)).not.toBeNull();
+    expect(hitster.view(resumed, null).current).not.toBeNull();
+    expect(hitster.activePlayers(resumed)).toEqual(["a"]);
+    expect(hitster.pauseMs!(resumed)).toBeNull();
+    expect(hitster.applyMove(resumed, "a", { type: "pass" }).ok).toBe(true);
+  });
+
+  it("treats legacy saved states without intro as already playing", () => {
+    const state = start();
+    const legacy = structuredClone(state);
+    delete legacy.intro;
+    expect(hitster.pauseMs!(legacy)).toBeNull();
+    expect(hitster.view(legacy, null)).toEqual(hitster.view(state, null));
+    expect(hitster.currentTrack!(legacy)).toEqual(hitster.currentTrack!(state));
+    expect(hitster.activePlayers(legacy)).toEqual(["a"]);
+    expect(hitster.resume!(legacy)).toEqual(legacy);
+  });
   it.each(["correct", "wrong", "passed"] as const)(
     "holds a %s result without advancing or changing the recording",
     (outcome) => {

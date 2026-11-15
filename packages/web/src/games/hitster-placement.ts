@@ -1,4 +1,8 @@
 /** The insertion boundary under a pointer; midpoints are viewport coordinates in timeline order. */
+export function crossedDragThreshold(dx: number, dy: number): boolean {
+  return Math.hypot(dx, dy) > 7;
+}
+
 export function dropIndex(x: number, midpoints: readonly number[]): number {
   const index = midpoints.findIndex((middle) => x < middle);
   return index < 0 ? midpoints.length : index;

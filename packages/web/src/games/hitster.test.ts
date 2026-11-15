@@ -5,6 +5,7 @@ import type { HitsterMove, HitsterView } from "@cardgame/games";
 import { hitsterUI } from "./hitster";
 import { Placement } from "./hitster-dock";
 import type { GameProps, TypedGameView } from "./types";
+import { Announcement } from "../Room";
 
 const song = { title: "The song", artist: "The artist", year: 1987 };
 function game(): TypedGameView<HitsterView> {
@@ -22,6 +23,7 @@ function game(): TypedGameView<HitsterView> {
       current: null,
       currentPlayer: "a",
       revealing: true,
+      intro: false,
       nextPlayer: "b",
       turnNumber: 1,
       deckCount: 10,
@@ -57,7 +59,7 @@ function propsFor(
 }
 let renderer: ReactTestRenderer | undefined;
 beforeEach(() => {
-  vi.stubGlobal("document", {});
+  vi.stubGlobal("document", { querySelector: vi.fn() });
   vi.stubGlobal("addEventListener", vi.fn());
   vi.stubGlobal("removeEventListener", vi.fn());
 });
@@ -69,6 +71,74 @@ afterEach(() => {
 });
 
 describe("Hitster reveal presentation", () => {
+  it.each([5, 8, 10])(
+    "shows opening instructions for a %s-card game with the held progress bar and first player",
+    (target) => {
+      const state = game();
+      state.view.intro = true;
+      state.view.revealing = false;
+      state.view.lastTurn = null;
+      state.view.cardsToWin = target;
+      state.pause = { remainingMs: 12000 };
+      const info = hitsterUI.announcement(state, nameOf);
+      expect(info).toEqual({
+        key: "intro",
+        title: "How to play Hitster",
+        detail: `Listen to the song.\nDrag the record into your timeline where its year fits.\nFirst to ${target} cards wins.`,
+        next: "First up: Ana",
+      });
+      act(() => {
+        renderer = create(
+          createElement(Announcement, { info, pause: state.pause }),
+        );
+      });
+      expect(
+        renderer!.root.findByProps({ className: "banner held" }),
+      ).toBeDefined();
+      expect(
+        renderer!.root.findByProps({ className: "banner-detail" }).children,
+      ).toEqual([info!.detail]);
+      expect(
+        renderer!.root
+          .findByProps({ className: "banner-progress" })
+          .findByType("span").props.style.animationDuration,
+      ).toBe("12000ms");
+      act(() => {
+        renderer!.update(createElement(hitsterUI.Center, propsFor(state)));
+      });
+      expect(renderer!.root.findAllByType("button")).toHaveLength(0);
+      act(() => {
+        renderer!.update(createElement(hitsterUI.Dock!, propsFor(state)));
+      });
+      expect(renderer!.root.findAllByType("button")).toHaveLength(0);
+    },
+  );
+
+  it("uses an empty center anchor for the active player's single draggable record, and tap-only for others", () => {
+    const props = propsFor(game());
+    props.game.view.revealing = false;
+    props.game.view.current = { id: "current", title: null, artist: null };
+    act(() => {
+      renderer = create(createElement(hitsterUI.Center, props));
+    });
+    expect(
+      renderer!.root.findAllByProps({ "data-mystery-home": true }),
+    ).toHaveLength(1);
+    expect(renderer!.root.findAllByType("button")).toHaveLength(0);
+    props.you = "b";
+    act(() => {
+      renderer!.update(createElement(hitsterUI.Center, { ...props }));
+    });
+    expect(
+      renderer!.root.findAllByProps({ "data-mystery-home": true }),
+    ).toHaveLength(0);
+    expect(
+      renderer!.root.findAllByProps({ className: "mystery-card" }),
+    ).toHaveLength(0);
+    act(() => renderer!.root.findByType("button").props.onClick());
+    expect(props.audio.toggle).toHaveBeenCalledOnce();
+  });
+
   it.each([
     ["correct", "Ana got it!"],
     ["wrong", "Ana missed"],
@@ -117,7 +187,9 @@ describe("Hitster reveal presentation", () => {
     expect(
       renderer!.root.findByProps({ role: "img" }).props["aria-label"],
     ).toBe("The song, The artist, 1987");
-    expect(renderer!.root.findAllByType("button")).toHaveLength(0);
+    expect(renderer!.root.findAllByType("button")).toHaveLength(1);
+    act(() => renderer!.root.findByType("button").props.onClick());
+    expect(props.audio.toggle).toHaveBeenCalledOnce();
     act(() => {
       renderer!.update(createElement(hitsterUI.Dock!, props));
     });
@@ -219,7 +291,13 @@ describe("keyboard song placement", () => {
         }),
       );
       act(() => {
-        renderer = create(createElement(Placement, { line, move }));
+        renderer = create(
+          createElement(Placement, {
+            line,
+            move,
+            audio: propsFor(game()).audio,
+          }),
+        );
       });
       const key = (key: string) =>
         act(() => {

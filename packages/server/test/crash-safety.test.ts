@@ -18,6 +18,7 @@ function running(code: string) {
     rooms.sit(room, member, i);
   }
   expect(rooms.start(room, room.members[0]!, 42)).toBeNull();
+  rooms.expireTurn(room, room.game!.resumeAt!);
   return room;
 }
 

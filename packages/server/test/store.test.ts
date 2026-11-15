@@ -438,6 +438,7 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     }
     const host = room.members[0]!;
     rooms.start(room, host, 7, 1000);
+    rooms.expireTurn(room, room.game!.resumeAt!);
     const nonce = room.game!.trackNonce;
     expect(rooms.move(room, host, { type: "pass" }, 1000)).toBeNull();
     expect(room.game!.resumeAt).toBe(5000);
@@ -479,6 +480,36 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     }
     await close(restored);
     expect((await open()).data.rooms[0]!.game).toEqual(loaded.game);
+  });
+
+  it("persists an intro deadline without a track, then starts a fresh recording after restore", async () => {
+    const store = await open();
+    const room = rooms.createRoom("INTRO1", email, "hitster");
+    for (const [i, name] of ["Ana", "Bo"].entries()) {
+      const member = rooms.join(room, undefined, i === 0);
+      rooms.setName(room, member, name);
+      rooms.sit(room, member, i);
+    }
+    rooms.start(room, room.members[0]!, 7, 1000);
+    store.data.rooms = [room];
+    store.save({ rooms: [room.code] });
+    await close(store);
+    const restored = await open();
+    const registry = new RoomRegistry(restored);
+    await registry.ready;
+    const loaded = registry.get(room.code)!;
+    expect(loaded.game).toMatchObject({
+      resumeAt: 13000,
+      trackNonce: null,
+      state: { intro: true, turnNumber: 1 },
+    });
+    new RoomService(registry, restored).expire(loaded);
+    expect(loaded.game).toMatchObject({
+      resumeAt: null,
+      state: { intro: false, turnNumber: 1 },
+    });
+    expect(loaded.game!.trackNonce).toMatch(/^[a-f0-9]{48}$/);
+    await restored.flush();
   });
 
   it("refuses future data versions without changing the database", async () => {
