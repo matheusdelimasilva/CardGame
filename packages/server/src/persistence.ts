@@ -22,7 +22,16 @@ export const dirtyKeys = () => ({
   metadata: false,
 });
 export type Dirty = ReturnType<typeof dirtyKeys>;
-const MAX_WRITE_ATTEMPTS = 3;
+
+/** A backend can commit valid rows while retaining only its failed rows for retry. */
+export class PartialWriteError extends Error {
+  constructor(
+    readonly pending: Dirty,
+    cause: unknown,
+  ) {
+    super(`Some rows could not be saved: ${String(cause)}`, { cause });
+  }
+}
 
 /** Debounced dirty keys and a failure-safe queue shared by both persistence backends. */
 export abstract class BufferedStore implements Store {
@@ -43,13 +52,16 @@ export abstract class BufferedStore implements Store {
 
   private schedule(): void {
     if (this.closing || this.timer || !this.hasDirty()) return;
-    this.timer = setTimeout(() => {
-      this.timer = null;
-      void this.flush().catch((err) => {
-        console.error("Saving data failed:", err);
-        this.schedule();
-      });
-    }, 300);
+    this.timer = setTimeout(
+      () => {
+        this.timer = null;
+        void this.flush().catch((err) => {
+          console.error("Saving data failed:", err);
+          this.schedule();
+        });
+      },
+      Math.min(300 * 2 ** Math.min(this.failures, 7), 30_000),
+    );
   }
 
   private hasDirty(): boolean {
@@ -81,21 +93,8 @@ export abstract class BufferedStore implements Store {
           await this.write(batch);
           this.failures = 0;
         } catch (err) {
-          if (++this.failures < MAX_WRITE_ATTEMPTS) {
-            this.save(batch);
-          } else {
-            this.failures = 0;
-            console.error(
-              "Dropping persistence batch after 3 failed attempts:",
-              {
-                rooms: [...batch.rooms],
-                sessions: batch.sessions.size,
-                history: batch.history.size,
-                metadata: batch.metadata,
-              },
-              err,
-            );
-          }
+          this.failures++;
+          this.save(err instanceof PartialWriteError ? err.pending : batch);
           throw err;
         }
       });

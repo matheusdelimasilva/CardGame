@@ -7,8 +7,20 @@ import {
   migrateData,
   postgresMigrations,
 } from "./migrations";
-import { BufferedStore, type Dirty } from "./persistence";
+import {
+  BufferedStore,
+  PartialWriteError,
+  dirtyKeys,
+  type Dirty,
+} from "./persistence";
 import type { Room } from "./rooms";
+
+interface RowWrite {
+  table: "sessions" | "history" | "rooms";
+  id: string;
+  sql: string;
+  values: string[];
+}
 
 /** Versioned startup migrations and transactions containing only explicitly dirty rows. */
 export class PostgresStore extends BufferedStore {
@@ -103,49 +115,92 @@ export class PostgresStore extends BufferedStore {
   }
 
   protected async write(changes: Dirty): Promise<void> {
-    const queries: { sql: string; values: string[] }[] = [];
+    const queries: RowWrite[] = [];
+    const pending = dirtyKeys();
+    let failure: unknown;
+    const failed = (table: RowWrite["table"], id: string, err: unknown) => {
+      pending[table].add(id);
+      failure = err;
+      console.error(
+        "Saving Postgres row failed; retained for retry:",
+        { table, ...(table === "rooms" ? { code: id } : {}) },
+        err,
+      );
+    };
     for (const [table, key, value] of [
       ["sessions", "token", "email"],
       ["history", "host_email", "entries"],
       ["rooms", "code", "snapshot"],
     ] as const) {
       for (const id of changes[table]) {
-        const row =
-          table === "rooms"
-            ? this.data.rooms.find((room) => room.code === id)
-            : Object.hasOwn(this.data[table], id)
-              ? this.data[table][id]
-              : undefined;
-        if (row === undefined) {
-          queries.push({
-            sql: `DELETE FROM ${table} WHERE ${key} = $1`,
-            values: [id],
-          });
-        } else if (table === "sessions") {
-          const session = this.data.sessions[id]!;
-          queries.push({
-            sql: "INSERT INTO sessions (token, email, last_used) VALUES ($1, $2, $3) ON CONFLICT (token) DO UPDATE SET email = EXCLUDED.email, last_used = EXCLUDED.last_used",
-            values: [id, session.email, String(session.lastUsed)],
-          });
-        } else {
-          queries.push({
-            sql: `INSERT INTO ${table} (${key}, ${value}) VALUES ($1, $2) ON CONFLICT (${key}) DO UPDATE SET ${value} = EXCLUDED.${value}`,
-            values: [id, JSON.stringify(row)],
-          });
+        try {
+          const row =
+            table === "rooms"
+              ? this.data.rooms.find((room) => room.code === id)
+              : Object.hasOwn(this.data[table], id)
+                ? this.data[table][id]
+                : undefined;
+          if (row === undefined) {
+            queries.push({
+              table,
+              id,
+              sql: `DELETE FROM ${table} WHERE ${key} = $1`,
+              values: [id],
+            });
+          } else if (table === "sessions") {
+            const session = this.data.sessions[id]!;
+            queries.push({
+              table,
+              id,
+              sql: "INSERT INTO sessions (token, email, last_used) VALUES ($1, $2, $3) ON CONFLICT (token) DO UPDATE SET email = EXCLUDED.email, last_used = EXCLUDED.last_used",
+              values: [id, session.email, String(session.lastUsed)],
+            });
+          } else {
+            queries.push({
+              table,
+              id,
+              sql: `INSERT INTO ${table} (${key}, ${value}) VALUES ($1, $2) ON CONFLICT (${key}) DO UPDATE SET ${value} = EXCLUDED.${value}`,
+              values: [id, JSON.stringify(row)],
+            });
+          }
+        } catch (err) {
+          failed(table, id, err);
         }
       }
     }
-    if (!queries.length) return;
+    if (queries.length) {
+      try {
+        await this.transaction(queries);
+      } catch {
+        for (const query of queries) {
+          try {
+            await this.transaction([query]);
+          } catch (err) {
+            failed(query.table, query.id, err);
+          }
+        }
+      }
+    }
+    if (pending.rooms.size || pending.sessions.size || pending.history.size)
+      throw new PartialWriteError(pending, failure);
+  }
+
+  private async transaction(queries: RowWrite[]): Promise<void> {
     const client = await this.pool.connect();
+    let broken = false;
     try {
       await client.query("BEGIN");
       for (const { sql, values } of queries) await client.query(sql, values);
       await client.query("COMMIT");
     } catch (err) {
-      await client.query("ROLLBACK");
+      try {
+        await client.query("ROLLBACK");
+      } catch {
+        broken = true;
+      }
       throw err;
     } finally {
-      client.release();
+      client.release(broken);
     }
   }
 

@@ -11,27 +11,35 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-describe("bounded persistence retries", () => {
-  it("stops retrying a bad batch after three attempts and saves later changes", async () => {
+describe("persistence backoff", () => {
+  it("retains all changes through an outage and retries with a capped backoff", async () => {
     vi.useFakeTimers();
-    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const timers = vi.spyOn(globalThis, "setTimeout");
     const store = new TestStore();
-    store.write.mockRejectedValue(new Error("bad row"));
-    store.save({ rooms: ["BAD123"] });
-    await vi.advanceTimersByTimeAsync(900);
-    expect(store.write).toHaveBeenCalledTimes(3);
-    await vi.advanceTimersByTimeAsync(3000);
-    expect(store.write).toHaveBeenCalledTimes(3);
-    expect(log).toHaveBeenCalledWith(
-      "Dropping persistence batch after 3 failed attempts:",
-      expect.objectContaining({ rooms: ["BAD123"] }),
-      expect.any(Error),
-    );
+    store.write.mockRejectedValue(new Error("database unavailable"));
+    store.save({
+      rooms: ["ABC234"],
+      sessions: ["token"],
+      history: ["host@example.com"],
+    });
+    await vi.advanceTimersByTimeAsync(299);
+    expect(store.write).not.toHaveBeenCalled();
+    await vi.advanceTimersByTimeAsync(1);
+    expect(store.write).toHaveBeenCalledOnce();
+    expect(timers).toHaveBeenLastCalledWith(expect.any(Function), 600);
+    await vi.advanceTimersByTimeAsync(120_000);
+    expect(store.write.mock.calls.length).toBeGreaterThan(3);
+    expect(timers).toHaveBeenLastCalledWith(expect.any(Function), 30_000);
     store.write.mockResolvedValue();
-    store.save({ rooms: ["GOOD12"] });
+    store.save({ rooms: ["DEF567"] });
     await store.close();
     expect(store.write).toHaveBeenLastCalledWith(
-      expect.objectContaining({ rooms: new Set(["GOOD12"]) }),
+      expect.objectContaining({
+        rooms: new Set(["ABC234", "DEF567"]),
+        sessions: new Set(["token"]),
+        history: new Set(["host@example.com"]),
+      }),
     );
   });
 });
