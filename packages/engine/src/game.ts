@@ -73,6 +73,8 @@ export interface GameModule<S, M, V> {
   /** Options the host chooses before creating a table. */
   settings: SettingDef[];
   setup(ctx: SetupContext): S;
+  /** Throws if a saved state can no longer be played with the current game data. */
+  validateState?(state: S): void;
   /** Must not change the given state. Returns an error for an illegal move. */
   applyMove(state: S, player: PlayerId, move: M): MoveResult<S>;
   /** What one player may see. A null viewer is a spectator. */

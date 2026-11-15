@@ -44,6 +44,16 @@ describe("fitsAt", () => {
 });
 
 describe("song list", () => {
+  it("renders unknown timeline and current cards as placeholders but rejects them for play", () => {
+    const state = start();
+    cards(state, "timeline:a")[0]!.face = "Removed|Artist";
+    cards(state, "current")[0]!.face = "Removed|Artist";
+    const view = hitster.view(state, null);
+    expect(view.timelines.a![0]).toMatchObject({ title: "Unknown song", artist: "Unknown artist", year: 0 });
+    expect(view.current).toMatchObject({ title: "Unknown song", artist: "Unknown artist" });
+    expect(() => hitster.validateState!(state)).toThrow("Unknown song card");
+  });
+
   it("has plenty of well-formed songs, each with its own key", () => {
     expect(SONGS.length).toBeGreaterThanOrEqual(DECK_SIZE);
     expect(new Set(SONGS.map(songKey)).size).toBe(SONGS.length);
