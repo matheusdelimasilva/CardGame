@@ -660,6 +660,17 @@
     "source": "wikipedia-category"
   },
   {
+    "title": "E o Juiz Apitou",
+    "artist": "Vassourinha",
+    "year": 1942,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 419877242,
+    "source": "curated"
+  },
+  {
     "title": "Praça Onze",
     "artist": "Castro Barbosa e Trio de Ouro",
     "year": 1942,
@@ -668,6 +679,28 @@
     "chartRank": null,
     "mbid": null,
     "deezerId": null,
+    "source": "curated"
+  },
+  {
+    "title": "Chô Chô",
+    "artist": "Anjos do Inferno",
+    "year": 1943,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 1187465812,
+    "source": "curated"
+  },
+  {
+    "title": "Duas Mulheres e um Homem",
+    "artist": "Isaura Garcia",
+    "year": 1943,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 71267669,
     "source": "curated"
   },
   {
@@ -726,6 +759,28 @@
     "source": "curated"
   },
   {
+    "title": "Mensagem",
+    "artist": "Isaura Garcia",
+    "year": 1946,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 71267678,
+    "source": "curated"
+  },
+  {
+    "title": "Saia do Caminho",
+    "artist": "Aracy de Almeida",
+    "year": 1946,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 17135319,
+    "source": "curated"
+  },
+  {
     "title": "Asa Branca",
     "artist": "Luiz Gonzaga",
     "year": 1947,
@@ -737,6 +792,17 @@
     "source": "wikipedia-category"
   },
   {
+    "title": "De Conversa em Conversa",
+    "artist": "Isaura Garcia",
+    "year": 1947,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 15402230,
+    "source": "curated"
+  },
+  {
     "title": "I Make My Money With Bananas",
     "artist": "Carmen Miranda",
     "year": 1947,
@@ -746,6 +812,39 @@
     "mbid": null,
     "deezerId": null,
     "source": "wikipedia-category"
+  },
+  {
+    "title": "Marina",
+    "artist": "Dick Farney",
+    "year": 1947,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 965310532,
+    "source": "curated"
+  },
+  {
+    "title": "Não Me Diga Adeus",
+    "artist": "Aracy de Almeida",
+    "year": 1948,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 1711673967,
+    "source": "curated"
+  },
+  {
+    "title": "Um Cantinho e Você",
+    "artist": "Dick Farney",
+    "year": 1948,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 965310602,
+    "source": "curated"
   },
   {
     "title": "Brasileirinho",
@@ -792,6 +891,28 @@
     "source": "wikipedia-category"
   },
   {
+    "title": "Chofer de Praça",
+    "artist": "Luiz Gonzaga",
+    "year": 1950,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 13310038,
+    "source": "curated"
+  },
+  {
+    "title": "General da Banda",
+    "artist": "Linda Batista",
+    "year": 1950,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 13305119,
+    "source": "curated"
+  },
+  {
     "title": "Qui Nem Jiló",
     "artist": "Luiz Gonzaga",
     "year": 1950,
@@ -814,6 +935,39 @@
     "source": "wikipedia-category"
   },
   {
+    "title": "Delicado",
+    "artist": "Ademilde Fonseca",
+    "year": 1951,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 1719377207,
+    "source": "curated"
+  },
+  {
+    "title": "Me Deixa em Paz",
+    "artist": "Linda Batista",
+    "year": 1951,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 13305118,
+    "source": "curated"
+  },
+  {
+    "title": "Sino de Belém",
+    "artist": "João Dias",
+    "year": 1951,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 1598291772,
+    "source": "curated"
+  },
+  {
     "title": "Vingança",
     "artist": "Linda Batista (Lupicínio Rodrigues)",
     "year": 1951,
@@ -822,6 +976,50 @@
     "chartRank": null,
     "mbid": null,
     "deezerId": 13305116,
+    "source": "curated"
+  },
+  {
+    "title": "Alguém Como Tu",
+    "artist": "Dircinha Batista",
+    "year": 1952,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 1704958347,
+    "source": "curated"
+  },
+  {
+    "title": "Ninguém Me Ama",
+    "artist": "Nora Ney",
+    "year": 1952,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 50324201,
+    "source": "curated"
+  },
+  {
+    "title": "Nunca",
+    "artist": "Dircinha Batista",
+    "year": 1952,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 1704958257,
+    "source": "curated"
+  },
+  {
+    "title": "É Tão Gostoso Seu Moço",
+    "artist": "Nora Ney",
+    "year": 1953,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 50324271,
     "source": "curated"
   },
   {
@@ -847,6 +1045,61 @@
     "source": "wikipedia-category"
   },
   {
+    "title": "Se Eu Morresse Amanhã de Manhã",
+    "artist": "Dircinha Batista",
+    "year": 1953,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 13305129,
+    "source": "curated"
+  },
+  {
+    "title": "A Mulher Que É Mulher",
+    "artist": "Dircinha Batista",
+    "year": 1954,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 13305115,
+    "source": "curated"
+  },
+  {
+    "title": "Valsa de uma Cidade",
+    "artist": "Lúcio Alves",
+    "year": 1954,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 32904121,
+    "source": "curated"
+  },
+  {
+    "title": "Vento Vadio",
+    "artist": "Isaura Garcia",
+    "year": 1954,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 71267702,
+    "source": "curated"
+  },
+  {
+    "title": "A Voz do Morro",
+    "artist": "Jorge Goulart",
+    "year": 1955,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 29784101,
+    "source": "curated"
+  },
+  {
     "title": "O menino da portêra",
     "artist": "Luizinho e Limeira com conjunto",
     "year": 1955,
@@ -856,6 +1109,17 @@
     "mbid": null,
     "deezerId": null,
     "source": "wikipedia-category"
+  },
+  {
+    "title": "Samba Rubro-Negro",
+    "artist": "Roberto Silva",
+    "year": 1955,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 3108383291,
+    "source": "curated"
   },
   {
     "title": "Saudosa Maloca",
@@ -869,6 +1133,17 @@
     "source": "wikipedia-category"
   },
   {
+    "title": "Foi a Noite",
+    "artist": "Sylvia Telles",
+    "year": 1956,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 1722248047,
+    "source": "curated"
+  },
+  {
     "title": "Maracangalha",
     "artist": "Dorival Caymmi",
     "year": 1956,
@@ -877,6 +1152,28 @@
     "chartRank": null,
     "mbid": "951f0003-3133-434f-9d12-59bce22f3f86",
     "deezerId": 3443060,
+    "source": "curated"
+  },
+  {
+    "title": "Resposta",
+    "artist": "Maysa",
+    "year": 1956,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 11517250,
+    "source": "curated"
+  },
+  {
+    "title": "Tarde Triste",
+    "artist": "Maysa",
+    "year": 1956,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 11517249,
     "source": "curated"
   },
   {
@@ -889,6 +1186,17 @@
     "mbid": null,
     "deezerId": 13249159,
     "source": "wikipedia-category"
+  },
+  {
+    "title": "Cafezinho",
+    "artist": "Sérgio Ricardo",
+    "year": 1957,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 115313988,
+    "source": "curated"
   },
   {
     "title": "História de Pescadores: Canção da Partida; Adeus da Esposa; Temporal; Cantiga de Noiva; Velório Val; Na Manhã Seguinte",
@@ -913,6 +1221,28 @@
     "source": "curated"
   },
   {
+    "title": "Rosa do Mato",
+    "artist": "Sérgio Ricardo",
+    "year": 1957,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 115313986,
+    "source": "curated"
+  },
+  {
+    "title": "Bouquet de Izabel",
+    "artist": "Maysa",
+    "year": 1958,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 134427186,
+    "source": "curated"
+  },
+  {
     "title": "Chega de Saudade",
     "artist": "Elizeth Cardoso / João Gilberto",
     "year": 1958,
@@ -921,6 +1251,17 @@
     "chartRank": null,
     "mbid": "a864c817-2eb1-44dc-893a-6bfefbbfc4c0",
     "deezerId": 1557927062,
+    "source": "curated"
+  },
+  {
+    "title": "Meu Mundo Caiu",
+    "artist": "Maysa",
+    "year": 1958,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 134427174,
     "source": "curated"
   },
   {
@@ -1012,6 +1353,39 @@
     "source": "wikipedia-category"
   },
   {
+    "title": "Edmundo (In the Mood)",
+    "artist": "Elza Soares",
+    "year": 1960,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 1726938487,
+    "source": "curated"
+  },
+  {
+    "title": "Era Bom",
+    "artist": "Elza Soares",
+    "year": 1960,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 568132742,
+    "source": "curated"
+  },
+  {
+    "title": "Boato",
+    "artist": "Elza Soares",
+    "year": 1961,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 2802169,
+    "source": "curated"
+  },
+  {
     "title": "Maria Chiquinha",
     "artist": "Sônia Mamede e Evaldo Gouveia",
     "year": 1961,
@@ -1021,6 +1395,50 @@
     "mbid": null,
     "deezerId": null,
     "source": "wikipedia-category"
+  },
+  {
+    "title": "Nossos Momentos",
+    "artist": "Elizeth Cardoso",
+    "year": 1961,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 1018274182,
+    "source": "curated"
+  },
+  {
+    "title": "Palhaçada",
+    "artist": "Ivon Curi",
+    "year": 1961,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 1893229377,
+    "source": "curated"
+  },
+  {
+    "title": "Aconteceu um Novo Amor",
+    "artist": "Elza Soares",
+    "year": 1962,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 1726941197,
+    "source": "curated"
+  },
+  {
+    "title": "Avec no Leblon",
+    "artist": "Elza Soares",
+    "year": 1962,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 565449692,
+    "source": "curated"
   },
   {
     "title": "Brigitte Bardot",
@@ -4081,6 +4499,28 @@
     "source": "wikipedia-category"
   },
   {
+    "title": "A Cidade",
+    "artist": "Chico Science",
+    "year": 1994,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 13359626,
+    "source": "curated"
+  },
+  {
+    "title": "A Praieira",
+    "artist": "Chico Science",
+    "year": 1994,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 13359627,
+    "source": "curated"
+  },
+  {
     "title": "Coração Verde e Amarelo",
     "artist": "Aerobanda",
     "year": 1994,
@@ -4112,6 +4552,17 @@
     "mbid": null,
     "deezerId": null,
     "source": "wikipedia-category"
+  },
+  {
+    "title": "Segue o Seco",
+    "artist": "Marisa Monte",
+    "year": 1994,
+    "yearSource": "curated",
+    "chartYear": null,
+    "chartRank": null,
+    "mbid": null,
+    "deezerId": 953843142,
+    "source": "curated"
   },
   {
     "title": "À Primeira Vista",

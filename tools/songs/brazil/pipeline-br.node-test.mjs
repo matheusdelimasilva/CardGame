@@ -14,6 +14,7 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { test } from "node:test";
 import { plain } from "./wikitext.mjs";
+import { VERIFIED_ADDITIONS } from "./verified-additions.mjs";
 
 test("wikitext strips whole-title quotes while preserving quoted words", () => {
   assert.equal(plain('"[[Song]]"'), "Song");
@@ -32,6 +33,7 @@ async function fixture(t) {
     "brazil/build-songs-br.mjs",
     "brazil/sources-br.mjs",
     "brazil/curated-br.mjs",
+    "brazil/verified-additions.mjs",
   ]) {
     const target = join(songsDir, file);
     await mkdir(dirname(target), { recursive: true });
@@ -125,7 +127,7 @@ test("Brazil build merges verified years and Deezer IDs, preserves live hits, an
     "mario reis|jura": { id: 123, title: "Jura", artist: "Mário Reis" },
     "test artist|example": { id: 456, title: "Example", artist: "Test Artist" },
   });
-  assert.match(f.run("brazil/build-songs-br.mjs"), /Deezer matched: 2\//);
+  assert.match(f.run("brazil/build-songs-br.mjs"), new RegExp(`Deezer matched: ${VERIFIED_ADDITIONS.length + 2}/`));
   const songs = await f.read("out/songs-br.json");
   assert.equal(songs.filter((s) => s.title === "Jura").length, 1);
   const jura = songs.find((s) => s.title === "Jura");
@@ -177,4 +179,19 @@ export class Deezer { async findTrack(s) { return { id: s.chartRank ?? 99, title
     await readFile(join(f.songsDir, "out/deezer-review.txt"), "utf8"),
     /2 matched, 0 missing/,
   );
+});
+
+test("verified sparse-year additions retain their IDs without a Deezer cache", async (t) => {
+  const f = await fixture(t);
+  f.run("brazil/build-songs-br.mjs");
+  const songs = await f.read("out/songs-br.json");
+  for (const [title, year, id] of [
+    ["Nunca", 1952, 1704958257],
+    ["Palhaçada", 1961, 1893229377],
+    ["Segue o Seco", 1994, 953843142],
+  ]) {
+    const song = songs.find((row) => row.title === title);
+    assert.equal(song?.year, year);
+    assert.equal(song?.deezerId, id);
+  }
 });

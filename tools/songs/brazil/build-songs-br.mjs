@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { CACHE_DIR, OUT_DIR, readJson, writeJson } from "../lib.mjs";
 import { norm } from "../normalize.mjs";
 import { allSongs, primaryArtistBr, songKey } from "./sources-br.mjs";
+import { VERIFIED_ADDITIONS } from "./verified-additions.mjs";
 
 const MIN_SCORE = 80;
 const MAX_YEARS_BEFORE_CHART = 2;
@@ -18,6 +19,7 @@ const deezerNorm = (s) =>
     /^the /,
     "",
   );
+const verifiedIds = new Map(VERIFIED_ADDITIONS.map((s) => [songKey(s), s.deezerId]));
 const yearOf = (d) => (d && /^\d{4}/.test(d) ? Number(d.slice(0, 4)) : null);
 
 function mbMatches(song) {
@@ -101,7 +103,7 @@ const final = [...merged.values()]
     chartRank: s.rank ?? null,
     mbid: s.mbid,
     deezerId:
-      deezer[`${deezerNorm(s.artist)}|${deezerNorm(s.title)}`]?.id ?? null,
+      verifiedIds.get(songKey(s)) ?? deezer[`${deezerNorm(s.artist)}|${deezerNorm(s.title)}`]?.id ?? null,
     source: s.source,
   }))
   .sort(
