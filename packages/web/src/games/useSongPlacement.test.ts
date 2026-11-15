@@ -2,6 +2,7 @@ import { createElement, useLayoutEffect, useState } from "react";
 import { act, create, type ReactTestRenderer } from "react-test-renderer";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { useSongPlacement } from "./useSongPlacement";
+import { Placement } from "./hitster-dock";
 
 class ElementStub extends EventTarget {
   style = { setProperty: vi.fn(), clipPath: "" };
@@ -151,7 +152,42 @@ it("clicks without a pointer gesture toggle audio", () => {
   click(0);
   expect(toggleAudio).toHaveBeenCalledOnce();
   click();
-  expect(toggleAudio).toHaveBeenCalledTimes(2);
+  expect(toggleAudio).toHaveBeenCalledOnce();
+});
+
+it("Space leaves activation to the native click, while Enter confirmation prevents it", () => {
+  vi.stubGlobal("document", { querySelector: vi.fn(() => card) });
+  act(() => {
+    renderer.unmount();
+    renderer = create(
+      createElement(Placement, {
+        line: [],
+        move: vi.fn(),
+        audio: {
+          muted: false,
+          status: "paused",
+          toggle: toggleAudio,
+          setMuted: vi.fn(),
+        },
+      }),
+      {
+        createNodeMock: (element) =>
+          element.props.className === "mystery-card" ? card : timeline,
+      },
+    );
+  });
+  const keyDown = renderer.root.findByProps({
+    className: "mystery-card",
+  });
+  const preventDefault = vi.fn();
+  act(() => keyDown.props.onKeyDown({ key: " ", preventDefault }));
+  expect(preventDefault).not.toHaveBeenCalled();
+  expect(toggleAudio).not.toHaveBeenCalled();
+  click(0);
+  expect(toggleAudio).toHaveBeenCalledOnce();
+  act(() => keyDown.props.onKeyDown({ key: "Enter", preventDefault }));
+  expect(preventDefault).toHaveBeenCalledOnce();
+  expect(toggleAudio).toHaveBeenCalledOnce();
 });
 
 it("taps below the threshold toggle audio once, never on down or the following click", () => {
@@ -188,13 +224,26 @@ it("crossing the threshold then returning to the starting point is still a drag,
   expect(toggleAudio).toHaveBeenCalledOnce();
 });
 
-it("does not suppress a later plain click when a cancelled gesture generated no click", async () => {
+it("does not suppress a later accessible click when a cancelled gesture generated no click", async () => {
   pointer("pointerdown", 80);
   pointer("pointercancel", 80);
   await new Promise((resolve) => setTimeout(resolve, 0));
-  click();
+  click(0);
   expect(toggleAudio).toHaveBeenCalledOnce();
 });
+
+it.each([false, true])(
+  "ignores delayed pointer clicks after a gesture (drag: %s)",
+  async (drag) => {
+    pointer("pointerdown", 80);
+    if (drag) pointer("pointermove", 550);
+    pointer("pointerup", drag ? 550 : 80);
+    expect(toggleAudio).toHaveBeenCalledTimes(drag ? 0 : 1);
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    click();
+    expect(toggleAudio).toHaveBeenCalledTimes(drag ? 0 : 1);
+  },
+);
 
 it.each(["pointercancel", "lostpointercapture"])(
   "restores the starting slot on %s",

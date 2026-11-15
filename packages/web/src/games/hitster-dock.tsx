@@ -145,9 +145,6 @@ export function Placement({
           } else if (event.key === "Escape") {
             event.preventDefault();
             setSelected(null);
-          } else if (event.key === " ") {
-            event.preventDefault();
-            if (!audio.muted) audio.toggle();
           }
         }}
       >

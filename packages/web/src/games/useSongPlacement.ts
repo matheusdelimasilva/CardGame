@@ -57,8 +57,6 @@ export function useSongPlacement(
     let frame: number | null = null;
     let until = 0;
     let previous = 0;
-    let suppressPointerClick = false;
-    let clickReset: ReturnType<typeof setTimeout> | null = null;
     const position = (x: number, y: number) => {
       card.style.setProperty("--drag-x", `${x}px`);
       card.style.setProperty("--drag-y", `${y}px`);
@@ -145,12 +143,6 @@ export function useSongPlacement(
     const finish = (event: PointerEvent) => {
       if (drag?.id !== event.pointerId) return;
       if (event.type === "pointerup") move(event);
-      suppressPointerClick = true;
-      if (clickReset !== null) clearTimeout(clickReset);
-      clickReset = setTimeout(() => {
-        suppressPointerClick = false;
-        clickReset = null;
-      }, 0);
       const placed =
         drag.active &&
         event.type === "pointerup" &&
@@ -170,8 +162,7 @@ export function useSongPlacement(
     const suppressClick = (event: MouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      if (!suppressPointerClick || event.detail === 0) tap.current();
-      suppressPointerClick = false;
+      if (event.detail === 0) tap.current();
     };
     card.addEventListener("click", suppressClick);
     card.addEventListener("pointerdown", down);
@@ -188,7 +179,6 @@ export function useSongPlacement(
     animate();
     return () => {
       if (frame !== null) cancelAnimationFrame(frame);
-      if (clickReset !== null) clearTimeout(clickReset);
       card.removeEventListener("pointerdown", down);
       card.removeEventListener("pointermove", move);
       card.removeEventListener("pointerup", finish);
