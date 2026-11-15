@@ -15,7 +15,7 @@ afterEach(async () => {
   vi.restoreAllMocks();
 });
 
-async function setup() {
+async function setup(resumeIntro = true) {
   const store = new JsonStore(null);
   stores.push(store);
   const registry = new RoomRegistry(store);
@@ -30,10 +30,58 @@ async function setup() {
   });
   const host = members[0]!;
   expect(service.command(room, host, { type: "start" })).toBeNull();
+  if (resumeIntro) rooms.expireTurn(room, room.game!.resumeAt!);
   return { store, registry, service, room, host, members };
 }
 
 describe("held game states", () => {
+  it("starts with a silent twelve-second intro and resumes once at its deadline", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(1000);
+    const { registry, service, room, host, members } = await setup(false);
+    expect(room.game).toMatchObject({
+      resumeAt: 13000,
+      deadline: null,
+      trackNonce: null,
+      trackKey: "",
+      state: { intro: true, turnNumber: 1 },
+    });
+    expect(rooms.viewFor(room, host, 1000).game).toMatchObject({
+      pause: { remainingMs: 12000 },
+      active: [],
+      track: null,
+    });
+    members[1]!.connected = false;
+    expect(
+      service.command(room, host, { type: "skip", playerId: members[1]!.id }),
+    ).toMatch(/paused/);
+    expect(
+      service.command(room, host, { type: "move", move: { type: "pass" } }),
+    ).toMatch(/paused/);
+    const resume = vi.spyOn(games.hitster, "resume");
+    const notify = vi.fn();
+    service.onChange(notify);
+    clocks.push(startClock(registry, service));
+    vi.advanceTimersByTime(11999);
+    expect(resume).not.toHaveBeenCalled();
+    expect(notify).not.toHaveBeenCalled();
+    vi.advanceTimersByTime(1);
+    expect(resume).toHaveBeenCalledOnce();
+    expect(notify).toHaveBeenCalledExactlyOnceWith(room);
+    expect(room.game).toMatchObject({
+      resumeAt: null,
+      state: { intro: false, turnNumber: 1, turn: 0 },
+    });
+    expect(room.game!.trackNonce).toMatch(/^[a-f0-9]{48}$/);
+    expect(rooms.viewFor(room, host).game).toMatchObject({
+      pause: null,
+      active: [host.id],
+      track: { url: expect.any(String) },
+    });
+    vi.advanceTimersByTime(1000);
+    expect(resume).toHaveBeenCalledOnce();
+  });
+
   it("resumes once on the 250ms clock at the deadline, not before", async () => {
     const { store, registry, service, room, host, members } = await setup();
     vi.useFakeTimers();

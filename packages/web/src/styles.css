@@ -632,6 +632,7 @@ button.seat.open:not(:disabled):hover .avatar {
 }
 .banner-detail {
   font-size: 1.15rem;
+  white-space: pre-line;
 }
 .banner-next {
   font-size: 1.25rem;

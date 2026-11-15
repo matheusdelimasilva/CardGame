@@ -267,6 +267,17 @@ describe("a table over the network", () => {
     host.send({ type: "start" });
     await guest.until(() => guest.room!.game !== null);
 
+    expect(guest.room!.game!.track).toBeNull();
+    expect(guest.room!.game!.pause).not.toBeNull();
+    const introClock = vi
+      .spyOn(Date, "now")
+      .mockReturnValue(Date.now() + 12000);
+    try {
+      await guest.until(() => guest.room!.game!.track !== null);
+    } finally {
+      introClock.mockRestore();
+    }
+
     const first = guest.room!.game!.track!.url;
     expect(JSON.stringify(guest.room)).not.toContain("deezerId");
     const res = await fetch(`http://${base}${first}`, {

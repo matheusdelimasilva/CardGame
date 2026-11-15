@@ -205,7 +205,7 @@ export function HitsterDock({
   if (!you) return null;
   const line = view.timelines[you];
   if (!line) return null;
-  const myTurn = !view.revealing && view.currentPlayer === you;
+  const myTurn = !view.intro && !view.revealing && view.currentPlayer === you;
   const justWon =
     last?.outcome === "correct" &&
     last.player === you &&
@@ -238,9 +238,11 @@ export function HitsterDock({
           {!view.revealing && (
             <div className="hitster-bar">
               <p className="hint">
-                {view.currentPlayer
-                  ? `${nameOf(view.currentPlayer)} is placing a song.`
-                  : ""}
+                {view.intro
+                  ? "Get ready — the first song starts after the instructions."
+                  : view.currentPlayer
+                    ? `${nameOf(view.currentPlayer)} is placing a song.`
+                    : ""}
               </p>
             </div>
           )}

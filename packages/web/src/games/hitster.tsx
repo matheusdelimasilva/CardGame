@@ -32,6 +32,12 @@ export const hitsterUI: GameUI<HitsterView, HitsterMove> = {
   Center({ game, you, nameOf, audio }) {
     const view = viewOf(game);
     const player = view.currentPlayer;
+    if (view.intro)
+      return (
+        <div className="center-game">
+          <span className="center-note">Get ready to build your timeline</span>
+        </div>
+      );
     if (view.revealing && view.lastTurn) {
       return (
         <div className="center-game">
@@ -131,6 +137,15 @@ export const hitsterUI: GameUI<HitsterView, HitsterMove> = {
 
   announcement(game, nameOf) {
     const view = viewOf(game);
+    if (view.intro)
+      return {
+        key: "intro",
+        title: "How to play Hitster",
+        detail: `Listen to the song.\nDrag the record into your timeline where its year fits.\nFirst to ${view.cardsToWin} cards wins.`,
+        next: view.currentPlayer
+          ? `First up: ${nameOf(view.currentPlayer)}`
+          : undefined,
+      };
     const last = view.lastTurn;
     if (!view.revealing || !last) return null;
     const who = nameOf(last.player);

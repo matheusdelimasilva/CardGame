@@ -34,6 +34,7 @@ export {
 
 /** Songs dealt into one game, drawn at random from the full list. Keeps saved games small. */
 export const DECK_SIZE = 300;
+export const INTRO_MS = 12000;
 export const REVEAL_MS = 4000;
 export const WIN_REVEAL_MS = 6000;
 
@@ -64,6 +65,8 @@ export interface HitsterState {
   lastTurn: TurnSummary | null;
   /** Absent in legacy saved games, which are not paused. */
   revealing?: boolean;
+  /** Absent in legacy saved games, which have already started. */
+  intro?: boolean;
   winners: PlayerId[] | null;
 }
 
@@ -121,6 +124,7 @@ export interface HitsterView {
   current: { id: string; title: string | null; artist: string | null } | null;
   currentPlayer: PlayerId | null;
   revealing: boolean;
+  intro: boolean;
   nextPlayer: PlayerId | null;
   turnNumber: number;
   deckCount: number;
@@ -260,6 +264,7 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       showSongInfo: settings.showSongInfo === true,
       lastTurn: null,
       revealing: false,
+      intro: true,
       winners: null,
     };
     drawSong(state);
@@ -268,6 +273,8 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
 
   applyMove(current, player, move) {
     if (current.winners) return { ok: false, error: "The game is over." };
+    if (current.intro)
+      return { ok: false, error: "The game is getting ready." };
     if (current.revealing)
       return { ok: false, error: "The previous turn is still being revealed." };
     if (current.players[current.turn] !== player)
@@ -313,6 +320,7 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
   },
 
   pauseMs(state) {
+    if (state.intro) return INTRO_MS;
     return state.revealing
       ? turnWinners(state)
         ? WIN_REVEAL_MS
@@ -322,6 +330,10 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
 
   resume(current) {
     const state = structuredClone(current);
+    if (state.intro) {
+      state.intro = false;
+      return state;
+    }
     if (!state.revealing) return state;
     state.revealing = false;
     state.winners = turnWinners(state);
@@ -342,7 +354,7 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
   view(state) {
     // Built field by field rather than from the raw table, so the current song's year cannot slip out.
     const card =
-      state.winners || state.revealing
+      state.winners || state.revealing || state.intro
         ? undefined
         : state.table.zones.current!.cards[0];
     const song = card ? songForView(card.face, state.songList) : null;
@@ -367,6 +379,7 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
           : null,
       currentPlayer: state.winners ? null : state.players[state.turn]!,
       revealing: state.revealing === true,
+      intro: state.intro === true,
       nextPlayer:
         state.revealing && !turnWinners(state)
           ? state.players[(state.turn + 1) % state.players.length]!
@@ -381,11 +394,14 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
   },
 
   activePlayers(state) {
-    return state.winners || state.revealing ? [] : [state.players[state.turn]!];
+    return state.winners || state.revealing || state.intro
+      ? []
+      : [state.players[state.turn]!];
   },
 
   autoMove(state, player) {
     return !state.winners &&
+      !state.intro &&
       !state.revealing &&
       state.players[state.turn] === player
       ? { type: "pass" }
@@ -393,6 +409,7 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
   },
 
   currentTrack(state) {
+    if (state.intro) return null;
     if (state.revealing && state.lastTurn) {
       const { title, artist, deezerId } = songOf(
         songKey(state.lastTurn.song),

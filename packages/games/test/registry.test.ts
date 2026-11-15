@@ -11,11 +11,13 @@ describe("typed game registry", () => {
     }
   });
   it("wraps pause and pure resume hooks without requiring them on Demo", () => {
-    const state = games.hitster.setup({
+    const intro = games.hitster.setup({
       players: ["a", "b"],
       seed: 1,
       settings: { cardsToWin: "10" },
     });
+    expect(games.hitster.pauseMs!(intro)).toBe(12000);
+    const state = games.hitster.resume!(intro);
     expect(games.hitster.pauseMs!(state)).toBeNull();
     const outcome = games.hitster.applyMove(state, "a", { type: "pass" });
     if (!outcome.ok) throw new Error(outcome.error);

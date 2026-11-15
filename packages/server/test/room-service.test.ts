@@ -19,6 +19,7 @@ async function setup(gameId = "demo") {
   });
   const host = members[0]!;
   expect(service.command(room, host, { type: "start" })).toBeNull();
+  if (gameId === "hitster") rooms.expireTurn(room, room.game!.resumeAt!);
   return { store, registry, service, room, host, members };
 }
 

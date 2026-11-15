@@ -182,7 +182,7 @@ export function Room({ code }: { code: string }) {
               {playing && game.active.includes(you.id)
                 ? "Your turn"
                 : game.pause
-                  ? "Turn result"
+                  ? "Paused"
                   : `waiting for ${waitingOn.join(", ")}...`}
               {secondsLeft !== null && (
                 <span
