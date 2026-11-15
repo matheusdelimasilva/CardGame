@@ -37,7 +37,7 @@ export interface GameUI<V = unknown, M = unknown> {
   announcement(
     game: TypedGameView<V>,
     nameOf: (id: string) => string,
-  ): { key: string; title: string; detail: string } | null;
+  ): { key: string; title: string; detail: string; next?: string } | null;
 }
 
 /** Erases the view type only where a server message selects its registered UI. */

@@ -68,7 +68,12 @@ describe("snapshot migrations", () => {
         ...v0.rooms[0]!.game,
         trackKey: "",
         trackNonce: null,
-        state: { table: { zones: [] }, songList: "international" },
+        resumeAt: null,
+        state: {
+          table: { zones: [] },
+          songList: "international",
+          revealing: false,
+        },
       },
     });
     expect(migrateData(structuredClone(data), 9999)).toEqual(data);
@@ -121,5 +126,31 @@ describe("snapshot migrations", () => {
       }),
     ).toThrow(/Room snapshot version/);
     expect(() => migrateRoom({ version: -1 })).toThrow();
+  });
+  it("upgrades v1 rooms without a pause and preserves a current persisted deadline", () => {
+    const room = structuredClone(v0.rooms[0]!);
+    const migrated = migrateRoom({
+      ...room,
+      version: 1,
+      settings: {},
+      game: {
+        ...room.game,
+        trackKey: "",
+        trackNonce: null,
+        state: { ...room.game.state, songList: "international" },
+      },
+    });
+    expect(migrated.version).toBe(ROOM_VERSION);
+    expect(migrated.game!.resumeAt).toBeNull();
+    expect(migrated.game!.state).toMatchObject({ revealing: false });
+    migrated.game!.resumeAt = 1234;
+    (migrated.game!.state as { revealing: boolean }).revealing = true;
+    expect(migrateRoom(structuredClone(migrated))).toEqual(migrated);
+    expect(
+      migrateRoom({
+        ...createRoom("DEMO12", "host@example.com", "demo"),
+        version: 1,
+      }).game,
+    ).toBeNull();
   });
 });

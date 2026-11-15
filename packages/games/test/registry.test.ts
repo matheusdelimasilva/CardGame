@@ -10,6 +10,33 @@ describe("typed game registry", () => {
       expect(() => requireGame(id)).toThrow("Unknown game");
     }
   });
+  it("wraps pause and pure resume hooks without requiring them on Demo", () => {
+    const state = games.hitster.setup({
+      players: ["a", "b"],
+      seed: 1,
+      settings: { cardsToWin: "10" },
+    });
+    expect(games.hitster.pauseMs!(state)).toBeNull();
+    const outcome = games.hitster.applyMove(state, "a", { type: "pass" });
+    if (!outcome.ok) throw new Error(outcome.error);
+    expect(games.hitster.pauseMs!(outcome.state)).toBe(4000);
+    const resumed = games.hitster.resume!(outcome.state);
+    expect(games.hitster.view(outcome.state, null)).toMatchObject({
+      revealing: true,
+      turnNumber: 1,
+    });
+    expect(games.hitster.view(resumed, null)).toMatchObject({
+      revealing: false,
+      turnNumber: 2,
+    });
+    const demo = games.demo.setup({
+      players: ["a", "b"],
+      seed: 1,
+      settings: {},
+    });
+    expect(games.demo.pauseMs!(demo)).toBeNull();
+    expect(games.demo.resume!(demo)).toBe(demo);
+  });
 
   it.each([
     ["demo", { type: "peek" }],

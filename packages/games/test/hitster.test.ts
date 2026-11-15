@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   DECK_SIZE,
+  REVEAL_MS,
+  WIN_REVEAL_MS,
   SONGS,
   SONG_LISTS,
   fitsAt,
@@ -32,6 +34,8 @@ function apply(s: HitsterState, player: string, move: unknown): HitsterState {
   if (!result.ok) throw new Error(result.error);
   return result.state;
 }
+const complete = (s: HitsterState, player: string, move: unknown) =>
+  hitster.resume!(apply(s, player, move));
 /** A spot where the current song belongs (right) or does not (wrong), if one exists. */
 function spot(s: HitsterState, right: boolean): number | null {
   const line = years(s, current(s));
@@ -238,6 +242,108 @@ describe("song list", () => {
 });
 
 describe("hitster", () => {
+  it.each(["correct", "wrong", "passed"] as const)(
+    "holds a %s result without advancing or changing the recording",
+    (outcome) => {
+      const state = start();
+      const before = structuredClone(state);
+      const track = hitster.currentTrack!(state);
+      const move =
+        outcome === "passed"
+          ? ({ type: "pass" } as const)
+          : ({
+              type: "place",
+              index: spot(state, outcome === "correct")!,
+            } as const);
+      const revealed = apply(state, "a", move);
+      expect(state).toEqual(before);
+      expect(revealed).toMatchObject({
+        revealing: true,
+        turn: 0,
+        turnNumber: 1,
+        winners: null,
+      });
+      expect(revealed.lastTurn).toMatchObject({
+        outcome,
+        ...(move.type === "place" ? { index: move.index } : {}),
+      });
+      if (move.type === "pass")
+        expect(revealed.lastTurn).not.toHaveProperty("index");
+      expect(cards(revealed, "current")).toHaveLength(0);
+      expect(cards(revealed, "deck")).toHaveLength(cards(state, "deck").length);
+      expect(hitster.view(revealed, null)).toMatchObject({
+        revealing: true,
+        current: null,
+        currentPlayer: "a",
+        nextPlayer: "b",
+      });
+      expect(hitster.currentTrack!(revealed)).toEqual(track);
+      expect(hitster.pauseMs!(revealed)).toBe(REVEAL_MS);
+      expect(hitster.activePlayers(revealed)).toEqual([]);
+      for (const player of players) {
+        expect(hitster.autoMove!(revealed, player)).toBeNull();
+        for (const move of [
+          { type: "pass" },
+          { type: "place", index: 0 },
+        ] as const)
+          expect(hitster.applyMove(revealed, player, move).ok).toBe(false);
+      }
+      const held = structuredClone(revealed);
+      const resumed = hitster.resume!(revealed);
+      expect(revealed).toEqual(held);
+      expect(resumed).toMatchObject({
+        revealing: false,
+        turn: 1,
+        turnNumber: 2,
+        winners: null,
+      });
+      expect(cards(resumed, "current")).toHaveLength(1);
+      expect(hitster.activePlayers(resumed)).toEqual(["b"]);
+      expect(hitster.pauseMs!(resumed)).toBeNull();
+      expect(totalCards(resumed)).toBe(DECK_SIZE);
+      expect(hitster.resume!(resumed)).toEqual(resumed);
+    },
+  );
+
+  it("holds the winning turn longer and only declares its winner on resume", () => {
+    const state = start();
+    state.cardsToWin = 2;
+    const revealed = apply(state, "a", {
+      type: "place",
+      index: spot(state, true)!,
+    });
+    expect(hitster.result(revealed)).toBeNull();
+    expect(hitster.pauseMs!(revealed)).toBe(WIN_REVEAL_MS);
+    expect(hitster.view(revealed, null)).toMatchObject({
+      currentPlayer: "a",
+      nextPlayer: null,
+      revealing: true,
+      winners: null,
+    });
+    expect(hitster.currentTrack!(revealed)).toEqual(
+      hitster.currentTrack!(state),
+    );
+    const snapshot = structuredClone(revealed);
+    const resumed = hitster.resume!(revealed);
+    expect(revealed).toEqual(snapshot);
+    expect(hitster.result(resumed)).toEqual({ winners: ["a"] });
+    expect(resumed.revealing).toBe(false);
+    expect(cards(resumed, "current")).toHaveLength(0);
+    expect(hitster.currentTrack!(resumed)).toBeNull();
+    expect(hitster.pauseMs!(resumed)).toBeNull();
+  });
+
+  it("treats legacy state without revealing as an ordinary playable turn", () => {
+    const state = start();
+    const legacy = structuredClone(state);
+    delete legacy.revealing;
+    expect(hitster.view(legacy, null)).toEqual(hitster.view(state, null));
+    expect(hitster.pauseMs!(legacy)).toBeNull();
+    expect(hitster.activePlayers(legacy)).toEqual(["a"]);
+    expect(hitster.resume!(legacy)).toEqual(legacy);
+    expect(apply(legacy, "a", { type: "pass" }).revealing).toBe(true);
+  });
+
   it("starts everyone with one card and draws a song for the first player", () => {
     const s = start();
     for (const p of players) expect(years(s, p)).toHaveLength(1);
@@ -246,7 +352,7 @@ describe("hitster", () => {
     expect(hitster.activePlayers(s)).toEqual(["a"]);
   });
 
-  it("keeps a correctly placed song, in order, and passes the turn", () => {
+  it("keeps a correctly placed song, in order, and passes the turn after revealing", () => {
     const s = start();
     const year = currentYear(s);
     const next = apply(s, "a", { type: "place", index: spot(s, true)! });
@@ -258,8 +364,11 @@ describe("hitster", () => {
       outcome: "correct",
       turnNumber: 1,
     });
-    expect(current(next)).toBe("b");
-    expect(cards(next, "current")).toHaveLength(1);
+    expect(current(next)).toBe("a");
+    expect(cards(next, "current")).toHaveLength(0);
+    const resumed = hitster.resume!(next);
+    expect(current(resumed)).toBe("b");
+    expect(cards(resumed, "current")).toHaveLength(1);
     expect(totalCards(next)).toBe(DECK_SIZE);
   });
 
@@ -301,7 +410,8 @@ describe("hitster", () => {
     const next = apply(s, "a", hitster.autoMove!(s, "a"));
     expect(next.lastTurn!.outcome).toBe("passed");
     expect(years(next, "a")).toHaveLength(1);
-    expect(current(next)).toBe("b");
+    expect(current(next)).toBe("a");
+    expect(current(hitster.resume!(next))).toBe("b");
   });
 
   it("never shows the year of the song being placed, to anyone", () => {
@@ -339,7 +449,7 @@ describe("hitster", () => {
   it("has no song to play once the game is over", () => {
     let s = start(5, { cardsToWin: "5", showSongInfo: false });
     for (let i = 0; i < 100 && !s.winners; i++) {
-      s = apply(
+      s = complete(
         s,
         current(s),
         current(s) === "a"
@@ -358,11 +468,11 @@ describe("hitster", () => {
     expect(view.current).toMatchObject({ title: null, artist: null });
   });
 
-  it("ends as soon as a timeline reaches the target", () => {
+  it("ends after revealing the turn that reaches the target", () => {
     let s = start(5, { cardsToWin: "5", showSongInfo: true });
     // Player a always places correctly; the others always pass.
     for (let i = 0; i < 100 && !s.winners; i++) {
-      s = apply(
+      s = complete(
         s,
         current(s),
         current(s) === "a"
@@ -385,7 +495,8 @@ describe("hitster", () => {
   it("reshuffles the discard pile when the deck runs out", () => {
     let s = start(3, defaults, ["a", "b"]);
     const turns = DECK_SIZE + 20; // more passes than there are cards
-    for (let i = 0; i < turns; i++) s = apply(s, current(s), { type: "pass" });
+    for (let i = 0; i < turns; i++)
+      s = complete(s, current(s), { type: "pass" });
     expect(s.winners).toBeNull();
     expect(cards(s, "current")).toHaveLength(1);
     expect(totalCards(s)).toBe(DECK_SIZE);
@@ -394,7 +505,7 @@ describe("hitster", () => {
   it("with eight players always placing correctly, someone reaches ten cards", () => {
     let s = start(9, defaults, ["a", "b", "c", "d", "e", "f", "g", "h"]);
     for (let i = 0; i < 500 && !s.winners; i++)
-      s = apply(s, current(s), { type: "place", index: spot(s, true)! });
+      s = complete(s, current(s), { type: "place", index: spot(s, true)! });
     expect(s.winners).toEqual(["a"]);
     for (const p of s.players) expect(sorted(years(s, p))).toBe(true);
   });

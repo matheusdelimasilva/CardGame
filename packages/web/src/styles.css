@@ -776,10 +776,27 @@ button.seat.open:not(:disabled):hover .avatar {
   line-height: 1;
 }
 .lobby-winner {
+  margin: 0;
   font-size: clamp(1.7rem, 7.5vw, 2.4rem);
   color: var(--gold);
   line-height: 1;
   overflow-wrap: anywhere;
+  animation: winnerPop 700ms var(--spring) both;
+}
+@keyframes winnerPop {
+  from {
+    opacity: 0;
+    transform: scale(0.7) rotate(-4deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lobby-winner {
+    animation: none;
+  }
 }
 .lobby-hint {
   color: var(--text);
@@ -838,8 +855,43 @@ button.seat.open:not(:disabled):hover .avatar {
   font-size: clamp(1.5rem, 7vw, 2.4rem);
   text-transform: uppercase;
 }
+.banner.held {
+  position: static;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 0.75rem;
+  animation: winnerPop 500ms var(--spring) both;
+}
+.banner.held .banner-title {
+  font-size: clamp(1.15rem, 5vw, 1.7rem);
+}
 .banner-detail {
   font-size: 1.15rem;
+}
+.banner-next {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.banner-progress {
+  height: 3px;
+  margin-top: 0.5rem;
+  background: rgb(0 0 0 / 15%);
+  overflow: hidden;
+}
+.banner-progress span {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  transform-origin: left;
+  animation: pauseDrain linear forwards;
+}
+@keyframes pauseDrain {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
 }
 
 /* Bottom dock: you, your hand, your actions */

@@ -1,5 +1,5 @@
 import type { AddressInfo } from "node:net";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import type {
   ClientMessage,
   GameInfo,
@@ -280,7 +280,15 @@ describe("a table over the network", () => {
     expect(JSON.stringify(guest.room)).not.toContain(played);
 
     host.send({ type: "move", move: { type: "place", index: 0 } });
-    await guest.until(() => guest.room!.game!.track!.url !== first);
+    await guest.until(() => guest.room!.game!.pause !== null);
+    expect(guest.room!.game!.track!.url).toBe(first);
+    expect((await fetch(`http://${base}${first}`)).status).toBe(200);
+    const now = vi.spyOn(Date, "now").mockReturnValue(Date.now() + 6000);
+    try {
+      await guest.until(() => guest.room!.game!.track!.url !== first);
+    } finally {
+      now.mockRestore();
+    }
     expect((await fetch(`http://${base}${first}`)).status).toBe(404);
     expect(
       (await fetch(`http://${base}${guest.room!.game!.track!.url}`)).status,

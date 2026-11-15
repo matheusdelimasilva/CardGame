@@ -102,7 +102,16 @@ export function Room({ code }: { code: string }) {
         <div className="oval" />
         <div className="center">
           {running && ui && gameProps ? (
-            <ui.Center {...gameProps} />
+            <>
+              <ui.Center {...gameProps} />
+              {game.pause && (
+                <Announcement
+                  key={game.gameId}
+                  info={ui.announcement(game, nameOf)}
+                  pause={game.pause}
+                />
+              )}
+            </>
           ) : (
             <Lobby room={room} send={send} nameOf={nameOf} />
           )}
@@ -155,10 +164,11 @@ export function Room({ code }: { code: string }) {
           );
         })}
 
-        {running && ui && (
+        {running && ui && !game.pause && (
           <Announcement
             key={game.gameId}
             info={ui.announcement(game, nameOf)}
+            pause={game.pause}
           />
         )}
       </div>
@@ -171,7 +181,9 @@ export function Room({ code }: { code: string }) {
             >
               {playing && game.active.includes(you.id)
                 ? "Your turn"
-                : `waiting for ${waitingOn.join(", ")}...`}
+                : game.pause
+                  ? "Turn result"
+                  : `waiting for ${waitingOn.join(", ")}...`}
               {secondsLeft !== null && (
                 <span
                   className={`plate-clock${secondsLeft <= 5 ? " low" : ""}`}
@@ -324,10 +336,10 @@ function Lobby({
       {winners ? (
         <>
           <div className="lobby-label">game over</div>
-          <div className="lobby-winner">★ {winners.join(" & ")} ★</div>
-          <div className="lobby-label">
-            {winners.length > 1 ? "win" : "wins"} {info.name}
-          </div>
+          <h2 className="lobby-winner">
+            ★ {winners.join(" & ")} {winners.length > 1 ? "win" : "wins"}! ★
+          </h2>
+          <div className="lobby-label">{info.name}</div>
         </>
       ) : (
         <>
@@ -393,28 +405,46 @@ function useSecondsLeft(timer: { remainingMs: number } | null): number | null {
     : null;
 }
 
-function Announcement({
+export function Announcement({
   info,
+  pause,
 }: {
-  info: { key: string; title: string; detail: string } | null;
+  info: { key: string; title: string; detail: string; next?: string } | null;
+  pause: { remainingMs: number } | null;
 }) {
   const [hiddenKey, setHiddenKey] = useState<string | null>(null);
   const key = info?.key ?? null;
+  const paused = pause !== null;
   useEffect(() => {
-    if (!key) return;
+    if (!key || paused) return;
     const t = setTimeout(() => setHiddenKey(key), 3200);
     return () => clearTimeout(t);
-  }, [key]);
-  if (!info || hiddenKey === info.key) return null;
+  }, [key, paused]);
+  if (!info || (!paused && hiddenKey === info.key)) return null;
   return (
     <div
-      className="banner"
+      className={`banner${paused ? " held" : ""}`}
       key={info.key}
       role="status"
-      onClick={() => setHiddenKey(info.key)}
+      onClick={() => {
+        if (!paused) setHiddenKey(info.key);
+      }}
     >
       <div className="banner-title">{info.title}</div>
       <div className="banner-detail">{info.detail}</div>
+      {info.next && <div className="banner-next">{info.next}</div>}
+      {pause && (
+        <PauseProgress key={info.key} remainingMs={pause.remainingMs} />
+      )}
+    </div>
+  );
+}
+
+function PauseProgress({ remainingMs }: { remainingMs: number }) {
+  const [duration] = useState(remainingMs);
+  return (
+    <div className="banner-progress" aria-hidden="true">
+      <span style={{ animationDuration: `${Math.max(0, duration)}ms` }} />
     </div>
   );
 }

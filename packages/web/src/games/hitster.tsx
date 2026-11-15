@@ -199,7 +199,7 @@ function Dock({
   if (!you) return null;
 
   const line = view.timelines[you] ?? [];
-  const myTurn = view.currentPlayer === you;
+  const myTurn = !view.revealing && view.currentPlayer === you;
   const justWon =
     view.lastTurn?.player === you && view.lastTurn.outcome === "correct"
       ? view.lastTurn.song
@@ -220,26 +220,28 @@ function Dock({
 
   return (
     <div className="hitster-dock">
-      <div className="hitster-bar">
-        <p className="actions-status">
-          {myTurn
-            ? selected === null
-              ? "Tap a + to choose where this song goes."
-              : `Placing it ${describeSpot(line, selected)}.`
-            : view.currentPlayer
-              ? `${nameOf(view.currentPlayer)} is placing a song.`
-              : ""}
-        </p>
-        <button
-          className="btn gold"
-          disabled={!myTurn || selected === null}
-          onClick={() =>
-            selected !== null && move({ type: "place", index: selected })
-          }
-        >
-          Place
-        </button>
-      </div>
+      {!view.revealing && (
+        <div className="hitster-bar">
+          <p className="actions-status">
+            {myTurn
+              ? selected === null
+                ? "Tap a + to choose where this song goes."
+                : `Placing it ${describeSpot(line, selected)}.`
+              : view.currentPlayer
+                ? `${nameOf(view.currentPlayer)} is placing a song.`
+                : ""}
+          </p>
+          <button
+            className="btn gold"
+            disabled={!myTurn || selected === null}
+            onClick={() =>
+              selected !== null && move({ type: "place", index: selected })
+            }
+          >
+            Place
+          </button>
+        </div>
+      )}
       <div
         className="timeline"
         role="list"
@@ -268,6 +270,15 @@ export const hitsterUI: GameUI<HitsterView, HitsterMove> = {
   Center({ game, you, nameOf, audio }) {
     const view = viewOf(game);
     const player = view.currentPlayer;
+    if (view.revealing && view.lastTurn) {
+      return (
+        <div className="center-game">
+          <SongCard
+            song={{ id: `reveal-${view.turnNumber}`, ...view.lastTurn.song }}
+          />
+        </div>
+      );
+    }
     if (!view.current || !player) return null;
     const theirLine = player !== you ? (view.timelines[player] ?? []) : null;
     return (
@@ -335,8 +346,9 @@ export const hitsterUI: GameUI<HitsterView, HitsterMove> = {
   Dock,
 
   announcement(game, nameOf) {
-    const last = viewOf(game).lastTurn;
-    if (!last) return null;
+    const view = viewOf(game);
+    const last = view.lastTurn;
+    if (!view.revealing || !last) return null;
     const who = nameOf(last.player);
     return {
       key: `turn-${last.turnNumber}`,
@@ -347,6 +359,9 @@ export const hitsterUI: GameUI<HitsterView, HitsterMove> = {
             ? `${who} missed`
             : `${who} was skipped`,
       detail: `${last.song.title} · ${last.song.artist} · ${last.song.year}`,
+      next: view.nextPlayer
+        ? `Next: ${nameOf(view.nextPlayer)}`
+        : `${who} wins!`,
     };
   },
 };
