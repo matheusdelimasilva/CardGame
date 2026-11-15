@@ -1,3 +1,4 @@
+import { z } from "zod";
 import {
   FACE_DOWN,
   FACE_UP,
@@ -164,6 +165,10 @@ function drawSong(state: HitsterState): void {
 
 export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
   id: "hitster",
+  moveSchema: z.discriminatedUnion("type", [
+    z.object({ type: z.literal("place"), index: z.number().int().min(0) }),
+    z.object({ type: z.literal("pass") }),
+  ]),
   name: "Hitster",
   minPlayers: 2,
   maxPlayers: 8,

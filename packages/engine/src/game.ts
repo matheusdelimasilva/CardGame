@@ -1,4 +1,5 @@
 import type { PlayerId } from "./table";
+import type { z } from "zod";
 
 export type MoveResult<S> =
   { ok: true; state: S } | { ok: false; error: string };
@@ -81,6 +82,8 @@ export interface GameModule<S, M, V> {
   description: string;
   /** Options the host chooses before creating a table. */
   settings: SettingDef[];
+  /** Validates the untrusted move payload before it reaches the rules. */
+  moveSchema: z.ZodType<M>;
   setup(ctx: SetupContext): S;
   /** Throws if a saved state can no longer be played with the current game data. */
   validateState?(state: S): void;
@@ -98,4 +101,23 @@ export interface GameModule<S, M, V> {
   currentTrack?(state: S): Track | null;
   /** null while the game is still running. */
   result(state: S): GameResult | null;
+}
+
+/** Runtime game interface after the registry has hidden its state, move and view types. */
+export type AnyGame = GameModule<unknown, unknown, unknown>;
+
+/** Erases types only at the dispatch boundary; callers validate moves with moveSchema. */
+export function defineGame<S, M, V>(module: GameModule<S, M, V>): AnyGame {
+  return {
+    ...module,
+    applyMove: (state, player, move) =>
+      module.applyMove(state as S, player, move as M),
+    validateState: (state) => module.validateState?.(state as S),
+    view: (state, viewer) => module.view(state as S, viewer),
+    activePlayers: (state) => module.activePlayers(state as S),
+    autoMove: (state, player) => module.autoMove?.(state as S, player) ?? null,
+    turnTimeLimit: (state) => module.turnTimeLimit?.(state as S) ?? null,
+    currentTrack: (state) => module.currentTrack?.(state as S) ?? null,
+    result: (state) => module.result(state as S),
+  };
 }
