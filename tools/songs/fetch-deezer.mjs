@@ -11,7 +11,14 @@
 import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { Deezer, norm } from "../../packages/server/src/deezer.ts";
-import { CACHE_DIR, OUT_DIR, USER_AGENT, readJson, sleep, writeJson } from "./lib.mjs";
+import {
+  CACHE_DIR,
+  OUT_DIR,
+  USER_AGENT,
+  readJson,
+  sleep,
+  writeJson,
+} from "./lib.mjs";
 
 const deezerKey = (s) => `${norm(s.artist)}|${norm(s.title)}`;
 const label = (s) => `${s.artist} — ${s.title}`;
@@ -29,9 +36,20 @@ async function politeDeezerFetch(url, init) {
     const wait = last + MIN_GAP_MS - Date.now();
     if (wait > 0) await sleep(wait);
     last = Date.now();
-    const res = await fetch(url, { ...init, headers: { "User-Agent": USER_AGENT, ...init?.headers }, signal: AbortSignal.timeout(15_000) });
+    const res = await fetch(url, {
+      ...init,
+      headers: { "User-Agent": USER_AGENT, ...init?.headers },
+      signal: AbortSignal.timeout(15_000),
+    });
     // Quota errors arrive as HTTP 200 with {"error":{"code":4}}.
-    const quota = res.ok && (await res.clone().json().catch(() => ({})))?.error?.code === 4;
+    const quota =
+      res.ok &&
+      (
+        await res
+          .clone()
+          .json()
+          .catch(() => ({}))
+      )?.error?.code === 4;
     if ((quota || res.status === 429 || res.status >= 500) && attempt < 6) {
       await sleep(2000 * 2 ** attempt);
       continue;
@@ -40,9 +58,14 @@ async function politeDeezerFetch(url, init) {
   }
 }
 
-const songs = (await readJson(join(OUT_DIR, BR ? "songs-br.json" : "songs.json")))
-  .filter((s) => (!BR || topArg < 0 || s.chartRank != null) && s.chartRank <= TOP);
-const cachePath = BR ? join(CACHE_DIR, "br", "deezer.json") : join(CACHE_DIR, "deezer.json");
+const songs = (
+  await readJson(join(OUT_DIR, BR ? "songs-br.json" : "songs.json"))
+).filter(
+  (s) => (!BR || topArg < 0 || s.chartRank != null) && s.chartRank <= TOP,
+);
+const cachePath = BR
+  ? join(CACHE_DIR, "br", "deezer.json")
+  : join(CACHE_DIR, "deezer.json");
 const cache = await readJson(cachePath, {});
 const deezer = new Deezer(politeDeezerFetch);
 
@@ -55,8 +78,14 @@ for (const [i, song] of songs.entries()) {
     return undefined; // not cached, retried next run
   });
   if (track === undefined) continue;
-  cache[key] = track && { id: track.id, title: track.title, artist: track.artist };
-  console.log(`${String(i + 1).padStart(4)}/${songs.length} ${track ? "OK  " : "MISS"} ${song.year} ${label(song)}`);
+  cache[key] = track && {
+    id: track.id,
+    title: track.title,
+    artist: track.artist,
+  };
+  console.log(
+    `${String(i + 1).padStart(4)}/${songs.length} ${track ? "OK  " : "MISS"} ${song.year} ${label(song)}`,
+  );
   if (++looked % 25 === 0) await writeJson(cachePath, cache);
 }
 await writeJson(cachePath, cache);
@@ -73,11 +102,15 @@ for (const s of songs) {
     continue;
   }
   matched++;
-  lines.push(`${s.year}  #${s.chartRank}  ${label(s)}\n            => ${hit.artist} — ${hit.title}   [${hit.id}]`);
+  lines.push(
+    `${s.year}  #${s.chartRank}  ${label(s)}\n            => ${hit.artist} — ${hit.title}   [${hit.id}]`,
+  );
 }
 await writeFile(
   join(OUT_DIR, reviewFile),
   `Deezer matches${TOP < Infinity ? ` (chart top ${TOP} per year)` : ""}: ${matched} matched, ${missing.length} missing\n\n` +
     `== Missing ==\n${missing.join("\n") || "(none)"}\n\n== Matched ==\n${lines.join("\n")}\n`,
 );
-console.log(`\n${matched} matched, ${missing.length} missing of ${songs.length} -> out/${reviewFile}`);
+console.log(
+  `\n${matched} matched, ${missing.length} missing of ${songs.length} -> out/${reviewFile}`,
+);

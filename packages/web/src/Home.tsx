@@ -5,7 +5,9 @@ import { navigate } from "./App";
 import { KEYS, storage } from "./storage";
 
 export function Home() {
-  const [email, setEmail] = useState<string | null>(storage.get(KEYS.session) ? storage.get(KEYS.email) : null);
+  const [email, setEmail] = useState<string | null>(
+    storage.get(KEYS.session) ? storage.get(KEYS.email) : null,
+  );
   const [joinCode, setJoinCode] = useState("");
   const [joinError, setJoinError] = useState<string | null>(null);
 
@@ -42,11 +44,17 @@ export function Home() {
         <p>Card games with friends. One link, no sign-up to join.</p>
       </header>
 
-      {email ? <HostPanel email={email} onSignOut={() => setEmail(null)} /> : <SignIn onSignedIn={setEmail} />}
+      {email ? (
+        <HostPanel email={email} onSignOut={() => setEmail(null)} />
+      ) : (
+        <SignIn onSignedIn={setEmail} />
+      )}
 
       <section className="panel">
         <h2>Join a table</h2>
-        <p className="muted">Got a link from a friend? Open it, or type the table code here.</p>
+        <p className="muted">
+          Got a link from a friend? Open it, or type the table code here.
+        </p>
         <form className="row" onSubmit={join}>
           <input
             className="input code-input"
@@ -115,7 +123,10 @@ function SignIn({ onSignedIn }: { onSignedIn: (email: string) => void }) {
       <h2>Host a table</h2>
       {!sentTo ? (
         <form onSubmit={request}>
-          <p className="muted">Enter your email and we will send you a sign-in code. Only the host needs one.</p>
+          <p className="muted">
+            Enter your email and we will send you a sign-in code. Only the host
+            needs one.
+          </p>
           <div className="row">
             <input
               className="input"
@@ -139,7 +150,8 @@ function SignIn({ onSignedIn }: { onSignedIn: (email: string) => void }) {
           </p>
           {devCode && (
             <p className="dev-note">
-              Development mode, no email was sent. Your code is <b>{devCode}</b>.
+              Development mode, no email was sent. Your code is <b>{devCode}</b>
+              .
             </p>
           )}
           <div className="row">
@@ -176,7 +188,13 @@ function SignIn({ onSignedIn }: { onSignedIn: (email: string) => void }) {
   );
 }
 
-function HostPanel({ email, onSignOut }: { email: string; onSignOut: () => void }) {
+function HostPanel({
+  email,
+  onSignOut,
+}: {
+  email: string;
+  onSignOut: () => void;
+}) {
   const [history, setHistory] = useState<HistoryEntry[] | null>(null);
   useEffect(() => {
     api
@@ -211,16 +229,26 @@ function HostPanel({ email, onSignOut }: { email: string; onSignOut: () => void 
         {history === null ? (
           <p className="muted">Loading...</p>
         ) : history.length === 0 ? (
-          <p className="muted">Games you host will show up here once they finish.</p>
+          <p className="muted">
+            Games you host will show up here once they finish.
+          </p>
         ) : (
           <ul className="history">
             {history.map((h, i) => (
               <li key={i}>
                 <span className="history-game">{h.gameName}</span>
-                <span className="history-when">{new Date(h.endedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</span>
+                <span className="history-when">
+                  {new Date(h.endedAt).toLocaleString([], {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
+                </span>
                 <span className="history-players">
                   {h.players.map((p, j) => (
-                    <span key={j} className={h.winners.includes(p) ? "winner" : ""}>
+                    <span
+                      key={j}
+                      className={h.winners.includes(p) ? "winner" : ""}
+                    >
                       {h.winners.includes(p) ? "★ " : ""}
                       {p}
                     </span>

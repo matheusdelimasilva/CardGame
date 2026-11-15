@@ -4,7 +4,16 @@ import reactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
 
 export default tseslint.config(
-  { ignores: ["**/node_modules/**", "**/dist/**", ".claude/**", "data/**", "tools/songs/out/**", "tools/songs/.cache/**"] },
+  {
+    ignores: [
+      "**/node_modules/**",
+      "**/dist/**",
+      ".claude/**",
+      "data/**",
+      "tools/songs/out/**",
+      "tools/songs/.cache/**",
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   { languageOptions: { globals: globals.node } },

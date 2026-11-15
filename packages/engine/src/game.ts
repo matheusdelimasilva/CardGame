@@ -1,6 +1,7 @@
 import type { PlayerId } from "./table";
 
-export type MoveResult<S> = { ok: true; state: S } | { ok: false; error: string };
+export type MoveResult<S> =
+  { ok: true; state: S } | { ok: false; error: string };
 
 export interface GameResult {
   winners: PlayerId[];
@@ -29,13 +30,21 @@ export type SettingDef = ToggleSetting | SelectSetting;
 export type SettingValues = Record<string, boolean | string>;
 
 /** Keeps the valid values from untrusted input and fills the rest with defaults. */
-export function resolveSettings(defs: readonly SettingDef[], raw: unknown): SettingValues {
-  const given = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
+export function resolveSettings(
+  defs: readonly SettingDef[],
+  raw: unknown,
+): SettingValues {
+  const given =
+    raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
   const values: SettingValues = {};
   for (const def of defs) {
     const value = Object.hasOwn(given, def.id) ? given[def.id] : undefined;
-    if (def.type === "toggle") values[def.id] = typeof value === "boolean" ? value : def.default;
-    else values[def.id] = def.options.some((o) => o.value === value) ? (value as string) : def.default;
+    if (def.type === "toggle")
+      values[def.id] = typeof value === "boolean" ? value : def.default;
+    else
+      values[def.id] = def.options.some((o) => o.value === value)
+        ? (value as string)
+        : def.default;
   }
   return values;
 }

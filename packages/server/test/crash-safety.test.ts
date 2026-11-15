@@ -45,7 +45,7 @@ describe("crash safety", () => {
     const ws = new WebSocket(`ws://${base}/ws?room=${code}`);
     const state = new Promise<RoomView>((resolve, reject) => {
       ws.on("error", reject);
-      ws.on("message", raw => {
+      ws.on("message", (raw) => {
         const msg = JSON.parse(String(raw));
         if (msg.type === "state") resolve(msg.room);
       });
@@ -58,11 +58,14 @@ describe("crash safety", () => {
     const log = vi.spyOn(console, "error").mockImplementation(() => {});
     const broken = running("STALE1");
     const state = broken.game!.state as HitsterState;
-    state.table.zones[`timeline:${broken.members[0]!.id}`]!.cards[0]!.face = "Removed Repro Song|Removed Repro Artist";
+    state.table.zones[`timeline:${broken.members[0]!.id}`]!.cards[0]!.face =
+      "Removed Repro Song|Removed Repro Artist";
     const { base, file } = await boot([broken, running("GOOD12")]);
     const stale = await connect(base, "STALE1");
     expect(stale.room.game).toBeNull();
-    expect(stale.room.seats.slice(0, 2).map(m => m!.id)).toEqual(broken.members.map(m => m.id));
+    expect(stale.room.seats.slice(0, 2).map((m) => m!.id)).toEqual(
+      broken.members.map((m) => m.id),
+    );
     expect((await connect(base, "GOOD12")).room.game).not.toBeNull();
     expect((await fetch(`http://${base}/api/games`)).status).toBe(200);
     expect(log).toHaveBeenCalledWith("Room STALE1:", expect.any(Error));
@@ -79,20 +82,29 @@ describe("crash safety", () => {
     expect((await connect(base, room.code)).room.game).toBeNull();
   });
 
-  it.each(["view", "activePlayers"] as const)("recovers a live %s failure and broadcasts lobby", async (method) => {
-    vi.spyOn(console, "error").mockImplementation(() => {});
-    const { base } = await boot([running("LIVE12"), running("GOOD12")]);
-    vi.spyOn(games.hitster!, method).mockImplementationOnce(() => { throw new Error("broken game"); });
-    expect((await connect(base, "LIVE12")).room.game).toBeNull();
-    expect((await connect(base, "GOOD12")).room.game).not.toBeNull();
-  });
+  it.each(["view", "activePlayers"] as const)(
+    "recovers a live %s failure and broadcasts lobby",
+    async (method) => {
+      vi.spyOn(console, "error").mockImplementation(() => {});
+      const { base } = await boot([running("LIVE12"), running("GOOD12")]);
+      vi.spyOn(games.hitster!, method).mockImplementationOnce(() => {
+        throw new Error("broken game");
+      });
+      expect((await connect(base, "LIVE12")).room.game).toBeNull();
+      expect((await connect(base, "GOOD12")).room.game).not.toBeNull();
+    },
+  );
 
   it("contains a message handler failure", async () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     const { base } = await boot([running("LIVE12")]);
     const client = await connect(base, "LIVE12");
-    vi.spyOn(rooms, "setName").mockImplementationOnce(() => { throw new Error("handler failed"); });
-    const next = new Promise<{ room: RoomView }>(resolve => client.ws.once("message", raw => resolve(JSON.parse(String(raw)))));
+    vi.spyOn(rooms, "setName").mockImplementationOnce(() => {
+      throw new Error("handler failed");
+    });
+    const next = new Promise<{ room: RoomView }>((resolve) =>
+      client.ws.once("message", (raw) => resolve(JSON.parse(String(raw)))),
+    );
     client.ws.send(JSON.stringify({ type: "setName", name: "New name" }));
     expect((await next).room.game).toBeNull();
     expect((await fetch(`http://${base}/api/games`)).status).toBe(200);
@@ -103,11 +115,15 @@ describe("crash safety", () => {
     const { base } = await boot([running("LIVE12")]);
     const first = await connect(base, "LIVE12");
     const second = await connect(base, "LIVE12");
-    vi.spyOn(games.hitster!, "view").mockImplementationOnce(() => { throw new Error("close view failed"); });
-    const next = new Promise<{ room: RoomView }>(resolve => first.ws.on("message", raw => {
-      const msg = JSON.parse(String(raw));
-      if (msg.type === "state" && msg.room.game === null) resolve(msg);
-    }));
+    vi.spyOn(games.hitster!, "view").mockImplementationOnce(() => {
+      throw new Error("close view failed");
+    });
+    const next = new Promise<{ room: RoomView }>((resolve) =>
+      first.ws.on("message", (raw) => {
+        const msg = JSON.parse(String(raw));
+        if (msg.type === "state" && msg.room.game === null) resolve(msg);
+      }),
+    );
     second.ws.close();
     expect((await next).room.game).toBeNull();
   });
@@ -120,12 +136,21 @@ describe("crash safety", () => {
     broken.game!.deadline = good.game!.deadline = Date.now() + 60_000;
     const { base } = await boot([broken, good]);
     const client = await connect(base, "LIVE12");
-    const expire = vi.spyOn(rooms, "expireTurn").mockImplementationOnce(() => { throw new Error("timer failed"); });
-    const next = new Promise<{ room: RoomView }>(resolve => client.ws.once("message", raw => resolve(JSON.parse(String(raw)))));
-    const clock = intervals.mock.calls.find(([, delay]) => delay === 250)![0] as () => void;
+    const expire = vi.spyOn(rooms, "expireTurn").mockImplementationOnce(() => {
+      throw new Error("timer failed");
+    });
+    const next = new Promise<{ room: RoomView }>((resolve) =>
+      client.ws.once("message", (raw) => resolve(JSON.parse(String(raw)))),
+    );
+    const clock = intervals.mock.calls.find(
+      ([, delay]) => delay === 250,
+    )![0] as () => void;
     clock();
     expect((await next).room.game).toBeNull();
-    expect(expire.mock.calls.map(([room]) => room.code)).toEqual(["LIVE12", "GOOD12"]);
+    expect(expire.mock.calls.map(([room]) => room.code)).toEqual([
+      "LIVE12",
+      "GOOD12",
+    ]);
     expect((await connect(base, "GOOD12")).room.game).not.toBeNull();
   });
 
@@ -133,7 +158,9 @@ describe("crash safety", () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     const { base } = await boot([running("LIVE12")]);
     const client = await connect(base, "LIVE12");
-    vi.spyOn(Deezer.prototype, "streamPreview").mockRejectedValueOnce(new Error("Deezer fetch failed"));
+    vi.spyOn(Deezer.prototype, "streamPreview").mockRejectedValueOnce(
+      new Error("Deezer fetch failed"),
+    );
     const res = await fetch(`http://${base}${client.room.game!.track!.url}`);
     expect(res.status).toBe(500);
     expect((await connect(base, "LIVE12")).room.game).not.toBeNull();
@@ -144,8 +171,12 @@ describe("crash safety", () => {
     const intervals = vi.spyOn(globalThis, "setInterval");
     const { base } = await boot([]);
     const error = new Error("sweep failed");
-    vi.spyOn(Date, "now").mockImplementationOnce(() => { throw error; });
-    const sweep = intervals.mock.calls.find(([, delay]) => delay === 60 * 60 * 1000)![0] as () => void;
+    vi.spyOn(Date, "now").mockImplementationOnce(() => {
+      throw error;
+    });
+    const sweep = intervals.mock.calls.find(
+      ([, delay]) => delay === 60 * 60 * 1000,
+    )![0] as () => void;
     expect(() => sweep()).not.toThrow();
     expect(log).toHaveBeenCalledWith("Room idle sweep:", error);
     expect((await fetch(`http://${base}/api/games`)).status).toBe(200);
@@ -153,7 +184,9 @@ describe("crash safety", () => {
 
   it("drops a restored game whose view throws and still restores healthy rooms", async () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.spyOn(games.hitster!, "view").mockImplementationOnce(() => { throw new Error("restore failed"); });
+    vi.spyOn(games.hitster!, "view").mockImplementationOnce(() => {
+      throw new Error("restore failed");
+    });
     const { base } = await boot([running("BAD123"), running("GOOD12")]);
     expect((await connect(base, "BAD123")).room.game).toBeNull();
     expect((await connect(base, "GOOD12")).room.game).not.toBeNull();

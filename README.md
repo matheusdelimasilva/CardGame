@@ -5,14 +5,14 @@ One player signs in with an email code and hosts; everyone else joins from a sha
 
 ## Status
 
-| Step | State |
-|---|---|
-| 1. Engine: cards, zones, visibility, per-player views | Done |
-| 2. Demo game on the engine | Done |
-| 3. Server: rooms, join by link, seats, spectators, reconnect | Done |
-| 4. Round-table web client, portrait-first on phones | Done |
-| 5. Email sign-in for hosts, game history | Done (emails need a Resend key) |
-| 6. Deploy | Not started |
+| Step                                                         | State                           |
+| ------------------------------------------------------------ | ------------------------------- |
+| 1. Engine: cards, zones, visibility, per-player views        | Done                            |
+| 2. Demo game on the engine                                   | Done                            |
+| 3. Server: rooms, join by link, seats, spectators, reconnect | Done                            |
+| 4. Round-table web client, portrait-first on phones          | Done                            |
+| 5. Email sign-in for hosts, game history                     | Done (emails need a Resend key) |
+| 6. Deploy                                                    | Not started                     |
 
 Screenshots of every screen are in `docs/screenshots`.
 
@@ -34,13 +34,13 @@ pnpm build
 RESEND_API_KEY=... EMAIL_FROM="CardGame <you@your-domain>" NODE_ENV=production pnpm start
 ```
 
-| Variable | Default | Purpose |
-|---|---|---|
-| `PORT` | `3001` | HTTP and WebSocket port |
-| `RESEND_API_KEY` | none | Sends sign-in codes by email. Required when `NODE_ENV=production` |
-| `EMAIL_FROM` | Resend test sender | From address for sign-in emails |
-| `DATA_FILE` | `data/db.json` | JSON storage for sessions, history and room snapshots when `DATABASE_URL` is unset |
-| `DATABASE_URL` | none | Postgres connection URL; uses Postgres instead of `DATA_FILE` |
+| Variable         | Default            | Purpose                                                                            |
+| ---------------- | ------------------ | ---------------------------------------------------------------------------------- |
+| `PORT`           | `3001`             | HTTP and WebSocket port                                                            |
+| `RESEND_API_KEY` | none               | Sends sign-in codes by email. Required when `NODE_ENV=production`                  |
+| `EMAIL_FROM`     | Resend test sender | From address for sign-in emails                                                    |
+| `DATA_FILE`      | `data/db.json`     | JSON storage for sessions, history and room snapshots when `DATABASE_URL` is unset |
+| `DATABASE_URL`   | none               | Postgres connection URL; uses Postgres instead of `DATA_FILE`                      |
 
 ### Postgres locally
 

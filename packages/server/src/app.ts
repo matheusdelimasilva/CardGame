@@ -1,8 +1,17 @@
 import { createReadStream, existsSync, statSync } from "node:fs";
-import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
+import {
+  createServer,
+  type IncomingMessage,
+  type Server,
+  type ServerResponse,
+} from "node:http";
 import { extname, join as joinPath, normalize } from "node:path";
 import { games } from "@cardgame/games";
-import type { ClientMessage, HistoryEntry, ServerMessage } from "@cardgame/protocol";
+import type {
+  ClientMessage,
+  HistoryEntry,
+  ServerMessage,
+} from "@cardgame/protocol";
 import { WebSocket, WebSocketServer } from "ws";
 import { Auth, normalizeEmail, type SendEmail } from "./auth";
 import { Deezer } from "./deezer";
@@ -35,7 +44,11 @@ const MIME: Record<string, string> = {
   ".json": "application/json",
 };
 
-export function createApp(options: AppOptions): { server: Server; ready: Promise<void>; close: () => Promise<void> } {
+export function createApp(options: AppOptions): {
+  server: Server;
+  ready: Promise<void>;
+  close: () => Promise<void>;
+} {
   const store = createStore(options.dataFile);
   const auth = new Auth(store, options.sendEmail);
   const deezer = new Deezer(options.fetch);
@@ -51,18 +64,25 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
         continue;
       }
       room.settings ??= {};
-      guard(room.code, () => {
-        if (!room.game) return;
-        if (!Object.hasOwn(games, room.game.gameId)) throw new Error(`Unknown game ${room.game.gameId}`);
-        // Fields added after some snapshots were written.
-        room.game.trackKey ??= "";
-        room.game.trackNonce ??= null;
-        rooms.syncTrack(room);
-        const game = games[room.game.gameId]!;
-        game.validateState?.(room.game.state);
-        game.activePlayers(room.game.state);
-        game.view(room.game.state, null);
-      }, () => { room.game = null; });
+      guard(
+        room.code,
+        () => {
+          if (!room.game) return;
+          if (!Object.hasOwn(games, room.game.gameId))
+            throw new Error(`Unknown game ${room.game.gameId}`);
+          // Fields added after some snapshots were written.
+          room.game.trackKey ??= "";
+          room.game.trackNonce ??= null;
+          rooms.syncTrack(room);
+          const game = games[room.game.gameId]!;
+          game.validateState?.(room.game.state);
+          game.activePlayers(room.game.state);
+          game.view(room.game.state, null);
+        },
+        () => {
+          room.game = null;
+        },
+      );
       for (const m of room.members) m.connected = false;
       roomsByCode.set(room.code, room);
     }
@@ -85,23 +105,30 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
   };
 
   const broadcast = (room: Room): void => {
-    guard(room.code, () => {
-      room.updatedAt = Date.now();
-      if (room.game) games[room.game.gameId]!.validateState?.(room.game.state);
-      const views = [...(sockets.get(room) ?? [])].map(([ws, member]) =>
-        [ws, rooms.viewFor(room, member)] as const);
-      for (const [ws, view] of views) {
-        guard(room.code, () => send(ws, { type: "state", room: view }));
-      }
-      persist();
-    }, () => {
-      if (room.game) recover(room);
-    });
+    guard(
+      room.code,
+      () => {
+        room.updatedAt = Date.now();
+        if (room.game)
+          games[room.game.gameId]!.validateState?.(room.game.state);
+        const views = [...(sockets.get(room) ?? [])].map(
+          ([ws, member]) => [ws, rooms.viewFor(room, member)] as const,
+        );
+        for (const [ws, view] of views) {
+          guard(room.code, () => send(ws, { type: "state", room: view }));
+        }
+        persist();
+      },
+      () => {
+        if (room.game) recover(room);
+      },
+    );
   };
 
   const recordHistory = (room: Room) => {
     const running = room.game!;
-    const nameOf = (id: string) => room.members.find((m) => m.id === id)?.name ?? "?";
+    const nameOf = (id: string) =>
+      room.members.find((m) => m.id === id)?.name ?? "?";
     const entry: HistoryEntry = {
       roomCode: room.code,
       gameId: running.gameId,
@@ -118,7 +145,10 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
   // ---- HTTP ----
 
   const json = (res: ServerResponse, status: number, body: unknown) => {
-    res.writeHead(status, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+    res.writeHead(status, {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+    });
     res.end(JSON.stringify(body));
   };
 
@@ -149,10 +179,16 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
     const dir = options.staticDir;
     if (!dir) return json(res, 404, { error: "Not found." });
     let file = joinPath(dir, normalize(path).replace(/^(\.\.[/\\])+/, ""));
-    if (!file.startsWith(dir) || !existsSync(file) || !statSync(file).isFile()) {
+    if (
+      !file.startsWith(dir) ||
+      !existsSync(file) ||
+      !statSync(file).isFile()
+    ) {
       file = joinPath(dir, "index.html"); // client-side routes
     }
-    res.writeHead(200, { "Content-Type": MIME[extname(file)] ?? "application/octet-stream" });
+    res.writeHead(200, {
+      "Content-Type": MIME[extname(file)] ?? "application/octet-stream",
+    });
     createReadStream(file).pipe(res);
   };
 
@@ -160,25 +196,35 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
     let code = "HTTP";
     try {
       const url = new URL(req.url ?? "/", "http://localhost");
-      code = /^\/api\/rooms\/([^/]+)/.exec(url.pathname)?.[1]?.toUpperCase() ?? "HTTP";
+      code =
+        /^\/api\/rooms\/([^/]+)/.exec(url.pathname)?.[1]?.toUpperCase() ??
+        "HTTP";
       const route = `${req.method} ${url.pathname}`;
       await ready;
       if (route === "POST /api/auth/request") {
         const email = normalizeEmail((await readBody(req)).email);
-        if (!email) return json(res, 400, { error: "Enter a valid email address." });
+        if (!email)
+          return json(res, 400, { error: "Enter a valid email address." });
         const result = await auth.requestCode(email);
         return json(res, result.error ? 429 : 200, result);
       }
       if (route === "POST /api/auth/verify") {
         const body = await readBody(req);
         const email = normalizeEmail(body.email);
-        if (!email) return json(res, 400, { error: "Enter a valid email address." });
+        if (!email)
+          return json(res, 400, { error: "Enter a valid email address." });
         const result = auth.verify(email, String(body.code ?? ""));
-        return json(res, result.error ? 400 : 200, result.error ? result : { ...result, email });
+        return json(
+          res,
+          result.error ? 400 : 200,
+          result.error ? result : { ...result, email },
+        );
       }
       if (route === "GET /api/me") {
         const email = sessionEmail(req);
-        return email ? json(res, 200, { email }) : json(res, 401, { error: "Not signed in." });
+        return email
+          ? json(res, 200, { email })
+          : json(res, 401, { error: "Not signed in." });
       }
       if (route === "POST /api/auth/signout") {
         const header = req.headers.authorization ?? "";
@@ -186,17 +232,24 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
         return json(res, 200, {});
       }
       if (route === "GET /api/games") {
-        return json(res, 200, { games: Object.keys(games).map(rooms.gameInfo) });
+        return json(res, 200, {
+          games: Object.keys(games).map(rooms.gameInfo),
+        });
       }
       if (route === "POST /api/rooms") {
         const email = sessionEmail(req);
-        if (!email) return json(res, 401, { error: "Sign in to host a table." });
+        if (!email)
+          return json(res, 401, { error: "Sign in to host a table." });
         const body = await readBody(req);
         const gameId = String(body.gameId ?? "");
-        if (!Object.hasOwn(games, gameId)) return json(res, 400, { error: "Choose a game first." });
+        if (!Object.hasOwn(games, gameId))
+          return json(res, 400, { error: "Choose a game first." });
         let code = rooms.newRoomCode();
         while (roomsByCode.has(code)) code = rooms.newRoomCode();
-        roomsByCode.set(code, rooms.createRoom(code, email, gameId, body.settings));
+        roomsByCode.set(
+          code,
+          rooms.createRoom(code, email, gameId, body.settings),
+        );
         persist();
         return json(res, 200, { code });
       }
@@ -210,25 +263,36 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
         const id = Number(url.searchParams.get("deezerId"));
         const title = url.searchParams.get("title")?.trim();
         const artist = url.searchParams.get("artist")?.trim();
-        if (id > 0) return await deezer.streamPreview({ deezerId: id }, req, res);
-        if (!title || !artist) return json(res, 400, { error: "Pass title and artist, or deezerId." });
+        if (id > 0)
+          return await deezer.streamPreview({ deezerId: id }, req, res);
+        if (!title || !artist)
+          return json(res, 400, {
+            error: "Pass title and artist, or deezerId.",
+          });
         return await deezer.streamPreview({ title, artist }, req, res);
       }
       // The recording a table is listening to. The path says nothing about which song it is,
       // and stops working as soon as the game moves on to the next one.
-      const trackMatch = /^\/api\/rooms\/([A-Za-z0-9]+)\/track\/([a-f0-9]+)$/.exec(url.pathname);
+      const trackMatch =
+        /^\/api\/rooms\/([A-Za-z0-9]+)\/track\/([a-f0-9]+)$/.exec(url.pathname);
       if (req.method === "GET" && trackMatch) {
         const room = roomsByCode.get(trackMatch[1]!.toUpperCase());
         const track = room ? rooms.trackFor(room, trackMatch[2]!) : null;
-        if (!track) return json(res, 404, { error: "That song is no longer playing." });
-        const song = track.deezerId ? { deezerId: track.deezerId } : { title: track.title, artist: track.artist };
+        if (!track)
+          return json(res, 404, { error: "That song is no longer playing." });
+        const song = track.deezerId
+          ? { deezerId: track.deezerId }
+          : { title: track.title, artist: track.artist };
         return await deezer.streamPreview(song, req, res);
       }
       const roomMatch = /^\/api\/rooms\/([A-Za-z0-9]+)$/.exec(url.pathname);
       if (req.method === "GET" && roomMatch) {
-        return json(res, 200, { exists: roomsByCode.has(roomMatch[1]!.toUpperCase()) });
+        return json(res, 200, {
+          exists: roomsByCode.has(roomMatch[1]!.toUpperCase()),
+        });
       }
-      if (url.pathname.startsWith("/api/")) return json(res, 404, { error: "Not found." });
+      if (url.pathname.startsWith("/api/"))
+        return json(res, 404, { error: "Not found." });
       if (req.method === "GET") return serveStatic(url.pathname, res);
       json(res, 405, { error: "Method not allowed." });
     } catch (err) {
@@ -243,129 +307,171 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
   // ---- WebSocket: /ws?room=CODE ----
 
   const wss = new WebSocketServer({
-    server, path: "/ws", maxPayload: 16 * 1024,
+    server,
+    path: "/ws",
+    maxPayload: 16 * 1024,
     verifyClient: (_info, done) => {
-      void ready.then(() => done(true), () => done(false, 503));
+      void ready.then(
+        () => done(true),
+        () => done(false, 503),
+      );
     },
   });
 
   wss.on("connection", (ws, req) => {
-    const code = new URL(req.url ?? "/", "http://localhost").searchParams.get("room")?.toUpperCase() ?? "";
+    const code =
+      new URL(req.url ?? "/", "http://localhost").searchParams
+        .get("room")
+        ?.toUpperCase() ?? "";
     const room = roomsByCode.get(code);
     if (!room) {
-      send(ws, { type: "error", message: "This table does not exist any more." });
+      send(ws, {
+        type: "error",
+        message: "This table does not exist any more.",
+      });
       return ws.close();
     }
     let member: Member | null = null;
 
-    ws.on("error", (err) => { console.error(`Room ${code}:`, err); });
-    ws.on("message", (raw) => guard(code, () => {
-      let msg: ClientMessage;
-      try {
-        msg = JSON.parse(String(raw));
-      } catch {
-        return;
-      }
-      if (!msg || typeof msg !== "object") return;
-
-      if (!member) {
-        if (msg.type !== "hello") return;
-        const isHost = auth.emailFor(msg.sessionToken) === room.hostEmail;
-        member = rooms.join(room, typeof msg.memberToken === "string" ? msg.memberToken : undefined, isHost);
-        member.connected = true;
-        let roomSockets = sockets.get(room);
-        if (!roomSockets) sockets.set(room, (roomSockets = new Map()));
-        roomSockets.set(ws, member);
-        send(ws, { type: "welcome", memberToken: member.token });
-        return broadcast(room);
-      }
-      if (!room.members.includes(member)) return; // kicked
-
-      const wasFinished = room.game?.result != null;
-      let refusal: rooms.Refusal;
-      switch (msg.type) {
-        case "setName":
-          refusal = rooms.setName(room, member, msg.name);
-          break;
-        case "sit":
-          refusal = rooms.sit(room, member, msg.seat);
-          break;
-        case "stand":
-          refusal = rooms.stand(room, member);
-          break;
-        case "start":
-          refusal = rooms.start(room, member);
-          break;
-        case "move":
-          refusal = rooms.move(room, member, msg.move);
-          break;
-        case "skip":
-          refusal = rooms.skip(room, member, msg.playerId);
-          break;
-        case "endGame":
-          refusal = rooms.endGame(room, member);
-          break;
-        case "kick": {
-          refusal = rooms.kick(room, member, msg.playerId);
-          if (refusal === null) {
-            for (const [other, m] of sockets.get(room) ?? []) {
-              if (m.id !== msg.playerId) continue;
-              send(other, { type: "kicked" });
-              sockets.get(room)!.delete(other);
-              other.close();
-            }
+    ws.on("error", (err) => {
+      console.error(`Room ${code}:`, err);
+    });
+    ws.on("message", (raw) =>
+      guard(
+        code,
+        () => {
+          let msg: ClientMessage;
+          try {
+            msg = JSON.parse(String(raw));
+          } catch {
+            return;
           }
-          break;
-        }
-        default:
-          return;
-      }
-      if (refusal !== null) return send(ws, { type: "error", message: refusal });
-      if (!wasFinished && room.game?.result) recordHistory(room);
-      broadcast(room);
-    }, () => recover(room)));
+          if (!msg || typeof msg !== "object") return;
 
-    ws.on("close", () => guard(code, () => {
-      const roomSockets = sockets.get(room);
-      if (!member || !roomSockets?.delete(ws)) return;
-      const current = member;
-      current.connected = [...roomSockets.values()].includes(current);
-      // Visitors who never chose a name leave no trace.
-      if (!current.connected && !current.name && !current.isHost) {
-        room.members = room.members.filter((m) => m !== current);
-      }
-      broadcast(room);
-    }, () => recover(room)));
+          if (!member) {
+            if (msg.type !== "hello") return;
+            const isHost = auth.emailFor(msg.sessionToken) === room.hostEmail;
+            member = rooms.join(
+              room,
+              typeof msg.memberToken === "string" ? msg.memberToken : undefined,
+              isHost,
+            );
+            member.connected = true;
+            let roomSockets = sockets.get(room);
+            if (!roomSockets) sockets.set(room, (roomSockets = new Map()));
+            roomSockets.set(ws, member);
+            send(ws, { type: "welcome", memberToken: member.token });
+            return broadcast(room);
+          }
+          if (!room.members.includes(member)) return; // kicked
+
+          const wasFinished = room.game?.result != null;
+          let refusal: rooms.Refusal;
+          switch (msg.type) {
+            case "setName":
+              refusal = rooms.setName(room, member, msg.name);
+              break;
+            case "sit":
+              refusal = rooms.sit(room, member, msg.seat);
+              break;
+            case "stand":
+              refusal = rooms.stand(room, member);
+              break;
+            case "start":
+              refusal = rooms.start(room, member);
+              break;
+            case "move":
+              refusal = rooms.move(room, member, msg.move);
+              break;
+            case "skip":
+              refusal = rooms.skip(room, member, msg.playerId);
+              break;
+            case "endGame":
+              refusal = rooms.endGame(room, member);
+              break;
+            case "kick": {
+              refusal = rooms.kick(room, member, msg.playerId);
+              if (refusal === null) {
+                for (const [other, m] of sockets.get(room) ?? []) {
+                  if (m.id !== msg.playerId) continue;
+                  send(other, { type: "kicked" });
+                  sockets.get(room)!.delete(other);
+                  other.close();
+                }
+              }
+              break;
+            }
+            default:
+              return;
+          }
+          if (refusal !== null)
+            return send(ws, { type: "error", message: refusal });
+          if (!wasFinished && room.game?.result) recordHistory(room);
+          broadcast(room);
+        },
+        () => recover(room),
+      ),
+    );
+
+    ws.on("close", () =>
+      guard(
+        code,
+        () => {
+          const roomSockets = sockets.get(room);
+          if (!member || !roomSockets?.delete(ws)) return;
+          const current = member;
+          current.connected = [...roomSockets.values()].includes(current);
+          // Visitors who never chose a name leave no trace.
+          if (!current.connected && !current.name && !current.isHost) {
+            room.members = room.members.filter((m) => m !== current);
+          }
+          broadcast(room);
+        },
+        () => recover(room),
+      ),
+    );
   });
 
   // Turn timers: play the default move for anyone who has run out of time.
   const clock = setInterval(() => {
     if (!loaded) return;
     for (const room of roomsByCode.values()) {
-      guard(room.code, () => {
-        if (!room.game || room.game.deadline === null) return;
-        const wasFinished = room.game.result !== null;
-        if (!rooms.expireTurn(room)) return;
-        if (!wasFinished && room.game.result) recordHistory(room);
-        broadcast(room);
-      }, () => recover(room));
+      guard(
+        room.code,
+        () => {
+          if (!room.game || room.game.deadline === null) return;
+          const wasFinished = room.game.result !== null;
+          if (!rooms.expireTurn(room)) return;
+          if (!wasFinished && room.game.result) recordHistory(room);
+          broadcast(room);
+        },
+        () => recover(room),
+      );
     }
   }, 250);
   clock.unref();
 
-  const sweep = setInterval(() => guard("idle sweep", () => {
-    if (!loaded) return;
-    const cutoff = Date.now() - ROOM_IDLE_MS;
-    for (const [code, room] of roomsByCode) {
-      guard(code, () => {
-        if (room.updatedAt < cutoff && !sockets.get(room)?.size) {
-          roomsByCode.delete(code);
-          sockets.delete(room);
+  const sweep = setInterval(
+    () =>
+      guard("idle sweep", () => {
+        if (!loaded) return;
+        const cutoff = Date.now() - ROOM_IDLE_MS;
+        for (const [code, room] of roomsByCode) {
+          guard(
+            code,
+            () => {
+              if (room.updatedAt < cutoff && !sockets.get(room)?.size) {
+                roomsByCode.delete(code);
+                sockets.delete(room);
+              }
+            },
+            () => recover(room),
+          );
         }
-      }, () => recover(room));
-    }
-    persist();
-  }), 60 * 60 * 1000);
+        persist();
+      }),
+    60 * 60 * 1000,
+  );
   sweep.unref();
 
   return {

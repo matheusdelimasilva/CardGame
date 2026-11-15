@@ -1,4 +1,9 @@
-import { MAX_NAME_LENGTH, SEAT_COUNT, type RoomView, type SeatView } from "@cardgame/protocol";
+import {
+  MAX_NAME_LENGTH,
+  SEAT_COUNT,
+  type RoomView,
+  type SeatView,
+} from "@cardgame/protocol";
 import { useEffect, useState, type FormEvent } from "react";
 import { navigate } from "./App";
 import { useTrackAudio } from "./audio";
@@ -12,14 +17,25 @@ export function Room({ code }: { code: string }) {
   const { room, connection, error, send } = useRoom(code);
   const [menuFor, setMenuFor] = useState<string | null>(null);
   // Hooks must run on every render, so this sits above the early returns below.
-  const secondsLeft = useSecondsLeft(room?.game && !room.game.result ? room.game.timer : null);
-  const audio = useTrackAudio(room?.game && !room.game.result ? (room.game.track?.url ?? null) : null);
+  const secondsLeft = useSecondsLeft(
+    room?.game && !room.game.result ? room.game.timer : null,
+  );
+  const audio = useTrackAudio(
+    room?.game && !room.game.result ? (room.game.track?.url ?? null) : null,
+  );
 
   if (connection === "gone") {
-    return <Notice title="Table not found" text="This table has closed or the link is wrong." />;
+    return (
+      <Notice
+        title="Table not found"
+        text="This table has closed or the link is wrong."
+      />
+    );
   }
   if (connection === "kicked") {
-    return <Notice title="Removed" text="The host removed you from this table." />;
+    return (
+      <Notice title="Removed" text="The host removed you from this table." />
+    );
   }
   if (!room) return <Notice title="Joining table..." text={code} quiet />;
 
@@ -40,16 +56,25 @@ export function Room({ code }: { code: string }) {
 
   // Seats are drawn clockwise starting from the viewer, who sits at the bottom.
   const first = you.seat ?? 0;
-  const around = Array.from({ length: SEAT_COUNT }, (_, i) => (first + i) % SEAT_COUNT)
+  const around = Array.from(
+    { length: SEAT_COUNT },
+    (_, i) => (first + i) % SEAT_COUNT,
+  )
     .filter((seat) => seat !== you.seat)
-    .filter((seat) => room.seats[seat] !== null || !running || you.seat === null);
+    .filter(
+      (seat) => room.seats[seat] !== null || !running || you.seat === null,
+    );
   const menuPlayer = menuFor ? (members.get(menuFor) ?? null) : null;
   const waitingOn = running ? game.active.map(nameOf) : [];
 
   return (
     <div className="room">
       <header className="topbar">
-        <button className="topbar-home" onClick={() => navigate("/")} aria-label="Leave table">
+        <button
+          className="topbar-home"
+          onClick={() => navigate("/")}
+          aria-label="Leave table"
+        >
           ‹
         </button>
         <span className="topbar-code">table {room.code}</span>
@@ -66,8 +91,12 @@ export function Room({ code }: { code: string }) {
         <ShareButton code={room.code} />
       </header>
 
-      {connection === "reconnecting" && <div className="reconnecting">Connection lost. Reconnecting...</div>}
-      {audio.status === "blocked" && <div className="sound-prompt">🔊 Tap anywhere to turn on sound</div>}
+      {connection === "reconnecting" && (
+        <div className="reconnecting">Connection lost. Reconnecting...</div>
+      )}
+      {audio.status === "blocked" && (
+        <div className="sound-prompt">🔊 Tap anywhere to turn on sound</div>
+      )}
 
       <div className="felt">
         <div className="oval" />
@@ -82,8 +111,13 @@ export function Room({ code }: { code: string }) {
         {around.map((seat, i) => {
           const player = room.seats[seat];
           const slots = you.seat === null ? around.length : around.length + 1;
-          const angle = ((90 + (360 * (you.seat === null ? i : i + 1)) / slots) * Math.PI) / 180;
-          const style = { left: `${50 + 41 * Math.cos(angle)}%`, top: `${50 + 38 * Math.sin(angle)}%` };
+          const angle =
+            ((90 + (360 * (you.seat === null ? i : i + 1)) / slots) * Math.PI) /
+            180;
+          const style = {
+            left: `${50 + 41 * Math.cos(angle)}%`,
+            top: `${50 + 38 * Math.sin(angle)}%`,
+          };
           return (
             <div className="seat-spot" style={style} key={seat}>
               {player ? (
@@ -91,31 +125,66 @@ export function Room({ code }: { code: string }) {
                   seat={seat}
                   player={player}
                   active={running && game.active.includes(player.id)}
-                  clock={running && game.active.includes(player.id) ? secondsLeft : null}
-                  tag={game && ui && player.inGame ? ui.seatTag(game, player.id) : running ? "next game" : null}
-                  cards={running && ui && gameProps && player.inGame ? <ui.SeatCards {...gameProps} playerId={player.id} /> : null}
+                  clock={
+                    running && game.active.includes(player.id)
+                      ? secondsLeft
+                      : null
+                  }
+                  tag={
+                    game && ui && player.inGame
+                      ? ui.seatTag(game, player.id)
+                      : running
+                        ? "next game"
+                        : null
+                  }
+                  cards={
+                    running && ui && gameProps && player.inGame ? (
+                      <ui.SeatCards {...gameProps} playerId={player.id} />
+                    ) : null
+                  }
                   onClick={you.isHost ? () => setMenuFor(player.id) : undefined}
                 />
               ) : (
-                <OpenSeat onSit={you.name ? () => send({ type: "sit", seat }) : undefined} />
+                <OpenSeat
+                  onSit={
+                    you.name ? () => send({ type: "sit", seat }) : undefined
+                  }
+                />
               )}
             </div>
           );
         })}
 
-        {running && ui && <Announcement key={game.gameId} info={ui.announcement(game, nameOf)} />}
+        {running && ui && (
+          <Announcement
+            key={game.gameId}
+            info={ui.announcement(game, nameOf)}
+          />
+        )}
       </div>
 
       <footer className="dock">
         <div className="dock-me">
           {running && (
-            <div className={`turn-plate${playing && game.active.includes(you.id) ? " mine" : ""}`}>
-              {playing && game.active.includes(you.id) ? "Your turn" : `waiting for ${waitingOn.join(", ")}...`}
-              {secondsLeft !== null && <span className={`plate-clock${secondsLeft <= 5 ? " low" : ""}`}>{secondsLeft}s</span>}
+            <div
+              className={`turn-plate${playing && game.active.includes(you.id) ? " mine" : ""}`}
+            >
+              {playing && game.active.includes(you.id)
+                ? "Your turn"
+                : `waiting for ${waitingOn.join(", ")}...`}
+              {secondsLeft !== null && (
+                <span
+                  className={`plate-clock${secondsLeft <= 5 ? " low" : ""}`}
+                >
+                  {secondsLeft}s
+                </span>
+              )}
             </div>
           )}
           {you.seat !== null ? (
-            <div className={`me-panel${running && game.active.includes(you.id) ? " active" : ""}`}>
+            <div
+              className={`me-panel${running && game.active.includes(you.id) ? " active" : ""}`}
+            >
               <Avatar seat={you.seat} size="lg" />
               <div className="me-text">
                 <span className="nametag me">{you.name}</span>
@@ -128,7 +197,10 @@ export function Room({ code }: { code: string }) {
                 </span>
               </div>
               {!playing && (
-                <button className="btn small" onClick={() => send({ type: "stand" })}>
+                <button
+                  className="btn small"
+                  onClick={() => send({ type: "stand" })}
+                >
                   Stand up
                 </button>
               )}
@@ -157,29 +229,37 @@ export function Room({ code }: { code: string }) {
         )}
         {playing && ui && gameProps && !ui.Dock && (
           <>
-            <div className="dock-hand">{ui.Hand && <ui.Hand {...gameProps} />}</div>
-            <div className="dock-actions">{ui.Actions && <ui.Actions {...gameProps} />}</div>
+            <div className="dock-hand">
+              {ui.Hand && <ui.Hand {...gameProps} />}
+            </div>
+            <div className="dock-actions">
+              {ui.Actions && <ui.Actions {...gameProps} />}
+            </div>
           </>
         )}
       </footer>
 
-      {!you.name && <NamePrompt onSubmit={(name) => send({ type: "setName", name })} />}
+      {!you.name && (
+        <NamePrompt onSubmit={(name) => send({ type: "setName", name })} />
+      )}
 
       {menuPlayer && (
         <div className="overlay" onClick={() => setMenuFor(null)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2 className="name">{menuPlayer.name}</h2>
-            {running && game.active.includes(menuPlayer.id) && !menuPlayer.connected && (
-              <button
-                className="btn blue"
-                onClick={() => {
-                  send({ type: "skip", playerId: menuPlayer.id });
-                  setMenuFor(null);
-                }}
-              >
-                Play their turn for them
-              </button>
-            )}
+            {running &&
+              game.active.includes(menuPlayer.id) &&
+              !menuPlayer.connected && (
+                <button
+                  className="btn blue"
+                  onClick={() => {
+                    send({ type: "skip", playerId: menuPlayer.id });
+                    setMenuFor(null);
+                  }}
+                >
+                  Play their turn for them
+                </button>
+              )}
             {menuPlayer.id !== you.id && (
               <button
                 className="btn red"
@@ -188,7 +268,9 @@ export function Room({ code }: { code: string }) {
                   setMenuFor(null);
                 }}
               >
-                {running && menuPlayer.inGame ? "Remove and end this game" : "Remove from table"}
+                {running && menuPlayer.inGame
+                  ? "Remove and end this game"
+                  : "Remove from table"}
               </button>
             )}
             {running && (
@@ -223,7 +305,15 @@ export function Room({ code }: { code: string }) {
   );
 }
 
-function Lobby({ room, send, nameOf }: { room: RoomView; send: ReturnType<typeof useRoom>["send"]; nameOf: (id: string) => string }) {
+function Lobby({
+  room,
+  send,
+  nameOf,
+}: {
+  room: RoomView;
+  send: ReturnType<typeof useRoom>["send"];
+  nameOf: (id: string) => string;
+}) {
   const info = room.gameInfo;
   const seated = room.seats.filter((s) => s !== null).length;
   const winners = room.game?.result?.winners.map(nameOf) ?? null;
@@ -235,7 +325,9 @@ function Lobby({ room, send, nameOf }: { room: RoomView; send: ReturnType<typeof
         <>
           <div className="lobby-label">game over</div>
           <div className="lobby-winner">★ {winners.join(" & ")} ★</div>
-          <div className="lobby-label">{winners.length > 1 ? "win" : "wins"} {info.name}</div>
+          <div className="lobby-label">
+            {winners.length > 1 ? "win" : "wins"} {info.name}
+          </div>
         </>
       ) : (
         <>
@@ -255,12 +347,18 @@ function Lobby({ room, send, nameOf }: { room: RoomView; send: ReturnType<typeof
       )}
       {room.you.isHost ? (
         <>
-          <button className="btn gold big" disabled={missing > 0} onClick={() => send({ type: "start" })}>
+          <button
+            className="btn gold big"
+            disabled={missing > 0}
+            onClick={() => send({ type: "start" })}
+          >
             {winners ? "Play again" : "Start game"}
           </button>
           {missing > 0 && (
             <div className="lobby-hint">
-              {seated === 0 ? "Take a seat, then share the link." : `Needs ${missing} more player${missing > 1 ? "s" : ""}.`}
+              {seated === 0
+                ? "Take a seat, then share the link."
+                : `Needs ${missing} more player${missing > 1 ? "s" : ""}.`}
             </div>
           )}
         </>
@@ -273,18 +371,33 @@ function Lobby({ room, send, nameOf }: { room: RoomView; send: ReturnType<typeof
 
 /** Counts down a turn timer locally between server updates. null when the turn is not timed. */
 function useSecondsLeft(timer: { remainingMs: number } | null): number | null {
-  const [countdown, setCountdown] = useState<{ timer: typeof timer; left: number } | null>(null);
+  const [countdown, setCountdown] = useState<{
+    timer: typeof timer;
+    left: number;
+  } | null>(null);
   useEffect(() => {
     if (!timer) return;
     const end = performance.now() + timer.remainingMs;
-    const tick = () => setCountdown({ timer, left: Math.max(0, Math.ceil((end - performance.now()) / 1000)) });
+    const tick = () =>
+      setCountdown({
+        timer,
+        left: Math.max(0, Math.ceil((end - performance.now()) / 1000)),
+      });
     const id = setInterval(tick, 250);
     return () => clearInterval(id);
   }, [timer]);
-  return timer ? countdown?.timer === timer ? countdown.left : Math.ceil(timer.remainingMs / 1000) : null;
+  return timer
+    ? countdown?.timer === timer
+      ? countdown.left
+      : Math.ceil(timer.remainingMs / 1000)
+    : null;
 }
 
-function Announcement({ info }: { info: { key: string; title: string; detail: string } | null }) {
+function Announcement({
+  info,
+}: {
+  info: { key: string; title: string; detail: string } | null;
+}) {
   const [hiddenKey, setHiddenKey] = useState<string | null>(null);
   const key = info?.key ?? null;
   useEffect(() => {
@@ -294,7 +407,12 @@ function Announcement({ info }: { info: { key: string; title: string; detail: st
   }, [key]);
   if (!info || hiddenKey === info.key) return null;
   return (
-    <div className="banner" key={info.key} role="status" onClick={() => setHiddenKey(info.key)}>
+    <div
+      className="banner"
+      key={info.key}
+      role="status"
+      onClick={() => setHiddenKey(info.key)}
+    >
       <div className="banner-title">{info.title}</div>
       <div className="banner-detail">{info.detail}</div>
     </div>
@@ -355,7 +473,15 @@ function NamePrompt({ onSubmit }: { onSubmit: (name: string) => void }) {
   );
 }
 
-function Notice({ title, text, quiet }: { title: string; text: string; quiet?: boolean }) {
+function Notice({
+  title,
+  text,
+  quiet,
+}: {
+  title: string;
+  text: string;
+  quiet?: boolean;
+}) {
   return (
     <main className="home">
       <section className="panel notice">

@@ -15,7 +15,9 @@
     "songs": "node tools/songs/scrape-billboard.mjs 1949 2025 && node tools/songs/fetch-musicbrainz.mjs && node tools/songs/build-songs.mjs"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"],
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ],
     "overrides": {
       "@typescript-eslint/typescript-estree>minimatch": "^11.0.8"
     }

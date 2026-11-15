@@ -1,7 +1,13 @@
 // Types only: the song list (with its years) must never be bundled into the client.
 import type { HitsterView, SongCardView } from "@cardgame/games";
 import type { GameView } from "@cardgame/protocol";
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import type { TrackAudio } from "../audio";
 import type { GameProps, GameUI } from "./types";
 
@@ -9,8 +15,14 @@ const viewOf = (game: GameView) => game.view as HitsterView;
 
 // Card colours and layout follow docs/design/song-cards.html (the Vinyl design and its deck back).
 const DECADES: [number, string][] = [
-  [1950, "#ef4a3c"], [1960, "#ff8a3d"], [1970, "#ffd84a"], [1980, "#ff6fae"],
-  [1990, "#3b8cf0"], [2000, "#45c486"], [2010, "#9b7bff"], [2020, "#33cccc"],
+  [1950, "#ef4a3c"],
+  [1960, "#ff8a3d"],
+  [1970, "#ffd84a"],
+  [1980, "#ff6fae"],
+  [1990, "#3b8cf0"],
+  [2000, "#45c486"],
+  [2010, "#9b7bff"],
+  [2020, "#33cccc"],
 ];
 function decadeColor(year: number): string {
   let color = DECADES[0]![1];
@@ -39,7 +51,11 @@ function useFitText(deps: unknown[]) {
         el.style.fontSize = "";
         const base = parseFloat(getComputedStyle(el).fontSize);
         let size = base;
-        while ((el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) && size > base * 0.45) {
+        while (
+          (el.scrollHeight > el.clientHeight + 1 ||
+            el.scrollWidth > el.clientWidth + 1) &&
+          size > base * 0.45
+        ) {
           size *= 0.93;
           el.style.fontSize = `${size}px`;
         }
@@ -59,7 +75,12 @@ function SongCard({ song, fresh }: { song: SongCardView; fresh?: boolean }) {
   const ref = useFitText([song.title, song.artist]);
   // Bring a card you have just won into view in a long timeline.
   useEffect(() => {
-    if (fresh) ref.current?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+    if (fresh)
+      ref.current?.scrollIntoView({
+        inline: "center",
+        block: "nearest",
+        behavior: "smooth",
+      });
   }, [fresh, ref]);
   return (
     <span
@@ -90,9 +111,21 @@ function SongCard({ song, fresh }: { song: SongCardView; fresh?: boolean }) {
  * the decade away. `playing` spins the record and shows the equalizer bars;
  * it is for when the song is actually audible.
  */
-function SongBack({ playing, onTap, tapLabel }: { playing?: boolean; onTap?: () => void; tapLabel?: string }) {
+function SongBack({
+  playing,
+  onTap,
+  tapLabel,
+}: {
+  playing?: boolean;
+  onTap?: () => void;
+  tapLabel?: string;
+}) {
   const card = (
-    <span className={`sc back-size v-vinyl v-back${playing ? " playing" : ""}`} role="img" aria-label="Face-down song card">
+    <span
+      className={`sc back-size v-vinyl v-back${playing ? " playing" : ""}`}
+      role="img"
+      aria-label="Face-down song card"
+    >
       <span className="vn-rec">
         <span className="vn-disc">
           <span className="vn-print" />
@@ -150,14 +183,21 @@ function describeSpot(line: SongCardView[], index: number): string {
 
 function Dock({ game, you, nameOf, move }: GameProps) {
   const view = viewOf(game);
-  const [choice, setChoice] = useState<{ turn: number; index: number | null } | null>(null);
+  const [choice, setChoice] = useState<{
+    turn: number;
+    index: number | null;
+  } | null>(null);
   const selected = choice?.turn === view.turnNumber ? choice.index : null;
-  const setSelected = (index: number | null) => setChoice({ turn: view.turnNumber, index });
+  const setSelected = (index: number | null) =>
+    setChoice({ turn: view.turnNumber, index });
   if (!you) return null;
 
   const line = view.timelines[you] ?? [];
   const myTurn = view.currentPlayer === you;
-  const justWon = view.lastTurn?.player === you && view.lastTurn.outcome === "correct" ? view.lastTurn.song : null;
+  const justWon =
+    view.lastTurn?.player === you && view.lastTurn.outcome === "correct"
+      ? view.lastTurn.song
+      : null;
 
   const spot = (index: number) =>
     myTurn && (
@@ -187,16 +227,29 @@ function Dock({ game, you, nameOf, move }: GameProps) {
         <button
           className="btn gold"
           disabled={!myTurn || selected === null}
-          onClick={() => selected !== null && move({ type: "place", index: selected })}
+          onClick={() =>
+            selected !== null && move({ type: "place", index: selected })
+          }
         >
           Place
         </button>
       </div>
-      <div className="timeline" role="list" aria-label="Your timeline, oldest first">
+      <div
+        className="timeline"
+        role="list"
+        aria-label="Your timeline, oldest first"
+      >
         {line.map((song, i) => (
           <span className="timeline-item" role="listitem" key={song.id}>
             {spot(i)}
-            <SongCard song={song} fresh={justWon !== null && justWon.title === song.title && justWon.artist === song.artist} />
+            <SongCard
+              song={song}
+              fresh={
+                justWon !== null &&
+                justWon.title === song.title &&
+                justWon.artist === song.artist
+              }
+            />
           </span>
         ))}
         {spot(line.length)}
@@ -217,10 +270,14 @@ export const hitsterUI: GameUI = {
           <SongBack
             playing={audio.status === "playing"}
             onTap={audio.muted ? undefined : audio.toggle}
-            tapLabel={audio.status === "playing" ? "Pause the song" : "Play the song"}
+            tapLabel={
+              audio.status === "playing" ? "Pause the song" : "Play the song"
+            }
           />
           <div className="now-text">
-            <span className="now-label">♪ {player === you ? "your song" : `${nameOf(player)}'s song`}</span>
+            <span className="now-label">
+              ♪ {player === you ? "your song" : `${nameOf(player)}'s song`}
+            </span>
             {view.current.title ? (
               <>
                 <span className="now-title">{view.current.title}</span>
@@ -229,13 +286,18 @@ export const hitsterUI: GameUI = {
                 </span>
               </>
             ) : (
-              <span className="now-title">{audio.status === "error" ? "No sound" : "Listen..."}</span>
+              <span className="now-title">
+                {audio.status === "error" ? "No sound" : "Listen..."}
+              </span>
             )}
             <span className="now-hint">{soundHint(audio)}</span>
           </div>
         </div>
         {theirLine && (
-          <div className="year-chips" aria-label={`${nameOf(player)}'s timeline`}>
+          <div
+            className="year-chips"
+            aria-label={`${nameOf(player)}'s timeline`}
+          >
             {theirLine.map((song) => (
               <span className="year-chip" key={song.id}>
                 {song.year}
@@ -272,7 +334,12 @@ export const hitsterUI: GameUI = {
     const who = nameOf(last.player);
     return {
       key: `turn-${last.turnNumber}`,
-      title: last.outcome === "correct" ? `${who} got it!` : last.outcome === "wrong" ? `${who} missed` : `${who} was skipped`,
+      title:
+        last.outcome === "correct"
+          ? `${who} got it!`
+          : last.outcome === "wrong"
+            ? `${who} missed`
+            : `${who} was skipped`,
       detail: `${last.song.title} · ${last.song.artist} · ${last.song.year}`,
     };
   },

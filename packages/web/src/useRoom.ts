@@ -1,8 +1,13 @@
-import type { ClientMessage, RoomView, ServerMessage } from "@cardgame/protocol";
+import type {
+  ClientMessage,
+  RoomView,
+  ServerMessage,
+} from "@cardgame/protocol";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { KEYS, storage } from "./storage";
 
-export type Connection = "connecting" | "open" | "reconnecting" | "gone" | "kicked";
+export type Connection =
+  "connecting" | "open" | "reconnecting" | "gone" | "kicked";
 
 /** Keeps a live connection to one table and reconnects when it drops. */
 export function useRoom(code: string) {
@@ -20,7 +25,9 @@ export function useRoom(code: string) {
     const connect = () => {
       if (stopped) return;
       const proto = location.protocol === "https:" ? "wss:" : "ws:";
-      const ws = new WebSocket(`${proto}//${location.host}/ws?room=${encodeURIComponent(code)}`);
+      const ws = new WebSocket(
+        `${proto}//${location.host}/ws?room=${encodeURIComponent(code)}`,
+      );
       socket.current = ws;
       ws.onopen = () => {
         const hello: ClientMessage = {
@@ -85,7 +92,8 @@ export function useRoom(code: string) {
   }, [error]);
 
   const send = useCallback((msg: ClientMessage) => {
-    if (socket.current?.readyState === WebSocket.OPEN) socket.current.send(JSON.stringify(msg));
+    if (socket.current?.readyState === WebSocket.OPEN)
+      socket.current.send(JSON.stringify(msg));
     else setError("Not connected. Trying again...");
   }, []);
 

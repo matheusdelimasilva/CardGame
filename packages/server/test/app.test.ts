@@ -1,6 +1,12 @@
 import type { AddressInfo } from "node:net";
 import { afterEach, describe, expect, it } from "vitest";
-import type { ClientMessage, GameInfo, HistoryEntry, RoomView, ServerMessage } from "@cardgame/protocol";
+import type {
+  ClientMessage,
+  GameInfo,
+  HistoryEntry,
+  RoomView,
+  ServerMessage,
+} from "@cardgame/protocol";
 import { WebSocket } from "ws";
 import { createApp } from "../src/app";
 
@@ -15,13 +21,23 @@ const fakeDeezer = (async (input: RequestInfo | URL, init?: RequestInit) => {
   deezerCalls.push(url);
   const track = /^https:\/\/api\.deezer\.com\/track\/(\d+)$/.exec(url);
   if (track) {
-    const body = { id: Number(track[1]), title: "T", artist: { name: "A" }, preview: `https://cdn.test/${track[1]}.mp3?hdnea=exp=9999999999` };
-    return new Response(JSON.stringify(body), { headers: { "content-type": "application/json" } });
+    const body = {
+      id: Number(track[1]),
+      title: "T",
+      artist: { name: "A" },
+      preview: `https://cdn.test/${track[1]}.mp3?hdnea=exp=9999999999`,
+    };
+    return new Response(JSON.stringify(body), {
+      headers: { "content-type": "application/json" },
+    });
   }
   const preview = /^https:\/\/cdn\.test\/(\d+)\.mp3/.exec(url);
   if (preview) {
     const range = new Headers(init?.headers).get("range");
-    return new Response(`mp3-of-${preview[1]}`, { status: range ? 206 : 200, headers: { "content-type": "audio/mpeg" } });
+    return new Response(`mp3-of-${preview[1]}`, {
+      status: range ? 206 : 200,
+      headers: { "content-type": "audio/mpeg" },
+    });
   }
   return new Response("{}", { status: 404 });
 }) as typeof fetch;
@@ -30,7 +46,9 @@ async function boot(withEmail = false) {
   app = createApp({
     fetch: fakeDeezer,
     dataFile: null,
-    sendEmail: withEmail ? async (to, code) => void sent.push({ to, code }) : null,
+    sendEmail: withEmail
+      ? async (to, code) => void sent.push({ to, code })
+      : null,
   });
   await new Promise<void>((r) => app.server.listen(0, r));
   base = `localhost:${(app.server.address() as AddressInfo).port}`;
@@ -40,24 +58,46 @@ afterEach(() => app.close());
 const api = async (path: string, body?: unknown, token?: string) => {
   const res = await fetch(`http://${base}${path}`, {
     method: body === undefined ? "GET" : "POST",
-    headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  return { status: res.status, body: (await res.json()) as {
-    token: string; devCode: string; code: string; email: string;
-    games: GameInfo[]; history: HistoryEntry[]; exists: boolean; error: string;
-  } };
+  return {
+    status: res.status,
+    body: (await res.json()) as {
+      token: string;
+      devCode: string;
+      code: string;
+      email: string;
+      games: GameInfo[];
+      history: HistoryEntry[];
+      exists: boolean;
+      error: string;
+    },
+  };
 };
 
 async function signIn(email = "host@example.com") {
   const { body } = await api("/api/auth/request", { email });
-  return (await api("/api/auth/verify", { email, code: body.devCode })).body.token as string;
+  return (await api("/api/auth/verify", { email, code: body.devCode })).body
+    .token as string;
 }
 
 /** A connected client that remembers the last state it was sent. */
-async function client(code: string, hello: Partial<Extract<ClientMessage, { type: "hello" }>> = {}) {
+async function client(
+  code: string,
+  hello: Partial<Extract<ClientMessage, { type: "hello" }>> = {},
+) {
   const ws = new WebSocket(`ws://${base}/ws?room=${code}`);
-  const c = { ws, room: null as RoomView | null, token: "", errors: [] as string[], kicked: false };
+  const c = {
+    ws,
+    room: null as RoomView | null,
+    token: "",
+    errors: [] as string[],
+    kicked: false,
+  };
   let wake = () => {};
   ws.on("message", (raw) => {
     const msg = JSON.parse(String(raw)) as ServerMessage;
@@ -72,7 +112,8 @@ async function client(code: string, hello: Partial<Extract<ClientMessage, { type
   const until = async (test: () => boolean) => {
     const deadline = Date.now() + 2000;
     while (!test()) {
-      if (Date.now() > deadline) throw new Error("Timed out waiting for the server");
+      if (Date.now() > deadline)
+        throw new Error("Timed out waiting for the server");
       await new Promise<void>((r) => {
         wake = r;
         setTimeout(r, 50);
@@ -90,19 +131,48 @@ describe("sign-in", () => {
     const res = await api("/api/auth/request", { email: " Host@Example.com " });
     expect(res.body).toEqual({});
     expect(sent.at(-1)!.to).toBe("host@example.com");
-    expect((await api("/api/auth/verify", { email: "host@example.com", code: "000000" })).status).toBe(400);
-    const ok = await api("/api/auth/verify", { email: "host@example.com", code: sent.at(-1)!.code });
-    expect((await api("/api/me", undefined, ok.body.token)).body.email).toBe("host@example.com");
+    expect(
+      (
+        await api("/api/auth/verify", {
+          email: "host@example.com",
+          code: "000000",
+        })
+      ).status,
+    ).toBe(400);
+    const ok = await api("/api/auth/verify", {
+      email: "host@example.com",
+      code: sent.at(-1)!.code,
+    });
+    expect((await api("/api/me", undefined, ok.body.token)).body.email).toBe(
+      "host@example.com",
+    );
     // A code works once.
-    expect((await api("/api/auth/verify", { email: "host@example.com", code: sent.at(-1)!.code })).status).toBe(400);
+    expect(
+      (
+        await api("/api/auth/verify", {
+          email: "host@example.com",
+          code: sent.at(-1)!.code,
+        })
+      ).status,
+    ).toBe(400);
   });
 
   it("locks a code after too many wrong tries and rejects bad input", async () => {
     await boot(true);
-    expect((await api("/api/auth/request", { email: "nope" })).status).toBe(400);
+    expect((await api("/api/auth/request", { email: "nope" })).status).toBe(
+      400,
+    );
     await api("/api/auth/request", { email: "a@b.co" });
-    for (let i = 0; i < 5; i++) await api("/api/auth/verify", { email: "a@b.co", code: "999999" });
-    expect((await api("/api/auth/verify", { email: "a@b.co", code: sent.at(-1)!.code })).status).toBe(400);
+    for (let i = 0; i < 5; i++)
+      await api("/api/auth/verify", { email: "a@b.co", code: "999999" });
+    expect(
+      (
+        await api("/api/auth/verify", {
+          email: "a@b.co",
+          code: sent.at(-1)!.code,
+        })
+      ).status,
+    ).toBe(400);
     expect((await api("/api/rooms", {})).status).toBe(401);
     expect((await api("/api/rooms", {}, "made-up-token")).status).toBe(401);
   });
@@ -113,11 +183,24 @@ describe("a table over the network", () => {
     await boot();
     const session = await signIn();
     const listed = (await api("/api/games")).body.games;
-    expect(listed.map((g: { id: string }) => g.id)).toEqual(["hitster", "demo"]);
+    expect(listed.map((g: { id: string }) => g.id)).toEqual([
+      "hitster",
+      "demo",
+    ]);
     expect((await api("/api/rooms", {}, session)).status).toBe(400);
-    expect((await api("/api/rooms", { gameId: "__proto__" }, session)).status).toBe(400);
-    const { code } = (await api("/api/rooms", { gameId: "demo", settings: { tiebreaker: "S" } }, session)).body;
-    expect((await api(`/api/rooms/${code.toLowerCase()}`)).body.exists).toBe(true);
+    expect(
+      (await api("/api/rooms", { gameId: "__proto__" }, session)).status,
+    ).toBe(400);
+    const { code } = (
+      await api(
+        "/api/rooms",
+        { gameId: "demo", settings: { tiebreaker: "S" } },
+        session,
+      )
+    ).body;
+    expect((await api(`/api/rooms/${code.toLowerCase()}`)).body.exists).toBe(
+      true,
+    );
     expect((await api("/api/rooms/ZZZZZZ")).body.exists).toBe(false);
 
     const host = await client(code, { sessionToken: session });
@@ -147,14 +230,22 @@ describe("a table over the network", () => {
     const byId = { [host.room!.you.id]: host, [back.room!.you.id]: back };
     for (let i = 0; i < 500 && !host.room!.game!.result; i++) {
       const before = JSON.stringify(host.room!.game);
-      byId[host.room!.game!.active[0]!]!.send({ type: "move", move: { type: "reveal" } });
+      byId[host.room!.game!.active[0]!]!.send({
+        type: "move",
+        move: { type: "reveal" },
+      });
       await host.until(() => JSON.stringify(host.room!.game) !== before);
     }
     expect(host.room!.game!.result!.winners.length).toBeGreaterThan(0);
 
-    const history = (await api("/api/history", undefined, session)).body.history;
+    const history = (await api("/api/history", undefined, session)).body
+      .history;
     expect(history).toHaveLength(1);
-    expect(history[0]).toMatchObject({ roomCode: code, gameName: "Demo", players: ["Hosty", "Guesty"] });
+    expect(history[0]).toMatchObject({
+      roomCode: code,
+      gameName: "Demo",
+      players: ["Hosty", "Guesty"],
+    });
 
     host.send({ type: "kick", playerId: back.room!.you.id });
     await back.until(() => back.kicked);
@@ -164,7 +255,8 @@ describe("a table over the network", () => {
   it("plays the current Hitster song to the table without naming it, and only while it is current", async () => {
     await boot();
     const session = await signIn();
-    const { code } = (await api("/api/rooms", { gameId: "hitster" }, session)).body;
+    const { code } = (await api("/api/rooms", { gameId: "hitster" }, session))
+      .body;
     const host = await client(code, { sessionToken: session });
     const guest = await client(code);
     host.send({ type: "setName", name: "Hosty" });
@@ -177,7 +269,9 @@ describe("a table over the network", () => {
 
     const first = guest.room!.game!.track!.url;
     expect(JSON.stringify(guest.room)).not.toContain("deezerId");
-    const res = await fetch(`http://${base}${first}`, { headers: { range: "bytes=0-" } });
+    const res = await fetch(`http://${base}${first}`, {
+      headers: { range: "bytes=0-" },
+    });
     expect(res.status).toBe(206);
     expect(res.headers.get("content-type")).toBe("audio/mpeg");
     const played = /^mp3-of-(\d+)$/.exec(await res.text())![1]!;
@@ -188,15 +282,25 @@ describe("a table over the network", () => {
     host.send({ type: "move", move: { type: "place", index: 0 } });
     await guest.until(() => guest.room!.game!.track!.url !== first);
     expect((await fetch(`http://${base}${first}`)).status).toBe(404);
-    expect((await fetch(`http://${base}${guest.room!.game!.track!.url}`)).status).toBe(200);
-    expect((await fetch(`http://${base}/api/rooms/${code}/track/${"0".repeat(48)}`)).status).toBe(404);
-    expect((await fetch(`http://${base}/api/rooms/ZZZZZZ/track/${"0".repeat(48)}`)).status).toBe(404);
+    expect(
+      (await fetch(`http://${base}${guest.room!.game!.track!.url}`)).status,
+    ).toBe(200);
+    expect(
+      (await fetch(`http://${base}/api/rooms/${code}/track/${"0".repeat(48)}`))
+        .status,
+    ).toBe(404);
+    expect(
+      (await fetch(`http://${base}/api/rooms/ZZZZZZ/track/${"0".repeat(48)}`))
+        .status,
+    ).toBe(404);
   });
 
   it("refuses a connection to a table that does not exist", async () => {
     await boot();
     const ws = new WebSocket(`ws://${base}/ws?room=NOPE12`);
-    const message = await new Promise<ServerMessage>((r) => ws.once("message", (raw) => r(JSON.parse(String(raw)))));
+    const message = await new Promise<ServerMessage>((r) =>
+      ws.once("message", (raw) => r(JSON.parse(String(raw)))),
+    );
     expect(message.type).toBe("error");
   });
 });

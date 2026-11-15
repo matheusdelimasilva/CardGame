@@ -112,7 +112,11 @@ const timeline = (player: PlayerId) => `timeline:${player}`;
  * years (oldest first). A song from the same year as a neighbour fits on
  * either side of it.
  */
-export function fitsAt(years: readonly number[], index: number, year: number): boolean {
+export function fitsAt(
+  years: readonly number[],
+  index: number,
+  year: number,
+): boolean {
   const before = index > 0 ? years[index - 1]! : -Infinity;
   const after = index < years.length ? years[index]! : Infinity;
   return before <= year && year <= after;
@@ -127,7 +131,9 @@ function drawSong(state: HitsterState): void {
   if (table.zones.deck!.cards.length === 0) {
     if (table.zones.discard!.cards.length === 0) {
       // Every song is in a timeline: whoever holds the most wins.
-      const sizes = state.players.map((p) => table.zones[timeline(p)]!.cards.length);
+      const sizes = state.players.map(
+        (p) => table.zones[timeline(p)]!.cards.length,
+      );
       const most = Math.max(...sizes);
       state.winners = state.players.filter((_, i) => sizes[i] === most);
       return;
@@ -142,13 +148,15 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
   name: "Hitster",
   minPlayers: 2,
   maxPlayers: 8,
-  description: "Hear a song and place it in your timeline by release year. First to fill their timeline wins.",
+  description:
+    "Hear a song and place it in your timeline by release year. First to fill their timeline wins.",
   settings: [
     {
       type: "select",
       id: "cardsToWin",
       label: "Cards to win",
-      description: "The first player with this many songs in their timeline wins.",
+      description:
+        "The first player with this many songs in their timeline wins.",
       options: [
         { value: "5", label: "5: short game" },
         { value: "8", label: "8" },
@@ -160,17 +168,24 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       type: "toggle",
       id: "showSongInfo",
       label: "Show title and artist",
-      description: "Shows the song's name while it plays. Much easier; meant for playing without sound.",
+      description:
+        "Shows the song's name while it plays. Much easier; meant for playing without sound.",
       default: false,
     },
   ],
 
   setup({ players, seed, settings }) {
     let table = createTable(seed);
-    for (const zone of ["deck", "discard", "current"]) table = addZone(table, zone);
-    for (const player of players) table = addZone(table, timeline(player), player);
-    table = shuffle(addCards(table, "deck", sampleSongs(seed, DECK_SIZE).map(songKey)), "deck");
-    for (const player of players) table = deal(table, "deck", timeline(player), FACE_UP).table;
+    for (const zone of ["deck", "discard", "current"])
+      table = addZone(table, zone);
+    for (const player of players)
+      table = addZone(table, timeline(player), player);
+    table = shuffle(
+      addCards(table, "deck", sampleSongs(seed, DECK_SIZE).map(songKey)),
+      "deck",
+    );
+    for (const player of players)
+      table = deal(table, "deck", timeline(player), FACE_UP).table;
 
     const state: HitsterState = {
       table,
@@ -188,7 +203,8 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
 
   applyMove(current, player, move) {
     if (current.winners) return { ok: false, error: "The game is over." };
-    if (current.players[current.turn] !== player) return { ok: false, error: "It is not your turn." };
+    if (current.players[current.turn] !== player)
+      return { ok: false, error: "It is not your turn." };
     const state = structuredClone(current);
     const card = state.table.zones.current!.cards[0]!;
     const { title, artist, year } = songOf(card.face);
@@ -197,7 +213,11 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
 
     if (move.type === "place") {
       const years = yearsOf(state, player);
-      if (!Number.isInteger(move.index) || move.index < 0 || move.index > years.length) {
+      if (
+        !Number.isInteger(move.index) ||
+        move.index < 0 ||
+        move.index > years.length
+      ) {
         return { ok: false, error: "That is not a spot in your timeline." };
       }
       outcome = fitsAt(years, move.index, song.year) ? "correct" : "wrong";
@@ -209,7 +229,10 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
 
     state.table =
       outcome === "correct"
-        ? moveCard(state.table, card.id, timeline(player), { index: (move as { index: number }).index, visibleTo: FACE_UP })
+        ? moveCard(state.table, card.id, timeline(player), {
+            index: (move as { index: number }).index,
+            visibleTo: FACE_UP,
+          })
         : moveCard(state.table, card.id, "discard", { visibleTo: FACE_UP });
     state.lastTurn = { turnNumber: state.turnNumber, player, song, outcome };
 
@@ -231,7 +254,9 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
 
   view(state) {
     // Built field by field rather than from the raw table, so the current song's year cannot slip out.
-    const card = state.winners ? undefined : state.table.zones.current!.cards[0];
+    const card = state.winners
+      ? undefined
+      : state.table.zones.current!.cards[0];
     const song = card ? songForView(card.face) : null;
     return {
       players: state.players,
@@ -271,7 +296,9 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
   },
 
   currentTrack(state) {
-    const card = state.winners ? undefined : state.table.zones.current!.cards[0];
+    const card = state.winners
+      ? undefined
+      : state.table.zones.current!.cards[0];
     if (!card) return null;
     const { title, artist, deezerId } = songOf(card.face);
     return { title, artist, deezerId };
