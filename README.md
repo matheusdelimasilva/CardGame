@@ -34,13 +34,22 @@ pnpm build
 RESEND_API_KEY=... EMAIL_FROM="CardGame <you@your-domain>" NODE_ENV=production pnpm start
 ```
 
-| Variable         | Default            | Purpose                                                                            |
-| ---------------- | ------------------ | ---------------------------------------------------------------------------------- |
-| `PORT`           | `3001`             | HTTP and WebSocket port                                                            |
-| `RESEND_API_KEY` | none               | Sends sign-in codes by email. Required when `NODE_ENV=production`                  |
-| `EMAIL_FROM`     | Resend test sender | From address for sign-in emails                                                    |
-| `DATA_FILE`      | `data/db.json`     | JSON storage for sessions, history and room snapshots when `DATABASE_URL` is unset |
-| `DATABASE_URL`   | none               | Postgres connection URL; uses Postgres instead of `DATA_FILE`                      |
+| Variable         | Default            | Purpose                                                                                                     |
+| ---------------- | ------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `PORT`           | `3001`             | HTTP and WebSocket port                                                                                     |
+| `RESEND_API_KEY` | none               | Sends sign-in codes by email. Required when `NODE_ENV=production`                                           |
+| `EMAIL_FROM`     | Resend test sender | From address for sign-in emails                                                                             |
+| `DATA_FILE`      | `data/db.json`     | JSON storage for sessions, history and room snapshots when `DATABASE_URL` is unset                          |
+| `DATABASE_URL`   | none               | Postgres connection URL; uses Postgres instead of `DATA_FILE`                                               |
+| `TRUST_PROXY`    | unset              | Set to `1` only behind a trusted reverse proxy to use the first `X-Forwarded-For` address for rate limiting |
+
+Sign-in code requests are limited to five per IP per ten-minute fixed window,
+in memory per server process. By default the IP is `req.socket.remoteAddress`;
+forwarded headers are ignored. With `TRUST_PROXY=1`, the proxy must overwrite
+`X-Forwarded-For` and prevent direct untrusted access to the server. Expired codes
+and rate-limit entries are pruned every minute. Sessions expire after 30 days
+without a successful authenticated use; each use refreshes their stored timestamp.
+Existing sessions without timestamps are migrated as last used at startup.
 
 ### Postgres locally
 
@@ -54,7 +63,7 @@ docker run --name cardgame-postgres \
 DATABASE_URL=postgres://cardgame:cardgame@localhost:5432/cardgame pnpm dev
 ```
 
-The server creates missing tables on startup: `sessions` (`token` primary key, `email`),
+The server creates missing tables on startup: `sessions` (`token` primary key, `email`, `last_used` epoch milliseconds),
 `history` (`host_email` primary key, `entries` JSONB array, newest first, up to 100 games),
 and `rooms` (`code` primary key, `snapshot` JSONB). It loads them into memory before
 accepting requests. Writes are debounced by 300 ms; only changed rows are written,

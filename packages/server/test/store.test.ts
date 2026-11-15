@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { AddressInfo } from "node:net";
@@ -13,6 +13,7 @@ import * as rooms from "../src/rooms";
 import { createStore, JsonStore, PostgresStore } from "../src/store";
 
 const email = "host@example.com";
+const session = { email, lastUsed: Date.now() };
 const entry: HistoryEntry = {
   roomCode: "ABC234",
   gameId: "demo",
@@ -37,6 +38,44 @@ function runningRoom(code = "ABC234") {
 describe("JSON store and selection", () => {
   afterEach(() => vi.unstubAllEnvs());
 
+  it("migrates legacy sessions at load time and persists sliding timestamps", () => {
+    const dir = mkdtempSync(join(tmpdir(), "cardgame-legacy-"));
+    try {
+      const file = join(dir, "db.json");
+      writeFileSync(
+        file,
+        JSON.stringify({
+          sessions: {
+            old: email,
+            missingTimestamp: { email },
+            existing: session,
+          },
+        }),
+      );
+      const before = Date.now();
+      const store = new JsonStore(file);
+      expect(store.data.sessions.old!.email).toBe(email);
+      expect(store.data.sessions.old!.lastUsed).toBeGreaterThanOrEqual(before);
+      expect(store.data.sessions.missingTimestamp).toEqual(
+        store.data.sessions.old,
+      );
+      expect(store.data.sessions.existing).toEqual(session);
+      const auth = new Auth(store, null);
+      const later = Date.now() + 1000;
+      expect(auth.emailFor("old", later)).toBe(email);
+      store.close();
+      expect(new JsonStore(file).data.sessions.old).toEqual({
+        email,
+        lastUsed: later,
+      });
+      expect(auth.emailFor("old", later + 30 * 24 * 60 * 60 * 1000)).toBeNull();
+      store.close();
+      expect(new JsonStore(file).data.sessions.old).toBeUndefined();
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
   it("defaults to JSON and round-trips sessions, ordered history and a running game", async () => {
     vi.stubEnv("DATABASE_URL", "");
     const dir = mkdtempSync(join(tmpdir(), "cardgame-store-"));
@@ -46,7 +85,7 @@ describe("JSON store and selection", () => {
       expect(store).toBeInstanceOf(JsonStore);
       const room = runningRoom();
       store.data = {
-        sessions: { token: email },
+        sessions: { token: session },
         history: { [email]: [entry] },
         rooms: [room],
       };
@@ -67,7 +106,7 @@ describe("JSON store and selection", () => {
     );
     const store = createStore(null);
     expect(store).toBeInstanceOf(JsonStore);
-    store.data.sessions.token = email;
+    store.data.sessions.token = { ...session };
     store.save();
     await store.close();
     expect(createStore(null).data.sessions).toEqual({});
@@ -174,6 +213,24 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     ).toBe("jsonb");
   });
 
+  it("migrates legacy Postgres sessions without losing tokens", async () => {
+    await sql.query(
+      "CREATE TABLE sessions (token TEXT PRIMARY KEY, email TEXT NOT NULL)",
+    );
+    await sql.query("INSERT INTO sessions VALUES ($1, $2)", ["legacy", email]);
+    const before = Date.now();
+    const store = await open();
+    expect(store.data.sessions.legacy!.email).toBe(email);
+    expect(store.data.sessions.legacy!.lastUsed).toBeGreaterThanOrEqual(before);
+    const later = Date.now() + 1000;
+    new Auth(store, null).emailFor("legacy", later);
+    await close(store);
+    expect((await open()).data.sessions.legacy).toEqual({
+      email,
+      lastUsed: later,
+    });
+  });
+
   it("debounces in-place room mutations and never rewrites unchanged rooms", async () => {
     const store = await open();
     const changed = runningRoom();
@@ -205,7 +262,7 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     const after = await versions();
     expect(after[0]!.version).not.toBe(before[0]!.version);
     expect(after[1]).toEqual(before[1]);
-    store.data.sessions.another = email;
+    store.data.sessions.another = { ...session };
     store.save();
     await store.flush();
     expect(await versions()).toEqual(after);
@@ -219,7 +276,7 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     await sql.query(
       "ALTER TABLE rooms ADD CONSTRAINT reject_test_room CHECK (code <> 'ABC234')",
     );
-    store.data.sessions.token = email;
+    store.data.sessions.token = { ...session };
     store.data.history[email] = [entry];
     store.data.rooms = [runningRoom()];
     await expect(store.flush()).rejects.toThrow(/reject_test_room/);
@@ -228,7 +285,7 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     await sql.query("ALTER TABLE rooms DROP CONSTRAINT reject_test_room");
     await store.flush();
     expect((await sql.query("SELECT * FROM sessions")).rows).toEqual([
-      { token: "token", email },
+      { token: "token", email, last_used: String(session.lastUsed) },
     ]);
     expect(
       (await sql.query("SELECT snapshot FROM rooms")).rows[0].snapshot,
@@ -276,7 +333,7 @@ describe.skipIf(!testDatabaseUrl)("Postgres store (TEST_DATABASE_URL)", () => {
     const store = await open();
     const room = runningRoom();
     store.data = {
-      sessions: { token: email },
+      sessions: { token: session },
       history: { [email]: [entry] },
       rooms: [room],
     };

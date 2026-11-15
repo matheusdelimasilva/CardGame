@@ -46,7 +46,7 @@ Each song records which one it used in `yearSource` (`musicbrainz` or `chart-yea
 
 `title`, `artist`, `year` (release year, the one to use), `yearSource`, `chartYear`,
 `chartRank`, `mbid` (MusicBrainz recording ID when matched), `deezerId` (Deezer track for the
-30s preview, played via `GET /api/preview?deezerId=`; null when not matched yet).
+30s preview, played via the room-scoped track URL; null when not matched yet).
 A song that charted in two consecutive years appears once.
 
 ## Known limits

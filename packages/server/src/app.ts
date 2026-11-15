@@ -7,13 +7,21 @@ import {
 } from "node:http";
 import { extname, join as joinPath, normalize } from "node:path";
 import { games } from "@cardgame/games";
-import type {
-  ClientMessage,
-  HistoryEntry,
-  ServerMessage,
+import {
+  clientMessageSchema,
+  type HistoryEntry,
+  type ServerMessage,
 } from "@cardgame/protocol";
 import { WebSocket, WebSocketServer } from "ws";
-import { Auth, normalizeEmail, type SendEmail } from "./auth";
+import { Auth, type SendEmail } from "./auth";
+import {
+  clientIp,
+  createRoomSchema,
+  HttpError,
+  readBody,
+  requestCodeSchema,
+  verifyCodeSchema,
+} from "./http";
 import { Deezer } from "./deezer";
 import { guard } from "./guard";
 import * as rooms from "./rooms";
@@ -152,24 +160,6 @@ export function createApp(options: AppOptions): {
     res.end(JSON.stringify(body));
   };
 
-  const readBody = (req: IncomingMessage) =>
-    new Promise<Record<string, unknown>>((resolve) => {
-      let raw = "";
-      req.on("data", (chunk) => {
-        raw += chunk;
-        if (raw.length > 10_000) req.destroy();
-      });
-      req.on("end", () => {
-        try {
-          const parsed = JSON.parse(raw || "{}");
-          resolve(parsed && typeof parsed === "object" ? parsed : {});
-        } catch {
-          resolve({});
-        }
-      });
-      req.on("error", () => resolve({}));
-    });
-
   const sessionEmail = (req: IncomingMessage) => {
     const header = req.headers.authorization ?? "";
     return auth.emailFor(header.startsWith("Bearer ") ? header.slice(7) : null);
@@ -202,18 +192,19 @@ export function createApp(options: AppOptions): {
       const route = `${req.method} ${url.pathname}`;
       await ready;
       if (route === "POST /api/auth/request") {
-        const email = normalizeEmail((await readBody(req)).email);
-        if (!email)
-          return json(res, 400, { error: "Enter a valid email address." });
+        if (!auth.allowRequest(clientIp(req))) {
+          req.resume();
+          return json(res, 429, {
+            error: "Too many sign-in requests. Try again later.",
+          });
+        }
+        const { email } = await readBody(req, requestCodeSchema);
         const result = await auth.requestCode(email);
         return json(res, result.error ? 429 : 200, result);
       }
       if (route === "POST /api/auth/verify") {
-        const body = await readBody(req);
-        const email = normalizeEmail(body.email);
-        if (!email)
-          return json(res, 400, { error: "Enter a valid email address." });
-        const result = auth.verify(email, String(body.code ?? ""));
+        const { email, code } = await readBody(req, verifyCodeSchema);
+        const result = auth.verify(email, code);
         return json(
           res,
           result.error ? 400 : 200,
@@ -240,8 +231,8 @@ export function createApp(options: AppOptions): {
         const email = sessionEmail(req);
         if (!email)
           return json(res, 401, { error: "Sign in to host a table." });
-        const body = await readBody(req);
-        const gameId = String(body.gameId ?? "");
+        const body = await readBody(req, createRoomSchema);
+        const gameId = body.gameId;
         if (!Object.hasOwn(games, gameId))
           return json(res, 400, { error: "Choose a game first." });
         let code = rooms.newRoomCode();
@@ -257,19 +248,6 @@ export function createApp(options: AppOptions): {
         const email = sessionEmail(req);
         if (!email) return json(res, 401, { error: "Not signed in." });
         return json(res, 200, { history: store.data.history[email] ?? [] });
-      }
-      if (route === "GET /api/preview") {
-        // ?title=...&artist=...  or  ?deezerId=123  ->  audio/mpeg (30s preview)
-        const id = Number(url.searchParams.get("deezerId"));
-        const title = url.searchParams.get("title")?.trim();
-        const artist = url.searchParams.get("artist")?.trim();
-        if (id > 0)
-          return await deezer.streamPreview({ deezerId: id }, req, res);
-        if (!title || !artist)
-          return json(res, 400, {
-            error: "Pass title and artist, or deezerId.",
-          });
-        return await deezer.streamPreview({ title, artist }, req, res);
       }
       // The recording a table is listening to. The path says nothing about which song it is,
       // and stops working as soon as the game moves on to the next one.
@@ -296,10 +274,14 @@ export function createApp(options: AppOptions): {
       if (req.method === "GET") return serveStatic(url.pathname, res);
       json(res, 405, { error: "Method not allowed." });
     } catch (err) {
-      console.error(`Room ${code}:`, err);
+      if (!(err instanceof HttpError)) console.error(`Room ${code}:`, err);
       guard(code, () => {
         if (res.headersSent) res.destroy();
-        else json(res, 500, { error: "Something went wrong." });
+        else
+          json(res, err instanceof HttpError ? err.status : 500, {
+            error:
+              err instanceof HttpError ? err.message : "Something went wrong.",
+          });
       });
     }
   });
@@ -340,13 +322,16 @@ export function createApp(options: AppOptions): {
       guard(
         code,
         () => {
-          let msg: ClientMessage;
+          let input: unknown;
           try {
-            msg = JSON.parse(String(raw));
+            input = JSON.parse(String(raw));
           } catch {
-            return;
+            return send(ws, { type: "error", message: "Invalid message." });
           }
-          if (!msg || typeof msg !== "object") return;
+          const parsed = clientMessageSchema.safeParse(input);
+          if (!parsed.success)
+            return send(ws, { type: "error", message: "Invalid message." });
+          const msg = parsed.data;
 
           if (!member) {
             if (msg.type !== "hello") return;
@@ -474,12 +459,22 @@ export function createApp(options: AppOptions): {
   );
   sweep.unref();
 
+  const authSweep = setInterval(
+    () =>
+      guard("auth cleanup", () => {
+        if (loaded) auth.prune();
+      }),
+    60_000,
+  );
+  authSweep.unref();
+
   return {
     server,
     ready,
     close: async () => {
       clearInterval(sweep);
       clearInterval(clock);
+      clearInterval(authSweep);
       for (const ws of wss.clients) ws.terminate();
       await Promise.all([
         new Promise<void>((resolve) => wss.close(() => resolve())),
