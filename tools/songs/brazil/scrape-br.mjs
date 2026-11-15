@@ -35,11 +35,12 @@ function chartName(page) {
 function rowsFromTables(tables, chartYear, chart) {
   const out = [];
   for (const rows of tables) {
-    const hi = rows.findIndex((r) => r.some((c) => /^(can[çc][ãa]o|single|t[íi]tulo)/i.test(c)) && r.some((c) => /^artista/i.test(c)));
+    const artistHeader = /^(artista|cantor|int[ée]rprete)/i;
+    const hi = rows.findIndex((r) => r.some((c) => /^(can[çc][ãa]o|single|t[íi]tulo)/i.test(c)) && r.some((c) => artistHeader.test(c)));
     if (hi < 0) continue;
     const h = rows[hi];
     const iTitle = h.findIndex((c) => /^(can[çc][ãa]o|single|t[íi]tulo)/i.test(c));
-    const iArtist = h.findIndex((c) => /^artista/i.test(c));
+    const iArtist = h.findIndex((c) => artistHeader.test(c));
     const iRank = h.findIndex((c) => /^(posi|#|n\.?º|rank)/i.test(c));
     for (const r of rows.slice(hi + 1)) {
       const title = r[iTitle], artist = r[iArtist];
@@ -61,7 +62,7 @@ const chartsPath = join(BR_CACHE, "charts.json");
 const charts = await readJson(chartsPath, { pages: {} });
 for (const prefix of CHART_PREFIXES) {
   for (const page of await listPages(prefix)) {
-    if (SKIP.test(page) || charts.pages[page]) continue;
+    if (SKIP.test(page) || charts.pages[page]?.rows.length) continue;
     const chartYear = Number(/em (\d{4})/.exec(page)?.[1]);
     const wt = await getWikitext(page);
     const rows = wt ? rowsFromTables(parseTables(wt), chartYear, chartName(page)) : [];

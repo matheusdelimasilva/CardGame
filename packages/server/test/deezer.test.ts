@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Deezer, scoreCandidate } from "../src/deezer";
+import { Deezer, primaryArtist, scoreCandidate } from "../src/deezer";
 
 const t = (id: number, title: string, artist: string, rank = 500_000, preview = `https://cdn/x${id}.mp3?hdnea=exp=9999999999`) => ({
   id,
@@ -10,6 +10,27 @@ const t = (id: number, title: string, artist: string, rank = 500_000, preview = 
 });
 
 describe("scoreCandidate", () => {
+  it("does not substitute the original recording for a requested remix", () => {
+    const song = { title: "Tá OK (Remix)", artist: "DENNIS" };
+    expect(scoreCandidate(song, t(1, "Tá OK", "DENNIS"))).toBeNull();
+    expect(scoreCandidate(song, t(2, "Tá OK (Remix)", "DENNIS"))).not.toBeNull();
+  });
+  it("handles Brazilian participation credits without splitting duo names", () => {
+    for (const credit of ["Kevinho com a participação de Anitta", "Kevinho (com a participação de Anitta)", "Kevinho part. Anitta"]) {
+      expect(primaryArtist(credit)).toBe("Kevinho");
+      expect(scoreCandidate({ title: "Terremoto", artist: credit }, t(1, "Terremoto (part. Anitta)", "Kevinho"))).not.toBeNull();
+    }
+    expect(primaryArtist("Bruno & Marrone")).toBe("Bruno & Marrone");
+    expect(primaryArtist("Grupo Menos é Mais")).toBe("Grupo Menos é Mais");
+    expect(scoreCandidate({ title: "Terremoto", artist: "Kevinho" }, t(1, "Terremoto (part. Anitta)", "Kevinho"))).toBeNull();
+  });
+  it("accepts Ao Vivo only when explicitly requested", () => {
+    const song = { title: "Gosta de Rua", artist: "Felipe & Rodrigo" };
+    expect(scoreCandidate(song, t(1, "Gosta de Rua - Ao Vivo", song.artist))).toBeNull();
+    expect(scoreCandidate({ ...song, title: "Gosta de Rua (Ao Vivo)" }, t(1, "Gosta de Rua - Ao Vivo", song.artist))).not.toBeNull();
+    expect(scoreCandidate({ ...song, title: "Gosta de Rua (Ao Vivo)" }, t(1, "Gosta de Rua", song.artist))).toBeNull();
+    expect(scoreCandidate({ ...song, title: "Gosta de Rua (Ao Vivo)" }, t(1, "Gosta de Rua (Ao Vivo) (Remix)", song.artist))).toBeNull();
+  });
   const want = { title: "Africa", artist: "Toto" };
   it("rejects other songs and artists", () => {
     expect(scoreCandidate(want, t(1, "Rosanna", "Toto"))).toBeNull();
@@ -66,6 +87,19 @@ describe("scoreCandidate", () => {
 });
 
 describe("Deezer.findTrack", () => {
+  it("falls back to the lead Brazilian artist while preserving the full credit", async () => {
+    const fake = (async () => new Response(JSON.stringify({ data: [t(12, "Garota de Ipanema", "Tom Jobim")] }))) as typeof fetch;
+    expect((await new Deezer(fake).findTrack({ title: "Garota de Ipanema", artist: "Tom Jobim e Vinicius de Moraes" }))?.id).toBe(12);
+  });
+  it("tries the full name first for acts joined by e", async () => {
+    const calls: string[] = [];
+    const fake = (async (url: string) => {
+      calls.push(url);
+      return new Response(JSON.stringify({ data: [t(13, "Asa Branca", "Luiz Gonzaga e Humberto Teixeira")] }));
+    }) as typeof fetch;
+    expect((await new Deezer(fake).findTrack({ title: "Asa Branca", artist: "Luiz Gonzaga e Humberto Teixeira" }))?.id).toBe(13);
+    expect(calls).toHaveLength(1);
+  });
   it("accepts a feat. tag naming artists from the full credit", async () => {
     const fake = (async () => new Response(JSON.stringify({ data: [t(9, "Uptown Funk (feat. Bruno Mars)", "Mark Ronson")] }))) as typeof fetch;
     const hit = await new Deezer(fake).findTrack({ title: "Uptown Funk", artist: "Mark Ronson featuring Bruno Mars" });

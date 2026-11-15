@@ -39,7 +39,7 @@ const API = "https://api.deezer.com";
 const EXPIRY_MARGIN_MS = 5 * 60 * 1000;
 /** A different recording from the hit: rejected unless the wanted title asks for it. */
 const VARIANT =
-  /\b(live|remix|rmx|mix|mixshow|karaoke|instrumental|a ?cap+ella|acoustic|demo|cover|tribute|re-?record(ing|ed)?|sped up|slowed|reprise|redux|overdub|alternate take|alt\.? take|pianoforte|taylor['’]?s version|vs\.?)\b|\b(19|20)\d\d version\b/i;
+  /\b(live|ao vivo|remix|rmx|mix|mixshow|karaoke|instrumental|a ?cap+ella|acoustic|demo|cover|tribute|re-?record(ing|ed)?|sped up|slowed|reprise|redux|overdub|alternate take|alt\.? take|pianoforte|taylor['’]?s version|vs\.?)\b|\b(19|20)\d\d version\b/i;
 /** Bracket tags that don't change the recording ("Single Version", "Remastered 2009", ...). */
 const HARMLESS =
   /^((\d{4} )?(digital(ly)? )?remaster(ed)?( version)?( \d{4})?|single( version| edit)?|radio edit|(7|12)"? (inch )?(single )?edit|edit(ed)?( version)?|mono( version)?|stereo( version)?|original( mix| version)?|(love )?theme from .*|(from|music from) (the )?(original )?(motion picture|film|movie|musical|soundtrack|ost|tv|series)\b.*|from ["“].*|.*\bsoundtrack\b.*)$/i;
@@ -61,7 +61,7 @@ export function norm(s: string): string {
 
 /** "Mariah Carey featuring Boyz II Men" -> "Mariah Carey". */
 export function primaryArtist(artist: string): string {
-  return artist.split(/\s+(?:featuring|feat\.?|ft\.?|with|duet with|x)\s+|\s*\/\s*|,\s+/i)[0]!.trim();
+  return artist.split(/\s+\(?(?:featuring|feat\.?|ft\.?|with|duet with|com (?:a )?participação de|participação de|part\.?|x)\s+|\s*\/\s*|,\s+/i)[0]!.trim().replace(/\s*\($/, "");
 }
 
 /**
@@ -91,14 +91,14 @@ function sameArtist(want: string, got: string): boolean {
  */
 function cleanTags(want: SongQuery, title: string): boolean {
   const wantedTitle = norm(want.title.replace(/[()[\]]/g, " "));
-  const wantedArtists = new Set(norm(want.credit ?? want.artist).split(" "));
+  const wantedArtists = new Set(norm((want.credit ?? want.artist).replace(/[()[\]]/g, " ")).split(" "));
   const tags = [...title.matchAll(/\(([^)]*)\)|\[([^\]]*)\]|\s-\s(.+)$/g)].map((m) => (m[1] ?? m[2] ?? m[3])!.trim());
   return tags.every((tag) => {
     for (const part of tag.split(/\s*[/;]\s*/)) {
       const p = part.trim();
       if (!p || HARMLESS.test(p) || (norm(p) && wantedTitle.includes(norm(p)))) continue;
-      const feat = /^(feat\.?|featuring|ft\.?|with)\s+(.*)$/i.exec(p);
-      if (feat && norm(feat[2]!).split(" ").every((w) => w === "and" || wantedArtists.has(w))) continue;
+      const feat = /^(feat\.?|featuring|ft\.?|with|com (?:a )?participação de|participação de|part\.?)\s+(.*)$/i.exec(p);
+      if (feat && norm(feat[2]!).split(" ").every((w) => w === "and" || w === "e" || wantedArtists.has(w))) continue;
       return false;
     }
     return true;
@@ -111,6 +111,9 @@ export function scoreCandidate(want: SongQuery, t: ApiTrack): number | null {
   if (IMPOSTOR.test(t.artist.name) || (IMPOSTOR.test(t.title) && !IMPOSTOR.test(want.title))) return null;
   // Remixes, live takes, re-recordings etc. are other recordings: a miss beats a wrong one.
   if (VARIANT.test(t.title) && !VARIANT.test(want.title)) return null;
+  // An explicitly requested Brazilian live hit must not fall back to a studio take.
+  if (/\bao vivo\b/i.test(want.title) && !/\b(ao vivo|live)\b/i.test(t.title)) return null;
+  if (/\b(remix|rmx)\b/i.test(want.title) && !/\b(remix|rmx)\b/i.test(t.title)) return null;
 
   const wanted = titleForms(want.title);
   const got = [...titleForms(t.title), ...titleForms(t.title_short ?? t.title)];
@@ -216,7 +219,7 @@ export class Deezer {
     // "Jan and Dean" is one act, but "The Andrews Sisters and Gordon Jenkins" is filed on
     // Deezer under the first name only. Try the full credit first, then the lead name.
     const full = primaryArtist(song.artist);
-    const lead = full.split(/\s+(?:and|&)\s+/i)[0]!.trim();
+    const lead = full.split(/\s+(?:and|&|e)\s+/i)[0]!.trim();
     let hit: ApiTrack | null = null;
     for (const artist of lead && lead !== full ? [full, lead] : [full]) {
       const want = { title: song.title, artist, credit: song.credit ?? song.artist };

@@ -2,20 +2,24 @@
 // Resumable: results are cached, re-running only looks up songs with no result yet.
 // A song with no confident match is cached as null ("missing") and the run carries on.
 // Fix those later in deezer-overrides.json: a Deezer track id, or null to drop the song.
-// Usage: node fetch-deezer.mjs [--top N]   (--top 5: only each year's chart top 5)
+// Usage: node tools/songs/fetch-deezer.mjs [--br] [--top N]
+// --br: songs-br.json, .cache/br/deezer.json, out/deezer-review-br.txt.
+// --top 5: only each year's chart top 5 (Brazil: excludes unranked songs).
 //        then node build-songs.mjs to write deezerId into songs.json
 // Output: .cache/deezer.json -> { "<norm artist>|<norm title>": {id, title, artist} | null }
 //         out/deezer-review.txt -> every match side by side, plus the missing list
 import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { Deezer, norm } from "../../packages/server/src/deezer.ts";
-import { CACHE_DIR, OUT_DIR, readJson, sleep, writeJson } from "./lib.mjs";
+import { CACHE_DIR, OUT_DIR, USER_AGENT, readJson, sleep, writeJson } from "./lib.mjs";
 
 const deezerKey = (s) => `${norm(s.artist)}|${norm(s.title)}`;
 const label = (s) => `${s.artist} — ${s.title}`;
 
 const topArg = process.argv.indexOf("--top");
 const TOP = topArg > -1 ? Number(process.argv[topArg + 1]) : Infinity;
+const BR = process.argv.includes("--br");
+const reviewFile = BR ? "deezer-review-br.txt" : "deezer-review.txt";
 
 // Deezer allows 50 requests per 5 seconds; stay well under it.
 const MIN_GAP_MS = 120;
@@ -25,7 +29,7 @@ async function politeDeezerFetch(url, init) {
     const wait = last + MIN_GAP_MS - Date.now();
     if (wait > 0) await sleep(wait);
     last = Date.now();
-    const res = await fetch(url, { ...init, signal: AbortSignal.timeout(15_000) });
+    const res = await fetch(url, { ...init, headers: { "User-Agent": USER_AGENT, ...init?.headers }, signal: AbortSignal.timeout(15_000) });
     // Quota errors arrive as HTTP 200 with {"error":{"code":4}}.
     const quota = res.ok && (await res.clone().json().catch(() => ({})))?.error?.code === 4;
     if ((quota || res.status === 429 || res.status >= 500) && attempt < 6) {
@@ -36,8 +40,9 @@ async function politeDeezerFetch(url, init) {
   }
 }
 
-const songs = (await readJson(join(OUT_DIR, "songs.json"))).filter((s) => s.chartRank <= TOP);
-const cachePath = join(CACHE_DIR, "deezer.json");
+const songs = (await readJson(join(OUT_DIR, BR ? "songs-br.json" : "songs.json")))
+  .filter((s) => (!BR || topArg < 0 || s.chartRank != null) && s.chartRank <= TOP);
+const cachePath = BR ? join(CACHE_DIR, "br", "deezer.json") : join(CACHE_DIR, "deezer.json");
 const cache = await readJson(cachePath, {});
 const deezer = new Deezer(politeDeezerFetch);
 
@@ -71,8 +76,8 @@ for (const s of songs) {
   lines.push(`${s.year}  #${s.chartRank}  ${label(s)}\n            => ${hit.artist} — ${hit.title}   [${hit.id}]`);
 }
 await writeFile(
-  join(OUT_DIR, "deezer-review.txt"),
+  join(OUT_DIR, reviewFile),
   `Deezer matches${TOP < Infinity ? ` (chart top ${TOP} per year)` : ""}: ${matched} matched, ${missing.length} missing\n\n` +
     `== Missing ==\n${missing.join("\n") || "(none)"}\n\n== Matched ==\n${lines.join("\n")}\n`,
 );
-console.log(`\n${matched} matched, ${missing.length} missing of ${songs.length} -> out/deezer-review.txt`);
+console.log(`\n${matched} matched, ${missing.length} missing of ${songs.length} -> out/${reviewFile}`);
