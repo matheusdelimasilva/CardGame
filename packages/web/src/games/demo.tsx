@@ -1,10 +1,9 @@
-import type { DemoView } from "@cardgame/games";
-import type { GameView } from "@cardgame/protocol";
+import type { DemoView, DemoMove } from "@cardgame/games";
 import { Card, faceLabel } from "../Card";
-import type { GameUI } from "./types";
+import type { GameUI, TypedGameView } from "./types";
 
-const viewOf = (game: GameView) => game.view as DemoView;
-const cardOf = (game: GameView, playerId: string) =>
+const viewOf = (game: TypedGameView<DemoView>) => game.view;
+const cardOf = (game: TypedGameView<DemoView>, playerId: string) =>
   viewOf(game).table.zones[`slot:${playerId}`]?.cards[0] ?? null;
 
 function list(names: string[]): string {
@@ -12,7 +11,7 @@ function list(names: string[]): string {
   return `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`;
 }
 
-export const demoUI: GameUI = {
+export const demoUI: GameUI<DemoView, DemoMove> = {
   Center({ game }) {
     const view = viewOf(game);
     const deck = view.table.zones.deck!.cards;

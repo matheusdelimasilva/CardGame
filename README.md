@@ -89,8 +89,18 @@ an in-memory JSON store, even when `DATABASE_URL` is set, keeping existing tests
 - `packages/engine`: game-agnostic building blocks. No network code.
 - `packages/games`: one rules module per game.
 - `packages/protocol`: message and view types shared by server and client.
-- `packages/server`: rooms (`rooms.ts`), HTTP and WebSocket (`app.ts`), sign-in (`auth.ts`), storage (`store.ts`).
+- `packages/server`: `app.ts` wires transports, room lifecycle, sign-in (`auth.ts`) and storage (`store.ts`).
 - `packages/web`: React client. `Room.tsx` is the shared table; `games/` holds each game's table UI.
+
+### Server boundaries
+
+- `rooms/registry.ts` owns room identity, snapshot restore/validation, persistence and idle eviction.
+- `rooms/service.ts` runs member commands without sockets: validates game moves, records finished-game history, recovers failures to lobby and notifies listeners.
+- `rooms/clock.ts` submits expired turns to the service after startup restore completes.
+- `rooms.ts` exports the room rules API, implemented by `rooms/model.ts`, `members.ts`, `game.ts` and `view.ts` (data, seating, game orchestration and per-member projection).
+- `ws/gateway.ts` owns upgrades, hello/session handling, protocol parsing and per-room connections. It subscribes to service changes to build and broadcast views; projection failures flow back into the room recovery guard.
+- `http/routes.ts` dispatches a route table from `http/auth.ts` and `http/rooms.ts`; `http/static.ts` serves the built client. HTTP errors are contained without ending live games. `http.ts` holds JSON schemas/body parsing and trusted-proxy IP selection.
+- The game registry exposes `getGame(id)` as an erased `AnyGame`. `defineGame` confines state/move type erasure to that boundary; game implementations retain their concrete types.
 
 ## How a table works
 
@@ -104,12 +114,14 @@ an in-memory JSON store, even when `DATABASE_URL` is set, keeping existing tests
 
 ## Adding a game
 
-1. Write the rules as a `GameModule` in `packages/games/src` and add it to `games` in `index.ts`. It then appears in the host's game picker.
+1. Implement the engine's `GameModule<State, Move, View>` in `packages/games/src`, exporting the game's view and move types. Supply a Zod `moveSchema` owned by the game; the room service validates wire payloads with it before calling the rules. Keep legality checks (turn, available cards, placement bounds) in `applyMove`.
    - `settings` lists what the host can choose before creating a table. Two kinds exist: `toggle` (on/off) and `select` (one option from a dropdown). The settings screen is generated from this list, and the chosen values arrive in `setup`.
    - `currentTrack` (optional) names a recording everyone should hear at this point in the game. The server turns it into a secret per-recording URL and the table plays it; the game's UI gets playback state and a pause/replay toggle as `audio`.
    - `turnTimeLimit` (optional) returns how many seconds the current turn may take. When it runs out, the server plays the game's `autoMove` for that player.
-2. Write its table UI as a `GameUI` in `packages/web/src/games` and add it to `gameUIs`. It supplies the table centre, the cards beside each seat, the seat label, your hand, your action buttons and announcements. A game whose hand and buttons share state, or need a phone's full width, supplies one `Dock` instead of `Hand` and `Actions` (Hitster does).
+2. Register `defineGame(yourModule)` in `games` in `packages/games/src/index.ts`. It then appears in the host's game picker; the server resolves ids through `getGame` rather than indexing an untyped registry.
+3. Write its table UI as a `GameUI<View, Move>` in `packages/web/src/games` and register `defineGameUI(yourUI)` in `gameUIs`. It supplies the table centre, the cards beside each seat, the seat label, your hand, your action buttons and announcements. A game whose hand and buttons share state, or need a phone's full width, supplies one `Dock` instead of `Hand` and `Actions` (Hitster does).
    - Import the rules package with `import type` only, so hidden data such as Hitster's song years is not bundled into the client.
+4. Add rules, move-schema and room-service tests. Run the checks below and inspect the built JS for private game data before shipping.
 
 ## Games
 
