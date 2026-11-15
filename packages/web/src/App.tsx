@@ -1,6 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { Home } from "./Home";
-import { NewTable } from "./NewTable";
+import { HomeFlow } from "./home/HomeFlow";
 import { Room } from "./Room";
 
 const roomCode = (path: string) =>
@@ -22,16 +21,14 @@ export function App() {
   const path = useSyncExternalStore(subscribe, () => location.pathname);
 
   const code = roomCode(path);
-  return (
+  // Home and the host's setup steps are one animated scene; the CRT
+  // scanlines only belong on the table.
+  return code ? (
     <>
-      {code ? (
-        <Room key={code} code={code} />
-      ) : /^\/new\/?$/.test(path) ? (
-        <NewTable />
-      ) : (
-        <Home />
-      )}
+      <Room key={code} code={code} />
       <div className="crt" aria-hidden="true" />
     </>
+  ) : (
+    <HomeFlow path={path} />
   );
 }
