@@ -8,7 +8,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { navigate } from "./App";
 import { useTrackAudio } from "./audio";
 import { gameUIs } from "./games";
-import { describeSettings } from "./NewTable";
+import { describeSettings } from "./settings";
 import { Avatar, OpenSeat, Seat } from "./Seat";
 import { KEYS, storage } from "./storage";
 import { useRoom } from "./useRoom";
