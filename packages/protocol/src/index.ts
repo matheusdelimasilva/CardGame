@@ -1,8 +1,14 @@
 /** Messages and views shared by the server and the web client. */
 
 import type { SettingDef, SettingValues } from "@cardgame/engine";
+import { z } from "zod";
 
-export type { SelectSetting, SettingDef, SettingValues, ToggleSetting } from "@cardgame/engine";
+export type {
+  SelectSetting,
+  SettingDef,
+  SettingValues,
+  ToggleSetting,
+} from "@cardgame/engine";
 
 export const SEAT_COUNT = 8;
 export const MAX_NAME_LENGTH = 14;
@@ -61,16 +67,39 @@ export interface RoomView {
   game: GameView | null;
 }
 
-export type ClientMessage =
-  | { type: "hello"; memberToken?: string; sessionToken?: string }
-  | { type: "setName"; name: string }
-  | { type: "sit"; seat: number }
-  | { type: "stand" }
-  | { type: "start" }
-  | { type: "move"; move: unknown }
-  | { type: "skip"; playerId: string }
-  | { type: "kick"; playerId: string }
-  | { type: "endGame" };
+const token = z.string().min(1).max(128).optional();
+const playerId = z.string().min(1).max(128);
+
+export const clientMessageSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("hello"),
+    memberToken: token,
+    sessionToken: token,
+  }),
+  z.object({
+    type: z.literal("setName"),
+    name: z.string().trim().min(1).max(MAX_NAME_LENGTH),
+  }),
+  z.object({
+    type: z.literal("sit"),
+    seat: z
+      .number()
+      .int()
+      .min(0)
+      .max(SEAT_COUNT - 1),
+  }),
+  z.object({ type: z.literal("stand") }),
+  z.object({ type: z.literal("start") }),
+  z.object({
+    type: z.literal("move"),
+    move: z.unknown().refine((value): boolean => value !== undefined),
+  }),
+  z.object({ type: z.literal("skip"), playerId }),
+  z.object({ type: z.literal("kick"), playerId }),
+  z.object({ type: z.literal("endGame") }),
+]);
+
+export type ClientMessage = z.infer<typeof clientMessageSchema>;
 
 export type ServerMessage =
   | { type: "welcome"; memberToken: string }

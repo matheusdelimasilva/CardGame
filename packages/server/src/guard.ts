@@ -1,4 +1,8 @@
-export function guard<T>(code: string, action: () => T, recover: () => void = () => {}): T | undefined {
+export function guard<T>(
+  code: string,
+  action: () => T,
+  recover: () => void = () => {},
+): T | undefined {
   try {
     return action();
   } catch (err) {

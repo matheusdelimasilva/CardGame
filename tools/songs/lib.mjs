@@ -26,7 +26,10 @@ export async function writeJson(path, data) {
 // Polite fetch: enforces a minimum gap between calls to the same host and
 // retries on 429/5xx with backoff.
 const lastCall = new Map();
-export async function politeFetch(url, { minGapMs, headers = {}, retries = 6 } = {}) {
+export async function politeFetch(
+  url,
+  { minGapMs, headers = {}, retries = 6 } = {},
+) {
   const host = new URL(url).host;
   for (let attempt = 0; ; attempt++) {
     const wait = (lastCall.get(host) ?? 0) + minGapMs - Date.now();
@@ -43,4 +46,5 @@ export async function politeFetch(url, { minGapMs, headers = {}, retries = 6 } =
   }
 }
 
-export const USER_AGENT = "CardGameSongData/0.1 (hobby music-timeline card game; one-off data build)";
+export const USER_AGENT =
+  "CardGameSongData/0.1 (hobby music-timeline card game; one-off data build)";

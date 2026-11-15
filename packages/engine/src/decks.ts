@@ -1,5 +1,19 @@
 export const SUITS = ["S", "H", "D", "C"] as const;
-export const RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"] as const;
+export const RANKS = [
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "J",
+  "Q",
+  "K",
+  "A",
+] as const;
 
 /** The 52 faces of a standard deck, written as rank then suit: "10H", "AS". */
 export function standardDeck(): string[] {

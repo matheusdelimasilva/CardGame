@@ -3,7 +3,8 @@ import { Home } from "./Home";
 import { NewTable } from "./NewTable";
 import { Room } from "./Room";
 
-const roomCode = (path: string) => /^\/t\/([A-Za-z0-9]{4,8})\/?$/.exec(path)?.[1]?.toUpperCase() ?? null;
+const roomCode = (path: string) =>
+  /^\/t\/([A-Za-z0-9]{4,8})\/?$/.exec(path)?.[1]?.toUpperCase() ?? null;
 
 export function navigate(path: string) {
   history.pushState(null, "", path);
@@ -23,7 +24,13 @@ export function App() {
   const code = roomCode(path);
   return (
     <>
-      {code ? <Room key={code} code={code} /> : /^\/new\/?$/.test(path) ? <NewTable /> : <Home />}
+      {code ? (
+        <Room key={code} code={code} />
+      ) : /^\/new\/?$/.test(path) ? (
+        <NewTable />
+      ) : (
+        <Home />
+      )}
       <div className="crt" aria-hidden="true" />
     </>
   );

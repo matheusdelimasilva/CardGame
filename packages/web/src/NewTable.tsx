@@ -4,7 +4,8 @@ import { api } from "./api";
 import { navigate } from "./App";
 import { KEYS, storage } from "./storage";
 
-const defaultsOf = (game: GameInfo): SettingValues => Object.fromEntries(game.settings.map((s) => [s.id, s.default]));
+const defaultsOf = (game: GameInfo): SettingValues =>
+  Object.fromEntries(game.settings.map((s) => [s.id, s.default]));
 
 /** Host flow: pick a game, choose its settings, then create the table. */
 export function NewTable() {
@@ -42,7 +43,10 @@ export function NewTable() {
   return (
     <main className="home">
       <header className="steps">
-        <button className="link" onClick={() => (game ? setGame(null) : navigate("/"))}>
+        <button
+          className="link"
+          onClick={() => (game ? setGame(null) : navigate("/"))}
+        >
           ‹ Back
         </button>
         <span className="muted">step {game ? 2 : 1} of 2</span>
@@ -67,15 +71,21 @@ export function NewTable() {
       ) : (
         <section className="panel">
           <h2>{game.name} settings</h2>
-          <p className="muted">These apply to every game played at this table.</p>
-          {game.settings.length === 0 && <p className="muted">This game has nothing to set up.</p>}
+          <p className="muted">
+            These apply to every game played at this table.
+          </p>
+          {game.settings.length === 0 && (
+            <p className="muted">This game has nothing to set up.</p>
+          )}
           <div className="settings">
             {game.settings.map((def) => (
               <SettingRow
                 key={def.id}
                 def={def}
                 value={values[def.id]!}
-                onChange={(value) => setValues((v) => ({ ...v, [def.id]: value }))}
+                onChange={(value) =>
+                  setValues((v) => ({ ...v, [def.id]: value }))
+                }
               />
             ))}
           </div>
@@ -89,7 +99,15 @@ export function NewTable() {
   );
 }
 
-function SettingRow({ def, value, onChange }: { def: SettingDef; value: boolean | string; onChange: (v: boolean | string) => void }) {
+function SettingRow({
+  def,
+  value,
+  onChange,
+}: {
+  def: SettingDef;
+  value: boolean | string;
+  onChange: (v: boolean | string) => void;
+}) {
   const id = `setting-${def.id}`;
   return (
     <div className={`setting ${def.type}`}>
@@ -97,7 +115,9 @@ function SettingRow({ def, value, onChange }: { def: SettingDef; value: boolean 
         <label className="setting-label" htmlFor={id}>
           {def.label}
         </label>
-        {def.description && <span className="setting-desc">{def.description}</span>}
+        {def.description && (
+          <span className="setting-desc">{def.description}</span>
+        )}
       </div>
       {def.type === "toggle" ? (
         <button
@@ -112,7 +132,12 @@ function SettingRow({ def, value, onChange }: { def: SettingDef; value: boolean 
           <span className="switch-text">{value === true ? "on" : "off"}</span>
         </button>
       ) : (
-        <select id={id} className="input select" value={String(value)} onChange={(e) => onChange(e.target.value)}>
+        <select
+          id={id}
+          className="input select"
+          value={String(value)}
+          onChange={(e) => onChange(e.target.value)}
+        >
           {def.options.map((o) => (
             <option key={o.value} value={o.value}>
               {o.label}
@@ -125,11 +150,16 @@ function SettingRow({ def, value, onChange }: { def: SettingDef; value: boolean 
 }
 
 /** One short line per setting, for showing a table's settings in the lobby. */
-export function describeSettings(game: GameInfo, values: SettingValues): string[] {
+export function describeSettings(
+  game: GameInfo,
+  values: SettingValues,
+): string[] {
   return game.settings.map((def) => {
     const value = values[def.id] ?? def.default;
-    if (def.type === "toggle") return `${def.label}: ${value === true ? "on" : "off"}`;
-    const label = def.options.find((o) => o.value === value)?.label ?? String(value);
+    if (def.type === "toggle")
+      return `${def.label}: ${value === true ? "on" : "off"}`;
+    const label =
+      def.options.find((o) => o.value === value)?.label ?? String(value);
     return `${def.label}: ${label.split(":")[0]}`;
   });
 }

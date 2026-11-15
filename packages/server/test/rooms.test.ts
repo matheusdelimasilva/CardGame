@@ -1,8 +1,12 @@
 import { describe, expect, it } from "vitest";
-import type { DemoView } from "@cardgame/games";
+import type { DemoView, HitsterState } from "@cardgame/games";
 import * as rooms from "../src/rooms";
 
-function table(names = ["Ana", "Bo", "Cy"], settings: unknown = {}, gameId = "demo") {
+function table(
+  names = ["Ana", "Bo", "Cy"],
+  settings: unknown = {},
+  gameId = "demo",
+) {
   const room = rooms.createRoom("ABC234", "host@example.com", gameId, settings);
   const members = names.map((name, i) => {
     const m = rooms.join(room, undefined, i === 0);
@@ -13,9 +17,32 @@ function table(names = ["Ana", "Bo", "Cy"], settings: unknown = {}, gameId = "de
   });
   return { room, members, host: members[0]! };
 }
-const gameView = (room: rooms.Room, m: rooms.Member) => rooms.viewFor(room, m).game!.view as DemoView;
+const gameView = (room: rooms.Room, m: rooms.Member) =>
+  rooms.viewFor(room, m).game!.view as DemoView;
 
 describe("rooms", () => {
+  it("exposes Hitster song-list choices and carries the host selection into the game", () => {
+    expect(rooms.gameInfo("hitster").settings).toContainEqual({
+      type: "select",
+      id: "songList",
+      label: "Song list",
+      options: [
+        { value: "international", label: "International" },
+        { value: "brasil", label: "Brasil" },
+      ],
+      default: "international",
+    });
+    for (const [raw, expected] of [
+      [{}, "international"],
+      [{ songList: "brasil" }, "brasil"],
+      [{ songList: "invalid" }, "international"],
+    ] as const) {
+      const { room, host } = table(["Ana", "Bo"], raw, "hitster");
+      expect(room.settings.songList).toBe(expected);
+      expect(rooms.start(room, host, 11)).toBeNull();
+      expect((room.game!.state as HitsterState).songList).toBe(expected);
+    }
+  });
   it("gives a returning token the same member and seat", () => {
     const { room, members } = table();
     const again = rooms.join(room, members[1]!.token, false);
@@ -28,7 +55,9 @@ describe("rooms", () => {
     const guest = rooms.join(room, undefined, false);
     expect(rooms.sit(room, guest, 5)).toMatch(/name/);
     expect(rooms.setName(room, guest, "   ")).not.toBeNull();
-    expect(rooms.setName(room, guest, "  A very   long nickname here ")).toBeNull();
+    expect(
+      rooms.setName(room, guest, "  A very   long nickname here "),
+    ).toBeNull();
     expect(guest.name).toBe("A very long ni");
     expect(rooms.sit(room, guest, members[1]!.seat!)).toMatch(/taken/);
     expect(rooms.sit(room, guest, 99)).not.toBeNull();
@@ -54,11 +83,17 @@ describe("rooms", () => {
     rooms.setName(room, watcher, "Dee");
     expect(rooms.move(room, members[1]!, { type: "peek" })).toBeNull();
     const slot = `slot:${members[1]!.id}`;
-    expect(gameView(room, members[1]!).table.zones[slot]!.cards[0]!.face).not.toBeNull();
+    expect(
+      gameView(room, members[1]!).table.zones[slot]!.cards[0]!.face,
+    ).not.toBeNull();
     for (const other of [host, members[2]!, watcher]) {
-      expect(JSON.stringify(gameView(room, other).table)).not.toMatch(/"face":"/);
+      expect(JSON.stringify(gameView(room, other).table)).not.toMatch(
+        /"face":"/,
+      );
     }
-    expect(rooms.viewFor(room, watcher).spectators.map((s) => s.name)).toEqual(["Dee"]);
+    expect(rooms.viewFor(room, watcher).spectators.map((s) => s.name)).toEqual([
+      "Dee",
+    ]);
   });
 
   it("holds seats during a game and seats latecomers for the next one", () => {
@@ -72,7 +107,11 @@ describe("rooms", () => {
     expect(rooms.sit(room, late, 7)).toBeNull();
     const view = rooms.viewFor(room, late);
     expect(view.seats[7]).toMatchObject({ name: "Late", inGame: false });
-    expect(view.seats[0]).toMatchObject({ name: "Ana", inGame: true, isHost: true });
+    expect(view.seats[0]).toMatchObject({
+      name: "Ana",
+      inGame: true,
+      isHost: true,
+    });
   });
 
   it("lets the host skip only a disconnected player whose turn it is", () => {
@@ -103,7 +142,13 @@ describe("rooms", () => {
     rooms.start(room, host, 3);
     for (let i = 0; i < 2000 && !room.game!.result; i++) {
       const id = rooms.viewFor(room, host).game!.active[0]!;
-      expect(rooms.move(room, members.find((m) => m.id === id)!, { type: "reveal" })).toBeNull();
+      expect(
+        rooms.move(
+          room,
+          members.find((m) => m.id === id)!,
+          { type: "reveal" },
+        ),
+      ).toBeNull();
     }
     expect(room.game!.result!.winners.length).toBeGreaterThan(0);
     expect(rooms.stand(room, members[2]!)).toBeNull();
@@ -114,10 +159,19 @@ describe("rooms", () => {
   it("keeps valid settings and replaces invalid ones with defaults", () => {
     const good = table(["Ana", "Bo"], { turnTimer: true, tiebreaker: "H" });
     expect(good.room.settings).toEqual({ turnTimer: true, tiebreaker: "H" });
-    const bad = table(["Ana", "Bo"], { turnTimer: "yes", tiebreaker: "Z", extra: 1 });
+    const bad = table(["Ana", "Bo"], {
+      turnTimer: "yes",
+      tiebreaker: "Z",
+      extra: 1,
+    });
     expect(bad.room.settings).toEqual({ turnTimer: false, tiebreaker: "none" });
-    expect(table(["Ana", "Bo"], null).room.settings).toEqual({ turnTimer: false, tiebreaker: "none" });
-    expect(rooms.viewFor(good.room, good.host).gameInfo.settings.map((s) => s.type)).toEqual(["toggle", "select"]);
+    expect(table(["Ana", "Bo"], null).room.settings).toEqual({
+      turnTimer: false,
+      tiebreaker: "none",
+    });
+    expect(
+      rooms.viewFor(good.room, good.host).gameInfo.settings.map((s) => s.type),
+    ).toEqual(["toggle", "select"]);
   });
 
   it("has no turn clock unless the timer setting is on", () => {
@@ -128,25 +182,35 @@ describe("rooms", () => {
   });
 
   it("reveals for a player when their timed turn runs out, and restarts the clock per turn", () => {
-    const { room, members, host } = table(["Ana", "Bo", "Cy"], { turnTimer: true });
+    const { room, members, host } = table(["Ana", "Bo", "Cy"], {
+      turnTimer: true,
+    });
     rooms.start(room, host, 7, 1000);
-    expect(rooms.viewFor(room, host, 6000).game!.timer).toEqual({ remainingMs: 15_000, totalMs: 20_000 });
+    expect(rooms.viewFor(room, host, 6000).game!.timer).toEqual({
+      remainingMs: 15_000,
+      totalMs: 20_000,
+    });
     // Peeking is not a new turn: the clock keeps running.
     rooms.move(room, host, { type: "peek" }, 8000);
     expect(room.game!.deadline).toBe(21_000);
     expect(rooms.expireTurn(room, 20_999)).toBe(false);
     expect(rooms.expireTurn(room, 21_000)).toBe(true);
-    expect(rooms.viewFor(room, host, 21_000).game!.active).toEqual([members[1]!.id]);
+    expect(rooms.viewFor(room, host, 21_000).game!.active).toEqual([
+      members[1]!.id,
+    ]);
     expect(room.game!.deadline).toBe(41_000);
     // Playing in time hands the clock to the next player.
-    expect(rooms.move(room, members[1]!, { type: "reveal" }, 25_000)).toBeNull();
+    expect(
+      rooms.move(room, members[1]!, { type: "reveal" }, 25_000),
+    ).toBeNull();
     expect(room.game!.deadline).toBe(45_000);
   });
 
   it("stops the clock when the game is over", () => {
     const { room, host } = table(["Ana", "Bo"], { turnTimer: true });
     rooms.start(room, host, 3, 0);
-    for (let now = 20_000; !room.game!.result; now += 20_000) expect(rooms.expireTurn(room, now)).toBe(true);
+    for (let now = 20_000; !room.game!.result; now += 20_000)
+      expect(rooms.expireTurn(room, now)).toBe(true);
     expect(room.game!.deadline).toBeNull();
     expect(rooms.viewFor(room, host).game!.timer).toBeNull();
   });
@@ -179,7 +243,9 @@ describe("rooms", () => {
     // Nothing a client receives names the recording.
     const sent = JSON.stringify(rooms.viewFor(room, members[1]!));
     expect(sent).not.toContain("deezerId");
-    expect(sent).not.toContain(String(rooms.trackFor(room, nonce(second))!.deezerId));
+    expect(sent).not.toContain(
+      String(rooms.trackFor(room, nonce(second))!.deezerId),
+    );
   });
 
   it("stops offering a track when the game ends", () => {

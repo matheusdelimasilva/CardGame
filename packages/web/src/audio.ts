@@ -70,7 +70,6 @@ export function useTrackAudio(url: string | null): TrackAudio {
     if (!url || muted) {
       current.current = null;
       audio.pause();
-      setStatus("idle");
       return;
     }
     current.current = url;
@@ -102,5 +101,5 @@ export function useTrackAudio(url: string | null): TrackAudio {
     setMutedState(next);
   }, []);
 
-  return { status, muted, toggle, setMuted };
+  return { status: !url || muted ? "idle" : status, muted, toggle, setMuted };
 }
