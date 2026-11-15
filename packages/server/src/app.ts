@@ -232,10 +232,7 @@ export function createApp(options: AppOptions): { server: Server; ready: Promise
       if (req.method === "GET") return serveStatic(url.pathname, res);
       json(res, 405, { error: "Method not allowed." });
     } catch (err) {
-      guard(code, () => { throw err; }, () => {
-        const room = roomsByCode.get(code);
-        if (room) recover(room);
-      });
+      console.error(`Room ${code}:`, err);
       guard(code, () => {
         if (res.headersSent) res.destroy();
         else json(res, 500, { error: "Something went wrong." });

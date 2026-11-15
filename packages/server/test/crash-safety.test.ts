@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { WebSocket } from "ws";
 import { games, type HitsterState } from "@cardgame/games";
 import { createApp } from "../src/app";
+import { Deezer } from "../src/deezer";
 import * as rooms from "../src/rooms";
 
 function running(code: string) {
@@ -127,13 +128,14 @@ describe("crash safety", () => {
     expect((await connect(base, "GOOD12")).room.game).not.toBeNull();
   });
 
-  it("contains HTTP game errors and returns an error response", async () => {
+  it("returns 500 for a failing track stream without ending the game", async () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     const { base } = await boot([running("LIVE12")]);
-    vi.spyOn(rooms, "trackFor").mockImplementationOnce(() => { throw new Error("track failed"); });
-    const res = await fetch(`http://${base}/api/rooms/LIVE12/track/abcdef`);
+    const client = await connect(base, "LIVE12");
+    vi.spyOn(Deezer.prototype, "streamPreview").mockRejectedValueOnce(new Error("Deezer fetch failed"));
+    const res = await fetch(`http://${base}${client.room.game.track.url}`);
     expect(res.status).toBe(500);
-    expect((await connect(base, "LIVE12")).room.game).toBeNull();
+    expect((await connect(base, "LIVE12")).room.game).not.toBeNull();
   });
 
   it("contains idle sweep failures", async () => {
