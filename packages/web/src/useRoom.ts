@@ -1,10 +1,14 @@
 import type {
+  ChatMessage,
   ClientMessage,
   RoomView,
   ServerMessage,
 } from "@cardgame/protocol";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { KEYS, storage } from "./storage";
+
+/** Only this many recent chat lines are kept in memory. */
+export const MAX_CHAT_HISTORY = 50;
 
 export type Connection =
   "connecting" | "open" | "reconnecting" | "gone" | "kicked";
@@ -14,6 +18,7 @@ export function useRoom(code: string) {
   const [room, setRoom] = useState<RoomView | null>(null);
   const [connection, setConnection] = useState<Connection>("connecting");
   const [error, setError] = useState<string | null>(null);
+  const [chats, setChats] = useState<ChatMessage[]>([]);
   const socket = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -46,8 +51,11 @@ export function useRoom(code: string) {
           setConnection("open");
         } else if (msg.type === "state") {
           setRoom(msg.room);
+        } else if (msg.type === "chat") {
+          setChats((prev) => [...prev, msg.message].slice(-MAX_CHAT_HISTORY));
         } else if (msg.type === "kicked") {
           stopped = true;
+          setChats([]);
           storage.set(KEYS.member(code), null);
           setConnection("kicked");
         } else if (msg.type === "error") {
@@ -82,6 +90,8 @@ export function useRoom(code: string) {
       clearTimeout(retry);
       document.removeEventListener("visibilitychange", onVisible);
       socket.current?.close();
+      // A different room never inherits the previous room's chat.
+      setChats([]);
     };
   }, [code]);
 
@@ -97,5 +107,5 @@ export function useRoom(code: string) {
     else setError("Not connected. Trying again...");
   }, []);
 
-  return { room, connection, error, send };
+  return { room, connection, error, send, chats };
 }

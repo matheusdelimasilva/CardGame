@@ -34,6 +34,10 @@ export class Gateway {
     this.unsubscribe = [
       service.onChange((room) => this.broadcast(room)),
       service.onKick((room, playerId) => this.kick(room, playerId)),
+      service.onChat((room, message) => {
+        for (const ws of this.sockets.get(room)?.keys() ?? [])
+          this.send(ws, { type: "chat", message });
+      }),
       registry.onDelete((room) => {
         this.sockets.delete(room);
       }),
@@ -89,7 +93,10 @@ export class Gateway {
               return this.service.notify(room);
             }
             if (msg.type === "hello" || !room.members.includes(member)) return;
-            const refusal = this.service.command(room, member, msg);
+            const refusal =
+              msg.type === "chat"
+                ? this.service.chat(room, member, msg.text)
+                : this.service.command(room, member, msg);
             if (typeof refusal === "string")
               this.send(ws, { type: "error", message: refusal });
           },

@@ -3,3 +3,4 @@ export * from "./rooms/model";
 export * from "./rooms/members";
 export * from "./rooms/game";
 export * from "./rooms/view";
+export * from "./rooms/chat";

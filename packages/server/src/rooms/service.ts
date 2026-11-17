@@ -1,17 +1,22 @@
 import { requireGame } from "@cardgame/games";
-import type { ClientMessage, HistoryEntry } from "@cardgame/protocol";
+import type {
+  ChatMessage,
+  ClientMessage,
+  HistoryEntry,
+} from "@cardgame/protocol";
 import { guard } from "../guard";
 import * as rooms from "../rooms";
 import type { Store } from "../store";
 import type { Member, Refusal, Room } from "./model";
 import type { RoomRegistry } from "./registry";
 
-type Command = Exclude<ClientMessage, { type: "hello" }>;
+type Command = Exclude<ClientMessage, { type: "hello" } | { type: "chat" }>;
 
 /** Socket-free command boundary: mutation, move validation, history and recovery. */
 export class RoomService {
   private listeners = new Set<(room: Room) => void>();
   private kickListeners = new Set<(room: Room, playerId: string) => void>();
+  private chatListeners = new Set<(room: Room, message: ChatMessage) => void>();
 
   constructor(
     private readonly registry: RoomRegistry,
@@ -30,6 +35,23 @@ export class RoomService {
     return () => {
       this.kickListeners.delete(listener);
     };
+  }
+
+  onChat(listener: (room: Room, message: ChatMessage) => void): () => void {
+    this.chatListeners.add(listener);
+    return () => {
+      this.chatListeners.delete(listener);
+    };
+  }
+
+  /** Chat is ephemeral: it goes to the room's listeners only and is never part of the saved state. */
+  chat(room: Room, member: Member, text: string): Refusal | undefined {
+    return guard(room.code, () => {
+      const result = rooms.chat(room, member, text);
+      if ("error" in result) return result.error;
+      for (const listener of this.chatListeners) listener(room, result.message);
+      return null;
+    });
   }
 
   /** The caller attaches the connection and welcomes it before notifying the room. */
