@@ -1,14 +1,11 @@
 import { defineGame, type AnyGame } from "@cardgame/engine";
-import { demo } from "./demo";
 import { hitster } from "./hitster";
 
-export * from "./demo";
 export * from "./hitster";
 
 /** Every game the platform can run, keyed by id. */
 export const games = {
   hitster: defineGame(hitster),
-  demo: defineGame(demo),
 };
 
 const registry = new Map(Object.values(games).map((game) => [game.id, game]));

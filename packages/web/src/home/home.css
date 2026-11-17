@@ -1207,3 +1207,25 @@
   border: 1px solid #ffffff44;
   border-radius: 6px;
 }
+
+@media (max-width: 640px) {
+  /* The centred Past games tab leaves no room for the full pill: the link is
+     a note icon here, and keeps its text as its name. */
+  .home-library-link {
+    right: 12px;
+    bottom: 12px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    overflow: hidden;
+    text-align: center;
+    line-height: 40px;
+    font-size: 0;
+    color: transparent;
+  }
+  .home-library-link::before {
+    content: "♫";
+    color: #fffaf0;
+    font-size: 20px;
+  }
+}

@@ -6,3 +6,4 @@ tools/songs/out/
 tools/songs/.cache/
 pnpm-lock.yaml
 .lavish/
+docs/design/game-screen.dc.html

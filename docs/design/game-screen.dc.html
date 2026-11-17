@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&amp;family=VT323&amp;family=Rubik:wght@400;500;700;800&amp;family=Caveat:wght@700&amp;display=swap" rel="stylesheet">
+<style>html,body{margin:0;height:100%;background:#2a5242}a{color:#ffd84a}a:hover{color:#fffaf0}
+@keyframes crtRoll{from{transform:translateY(0)}to{transform:translateY(350%)}}
+@keyframes crtFlicker{0%,100%{opacity:1;transform:none}31%{opacity:.82}33%{opacity:1}62%{transform:translateX(3px) skewX(-4deg)}64%{transform:none}88%{opacity:.9}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes riffleL{0%,12%,78%,100%{transform:translate(0,var(--dy)) rotate(0)}30%,48%{transform:translate(calc(var(--u)*-5.2),var(--dy)) rotate(-9deg)}}
+@keyframes riffleR{0%,12%,78%,100%{transform:translate(0,var(--dy)) rotate(0)}30%,48%{transform:translate(calc(var(--u)*5.2),var(--dy)) rotate(9deg)}}
+@keyframes eq{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
+@keyframes chipHop{0%,100%{transform:translateY(0) rotate(0)}40%{transform:translateY(calc(var(--u)*-.9)) rotate(-14deg)}70%{transform:translateY(0) rotate(6deg)}}
+@keyframes wiggle{0%,100%{transform:rotate(0) translateY(0)}25%{transform:rotate(-3deg) translateY(calc(var(--u)*-.5))}75%{transform:rotate(3deg) translateY(calc(var(--u)*-.5))}}
+@keyframes floaty{0%,100%{transform:translateY(calc(var(--u)*-.35))}50%{transform:translateY(calc(var(--u)*-.9))}}
+@keyframes confetti{from{transform:translateY(0) rotate(0)}to{transform:translateY(112vh) rotate(540deg)}}
+@keyframes tick{0%{transform:scale(1.25)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}</style>
+</helmet>
+<div data-screen-label="Game screen" style="--u:min(1vw,1.6vh);position:relative;width:100vw;height:100vh;min-height:420px;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#4a836d,#3b6b58 55%,#2a5242);font-family:'Rubik',sans-serif;color:#141617;user-select:none">
+  <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(0,0,0,.14) 1px,transparent 1.5px);background-size:6px 6px;opacity:.7"></div>
+
+  <div style="position:absolute;left:calc(var(--u)*2.5);top:calc(var(--u)*2.2);display:flex;align-items:center;gap:calc(var(--u)*1.4);z-index:8">
+    <a href="Table Lobby.dc.html" aria-label="Leave table" style="display:grid;place-items:center;width:calc(var(--u)*4.2);height:calc(var(--u)*4.2);box-sizing:border-box;background:#fffaf0;color:#141617;border:3px solid #141617;border-radius:calc(var(--u)*.8);box-shadow:0 calc(var(--u)*.45) 0 #141617;font:800 calc(var(--u)*2)/1 'Rubik',sans-serif;text-decoration:none;transition:transform .12s" style-hover="transform:translateY(-2px);color:#141617" style-active="transform:translateY(3px)">←</a>
+    <div style="display:flex;align-items:baseline;gap:calc(var(--u)*.8);color:#fffaf0;text-shadow:0 2px 0 rgba(0,0,0,.35)">
+      <span style="font:700 calc(var(--u)*1.2)/1 'Rubik',sans-serif;letter-spacing:.14em">TABLE</span>
+      <span style="font:800 calc(var(--u)*2.6)/1 'Rubik',sans-serif;letter-spacing:.08em;color:#ffe680">92S7BT</span>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:50%;top:calc(var(--u)*1.4);transform:translateX(-50%);z-index:8;isolation:isolate;overflow:hidden;background:#141617;border-radius:calc(var(--u)*1.4);padding:calc(var(--u)*1.1) calc(var(--u)*3.6) calc(var(--u)*1);box-shadow:0 calc(var(--u)*.6) 0 rgba(0,0,0,.45);text-align:center">
+    <div style="position:absolute;inset:calc(var(--u)*.45);border:3px solid #ef4a3c;border-radius:calc(var(--u)*1);pointer-events:none"></div>
+    <div style="position:relative">
+      <div style="font:400 calc(var(--u)*1.5)/1 'VT323',monospace;color:#ef4a3c;letter-spacing:.4em;margin-right:-.4em">NOW PLAYING</div>
+      {{ title }}
+    </div>
+    <sc-if value="{{ scan }}" hint-placeholder-val="{{ true }}"><div aria-hidden="true" style="position:absolute;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,.28) 0 1px,transparent 1px 3px)"></div></sc-if>
+    {{ roll }}
+  </div>
+
+  <div style="position:absolute;right:calc(var(--u)*2.5);top:calc(var(--u)*2.2);display:flex;align-items:center;gap:calc(var(--u)*1.4);z-index:8">
+    <button type="button" onClick="{{ toggleSound }}" aria-pressed="{{ soundOn }}" style="background:#fffaf0;color:#141617;border:3px solid #141617;border-radius:calc(var(--u)*.8);padding:calc(var(--u)*.9) calc(var(--u)*2);font:800 calc(var(--u)*1.8)/1.1 'Rubik',sans-serif;box-shadow:0 calc(var(--u)*.45) 0 #141617;cursor:pointer;transition:transform .12s" style-hover="transform:translateY(-2px)" style-active="transform:translateY(3px)">{{ soundLabel }}</button>
+    <button type="button" onClick="{{ openHelp }}" aria-haspopup="dialog" style="background:#ffd84a;color:#141617;border:3px solid #141617;border-radius:calc(var(--u)*.8);padding:calc(var(--u)*.9) calc(var(--u)*2);font:800 calc(var(--u)*1.8)/1.1 'Rubik',sans-serif;box-shadow:0 calc(var(--u)*.45) 0 #141617;cursor:pointer;transition:transform .12s" style-hover="transform:translateY(-2px)" style-active="transform:translateY(3px)">Instructions</button>
+  </div>
+
+  <div ref="{{ stageRef }}" style="position:absolute;left:50%;top:50%;width:calc(var(--u)*100);height:calc(var(--u)*62.5);transform:translate(-50%,-50%)">
+    <div style="position:absolute;left:calc(var(--u)*10);top:calc(var(--u)*17);width:calc(var(--u)*80);height:calc(var(--u)*23)">
+      <div style="position:absolute;inset:0;border-radius:calc(var(--u)*11.5);background:#141617;box-shadow:0 calc(var(--u)*1.1) 0 rgba(0,0,0,.35)"></div>
+      <div style="position:absolute;inset:calc(var(--u)*.6);border-radius:calc(var(--u)*10.9);border:2px solid #ef4a3c"></div>
+      <div style="position:absolute;inset:calc(var(--u)*1.6);border-radius:calc(var(--u)*9.9);background:radial-gradient(ellipse at 50% 40%,#64a68c,#4f8b74 70%,#447a65);box-shadow:inset 0 calc(var(--u)*.8) calc(var(--u)*1.6) rgba(0,0,0,.35);overflow:hidden">
+        <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(0,0,0,.12) 1px,transparent 1.5px);background-size:6px 6px"></div>
+        <div style="position:absolute;inset:calc(var(--u)*1.1);border-radius:calc(var(--u)*8.8);border:2px dashed rgba(255,250,240,.2)"></div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:calc(var(--u)*31.8);top:calc(var(--u)*22.6);width:calc(var(--u)*8.4);height:calc(var(--u)*11.8)">{{ deck }}</div>
+    <div style="position:absolute;left:calc(var(--u)*28);top:calc(var(--u)*35.3);width:calc(var(--u)*16);text-align:center;font:400 calc(var(--u)*1.6)/1 'VT323',monospace;letter-spacing:.08em;color:#fffaf0;text-shadow:0 2px 0 rgba(0,0,0,.35)">FIRST TO {{ goal }}</div>
+
+
+    <div aria-live="polite" style="position:absolute;left:{{ stLeft }};top:calc(var(--u)*28.5);width:{{ stW }};transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-start;color:#fffaf0">
+      <h1 style="margin:0;font:800 calc(var(--u)*3.4)/1.05 'Rubik',sans-serif;letter-spacing:-.02em;text-shadow:0 calc(var(--u)*.3) 0 rgba(0,0,0,.35);text-wrap:balance">{{ status }}</h1>
+      <p style="margin:calc(var(--u)*.7) 0 0;font:500 calc(var(--u)*1.55)/1.35 'Rubik',sans-serif;text-shadow:0 2px 0 rgba(0,0,0,.35);text-wrap:pretty">{{ statusSub }}</p>
+      <sc-if value="{{ showTimer }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="display:flex;gap:calc(var(--u)*.5);margin-top:calc(var(--u)*1)"><sc-for list="{{ timer }}" as="t" hint-placeholder-count="5"><span style="width:calc(var(--u)*2.2);height:calc(var(--u)*.8);border-radius:calc(var(--u)*.2);border:2px solid #141617;box-sizing:border-box;background:{{ t }};transition:background .25s"></span></sc-for></span></sc-if>
+      <sc-if value="{{ showAction }}" hint-placeholder-val="{{ false }}">
+        <button type="button" onClick="{{ action }}" style="margin-top:calc(var(--u)*1.4);background:#ffd84a;color:#141617;border:3px solid #141617;border-radius:calc(var(--u)*1);padding:calc(var(--u)*.9) calc(var(--u)*2.6);font:800 calc(var(--u)*2.1)/1.1 'Rubik',sans-serif;box-shadow:0 calc(var(--u)*.55) 0 #141617;cursor:pointer;transition:transform .12s" style-hover="transform:translateY(-2px)" style-active="transform:translateY(3px)">{{ actionLabel }}</button>
+      </sc-if>
+    </div>
+
+    <sc-for list="{{ opps }}" as="o" hint-placeholder-count="3">
+      <div style="position:absolute;left:{{ o.left }};top:{{ o.top }};width:calc(var(--u)*6.4);height:calc(var(--u)*8.6);box-sizing:border-box;background:#fffaf0;border-radius:calc(var(--u)*.8);padding:calc(var(--u)*.6) calc(var(--u)*.5);box-shadow:{{ o.shadow }};transform:{{ o.tf }};transition:transform .3s cubic-bezier(.3,1.4,.5,1),box-shadow .2s;display:flex;flex-direction:column;align-items:center;justify-content:space-between;z-index:2">
+        <span style="display:grid;place-items:center;width:calc(var(--u)*3.3);height:calc(var(--u)*3.3);box-sizing:border-box;border-radius:50%;border:calc(var(--u)*.3) dashed #fffaf0;background:{{ o.chip }};box-shadow:0 calc(var(--u)*.25) 0 {{ o.edge }};font:400 calc(var(--u)*1.8)/1 sans-serif">{{ o.animal }}</span>
+        <span style="max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 calc(var(--u)*1.3)/1.1 'Rubik',sans-serif">{{ o.name }}</span>
+        <span style="font:400 calc(var(--u)*1.3)/1 'VT323',monospace;letter-spacing:.06em;color:#4d4e48">{{ o.score }}</span>
+        <sc-if value="{{ o.bet }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:calc(var(--u)*-1);top:calc(var(--u)*-0.9);background:#141617;color:#ffd84a;border-radius:calc(var(--u)*0.5);padding:calc(var(--u)*0.2) calc(var(--u)*0.6);font:400 calc(var(--u)*1.4)/1 'VT323',monospace;letter-spacing:.1em;transform:rotate(8deg)">BET</span></sc-if>
+      </div>
+    </sc-for>
+
+    <sc-for list="{{ opps }}" as="o" hint-placeholder-count="3">
+      <span aria-label="{{ o.aria }}" style="position:absolute;left:{{ o.tLeft }};top:{{ o.tTop }};display:flex;gap:calc(var(--u)*0.4);z-index:2"><sc-for list="{{ o.toks }}" as="p" hint-placeholder-count="2"><span style="width:calc(var(--u)*1.7);height:calc(var(--u)*1.7);box-sizing:border-box;border-radius:50%;border:calc(var(--u)*0.2) dashed #fffaf0;background:{{ o.chip }};box-shadow:0 calc(var(--u)*0.2) 0 {{ o.edge }}"></span></sc-for></span>
+    </sc-for>
+
+    <sc-for list="{{ ocards }}" as="c" hint-placeholder-count="6">
+      <div style="position:absolute;left:0;top:0;width:calc(var(--u)*2.3);height:calc(var(--u)*3.2);transform:{{ c.tf }};transition:transform .55s cubic-bezier(.3,1.2,.5,1);z-index:{{ c.z }}" onMouseEnter="{{ c.on }}" onMouseLeave="{{ c.off }}"><div style="width:100%;height:100%;transform:{{ c.zoom }};box-sizing:border-box;background:{{ c.bg }};border:2px solid #141617;border-radius:calc(var(--u)*0.4);box-shadow:0 calc(var(--u)*0.25) 0 #141617;display:grid;place-items:center;font:400 calc(var(--u)*1.15)/1 'VT323',monospace;color:#141617;transition:transform .18s cubic-bezier(.3,1.5,.5,1)">{{ c.year }}</div></div>
+    </sc-for>
+    <sc-for list="{{ gaps }}" as="g" hint-placeholder-count="0">
+      <button type="button" onClick="{{ g.pick }}" aria-label="{{ g.label }}" style="position:absolute;left:{{ g.left }};top:calc(var(--u)*24.4);width:calc(var(--u)*2);height:calc(var(--u)*8.2);padding:0;box-sizing:border-box;border:2px dashed {{ g.bd }};border-radius:calc(var(--u)*0.5);background:{{ g.bg }};cursor:pointer;z-index:5" style-hover="border-color:#ffd84a"></button>
+    </sc-for>
+    <div aria-hidden="true" style="position:absolute;left:0;top:0;width:calc(var(--u)*2.3);height:calc(var(--u)*3.2);box-sizing:border-box;background:{{ om.bg }};color:{{ om.fg }};border:2px solid #141617;border-radius:calc(var(--u)*0.4);box-shadow:{{ om.shadow }};display:grid;place-items:center;font:400 calc(var(--u)*1.15)/1 'VT323',monospace;transform:{{ om.tf }};opacity:{{ om.op }};transition:{{ om.tr }};z-index:5">{{ om.txt }}</div>
+    <sc-for list="{{ btoks }}" as="t" hint-placeholder-count="0">
+      <span aria-label="{{ t.tip }}" tabindex="0" onMouseEnter="{{ t.on }}" onMouseLeave="{{ t.off }}" onFocus="{{ t.on }}" onBlur="{{ t.off }}" style="position:absolute;left:{{ t.left }};top:{{ t.top }};width:calc(var(--u)*2.2);height:calc(var(--u)*2.2);z-index:{{ t.z }};cursor:help;outline:none;transition:left .5s cubic-bezier(.3,1.2,.5,1),top .5s cubic-bezier(.3,1.2,.5,1)">
+        <span style="width:100%;height:100%;box-sizing:border-box;border-radius:50%;background:{{ t.bg }};border:2px solid #141617;box-shadow:{{ t.shadow }};display:grid;place-items:center;font:400 calc(var(--u)*1.2)/1 sans-serif;animation:{{ t.anim }};transition:box-shadow .2s">{{ t.animal }}</span>
+        <sc-if value="{{ t.hv }}" hint-placeholder-val="{{ false }}"><span role="tooltip" style="position:absolute;left:50%;bottom:calc(100% + var(--u)*1.4);transform:translateX(-50%);white-space:nowrap;background:#141617;color:#fffaf0;border-radius:calc(var(--u)*.6);padding:calc(var(--u)*.5) calc(var(--u)*.9);font:500 calc(var(--u)*1.3)/1.2 'Rubik',sans-serif;box-shadow:0 calc(var(--u)*.3) 0 rgba(0,0,0,.4);pointer-events:none">{{ t.tip }}</span></sc-if>
+      </span>
+    </sc-for>
+
+    <div style="position:absolute;left:calc(var(--u)*20);top:calc(var(--u)*60.6);width:calc(var(--u)*60);display:flex;align-items:center;gap:calc(var(--u)*1.2);font:700 calc(var(--u)*1.9)/1 'Caveat',cursive;color:#fffaf0;text-shadow:0 2px 0 rgba(0,0,0,.35)"><span>← older</span><span style="flex:1;border-top:2px dashed rgba(255,250,240,.55)"></span><span>newer →</span></div>
+
+    <div aria-hidden="true" style="position:absolute;left:calc(var(--u)*22);top:calc(var(--u)*43.5);width:calc(var(--u)*56);height:calc(var(--u)*17);box-sizing:border-box;border:3px dashed {{ dz.bd }};border-radius:calc(var(--u)*1.6);background:{{ dz.bg }};opacity:{{ dz.op }};transition:opacity .2s,background .2s,border-color .2s;pointer-events:none;z-index:3"></div>
+    <div aria-hidden="true" style="position:absolute;left:0;top:0;width:calc(var(--u)*8.4);height:calc(var(--u)*11.8);box-sizing:border-box;border:3px dashed #ffd84a;border-radius:calc(var(--u)*.76);background:rgba(255,216,74,.18);transform:{{ dz.slotTf }};opacity:{{ dz.slotOp }};transition:transform .3s cubic-bezier(.3,1.3,.5,1),opacity .15s;pointer-events:none;z-index:3"></div>
+
+    <sc-for list="{{ hand }}" as="c" hint-placeholder-count="2">
+      <div onMouseEnter="{{ c.on }}" onMouseLeave="{{ c.off }}" style="position:absolute;left:0;top:0;width:calc(var(--u)*8.4);height:calc(var(--u)*11.8);box-sizing:border-box;background:#1c1e20;border:3px solid #141617;border-radius:calc(var(--u)*.76);padding:calc(var(--u)*.42) calc(var(--u)*.42) calc(var(--u)*.46);box-shadow:0 calc(var(--u)*.5) 0 #141617;transform:{{ c.tf }};opacity:{{ c.op }};transition:{{ c.tr }};z-index:4;display:flex;flex-direction:column;gap:calc(var(--u)*.34)">
+        <div style="position:relative;flex:none;align-self:center;width:calc(var(--u)*7.2);height:calc(var(--u)*7.2);margin-top:calc(var(--u)*.2);border-radius:50%;box-shadow:0 calc(var(--u)*.21) 0 #000">
+          <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,{{ c.bg }} 0 38.75%,transparent 39.4%),repeating-radial-gradient(circle,#0d0e0f 0 1.6%,#26282a 1.6% 2.9%);display:grid;place-items:center;animation:spin 2.4s linear infinite;animation-play-state:{{ c.spin }}"><span style="width:calc(var(--u)*3.85);height:calc(var(--u)*3.85);border-radius:50%;background:conic-gradient(rgba(20,22,23,.28) 0 22%,transparent 22% 50%,rgba(255,250,240,.45) 50% 58%,transparent 58% 70%,rgba(20,22,23,.28) 70% 74%,transparent 74%);mask:radial-gradient(closest-side,transparent 0 74%,#000 76% 90%,transparent 92%)"></span></div>
+          <div style="position:absolute;inset:0;border-radius:50%;pointer-events:none;background:conic-gradient(from 20deg,transparent 0 8%,rgba(255,255,255,.1) 12%,transparent 17% 52%,rgba(255,255,255,.07) 57%,transparent 62%);mask:radial-gradient(circle,transparent 0 39.4%,#000 40%)"></div>
+          <div style="position: absolute; inset: 0; display: grid; place-items: center; color: #141617; font: 400 calc(var(--u)*1.8)/1 'VT323',monospace; letter-spacing: .01em">{{ c.year }}</div>
+        </div>
+        <div style="flex:1;min-height:0;overflow:hidden;background:#efe6d0;color:#141617;border-radius:calc(var(--u)*.34);padding:calc(var(--u)*.21) calc(var(--u)*.34);display:flex;flex-direction:column;justify-content:center;gap:calc(var(--u)*.13);text-align:center">
+          <span style="font:700 {{ c.ts }}/1.02 'Pixelify Sans',sans-serif">{{ c.title }}</span>
+          <span style="font:400 calc(var(--u)*.8)/1 'VT323',monospace;color:#4d4e48">{{ c.artist }}</span>
+        </div>
+      </div>
+    </sc-for>
+
+    <div onPointerDown="{{ down }}" onPointerMove="{{ move }}" onPointerUp="{{ up }}" onPointerCancel="{{ up }}" onKeyDown="{{ keyDown }}" role="button" tabindex="0" aria-label="Mystery song card. Drag into your timeline, or use the arrow keys and Enter." style="position:absolute;left:0;top:0;width:calc(var(--u)*8.4);height:calc(var(--u)*11.8);z-index:6;perspective:900px;touch-action:none;cursor:{{ m.cursor }};transform:{{ m.tf }};opacity:{{ m.op }};pointer-events:{{ m.pe }};transition:{{ m.tr }}">
+      <div onMouseEnter="{{ mOn }}" onMouseLeave="{{ mOff }}" style="width:100%;height:100%;transform-style:preserve-3d;animation:{{ m.hov }}"><div style="position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:{{ m.flip }};transition:transform .55s cubic-bezier(.3,1.3,.5,1)">
+        <div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-sizing:border-box;background:#1c1e20;border:3px solid #141617;border-radius:calc(var(--u)*.76);padding:calc(var(--u)*.42) calc(var(--u)*.42) calc(var(--u)*.46);box-shadow:{{ m.shadow }};display:flex;flex-direction:column;gap:calc(var(--u)*.34)">
+          {{ disc }}
+          <div style="flex:1;min-height:0;background:#efe6d0;color:#141617;border-radius:calc(var(--u)*.34);display:flex;flex-direction:column;justify-content:center;gap:calc(var(--u)*.21);text-align:center">
+            <span style="font:700 calc(var(--u)*1.43)/1 'Pixelify Sans',sans-serif;letter-spacing:.12em">???</span>
+            {{ eq }}
+          </div>
+        </div>
+        <div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg)">
+          <sc-if value="{{ m.year }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:0;box-sizing:border-box;background:#1c1e20;border:3px solid #141617;border-radius:calc(var(--u)*.76);padding:calc(var(--u)*.42) calc(var(--u)*.42) calc(var(--u)*.46);box-shadow:{{ m.shadow }};display:flex;flex-direction:column;gap:calc(var(--u)*.34)">
+              <div style="position:relative;flex:none;align-self:center;width:calc(var(--u)*7.2);height:calc(var(--u)*7.2);margin-top:calc(var(--u)*.2);border-radius:50%;box-shadow:0 calc(var(--u)*.21) 0 #000">
+                <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,{{ cur.bg }} 0 38.75%,transparent 39.4%),repeating-radial-gradient(circle,#0d0e0f 0 1.6%,#26282a 1.6% 2.9%);display:grid;place-items:center"><span style="width:calc(var(--u)*3.85);height:calc(var(--u)*3.85);border-radius:50%;background:conic-gradient(rgba(20,22,23,.28) 0 22%,transparent 22% 50%,rgba(255,250,240,.45) 50% 58%,transparent 58% 70%,rgba(20,22,23,.28) 70% 74%,transparent 74%);mask:radial-gradient(closest-side,transparent 0 74%,#000 76% 90%,transparent 92%)"></span></div>
+                <div style="position:absolute;inset:0;border-radius:50%;pointer-events:none;background:conic-gradient(from 20deg,transparent 0 8%,rgba(255,255,255,.1) 12%,transparent 17% 52%,rgba(255,255,255,.07) 57%,transparent 62%);mask:radial-gradient(circle,transparent 0 39.4%,#000 40%)"></div>
+                <div style="position:absolute;inset:0;display:grid;place-items:center;color:#141617;font:400 calc(var(--u)*2.5)/1 'VT323',monospace;letter-spacing:.02em">{{ cur.year }}</div>
+              </div>
+              <div style="flex:1;min-height:0;overflow:hidden;background:#efe6d0;color:#141617;border-radius:calc(var(--u)*.34);padding:calc(var(--u)*.21) calc(var(--u)*.34);display:flex;flex-direction:column;justify-content:center;gap:calc(var(--u)*.13);text-align:center">
+                <span style="font:700 {{ cur.ts }}/1.02 'Pixelify Sans',sans-serif">{{ cur.title }}</span>
+                <span style="font:400 calc(var(--u)*.8)/1 'VT323',monospace;color:#4d4e48">{{ cur.artist }}</span>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div></div>
+    </div>
+
+    <sc-if value="{{ showBar }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:50%;top:calc(var(--u)*43.4);transform:translate(-50%,-50%);z-index:9;white-space:nowrap;display:flex;align-items:center;gap:calc(var(--u)*1.6);background:#141617;color:#fffaf0;border-radius:calc(var(--u)*1.2);padding:calc(var(--u)*0.9) calc(var(--u)*1) calc(var(--u)*0.9) calc(var(--u)*2);box-shadow:0 calc(var(--u)*0.6) 0 rgba(0,0,0,.45);box-sizing:border-box">
+      <sc-if value="{{ countTxt }}" hint-placeholder-val="{{ false }}"><span style="font:400 calc(var(--u)*2.4)/1 'VT323',monospace;color:#ffd84a;min-width:calc(var(--u)*3)">{{ countTxt }}</span></sc-if>
+      <span style="font:700 calc(var(--u)*1.7)/1.2 'Rubik',sans-serif">{{ barText }}</span>
+      <button type="button" onClick="{{ confirmBet }}" disabled="{{ noSel }}" style="background:#ffd84a;color:#141617;border:3px solid #141617;border-radius:calc(var(--u)*0.8);padding:calc(var(--u)*0.8) calc(var(--u)*1.8);font:800 calc(var(--u)*1.7)/1.1 'Rubik',sans-serif;cursor:{{ barCur }};opacity:{{ barOp }};white-space:nowrap;transition:transform .12s" style-hover="transform:translateY(-2px)" style-active="transform:translateY(2px)">Confirm bet</button>
+      <button type="button" onClick="{{ passBet }}" style="background:#fffaf0;color:#141617;border:3px solid #141617;border-radius:calc(var(--u)*0.8);padding:calc(var(--u)*0.8) calc(var(--u)*1.8);font:800 calc(var(--u)*1.7)/1.1 'Rubik',sans-serif;cursor:pointer;transition:transform .12s" style-hover="transform:translateY(-2px)" style-active="transform:translateY(2px)">Pass</button>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ chatOn }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:calc(var(--u)*79.5);top:calc(var(--u)*42.6);width:calc(var(--u)*19);height:calc(var(--u)*18.9);box-sizing:border-box;z-index:5;background:#f3ead2;color:#141617;border-radius:calc(var(--u)*0.6);padding:calc(var(--u)*0.9) calc(var(--u)*1) calc(var(--u)*1);box-shadow:0 calc(var(--u)*0.5) 0 rgba(0,0,0,.35);transform:rotate(1deg);display:flex;flex-direction:column;gap:calc(var(--u)*0.6)">
+      <div style="flex:none;display:flex;align-items:center;gap:calc(var(--u)*0.5)">
+        <span style="flex:1;font:700 calc(var(--u)*2.4)/.9 'Caveat',cursive">Chat</span>
+        <span aria-label="{{ songAria }}" style="border:2px solid {{ songBd }};background:{{ songBg }};color:{{ songFg }};border-radius:calc(var(--u)*0.4);padding:calc(var(--u)*0.15) calc(var(--u)*0.5);font:400 calc(var(--u)*1.3)/1 'VT323',monospace;letter-spacing:.08em;transition:background .2s,color .2s,border-color .2s">SONG</span>
+        <span aria-label="{{ artistAria }}" style="border:2px solid {{ artistBd }};background:{{ artistBg }};color:{{ artistFg }};border-radius:calc(var(--u)*0.4);padding:calc(var(--u)*0.15) calc(var(--u)*0.5);font:400 calc(var(--u)*1.3)/1 'VT323',monospace;letter-spacing:.08em;transition:background .2s,color .2s,border-color .2s">ARTIST</span>
+      </div>
+      <div role="log" aria-live="polite" style="flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:calc(var(--u)*0.35)">
+        <sc-for list="{{ chatRows }}" as="c" hint-placeholder-count="2">
+          <div style="flex:none;font:{{ c.fw }} calc(var(--u)*1.25)/1.25 'Rubik',sans-serif;color:{{ c.fg }};overflow-wrap:anywhere;user-select:text"><span style="font-weight:800;color:#141617">{{ c.name }}</span>{{ c.text }}</div>
+        </sc-for>
+      </div>
+      <form onSubmit="{{ send }}" style="flex:none;display:flex;gap:calc(var(--u)*0.5);margin:0">
+        <input type="text" value="{{ draft }}" onChange="{{ typeDraft }}" maxLength="60" autoComplete="off" aria-label="Chat message" placeholder="Guess or chat…" style="flex:1;min-width:0;box-sizing:border-box;background:#fffaf0;color:#141617;border:2px solid #141617;outline:none;border-radius:calc(var(--u)*0.5);padding:calc(var(--u)*0.4) calc(var(--u)*0.7);font:500 calc(var(--u)*1.3)/1.2 'Rubik',sans-serif;user-select:text" style-focus="box-shadow:0 0 0 2px #ffd84a">
+        <button type="submit" style="flex:none;background:#ffd84a;color:#141617;border:2px solid #141617;border-radius:calc(var(--u)*0.5);padding:0 calc(var(--u)*0.9);font:800 calc(var(--u)*1.3)/1 'Rubik',sans-serif;cursor:pointer;transition:transform .12s" style-hover="transform:translateY(-1px)" style-active="transform:translateY(1px)">Send</button>
+      </form>
+    </div>
+    </sc-if>
+
+    <span aria-label="{{ meTokTip }}" tabindex="0" onMouseEnter="{{ tipOn }}" onMouseLeave="{{ tipOff }}" onFocus="{{ tipOn }}" onBlur="{{ tipOff }}" style="position:absolute;left:calc(var(--u)*3.2);bottom:calc(var(--u)*1.2);z-index:9;display:flex;gap:calc(var(--u)*0.5);min-width:calc(var(--u)*2.2);min-height:calc(var(--u)*2.2);cursor:help;outline:none"><sc-if value="{{ tip }}" hint-placeholder-val="{{ false }}"><span role="tooltip" style="position:absolute;left:calc(100% + var(--u)*1.2);bottom:calc(var(--u)*-.4);width:calc(var(--u)*21);box-sizing:border-box;background:#141617;color:#fffaf0;border-radius:calc(var(--u)*.7);padding:calc(var(--u)*.8) calc(var(--u)*1.1);font:500 calc(var(--u)*1.4)/1.3 'Rubik',sans-serif;box-shadow:0 calc(var(--u)*.4) 0 rgba(0,0,0,.4);pointer-events:none;text-wrap:pretty">{{ meTokTip }}</span></sc-if><sc-for list="{{ meToks }}" as="p" hint-placeholder-count="2"><span style="width:calc(var(--u)*2.2);height:calc(var(--u)*2.2);box-sizing:border-box;border-radius:50%;border:calc(var(--u)*0.25) dashed #fffaf0;background:#ffd84a;box-shadow:0 calc(var(--u)*0.25) 0 #c9a52e;animation:{{ p }}"></span></sc-for></span>
+    <div style="position:absolute;left:calc(var(--u)*2.5);bottom:calc(var(--u)*4.6);z-index:3;background:{{ meBg }};border:3px solid #141617;border-radius:calc(var(--u)*.8);padding:calc(var(--u)*.5) calc(var(--u)*1.4) calc(var(--u)*.7);box-shadow:0 calc(var(--u)*.5) 0 #141617;transform:rotate(-2deg);display:flex;align-items:center;gap:calc(var(--u)*1);transition:background .2s">
+      <span style="display:grid;place-items:center;width:calc(var(--u)*4);height:calc(var(--u)*4);border-radius:50%;background:#fffaf0;border:3px solid #141617;font:400 calc(var(--u)*2.4)/1 sans-serif">🦊</span>
+      <div style="display:flex;flex-direction:column;gap:calc(var(--u)*.3)">
+        <span style="display:flex;align-items:center;gap:calc(var(--u)*0.8)"><span style="font:700 calc(var(--u)*2.6)/1 'Caveat',cursive">matt</span></span>
+        <span aria-label="{{ meAria }}" style="display:flex;gap:calc(var(--u)*.3)"><sc-for list="{{ mePips }}" as="p" hint-placeholder-count="5"><span style="width:calc(var(--u)*.8);height:calc(var(--u)*1.1);border-radius:2px;box-sizing:border-box;border:1.5px solid #141617;background:{{ p }}"></span></sc-for></span>
+      </div>
+    </div>
+  </div>
+
+
+  {{ confetti }}
+
+  <sc-if value="{{ showNote }}" hint-placeholder-val="{{ true }}">
+  <div onClick="{{ closeHelp }}" style="position:absolute;inset:0;z-index:10;background:rgba(20,22,23,.6);display:grid;place-items:center">
+    <div role="dialog" aria-modal="true" aria-label="How a round works" onClick="{{ stop }}" style="position:relative;width:calc(var(--u)*50);max-width:92%;box-sizing:border-box;background:#f3ead2 repeating-linear-gradient(to bottom,transparent 0 29px,rgba(20,22,23,.08) 29px 30px);border-radius:calc(var(--u)*.6);padding:calc(var(--u)*2.6) calc(var(--u)*3);box-shadow:0 calc(var(--u)*1) 0 rgba(0,0,0,.4);transform:rotate(-1deg);color:#141617;display:flex;gap:calc(var(--u)*2.6);align-items:center">
+      <div style="flex:1;min-width:0">
+        <h2 style="margin:0 0 calc(var(--u)*1.4);font:700 calc(var(--u)*4)/1 'Caveat',cursive">{{ noteTitle }}</h2>
+        <ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:calc(var(--u)*1.1);font:500 calc(var(--u)*1.7)/1.35 'Rubik',sans-serif;text-wrap:pretty">
+          <li style="display:flex;gap:calc(var(--u)*1.2);align-items:baseline"><span style="font:800 calc(var(--u)*2.2)/1 'Rubik',sans-serif;color:#d63e31">1</span><span><b style="font-weight:800">Listen</b> to the mystery song.</span></li>
+          <li style="display:flex;gap:calc(var(--u)*1.2);align-items:baseline"><span style="font:800 calc(var(--u)*2.2)/1 'Rubik',sans-serif;color:#d63e31">2</span><span><b style="font-weight:800">Drag</b> its card into your timeline where the year fits.</span></li>
+          <li style="display:flex;gap:calc(var(--u)*1.2);align-items:baseline"><span style="font:800 calc(var(--u)*2.2)/1 'Rubik',sans-serif;color:#d63e31">3</span><span><b style="font-weight:800">Right spot,</b> you keep it. First to {{ goal }} wins.</span></li>
+          <li style="display:flex;gap:calc(var(--u)*1.2);align-items:baseline"><span style="font:800 calc(var(--u)*2.2)/1 'Rubik',sans-serif;color:#d63e31">4</span><span><b style="font-weight:800">Bet a token</b> on an opponent's turn: tap the gap where the song really goes. If they miss and you're first to be right, you steal the card.</span></li>
+          <sc-if value="{{ chatOn }}" hint-placeholder-val="{{ true }}"><li style="display:flex;gap:calc(var(--u)*1.2);align-items:baseline"><span style="font:800 calc(var(--u)*2.2)/1 'Rubik',sans-serif;color:#d63e31">5</span><span><b style="font-weight:800">Guess in the chat.</b> Type the song and the artist at any time. Get both and you earn a token.</span></li></sc-if>
+        </ol>
+      </div>
+      <sc-if value="{{ intro }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:none;width:calc(var(--u)*13);text-align:center">
+          <div style="font:400 calc(var(--u)*1.4)/1 'VT323',monospace;color:#d63e31;letter-spacing:.3em;margin-right:-.3em">STARTS IN</div>
+          {{ countEl }}
+        </div>
+      </sc-if>
+      <sc-if value="{{ help }}" hint-placeholder-val="{{ false }}">
+        <button type="button" onClick="{{ closeHelp }}" aria-label="Close" style="position:absolute;right:calc(var(--u)*1.2);top:calc(var(--u)*1.2);width:calc(var(--u)*3.4);height:calc(var(--u)*3.4);border:3px solid #141617;border-radius:50%;background:#ffd84a;color:#141617;padding:0;font:800 calc(var(--u)*2)/1 'Rubik',sans-serif;cursor:pointer;display:grid;place-items:center">×</button>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ over }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;inset:0;z-index:10;background:rgba(20,22,23,.6);display:grid;place-items:center">
+    <div role="dialog" aria-modal="true" aria-label="Final scores" style="position:relative;width:calc(var(--u)*46);max-width:92%;box-sizing:border-box;background:#141617;border-radius:calc(var(--u)*1.6);padding:calc(var(--u)*3) calc(var(--u)*3.4) calc(var(--u)*3.2);box-shadow:0 calc(var(--u)*1) 0 rgba(0,0,0,.45);color:#fffaf0;text-align:center">
+      <div style="position:absolute;inset:calc(var(--u)*0.6);border:3px solid #ef4a3c;border-radius:calc(var(--u)*1.1);pointer-events:none"></div>
+      <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*1.2)">
+        <div style="font:400 calc(var(--u)*1.6)/1 'VT323',monospace;color:#ef4a3c;letter-spacing:.4em;margin-right:-.4em">FINAL SCORES</div>
+        <h2 style="margin:0;font:700 calc(var(--u)*5.4)/1 'Pixelify Sans',sans-serif;letter-spacing:.02em;color:#ffe680;text-shadow:-3px 0 rgba(239,74,60,.85),3px 0 rgba(59,140,240,.85)">{{ endTitle }}</h2>
+        <p style="margin:0;font:500 calc(var(--u)*1.6)/1.3 'Rubik',sans-serif">{{ endSub }}</p>
+        <ol style="list-style:none;margin:calc(var(--u)*0.6) 0 0;padding:0;width:100%;display:flex;flex-direction:column;gap:calc(var(--u)*0.6)">
+          <sc-for list="{{ ranks }}" as="r" hint-placeholder-count="4">
+            <li style="display:flex;align-items:center;gap:calc(var(--u)*1.2);padding:calc(var(--u)*0.6) calc(var(--u)*1.2);border-radius:calc(var(--u)*0.8);background:{{ r.bg }};color:{{ r.fg }};font:400 calc(var(--u)*2.2)/1 'VT323',monospace">
+              <span style="width:calc(var(--u)*3.4);text-align:left">{{ r.rank }}</span>
+              <span style="flex:none;display:grid;place-items:center;width:calc(var(--u)*2.9);height:calc(var(--u)*2.9);box-sizing:border-box;border-radius:50%;background:{{ r.chip }};border:2px solid #141617;font:400 calc(var(--u)*1.6)/1 sans-serif">{{ r.animal }}</span>
+              <span style="flex:1;min-width:0;text-align:left;font:800 calc(var(--u)*1.7)/1.1 'Rubik',sans-serif">{{ r.name }}</span>
+              <span aria-hidden="true" style="display:flex;gap:calc(var(--u)*0.3)"><sc-for list="{{ r.pips }}" as="p" hint-placeholder-count="5"><span style="width:calc(var(--u)*0.9);height:calc(var(--u)*1.3);box-sizing:border-box;border-radius:2px;border:1.5px solid {{ r.fg }};background:{{ p }}"></span></sc-for></span>
+              <span style="width:calc(var(--u)*3);text-align:right">{{ r.score }}</span>
+            </li>
+          </sc-for>
+        </ol>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:calc(var(--u)*1.4);margin-top:calc(var(--u)*1)">
+          <button type="button" onClick="{{ again }}" style="background:#ffd84a;color:#141617;border:3px solid #141617;border-radius:calc(var(--u)*0.8);padding:calc(var(--u)*0.9) calc(var(--u)*2.2);font:800 calc(var(--u)*1.8)/1.1 'Rubik',sans-serif;box-shadow:0 calc(var(--u)*0.45) 0 #000;cursor:pointer;text-decoration:none;transition:transform .12s" style-hover="transform:translateY(-2px)" style-active="transform:translateY(3px)">Play again</button>
+          <a href="Table Lobby.dc.html" style="background:#fffaf0;color:#141617;border:3px solid #141617;border-radius:calc(var(--u)*0.8);padding:calc(var(--u)*0.9) calc(var(--u)*2.2);font:800 calc(var(--u)*1.8)/1.1 'Rubik',sans-serif;box-shadow:0 calc(var(--u)*0.45) 0 #000;cursor:pointer;text-decoration:none;transition:transform .12s" style-hover="transform:translateY(-2px);color:#141617" style-active="transform:translateY(3px)">Back to lobby</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;introSeconds&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;min&quot;:0,&quot;max&quot;:15,&quot;default&quot;:10,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Flow&quot;},&quot;chat&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Rules&quot;},&quot;opponents&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;min&quot;:1,&quot;max&quot;:5,&quot;default&quot;:3,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Table&quot;},&quot;fan&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Table&quot;},&quot;scanlines&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Screen&quot;}}">
+class Component extends DCLogic {
+  POOL = [['Billie Jean', 'Michael Jackson', 1983], ['Wonderwall', 'Oasis', 1995], ['Like a Prayer', 'Madonna', 1989], ['Hey Ya!', 'OutKast', 2003], ['Take On Me', 'a-ha', 1985], ['Rolling in the Deep', 'Adele', 2010], ['Smells Like Teen Spirit', 'Nirvana', 1991]];
+  START = [['Dancing Queen', 'ABBA', 1976], ['Bette Davis Eyes', 'Kim Carnes', 1981]];
+  fresh() { return { phase: 'intro', count: 0, dealt: false, hand: this.START.slice(), cur: this.POOL[0], qi: 0, placed: null, drag: null, bYear: false, ok: false, turn: 0, active: -1, oppHands: [[1979, 1994], [1986], [1972, 1988, 2001], [1999], [1984, 2008]], tokens: 2, oppTokens: [2, 2, 2, 2, 2], bets: [], sel: null, betLocked: false, passed: false, oGap: null, thief: null, oDone: false, got: {} }; }
+  NAMES = ['Mika', 'Jon', 'Priya', 'Otto', 'Sam'];
+  LINES = ['is this Queen??', 'Toto. final answer', 'my dad plays this in the car', 'ok this is definitely 80s', 'Spice Girls?', 'I KNOW this one argh', 'wait wait wait dont tell me'];
+  norm(t) { return String(t).toLowerCase().replace(/[^a-z0-9]/g, ''); }
+  dist(a, b) { const d = Array.from({ length: a.length + 1 }, (_, i) => [i]); for (let j = 1; j <= b.length; j++) d[0][j] = j; for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); return d[a.length][b.length]; }
+  near(g, t) { return g.length >= 3 && (this.dist(g, t) <= 2 || (g.length >= 4 && (t.includes(g) || g.includes(t)))); }
+  guessOpen() { return ['play', 'mWait', 'mBets', 'opp', 'oShow', 'oBets'].includes(this.state.phase); }
+  say(row) { this.setState(v => ({ chat: v.chat.concat(row).slice(-30) })); }
+  credit(who, part) {
+    const name = who === 'me' ? 'matt' : this.NAMES[who], got = Object.assign({}, this.state.got), mine = Object.assign({}, got[who]);
+    if (mine[part]) return; mine[part] = true; got[who] = mine; const both = mine.t && mine.a;
+    const rows = [{ k: 'sys', text: name + ' guessed the ' + (part === 't' ? 'song' : 'artist') + ' correctly.' }]; if (both) rows.push({ k: 'sys', text: name + ' got both and earns a token.' });
+    this.setState(v => ({ got, chat: v.chat.concat(rows).slice(-30), tokens: v.tokens + (both && who === 'me' ? 1 : 0), oppTokens: both && who !== 'me' ? v.oppTokens.map((t, j) => j === who ? t + 1 : t) : v.oppTokens }));
+  }
+  send(ev) {
+    ev.preventDefault(); const text = this.state.draft.trim(); if (!text) return; this.setState({ draft: '' });
+    if (this.guessOpen()) {
+      const g = this.norm(text), T = this.norm(this.state.cur[0]), A = this.norm(this.state.cur[1]), mine = this.state.got.me || {};
+      if (g === T || g === A) { const part = g === T ? 't' : 'a'; return mine[part] ? this.say({ k: 'close', text: 'You already got the ' + (part === 't' ? 'song' : 'artist') + '.' }) : this.credit('me', part); }
+      if ((!mine.t && this.near(g, T)) || (!mine.a && this.near(g, A))) return this.say({ k: 'close', text: "Close, but not quite. Your message wasn't sent." });
+    }
+    this.say({ k: 'msg', who: 'me', text });
+  }
+  simChat(q) {
+    const k = this.oppCount(), live = () => this.state.qi === q && this.guessOpen(), a = this.rnd(k);
+    this.later(() => { if (live()) this.say({ k: 'msg', who: a, text: this.LINES[this.rnd(this.LINES.length)] }); }, 1500 + Math.random() * 2500);
+    if (Math.random() < .5) { const b = this.rnd(k), part = Math.random() < .5 ? 'a' : 't';
+      this.later(() => { if (live()) this.credit(b, part); }, 3000 + Math.random() * 3000);
+      if (Math.random() < .4) this.later(() => { if (live()) this.credit(b, part === 'a' ? 't' : 'a'); }, 6200 + Math.random() * 1500); }
+  }
+  fits(ys, g, y) { return (g === 0 || ys[g - 1] <= y) && (g === ys.length || y <= ys[g]); }
+  ins(a, y) { return a.concat([y]).sort((p, q) => p - q); }
+  rnd(n) { return Math.floor(Math.random() * n); }
+  settle(bets, fit, ok, gap) {
+    const oppTokens = this.state.oppTokens.slice(); let tokens = this.state.tokens, thief = null;
+    bets.forEach(b => { if (b.gap === gap) { if (b.who === 'me') tokens++; else oppTokens[b.who]++; } else if (!ok && thief == null && fit(b.gap)) thief = b.who; });
+    return { oppTokens, tokens, thief };
+  }
+  simBets(q, phase, n, skip) {
+    for (let i = 0; i < this.oppCount(); i++) if (i !== skip && Math.random() < .4) this.later(() => {
+      const z = this.state; if (!phase.includes(z.phase) || z.qi !== q || z.oppTokens[i] < 1) return;
+      this.setState(v => ({ bets: v.bets.concat({ who: i, gap: this.rnd(n + 1) }), oppTokens: v.oppTokens.map((t, j) => j === i ? t - 1 : t) }));
+    }, 1200 + Math.random() * 4500);
+  }
+  bet() {
+    const s = this.state; if (s.phase !== 'opp' || s.sel == null || s.betLocked || s.tokens < 1) return;
+    this.setState(v => ({ betLocked: true, tokens: v.tokens - 1, bets: v.bets.concat({ who: 'me', gap: v.sel }) }));
+  }
+  pass() { if (this.state.phase !== 'opp') return; this.setState({ passed: true, sel: null }); }
+  oppReveal() {
+    if (this.state.phase !== 'opp') return;
+    clearInterval(this.iv); this.setState({ phase: 'oShow' });
+    this.later(() => {
+      this.setState({ phase: 'oBets' });
+      this.later(() => {
+        const s = this.state, a = s.active, ys = s.oppHands[a], y = s.cur[2], ok = this.fits(ys, s.oGap, y), R = this.settle(s.bets, g => this.fits(ys, g, y), ok, s.oGap);
+        this.setState({ phase: 'oYear', ok, thief: R.thief, tokens: R.tokens, oppTokens: R.oppTokens });
+        this.later(() => {
+          this.setState({ phase: 'oEnd' });
+          this.later(() => {
+            const z = this.state, to = ok ? a : R.thief;
+            const hand = to === 'me' ? z.hand.concat([z.cur]).sort((p, q) => p[2] - q[2]) : z.hand;
+            const oppHands = z.oppHands.map((o, j) => j === to && o.length < this.goal() ? this.ins(o, y) : o);
+            this.setState({ hand, turn: z.turn + 1, oppHands });
+            if (hand.length >= this.goal()) this.setState({ phase: 'win' }); else if (oppHands.some(o => o.length >= this.goal())) this.setState({ phase: 'lose' }); else this.myTurn();
+          }, 900);
+        }, 1700);
+      }, this.state.bets.length ? 1200 : 500);
+    }, 1100);
+  }
+  state = Object.assign(this.fresh(), { chat: [{ k: 'sys', text: 'Type the song and the artist here. Get both for a token.' }], draft: '', help: false, sound: true, tip: false, hov: null, mHov: false, hHov: null, bHov: null });
+  stageRef = React.createRef();
+  timers = [];
+  later(fn, ms) { this.timers.push(setTimeout(fn, ms)); }
+  componentDidMount() {
+    this.onKey = ev => { if (ev.key === 'Escape' && this.state.help) this.setState({ help: false }); };
+    document.addEventListener('keydown', this.onKey);
+    const n = this.props.introSeconds ?? 10;
+    if (n <= 0) return this.begin();
+    this.setState({ count: n });
+    this.iv = setInterval(() => { if (this.state.count <= 1) { clearInterval(this.iv); this.begin(); } else this.setState(s => ({ count: s.count - 1 })); }, 1000);
+  }
+  componentWillUnmount() { document.removeEventListener('keydown', this.onKey); clearInterval(this.iv); this.timers.forEach(clearTimeout); }
+  begin() { this.setState({ phase: 'wait', dealt: true }); this.later(() => this.myTurn(), 900); }
+  myTurn() {
+    const q = this.state.qi + 1;
+    this.setState(s => ({ phase: 'deal0', cur: this.POOL[s.qi % this.POOL.length], qi: s.qi + 1, placed: null, drag: null, bYear: false, active: -1, bets: [], thief: null, sel: null, betLocked: false, passed: false, oGap: null, got: {} }));
+    this.later(() => this.setState({ phase: 'play' }), 80);
+    this.simBets(q, ['play', 'mWait'], this.state.hand.length, -1); this.simChat(q);
+  }
+  closeIn(phase, done) {
+    this.setState({ count: 5 }); clearInterval(this.iv);
+    this.iv = setInterval(() => { if (this.state.phase !== phase) return clearInterval(this.iv); if (this.state.count <= 1) { clearInterval(this.iv); done(); } else this.setState(v => ({ count: v.count - 1 })); }, 1000);
+  }
+  lock() {
+    if (this.state.phase !== 'play' || this.state.placed == null) return;
+    this.setState({ phase: 'mWait' }); this.closeIn('mWait', () => this.lockReveal());
+  }
+  lockReveal() {
+    const s = this.state, i = s.placed, h = s.hand, y = s.cur[2];
+    if (s.phase !== 'mWait' || i == null) return;
+    const ok = (i === 0 || h[i - 1][2] <= y) && (i === h.length || y <= h[i][2]);
+    this.setState({ phase: 'mBets' }); const R = this.settle(s.bets, g => this.fits(h.map(c => c[2]), g, y), ok, i), thief = R.thief; this.later(() => { this.setState({ phase: 'reveal', bYear: true, ok, thief, oppTokens: R.oppTokens });
+    this.later(() => {
+      if (ok) { const nh = h.slice(); nh.splice(i, 0, s.cur); this.setState({ phase: 'kept', hand: nh, placed: null }); }
+      else this.setState({ phase: 'bust' });
+      this.later(() => { let lost = false; if (thief != null) { const oh = this.state.oppHands.map((o, j) => j === thief && o.length < this.goal() ? this.ins(o, y) : o); lost = oh.some(o => o.length >= this.goal()); this.setState({ oppHands: oh }); } if (ok && h.length + 1 >= this.goal()) this.setState({ phase: 'win' }); else if (lost) this.setState({ phase: 'lose' }); else this.oppTurn(); }, 1700);
+    }, 1300); }, s.bets.length ? 1100 : 300);
+  }
+  oppTurn() {
+    const z = this.state, a = z.turn % this.oppCount(), ys = z.oppHands[a], q = z.qi + 1, cur = this.POOL[z.qi % this.POOL.length];
+    const good = ys.concat(0).map((_, g) => g).filter(g => this.fits(ys, g, cur[2]));
+    const oGap = Math.random() < .55 ? good[this.rnd(good.length)] : this.rnd(ys.length + 1);
+    this.setState({ phase: 'opp', active: a, cur, qi: q, placed: null, oGap, bets: [], sel: null, betLocked: false, passed: false, thief: null, ok: false, count: 0, oDone: false, got: {} });
+    this.simBets(q, 'opp', ys.length, a); this.simChat(q);
+    clearInterval(this.iv);
+    this.later(() => { if (this.state.phase !== 'opp' || this.state.qi !== q) return; this.setState({ oDone: true }); this.closeIn('opp', () => this.oppReveal()); }, 2500 + Math.random() * 2500);
+  }
+  goal() { return 5; }
+  oppCount() { return Math.max(1, Math.min(this.props.opponents ?? 3, 5)); }
+  toU(ev) { const r = this.stageRef.current.getBoundingClientRect(), u = r.width / 100; return { x: (ev.clientX - r.left) / u, y: (ev.clientY - r.top) / u }; }
+  renderVals() {
+    const e = React.createElement, s = this.state, n = s.hand.length, goal = this.goal(), fan = this.props.fan ?? true;
+    const u = v => `calc(var(--u)*${(+v).toFixed(2)})`;
+    const tf = (x, y, r, sc) => `translate(${u(x - 4.2)},${u(y - 5.9)}) rotate(${r.toFixed(1)}deg) scale(${sc || 1})`;
+    const slot = (k, total) => { const rel = k - (total - 1) / 2; return { x: 50 + rel * 9, y: 53 + (fan ? rel * rel * .3 : 0), r: fan ? rel * 3 : 0 }; };
+    const idxAt = x => s.hand.filter((c, i) => slot(i, n).x < x).length;
+    const dc = s.drag && { x: s.drag.x - this.off.x, y: s.drag.y - this.off.y }, over = dc && dc.y > 41;
+    const ins = dc ? (over ? idxAt(dc.x) : null) : s.phase === 'bust' ? null : s.placed;
+    const col = y => { let c = '#ef4a3c'; [[1960, '#ff8a3d'], [1970, '#ffd84a'], [1980, '#ff6fae'], [1990, '#3b8cf0'], [2000, '#45c486'], [2010, '#9b7bff'], [2020, '#33cccc']].forEach(([d, k]) => { if (y >= d) c = k; }); return [c, '#141617']; };
+    const card = c => { const [bg, fg] = col(c[2]); return { title: c[0], artist: c[1], year: c[2], bg, fg, ts: u(c[0].length > 16 ? .8 : .97) }; };
+    const hand = s.hand.map((c, i) => {
+      let p = ins != null ? slot(i < ins ? i : i + 1, n + 1) : slot(i, n), d = 0;
+      if (dc && ins != null) { d = Math.abs(i - ins + (i < ins ? 1 : 0)) * 35; p.x += i < ins ? -.7 : .7; if (i === ins - 1) { p.r -= 6; p.y -= .9; } if (i === ins) { p.r += 6; p.y -= .9; } }
+      if (!dc && s.dealt && s.hHov === i) p.y -= 1;
+      return Object.assign(card(c), {
+        tf: s.dealt ? tf(p.x, p.y, p.r) : tf(36, 28.5, i * 40, .6), op: s.dealt ? 1 : 0,
+        spin: s.hHov === i ? 'running' : 'paused', on: () => this.setState({ hHov: i }), off: () => this.setState({ hHov: null }),
+        tr: s.phase === 'wait' ? `transform .6s cubic-bezier(.2,.9,.3,1.15) ${i * 140}ms,opacity .2s ${i * 140}ms` : `transform .4s cubic-bezier(.3,1.5,.5,1) ${d}ms`
+      });
+    });
+    const k = this.oppCount(), spots = { 1: [[50, 15.5]], 2: [[34, 15.5], [72, 15.5]], 3: [[26, 15.5], [50, 15.5], [74, 15.5]], 4: [[15, 15.5], [39, 15.5], [63, 15.5], [87, 15.5]], 5: [[10.5, 15.5], [30.25, 15.5], [50, 15.5], [69.75, 15.5], [89.5, 15.5]] }[k];
+    const ended = s.phase === 'win' || s.phase === 'lose', wi = s.phase === 'lose' ? s.oppHands.slice(0, k).findIndex(o => o.length >= goal) : -1;
+    let mc = { x: 50, y: 28.5, r: -3 }, sc = 1;
+    if (s.phase === 'deal0') mc = { x: 36, y: 27.5, r: 0 };
+    else if (dc) { mc = { x: dc.x, y: dc.y, r: over ? 0 : 5 }; sc = 1.08; }
+    else if (s.phase === 'bust') { if (s.thief != null) { mc = { x: spots[s.thief][0], y: spots[s.thief][1], r: 0 }; sc = .3; } else mc = { x: 108, y: 30, r: 70 }; }
+    else if (s.placed != null) mc = slot(s.placed, n + 1);
+    this.mc = mc;
+    const vis = ['deal0', 'play', 'mWait', 'mBets', 'reveal', 'bust'].includes(s.phase), canDrag = s.phase === 'play';
+    const m = {
+      tf: tf(mc.x, mc.y, mc.r, sc), op: vis ? 1 : 0, pe: canDrag ? 'auto' : 'none', cursor: dc ? 'grabbing' : 'grab',
+      tr: dc ? 'opacity .15s' : s.phase === 'bust' ? 'transform .9s cubic-bezier(.5,-.3,.8,.6) .5s,opacity .15s' : vis ? 'transform .45s cubic-bezier(.3,1.3,.5,1),opacity .15s' : 'none',
+      hov: canDrag && !dc && s.mHov ? 'wiggle .7s ease-in-out infinite' : 'none', flip: s.bYear ? 'rotateY(180deg)' : 'rotateY(0deg)', back: !s.bYear, year: s.bYear,
+      shadow: dc ? `0 ${u(1.6)} ${u(1.2)} rgba(0,0,0,.35)` : s.phase === 'reveal' && s.ok ? `0 0 0 ${u(.35)} #ffd84a,0 ${u(.5)} 0 ${u(.35)} #141617` : `0 ${u(.5)} 0 #141617`
+    };
+    const where = i => i === 0 ? 'Before ' + s.hand[0][2] : i === n ? 'After ' + s.hand[n - 1][2] : `Between ${s.hand[i - 1][2]} and ${s.hand[i][2]}`;
+    const names = ['Mika', 'Jon', 'Priya', 'Otto', 'Sam'], animals = ['🐻', '🐼', '🐸', '🐙', '🦉'];
+    const chips = [['#ef4a3c', '#b8362b'], ['#3b8cf0', '#2a69b8'], ['#ffd84a', '#c9a52e'], ['#d8d2bf', '#a8a28f'], ['#ef4a3c', '#b8362b']];
+    const pips = (have, on) => Array.from({ length: goal }, (_, i) => i < have ? on : 'transparent');
+    const isO = s.phase[0] === 'o', shown = isO && s.phase !== 'opp', CX = 55.5, ys = isO ? s.oppHands[s.active] : [], nn = ys.length;
+    const whereO = g => g === 0 ? 'Before ' + ys[0] : g === nn ? 'After ' + ys[nn - 1] : 'Between ' + ys[g - 1] + ' and ' + ys[g];
+    const mini = (x, y, z, r) => 'translate(' + u(x - 1.15) + ',' + u(y - 1.6) + ') rotate(' + (r || 0) + 'deg) scale(' + z + ')';
+    const gold = '0 0 0 ' + u(.2) + ' #ffd84a,0 ' + u(.25) + ' 0 ' + u(.2) + ' #141617';
+    const opps = spots.map(([x, y], i) => {
+      const act = isO && s.active === i;
+      return { left: u(x - 9.75), top: u(y - 4.3), name: names[i], score: s.oppHands[i].length + '/' + goal, animal: animals[i], chip: chips[i][0], edge: chips[i][1], tLeft: u(x - 2.75), tTop: u(y - 4), toks: Array(Math.max(0, Math.min(4, s.oppTokens[i]))).fill(0), aria: s.oppTokens[i] + ' tokens left', bet: s.bets.some(b => b.who === i),
+        tf: 'rotate(' + [-3, 2, -2, 3, -1][i] + 'deg) scale(' + (act ? 1.12 : 1) + ')',
+        shadow: act ? '0 0 0 ' + u(.4) + ' #ffd84a,0 0 0 ' + u(.65) + ' #141617,0 ' + u(.6) + ' 0 ' + u(.65) + ' rgba(0,0,0,.3)' : '0 ' + u(.5) + ' 0 rgba(0,0,0,.3)' };
+    });
+    const ocards = [];
+    spots.forEach(([x, y], i) => s.oppHands[i].forEach((yr, j) => {
+      const act = isO && s.active === i;
+      const cx = !act ? x - 1.6 + j * 2.5 : shown ? CX + ((j < s.oGap ? j : j + 1) - nn / 2) * 5.6 : CX + (j - (nn - 1) / 2) * 6.6;
+      const id = i + '-' + j, hv = s.hov === id;
+      ocards.push({ year: yr, bg: col(yr)[0], tf: mini(cx, act ? 28.5 : y, act ? 2 : 1), z: hv ? 9 : act ? 4 : 2, zoom: 'scale(' + (hv ? (act ? 1.25 : 2.4) : 1) + ')', on: () => this.setState({ hov: id }), off: () => this.setState(v => v.hov === id ? { hov: null } : null) });
+    }));
+    const canBet = s.phase === 'opp' && !s.betLocked && !s.passed && s.tokens > 0;
+    const gaps = s.phase !== 'opp' ? [] : ys.concat(0).map((_, g) => g).filter(g => canBet || (s.betLocked && s.sel === g)).map(g => ({ left: u(CX + (g - nn / 2) * 6.6 - 1), label: 'Bet: ' + whereO(g), bg: s.sel === g ? '#ffd84a' : 'rgba(255,250,240,.14)', bd: s.sel === g ? '#141617' : 'rgba(255,250,240,.75)', pick: () => { if (canBet) this.setState({ sel: g }); } }));
+    const rev = s.phase === 'oYear' || s.phase === 'oEnd';
+    let op = { x: CX + (s.oGap - nn / 2) * 5.6, y: 28.5, z: 2, r: 0 };
+    if (s.phase === 'oEnd' && !s.ok) op = s.thief === 'me' ? { x: 50, y: 50, z: 2, r: 0 } : s.thief != null ? { x: spots[s.thief][0] - 1.6 + s.oppHands[s.thief].length * 2.5, y: spots[s.thief][1], z: 1, r: 0 } : { x: 108, y: 30, z: 2, r: 70 };
+    const om = { tf: shown ? mini(op.x, op.y, op.z, op.r) : mini(36, 28.5, 1), op: shown ? 1 : 0, tr: shown ? 'transform .6s cubic-bezier(.3,1.2,.5,1),opacity .2s' : 'none', bg: rev ? col(s.cur[2])[0] : '#1c1e20', fg: rev ? '#141617' : '#efe6d0', txt: rev ? s.cur[2] : '?', shadow: rev && s.ok ? gold : '0 ' + u(.25) + ' 0 #141617' };
+    const tokAt = isO ? g => ({ x: CX + (g - nn / 2) * 5.6, y: 23.4 }) : g => ({ x: slot(g, n + 1).x, y: 44.4 });
+    const pend = ['opp', 'play', 'mWait'].includes(s.phase), land = ['oBets', 'oYear', 'mBets', 'reveal'].includes(s.phase);
+    const btoks = !(pend || land) ? [] : s.bets.map((b, bi) => { const st = pend ? 0 : s.bets.slice(0, bi).filter(q => q.gap === b.gap).length, me = b.who === 'me', p = pend ? { x: (isO ? CX : 50) + (bi - (s.bets.length - 1) / 2) * 2.7, y: isO ? 21.2 : 36.7 } : tokAt(b.gap); const hv = s.bHov === bi; return { left: u(p.x - 1.1), top: u(p.y - 1.1 - st * 2.4), animal: me ? '🦊' : animals[b.who], bg: me ? '#fffaf0' : chips[b.who][0], hv, z: hv ? 9 : 7, tip: me ? 'You placed a bet.' : names[b.who] + ' placed a bet.', anim: hv ? 'floaty 1.2s ease-in-out infinite' : 'none', shadow: hv ? '0 ' + u(.9) + ' ' + u(.5) + ' rgba(0,0,0,.35)' : '0 ' + u(.2) + ' 0 #141617', on: () => this.setState({ bHov: bi }), off: () => this.setState(v => v.bHov === bi ? { bHov: null } : null) }; });
+    const song = `${s.cur[0]}, ${s.cur[1]}, ${s.cur[2]}.`;
+    const [status, statusSub] = s.phase === 'intro' ? ['Shuffling…', 'Dealing everyone a starting card.']
+      : s.phase === 'wait' ? ['Dealing…', '']
+      : s.phase === 'opp' ? [names[s.active] + (s.oDone ? ' has placed' : "'s turn"), (s.betLocked ? 'Bet placed. ' : s.passed ? 'You passed. ' : s.tokens ? 'Tap a gap to bet they miss. ' : 'No tokens left to bet. ') + (s.oDone ? 'Bets close in ' + s.count + 's.' : names[s.active] + ' is still choosing.')]
+      : s.phase === 'oShow' ? [names[s.active] + ' placed it', whereO(s.oGap) + '.']
+      : s.phase === 'oBets' ? ['Bets are in', s.bets.length ? '' : 'Nobody bet.']
+      : isO ? (s.ok ? [names[s.active] + ' got it', song] : s.thief === 'me' ? ['You steal it!', song] : s.thief != null ? [names[s.thief] + ' steals it', song] : [names[s.active] + ' missed', song])
+      : s.phase === 'mWait' ? ['Locked in', 'Opponents can bet for ' + s.count + 's.']
+      : s.phase === 'mBets' ? ['Locked in', s.bets.length ? 'Bets against you are revealed.' : 'Nobody bet against you.']
+      : s.phase === 'lose' ? [names[wi] + ' wins', 'They reached ' + goal + ' songs first.']
+      : s.phase === 'win' ? ['You win!', `${goal} songs in the right order.`]
+      : s.phase === 'reveal' || s.phase === 'kept' ? (s.ok ? ['Nailed it!', song] : ['Not quite', song])
+      : s.phase === 'bust' ? (s.thief != null ? [names[s.thief] + ' steals it', song] : ['Not quite', song + ' The card is discarded.'])
+      : ins != null ? [where(ins) + (dc ? '' : '?'), dc ? 'Drop to place it.' : 'Drag again to change your mind.']
+      : ['Your turn', 'Listen, then drag the card into your timeline.'];
+    const deckAnim = s.phase === 'intro';
+    const backFace = () => [
+      e('div', { key: 'r', style: { position: 'relative', flex: 'none', alignSelf: 'center', width: u(7.06), height: u(7.06), borderRadius: '50%', boxShadow: `0 ${u(.21)} 0 #000`, background: 'radial-gradient(circle,#ffd84a 0 38.75%,transparent 39.4%),repeating-radial-gradient(circle,#0d0e0f 0 1.6%,#26282a 1.6% 2.9%)', display: 'grid', placeItems: 'center' } }, e('span', { style: { width: u(.34), height: u(.34), borderRadius: '50%', background: '#1c1e20' } })),
+      e('div', { key: 'p', style: { flex: 1, minHeight: 0, background: '#efe6d0', color: '#141617', borderRadius: u(.34), display: 'grid', placeItems: 'center', font: `700 ${u(1.43)}/1 'Pixelify Sans',sans-serif`, letterSpacing: '.12em' } }, '???')];
+    const deck = e('div', { 'aria-hidden': true, style: { position: 'relative', width: '100%', height: '100%' } }, [0, 1, 2, 3, 4, 5].map(i => e('div', { key: i, style: {
+      '--dy': u(-i * .22), position: 'absolute', inset: 0, borderRadius: u(.76), border: `${u(.35)} solid #fffaf0`, boxSizing: 'border-box', background: `repeating-conic-gradient(#ef4a3c 0 25%,#d63e31 0 50%) 0 0/${u(1.2)} ${u(1.2)}`, boxShadow: `0 ${u(.18)} 0 rgba(0,0,0,.35)`,
+      transform: `translate(0,${u(-i * .22)})`, animation: deckAnim ? `${i % 2 ? 'riffleL' : 'riffleR'} 1.6s cubic-bezier(.4,0,.3,1) ${i * 70}ms infinite` : 'none' } })));
+    const spinning = s.sound && (s.phase === 'play' || s.phase === 'deal0');
+    const PM = 'radial-gradient(closest-side,transparent 0 74%,#000 76% 90%,transparent 92%)';
+    const disc = e('div', { 'aria-hidden': true, style: { position: 'relative', flex: 'none', alignSelf: 'center', width: u(7.2), height: u(7.2), marginTop: u(.2), borderRadius: '50%', boxShadow: `0 ${u(.21)} 0 #000` } },
+      e('div', { style: { position: 'absolute', inset: 0, borderRadius: '50%', background: 'radial-gradient(circle,#ffd84a 0 31%,transparent 31.5%),repeating-radial-gradient(circle,#0d0e0f 0 1.3%,#26282a 1.3% 2.3%)', display: 'grid', placeItems: 'center', animation: 'spin 2.4s linear infinite', animationPlayState: spinning || s.mHov ? 'running' : 'paused' } },
+        e('span', { style: { width: u(3.85), height: u(3.85), borderRadius: '50%', background: 'conic-gradient(rgba(20,22,23,.28) 0 22%,transparent 22% 50%,rgba(255,250,240,.45) 50% 58%,transparent 58% 70%,rgba(20,22,23,.28) 70% 74%,transparent 74%)', mask: PM, WebkitMask: PM } })),
+      e('div', { style: { position: 'absolute', inset: 0, borderRadius: '50%', pointerEvents: 'none', background: 'conic-gradient(from 20deg,transparent 0 8%,rgba(255,255,255,.1) 12%,transparent 17% 52%,rgba(255,255,255,.07) 57%,transparent 62%)', mask: 'radial-gradient(circle,transparent 0 39.4%,#000 40%)', WebkitMask: 'radial-gradient(circle,transparent 0 39.4%,#000 40%)' } }),
+      e('div', { style: { position: 'absolute', inset: 0, display: 'grid', placeItems: 'center' } }, e('span', { style: { width: u(.34), height: u(.34), borderRadius: '50%', background: '#1c1e20' } })));
+    const eq = e('span', { 'aria-hidden': true, style: { display: spinning ? 'flex' : 'none', justifyContent: 'center', alignItems: 'flex-end', gap: u(.13), height: u(.59) } }, [0, 1, 2, 3].map(i => e('i', { key: i, style: { width: u(.22), height: '100%', background: '#141617', transformOrigin: 'bottom', animation: `eq ${[.9, .7, 1.1, .8][i]}s ease-in-out ${[0, -.3, -.55, -.15][i]}s infinite` } })));
+    const ranks = [{ name: 'matt (you)', animal: '🦊', chip: '#fffaf0', n, me: true, win: s.phase === 'win' }].concat(spots.map((_, i) => ({ name: names[i], animal: animals[i], chip: chips[i][0], n: s.oppHands[i].length, win: i === wi }))).sort((a, b) => (b.win - a.win) || (b.n - a.n)).map((r, i) => { const fg = r.me ? '#141617' : '#fffaf0'; return { rank: ['1ST', '2ND', '3RD', '4TH', '5TH', '6TH'][i], name: r.name, animal: r.animal, chip: r.chip, score: r.n + '/' + goal, fg, bg: r.me ? '#ffd84a' : 'rgba(255,250,240,.08)', pips: pips(r.n, fg) }; });
+    const myGot = s.got.me || {};
+    const sp = slot(ins ?? 0, n + 1);
+    const dz = { op: dc ? 1 : 0, bd: over ? '#ffd84a' : 'rgba(255,250,240,.6)', bg: over ? 'rgba(255,216,74,.12)' : 'rgba(255,250,240,.07)', slotOp: dc && over ? 1 : 0, slotTf: tf(sp.x, sp.y, sp.r) };
+    return {
+      dz, eq, goal, hand, ocards, gaps, om, btoks, stLeft: u(isO ? 71 : 58), stW: u(isO ? 17 : 24), showBar: canBet, countTxt: s.oDone ? s.count + 's' : '', barText: s.sel != null ? 'Bet 1 token: ' + whereO(s.sel) : isO ? 'Tap a gap in ' + names[s.active] + "'s timeline to bet" : '', noSel: s.sel == null, barOp: s.sel == null ? .45 : 1, barCur: s.sel == null ? 'not-allowed' : 'pointer',
+      showTimer: s.phase === 'mWait', timer: Array.from({ length: 5 }, (_, i) => i < s.count ? '#ffd84a' : 'rgba(20,22,23,.35)'),
+      keyDown: ev => { if (!canDrag || dc) return; const kk = ev.key; if (kk === 'ArrowLeft' || kk === 'ArrowRight') { ev.preventDefault(); const d = kk === 'ArrowLeft' ? -1 : 1; this.setState(v => ({ placed: v.placed == null ? (d < 0 ? 0 : n) : Math.max(0, Math.min(n, v.placed + d)) })); } else if ((kk === 'Enter' || kk === ' ') && s.placed != null) { ev.preventDefault(); this.lock(); } },
+      confetti: s.phase !== 'win' ? null : e('div', { 'aria-hidden': true, style: { position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 11 } }, Array.from({ length: 36 }, (_, i) => e('i', { key: i, style: { position: 'absolute', top: '-6%', left: ((i * 37) % 100) + '%', width: u(1.1), height: u(i % 3 ? 1.1 : 1.8), borderRadius: i % 4 === 0 ? '50%' : '2px', background: ['#ffd84a', '#ef4a3c', '#3b8cf0', '#fffaf0', '#ff6fae', '#45c486'][i % 6], border: '2px solid #141617', boxSizing: 'border-box', animation: 'confetti ' + (2.2 + (i % 5) * .35) + 's linear ' + (-(i % 9) * .4) + 's infinite' } }))), confirmBet: () => this.bet(), passBet: () => this.pass(), meToks: Array(Math.max(0, Math.min(4, s.tokens))).fill(0).map((_, i) => s.tip ? 'floaty 2.4s ease-in-out ' + (-i * .6) + 's infinite' : 'none'), meTokTip: 'You have ' + s.tokens + (s.tokens === 1 ? ' chip' : ' chips') + '. Use it to bet against their guesses.', tip: s.tip, mOn: () => this.setState({ mHov: true }), mOff: () => this.setState({ mHov: false }), tipOn: () => this.setState({ tip: true }), tipOff: () => this.setState({ tip: false }), meTokAria: s.tokens + ' tokens left', m, cur: card(s.cur), opps, status, statusSub, deck, disc, stageRef: this.stageRef, scan: this.props.scanlines ?? true,
+      showAction: s.phase === 'play' && !dc && s.placed != null, actionLabel: 'Lock it in', action: () => this.lock(),
+      again: () => { this.setState(Object.assign(this.fresh(), { dealt: false })); this.later(() => this.begin(), 50); },
+      chatOn: this.props.chat ?? true, draft: s.draft, typeDraft: ev => this.setState({ draft: ev.target.value }), send: ev => this.send(ev),
+      chatRows: s.chat.slice(-10).map(c => c.k === 'msg' ? { name: (c.who === 'me' ? 'matt' : names[c.who]) + ': ', text: c.text, fg: '#141617', fw: 500 } : { name: '', text: c.text, fg: c.k === 'sys' ? '#b8362b' : '#5c5847', fw: c.k === 'sys' ? 700 : 'italic 500' }),
+      songBg: myGot.t ? '#ffd84a' : 'transparent', songBd: myGot.t ? '#141617' : '#8a836c', songFg: myGot.t ? '#141617' : '#6b6552', songAria: myGot.t ? 'Song guessed' : 'Song not guessed yet',
+      artistBg: myGot.a ? '#ffd84a' : 'transparent', artistBd: myGot.a ? '#141617' : '#8a836c', artistFg: myGot.a ? '#141617' : '#6b6552', artistAria: myGot.a ? 'Artist guessed' : 'Artist not guessed yet',
+      over: ended, ranks, endTitle: s.phase === 'win' ? 'YOU WIN!' : 'GAME OVER', endSub: s.phase === 'win' ? goal + ' songs in the right order.' : ended ? names[wi] + ' got to ' + goal + ' songs first.' : '',
+      mePips: pips(n, '#141617'), meAria: `${n} of ${goal} cards`, meBg: ['deal0', 'play', 'mWait', 'mBets', 'reveal'].includes(s.phase) ? '#ffd84a' : '#fffaf0',
+      down: ev => { if (!canDrag) return; ev.currentTarget.setPointerCapture(ev.pointerId); const p = this.toU(ev); this.off = { x: p.x - this.mc.x, y: p.y - this.mc.y }; this.setState({ drag: p, placed: null }); },
+      move: ev => { if (this.state.drag) this.setState({ drag: this.toU(ev) }); },
+      up: () => { if (this.state.drag) this.setState({ drag: null, placed: over ? idxAt(dc.x) : null }); },
+      soundOn: s.sound, soundLabel: s.sound ? 'Sound on' : 'Sound off', toggleSound: () => this.setState({ sound: !s.sound }),
+      intro: s.phase === 'intro', help: s.help && s.phase !== 'intro', showNote: s.phase === 'intro' || s.help, noteTitle: s.phase === 'intro' ? 'Get ready' : 'How a round works',
+      openHelp: () => this.setState({ help: true }), closeHelp: () => this.setState({ help: false }), stop: ev => ev.stopPropagation(),
+      countEl: e('div', { key: s.count, style: { marginTop: u(.4), font: `800 ${u(7.5)}/1 'Rubik',sans-serif`, letterSpacing: '.02em', color: '#141617', animation: 'tick .5s cubic-bezier(.3,1.5,.5,1)' } }, s.count),
+      title: e('div', { style: { marginTop: 'calc(var(--u)*.3)', font: "700 calc(var(--u)*4.6)/1 'Pixelify Sans',sans-serif", letterSpacing: '.02em', color: '#ffe680', textShadow: '-3px 0 rgba(239,74,60,.85),3px 0 rgba(59,140,240,.85),0 0 12px rgba(255,216,74,.95),0 0 34px rgba(255,216,74,.7)', animation: 'crtFlicker 2.4s steps(1) infinite' } }, 'HITSTER'),
+      roll: e('div', { 'aria-hidden': true, style: { position: 'absolute', left: 0, right: 0, top: '-40%', height: '40%', zIndex: 2, pointerEvents: 'none', background: 'linear-gradient(to bottom,transparent,rgba(255,250,240,.04) 20%,rgba(255,250,240,.16) 55%,rgba(255,250,240,.08) 75%,transparent)', animation: 'crtRoll 2.8s linear infinite', willChange: 'transform' } })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -110,7 +110,7 @@ describe("snapshot migrations", () => {
       version: DATA_VERSION,
       sessions: { saved: { email: "saved@example.com", lastUsed: 42 } },
       history: {},
-      rooms: [createRoom("ABC234", "host@example.com", "demo")],
+      rooms: [createRoom("ABC234", "host@example.com", "hitster")],
     };
     expect(migrateData(current)).toEqual(current);
   });
@@ -148,7 +148,7 @@ describe("snapshot migrations", () => {
     expect(migrateRoom(structuredClone(migrated))).toEqual(migrated);
     expect(
       migrateRoom({
-        ...createRoom("DEMO12", "host@example.com", "demo"),
+        ...createRoom("HITS12", "host@example.com", "hitster"),
         version: 1,
       }).game,
     ).toBeNull();

@@ -1,0 +1,143 @@
+/* docs/design/game-screen.dc.html: the chat card. The parent positions and tilts it. */
+.gs-chat {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.6);
+  padding: calc(var(--u) * 0.9) calc(var(--u) * 1) calc(var(--u) * 1);
+  background: var(--paper, #f3ead2);
+  color: #141617;
+  border-radius: calc(var(--u) * 0.6);
+  box-shadow: 0 calc(var(--u) * 0.5) 0 rgba(0, 0, 0, 0.35);
+}
+.gs-chat-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 0.5);
+}
+.gs-chat-title {
+  flex: 1;
+  margin: 0;
+  font:
+    700 calc(var(--u) * 2.4) / 0.9 "Caveat",
+    cursive;
+}
+.gs-chat-badge {
+  border: 2px solid #8a836c;
+  background: transparent;
+  color: #6b6552;
+  border-radius: calc(var(--u) * 0.4);
+  padding: calc(var(--u) * 0.15) calc(var(--u) * 0.5);
+  font:
+    400 calc(var(--u) * 1.3) / 1 "VT323",
+    monospace;
+  letter-spacing: 0.08em;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+.gs-chat-badge-got {
+  border-color: #141617;
+  background: #ffd84a;
+  color: #141617;
+}
+.gs-chat-log {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.35);
+  user-select: text;
+}
+/* Short logs sit at the bottom, like the design; a margin keeps overflow scrollable. */
+.gs-chat-log > :first-child {
+  margin-top: auto;
+}
+.gs-chat-line {
+  flex: none;
+  font:
+    500 calc(var(--u) * 1.25) / 1.25 "Rubik",
+    sans-serif;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+.gs-chat-name {
+  font-weight: 800;
+}
+.gs-chat-system {
+  color: #b8362b;
+  font-weight: 700;
+}
+.gs-chat-notice {
+  color: #5c5847;
+  font-style: italic;
+}
+.gs-chat-empty {
+  flex: none;
+  font:
+    italic 500 calc(var(--u) * 1.25) / 1.25 "Rubik",
+    sans-serif;
+  color: #5c5847;
+}
+.gs-chat-form {
+  flex: none;
+  display: flex;
+  gap: calc(var(--u) * 0.5);
+  margin: 0;
+}
+.gs-chat-input {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  background: #fffaf0;
+  color: #141617;
+  border: 2px solid #141617;
+  outline: none;
+  border-radius: calc(var(--u) * 0.5);
+  padding: calc(var(--u) * 0.4) calc(var(--u) * 0.7);
+  font:
+    500 calc(var(--u) * 1.3) / 1.2 "Rubik",
+    sans-serif;
+  user-select: text;
+}
+.gs-chat-input:focus {
+  box-shadow: 0 0 0 2px #ffd84a;
+}
+.gs-chat-input:disabled {
+  opacity: 0.6;
+}
+.gs-chat-send {
+  flex: none;
+  background: #ffd84a;
+  color: #141617;
+  border: 2px solid #141617;
+  border-radius: calc(var(--u) * 0.5);
+  padding: 0 calc(var(--u) * 0.9);
+  font:
+    800 calc(var(--u) * 1.3) / 1 "Rubik",
+    sans-serif;
+  cursor: pointer;
+  transition: transform 0.12s;
+}
+.gs-chat-send:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+.gs-chat-send:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.gs-chat-send:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gs-chat-badge,
+  .gs-chat-send {
+    transition: none;
+  }
+}

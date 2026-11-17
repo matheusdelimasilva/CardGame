@@ -15,19 +15,23 @@ import { RoomRegistry } from "../src/rooms/registry";
 import { RoomService } from "../src/rooms/service";
 import { createStore, JsonStore, PostgresStore } from "../src/store";
 
+vi.mock("@cardgame/games", async (original) =>
+  (await import("./fixture-game")).withFixture(await original()),
+);
+
 const email = "host@example.com";
 const session = { email, lastUsed: Date.now() };
 const entry: HistoryEntry = {
   roomCode: "ABC234",
-  gameId: "demo",
-  gameName: "Demo",
+  gameId: "fixture",
+  gameName: "Fixture",
   players: ["Ana", "Bo"],
   winners: ["Ana"],
   endedAt: "2026-11-14T12:00:00.000Z",
 };
 
 function runningRoom(code = "ABC234") {
-  const room = rooms.createRoom(code, email, "demo");
+  const room = rooms.createRoom(code, email, "fixture");
   for (const [i, name] of ["Ana", "Bo"].entries()) {
     const member = rooms.join(room, undefined, i === 0);
     member.connected = true;

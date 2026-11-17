@@ -3,6 +3,10 @@ import { HomeFlow } from "./home/HomeFlow";
 import { Room } from "./Room";
 
 const SongLibrary = lazy(() => import("./library/SongLibrary"));
+// Development only: the constant is false in production builds, so the gallery is not bundled.
+const GameGallery = import.meta.env.DEV
+  ? lazy(() => import("./game/dev/Gallery"))
+  : null;
 
 const roomCode = (path: string) =>
   /^\/t\/([A-Za-z0-9]{4,8})\/?$/.exec(path)?.[1]?.toUpperCase() ?? null;
@@ -26,6 +30,13 @@ export function App() {
     return (
       <Suspense fallback={<p>Loading song library…</p>}>
         <SongLibrary />
+      </Suspense>
+    );
+
+  if (GameGallery && /^\/dev\/game\/?$/.test(path))
+    return (
+      <Suspense fallback={<p>Loading gallery…</p>}>
+        <GameGallery />
       </Suspense>
     );
 
