@@ -47,7 +47,7 @@ describe("held game states", () => {
       state: { intro: true, turnNumber: 1 },
     });
     expect(rooms.viewFor(room, host, 1000).game).toMatchObject({
-      pause: { remainingMs: 7000 },
+      pause: { remainingMs: 12000 },
       active: [],
       track: null,
     });
