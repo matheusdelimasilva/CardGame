@@ -37,12 +37,25 @@ export const DECK_SIZE = 300;
 export const INTRO_MS = 12000;
 export const REVEAL_MS = 4000;
 export const WIN_REVEAL_MS = 6000;
+/** Added to the reveal pause when the turn had bets, so clients can show them. */
+export const BET_REVEAL_MS = 2000;
+/** Tokens every player starts a game with. */
+export const STARTING_TOKENS = 2;
+/** How long the others may still bet once the current player locks in. */
+export const BET_WINDOW_SECONDS = 5;
 
 /**
  * Hitster. Every player builds a timeline of songs in order of release year.
  * On your turn the table draws a song for you; you hear it and choose where
  * it goes in your timeline. Right: the card stays. Wrong: it is discarded.
  * The first player whose timeline reaches the target wins.
+ *
+ * Betting: while someone else's song is in play, a player may spend one token
+ * on the gap in that player's timeline where they think the song really goes.
+ * Once the current player locks in, the others have BET_WINDOW_SECONDS left
+ * to bet, then the turn is judged. A bet on the same gap as the placement is
+ * refunded. If the placement is wrong, the first bet on a right gap steals the
+ * card into the bettor's own timeline. Every other bet loses its token.
  *
  * A card's face is the song's key (see songKey). Zones:
  *   deck, discard      shared piles
@@ -68,21 +81,60 @@ export interface HitsterState {
   /** Absent in legacy saved games, which have already started. */
   intro?: boolean;
   winners: PlayerId[] | null;
+  /** Betting tokens, by index into players. Absent in legacy saved games: everyone has STARTING_TOKENS. */
+  tokens?: number[];
+  /** This turn's bets, oldest first. Absent in legacy saved games: none. */
+  bets?: Bet[];
+  /** Players who declined to bet this turn. Absent in legacy saved games: none. */
+  declined?: PlayerId[];
+  /** Where the current player locked in this turn's song; null until they do. Absent in legacy saved games: null. */
+  locked?: number | null;
+}
+
+/** A token on a gap in the current player's timeline: "the song really goes here". */
+export interface Bet {
+  player: PlayerId;
+  /** 0 = before the current player's oldest card. */
+  index: number;
 }
 
 export interface TurnSummary {
   turnNumber: number;
+  /** Whose turn it was. */
   player: PlayerId;
   song: RevealedSong;
+  /** How the current player did: kept the card, missed it, or gave it up. */
   outcome: "correct" | "wrong" | "passed";
+  /** Where the current player placed the song. Absent when they passed. */
   index?: number;
+  /** Every bet of the turn, in the order placed, and what became of it. Absent in turns from before betting. */
+  bets?: BetResult[];
+  /** The bettor who took the card into their own timeline, or null. Absent in turns from before betting. */
+  thief?: PlayerId | null;
+}
+
+/** A judged bet, as everyone is told after the turn. */
+export interface BetResult {
+  player: PlayerId;
+  /** The gap bet on in the current player's timeline, as it was before the turn was judged. */
+  index: number;
+  /**
+   * refunded: same gap as the placement, or the turn was passed; the token came back.
+   * stole: the placement was wrong and this was the first bet on a right gap; the card went to the bettor, the token did not come back.
+   * lost: the token is gone.
+   */
+  result: "refunded" | "lost" | "stole";
 }
 
 export type HitsterMove =
-  /** Put the current song at this position in your timeline (0 = before your oldest card). */
+  /** Lock the current song in at this position in your timeline (0 = before your oldest card). */
   | { type: "place"; index: number }
   /** Give up the current song. Used when the host plays an absent player's turn. */
-  | { type: "pass" };
+  | { type: "pass" }
+  /** Spend a token on this gap in the current player's timeline. One bet per turn; it cannot be changed. */
+  | { type: "bet"; index: number }
+  /** Do not bet this turn (the "Pass" button while someone else plays). */
+  | { type: "declineBet" };
 
 /** A face-up song card as sent to clients. */
 export interface SongCardView {
@@ -132,9 +184,57 @@ export interface HitsterView {
   cardsToWin: number;
   lastTurn: TurnSummary | null;
   winners: PlayerId[] | null;
+  // The fields below are always sent; they are optional only so views built before betting still type-check.
+  /** Betting tokens per player. Public. */
+  tokens?: Record<PlayerId, number>;
+  /** Whether the current player has locked in their placement. While true and canBet is not empty, the betting window runs (see GameView.timer). */
+  locked?: boolean;
+  /** Your own locked placement when you are the current player and have locked in; null for everyone else. */
+  lockedIndex?: number | null;
+  /** This turn's bets, oldest first. index is the gap bet on, shown only to the bettor; null for everyone else. */
+  bets?: { player: PlayerId; index: number | null }[];
+  /** Players who declined to bet this turn. */
+  declined?: PlayerId[];
+  /** Players who may still bet this turn: not the current player, holding a token, not yet bet or declined. */
+  canBet?: PlayerId[];
 }
 
 const timeline = (player: PlayerId) => `timeline:${player}`;
+
+const tokensOf = (state: HitsterState) =>
+  state.tokens ?? state.players.map(() => STARTING_TOKENS);
+const betsOf = (state: HitsterState) => state.bets ?? [];
+const declinedOf = (state: HitsterState) => state.declined ?? [];
+const lockedOf = (state: HitsterState) => state.locked ?? null;
+
+/** Whether a song is in play: moves and bets are accepted. */
+const playing = (state: HitsterState) =>
+  !state.winners && !state.intro && !state.revealing;
+
+/** Players who may still bet on this turn's song. */
+function bettors(state: HitsterState): PlayerId[] {
+  if (!playing(state)) return [];
+  const tokens = tokensOf(state);
+  const bets = betsOf(state);
+  const declined = declinedOf(state);
+  return state.players.filter(
+    (p, i) =>
+      i !== state.turn &&
+      tokens[i]! > 0 &&
+      !bets.some((b) => b.player === p) &&
+      !declined.includes(p),
+  );
+}
+
+/** Gives a player one more token. For rewards such as guessing the song. */
+export function addToken(state: HitsterState, player: PlayerId): HitsterState {
+  const i = state.players.indexOf(player);
+  if (i < 0) throw new Error(`${player} is not in this game`);
+  return {
+    ...state,
+    tokens: tokensOf(state).map((t, j) => (j === i ? t + 1 : t)),
+  };
+}
 
 /**
  * Whether a song from `year` may sit at `index` in a timeline with these
@@ -157,9 +257,13 @@ const yearsOf = (state: HitsterState, player: PlayerId) =>
   );
 
 function turnWinners(state: HitsterState): PlayerId[] | null {
-  const player = state.players[state.turn]!;
-  if (state.table.zones[timeline(player)]!.cards.length >= state.cardsToWin)
-    return [player];
+  // Only the current player or the thief gained a card this turn.
+  for (const player of [state.players[state.turn]!, state.lastTurn?.thief])
+    if (
+      player &&
+      state.table.zones[timeline(player)]!.cards.length >= state.cardsToWin
+    )
+      return [player];
   if (
     state.table.zones.deck!.cards.length ||
     state.table.zones.discard!.cards.length
@@ -190,11 +294,85 @@ function drawSong(state: HitsterState): void {
   state.table = deal(table, "deck", "current", FACE_DOWN).table;
 }
 
+/**
+ * Settles the turn on a cloned state: the current player placed the song at
+ * `placed`, or passed (null). Moves the card, settles the bets in the order
+ * they were placed, and starts the reveal.
+ */
+function judge(state: HitsterState, placed: number | null): void {
+  const player = state.players[state.turn]!;
+  const card = state.table.zones.current!.cards[0]!;
+  const { title, artist, year } = songOf(card.face, state.songList);
+  const line = yearsOf(state, player);
+  const outcome: TurnSummary["outcome"] =
+    placed === null
+      ? "passed"
+      : fitsAt(line, placed, year)
+        ? "correct"
+        : "wrong";
+
+  const tokens = tokensOf(state).slice();
+  let thief: PlayerId | null = null;
+  const bets: BetResult[] = [];
+  for (const bet of betsOf(state)) {
+    let result: BetResult["result"] = "lost";
+    if (placed === null || bet.index === placed) result = "refunded";
+    else if (outcome === "wrong" && !thief && fitsAt(line, bet.index, year)) {
+      result = "stole";
+      thief = bet.player;
+    }
+    if (result === "refunded") tokens[state.players.indexOf(bet.player)]! += 1;
+    bets.push({ ...bet, result });
+  }
+
+  if (outcome === "correct") {
+    state.table = moveCard(state.table, card.id, timeline(player), {
+      index: placed!,
+      visibleTo: FACE_UP,
+    });
+  } else if (thief) {
+    const theirs = yearsOf(state, thief);
+    let index = 0;
+    while (!fitsAt(theirs, index, year)) index++;
+    state.table = moveCard(state.table, card.id, timeline(thief), {
+      index,
+      visibleTo: FACE_UP,
+    });
+  } else {
+    state.table = moveCard(state.table, card.id, "discard", {
+      visibleTo: FACE_UP,
+    });
+  }
+
+  state.lastTurn = {
+    turnNumber: state.turnNumber,
+    player,
+    song: { title, artist, year },
+    outcome,
+    ...(placed === null ? {} : { index: placed }),
+    bets,
+    thief,
+  };
+  state.tokens = tokens;
+  state.bets = [];
+  state.declined = [];
+  state.locked = null;
+  state.revealing = true;
+}
+
+/** Closes the betting window once nobody is left who could bet. */
+function judgeIfSettled(state: HitsterState): void {
+  const placed = lockedOf(state);
+  if (placed !== null && bettors(state).length === 0) judge(state, placed);
+}
+
 export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
   id: "hitster",
   moveSchema: z.discriminatedUnion("type", [
     z.object({ type: z.literal("place"), index: z.number().int().min(0) }),
     z.object({ type: z.literal("pass") }),
+    z.object({ type: z.literal("bet"), index: z.number().int().min(0) }),
+    z.object({ type: z.literal("declineBet") }),
   ]),
   name: "Hitster",
   minPlayers: 2,
@@ -266,6 +444,10 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       revealing: false,
       intro: true,
       winners: null,
+      tokens: players.map(() => STARTING_TOKENS),
+      bets: [],
+      declined: [],
+      locked: null,
     };
     drawSong(state);
     return state;
@@ -277,55 +459,66 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       return { ok: false, error: "The game is getting ready." };
     if (current.revealing)
       return { ok: false, error: "The previous turn is still being revealed." };
-    if (current.players[current.turn] !== player)
-      return { ok: false, error: "It is not your turn." };
-    const state = structuredClone(current);
-    const card = state.table.zones.current!.cards[0]!;
-    const { title, artist, year } = songOf(card.face, state.songList);
-    const song: RevealedSong = { title, artist, year };
-    let outcome: TurnSummary["outcome"];
+    const active = current.players[current.turn]!;
+    const gapsIn = (p: PlayerId) => yearsOf(current, p).length;
+    const isGap = (index: number, p: PlayerId) =>
+      Number.isInteger(index) && index >= 0 && index <= gapsIn(p);
 
-    if (move.type === "place") {
-      const years = yearsOf(state, player);
-      if (
-        !Number.isInteger(move.index) ||
-        move.index < 0 ||
-        move.index > years.length
-      ) {
+    if (move.type === "place" || move.type === "pass") {
+      if (active !== player)
+        return { ok: false, error: "It is not your turn." };
+      if (lockedOf(current) !== null)
+        return { ok: false, error: "You have already placed this song." };
+      if (move.type === "place" && !isGap(move.index, player))
         return { ok: false, error: "That is not a spot in your timeline." };
+      const state = structuredClone(current);
+      if (move.type === "pass") {
+        judge(state, null);
+      } else {
+        state.locked = move.index;
+        judgeIfSettled(state);
       }
-      outcome = fitsAt(years, move.index, song.year) ? "correct" : "wrong";
-    } else if (move.type === "pass") {
-      outcome = "passed";
-    } else {
-      return { ok: false, error: "Unknown move." };
+      return { ok: true, state };
     }
 
-    state.table =
-      outcome === "correct"
-        ? moveCard(state.table, card.id, timeline(player), {
-            index: (move as { index: number }).index,
-            visibleTo: FACE_UP,
-          })
-        : moveCard(state.table, card.id, "discard", { visibleTo: FACE_UP });
-    state.lastTurn = {
-      turnNumber: state.turnNumber,
-      player,
-      song,
-      outcome,
-      ...(move.type === "place" ? { index: move.index } : {}),
-    };
-    state.revealing = true;
-    return { ok: true, state };
+    if (move.type === "bet" || move.type === "declineBet") {
+      const seat = current.players.indexOf(player);
+      if (seat < 0) return { ok: false, error: "You are not in this game." };
+      if (player === active)
+        return { ok: false, error: "You cannot bet on your own turn." };
+      if (betsOf(current).some((b) => b.player === player))
+        return { ok: false, error: "You have already bet this turn." };
+      if (declinedOf(current).includes(player))
+        return {
+          ok: false,
+          error: "You have already passed on betting this turn.",
+        };
+      if (tokensOf(current)[seat]! < 1)
+        return { ok: false, error: "You have no tokens to bet." };
+      if (move.type === "bet" && !isGap(move.index, active))
+        return {
+          ok: false,
+          error: "That is not a gap in the current player's timeline.",
+        };
+      const state = structuredClone(current);
+      if (move.type === "bet") {
+        state.tokens = tokensOf(state).map((t, i) => (i === seat ? t - 1 : t));
+        state.bets = [...betsOf(state), { player, index: move.index }];
+      } else {
+        state.declined = [...declinedOf(state), player];
+      }
+      judgeIfSettled(state);
+      return { ok: true, state };
+    }
+
+    return { ok: false, error: "Unknown move." };
   },
 
   pauseMs(state) {
     if (state.intro) return INTRO_MS;
-    return state.revealing
-      ? turnWinners(state)
-        ? WIN_REVEAL_MS
-        : REVEAL_MS
-      : null;
+    if (!state.revealing) return null;
+    const extra = state.lastTurn?.bets?.length ? BET_REVEAL_MS : 0;
+    return (turnWinners(state) ? WIN_REVEAL_MS : REVEAL_MS) + extra;
   },
 
   resume(current) {
@@ -351,8 +544,11 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
     }
   },
 
-  view(state) {
-    // Built field by field rather than from the raw table, so the current song's year cannot slip out.
+  view(state, viewer) {
+    // Built field by field rather than from the raw table, so the current song's year,
+    // the locked placement and other players' bet gaps cannot slip out.
+    const tokens = tokensOf(state);
+    const locked = lockedOf(state);
     const card =
       state.winners || state.revealing || state.intro
         ? undefined
@@ -390,22 +586,43 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       cardsToWin: state.cardsToWin,
       lastTurn: state.lastTurn,
       winners: state.winners,
+      tokens: Object.fromEntries(state.players.map((p, i) => [p, tokens[i]!])),
+      locked: locked !== null,
+      lockedIndex:
+        viewer !== null && viewer === state.players[state.turn] ? locked : null,
+      bets: betsOf(state).map((b) => ({
+        player: b.player,
+        index: b.player === viewer ? b.index : null,
+      })),
+      declined: declinedOf(state),
+      canBet: bettors(state),
     };
   },
 
   activePlayers(state) {
-    return state.winners || state.revealing || state.intro
-      ? []
-      : [state.players[state.turn]!];
+    if (!playing(state)) return [];
+    // Once the placement is locked in, the game waits only on those who may still bet.
+    return lockedOf(state) === null
+      ? [state.players[state.turn]!]
+      : bettors(state);
   },
 
   autoMove(state, player) {
-    return !state.winners &&
-      !state.intro &&
-      !state.revealing &&
-      state.players[state.turn] === player
-      ? { type: "pass" }
+    if (!playing(state)) return null;
+    if (lockedOf(state) === null)
+      return state.players[state.turn] === player ? { type: "pass" } : null;
+    return bettors(state).includes(player) ? { type: "declineBet" } : null;
+  },
+
+  turnTimeLimit(state) {
+    return playing(state) && lockedOf(state) !== null
+      ? BET_WINDOW_SECONDS
       : null;
+  },
+
+  clockKey(state) {
+    // One key for the whole betting window, so a bet does not restart its countdown.
+    return `${state.turnNumber}:${lockedOf(state) === null ? "place" : "bets"}`;
   },
 
   currentTrack(state) {

@@ -145,6 +145,8 @@ describe("held game states", () => {
     const now = vi.spyOn(Date, "now").mockReturnValue(1000);
     const state = room.game!.state as HitsterState;
     state.cardsToWin = 2;
+    // Nobody can bet, so the placement is judged at once.
+    state.tokens = [2, 0];
     const card = state.table.zones.current!.cards[0]!;
     const seed = state.table.zones[`timeline:${host.id}`]!.cards[0]!;
     const index = songOf(card.face).year < songOf(seed.face).year ? 0 : 1;

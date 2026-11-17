@@ -73,6 +73,10 @@ describe("snapshot migrations", () => {
           table: { zones: [] },
           songList: "international",
           revealing: false,
+          tokens: [],
+          bets: [],
+          declined: [],
+          locked: null,
         },
       },
     });

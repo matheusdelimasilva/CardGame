@@ -30,10 +30,18 @@ const currentYear = (s: HitsterState) =>
   songOf(cards(s, "current")[0]!.face, s.songList).year;
 const current = (s: HitsterState) => s.players[s.turn]!;
 
-function apply(s: HitsterState, player: string, move: unknown): HitsterState {
+/** Plays one move; throws if it is refused. */
+function play(s: HitsterState, player: string, move: unknown): HitsterState {
   const result = hitster.applyMove(s, player, move as never);
   if (!result.ok) throw new Error(result.error);
   return result.state;
+}
+/** Plays a move, then has everyone decline any betting window it opens, so a placement is judged at once. */
+function apply(s: HitsterState, player: string, move: unknown): HitsterState {
+  let next = play(s, player, move);
+  while (next.locked != null && !next.revealing)
+    next = play(next, hitster.activePlayers(next)[0]!, { type: "declineBet" });
+  return next;
 }
 const complete = (s: HitsterState, player: string, move: unknown) =>
   hitster.resume!(apply(s, player, move));
@@ -224,11 +232,8 @@ describe("song list", () => {
     expect(hitster.view(legacy, null)).toEqual(hitster.view(state, null));
     expect(hitster.currentTrack!(legacy)).toEqual(hitster.currentTrack!(state));
     expect(
-      hitster.applyMove(legacy, "a", {
-        type: "place",
-        index: spot(state, true)!,
-      }),
-    ).toMatchObject({ ok: true, state: { lastTurn: { outcome: "correct" } } });
+      apply(legacy, "a", { type: "place", index: spot(state, true)! }),
+    ).toMatchObject({ lastTurn: { outcome: "correct" } });
   });
 
   it("deals a different sample of songs for a different seed, and the same one for the same seed", () => {

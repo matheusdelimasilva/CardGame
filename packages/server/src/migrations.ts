@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { STARTING_TOKENS } from "@cardgame/games";
 import type { HistoryEntry } from "@cardgame/protocol";
 import type { Room } from "./rooms";
 
@@ -14,7 +15,7 @@ export interface Data {
   rooms: Room[];
 }
 
-export const ROOM_VERSION = 2;
+export const ROOM_VERSION = 3;
 export const DATA_VERSION = 1;
 const dictionary = <T>(values: Record<string, T> = {}): Record<string, T> =>
   Object.assign(Object.create(null) as Record<string, T>, values);
@@ -69,6 +70,27 @@ const roomMigrations: ((room: Room) => void)[] = [
       const state = room.game.state as { revealing?: boolean };
       state.revealing ??= false;
     }
+  },
+  (room) => {
+    // Betting: a game saved mid-turn plays on with everyone at the starting tokens and no bets.
+    if (
+      room.game?.gameId !== "hitster" ||
+      typeof room.game.state !== "object" ||
+      room.game.state === null
+    )
+      return;
+    const state = room.game.state as {
+      players?: unknown;
+      tokens?: number[];
+      bets?: unknown[];
+      declined?: string[];
+      locked?: number | null;
+    };
+    const players = Array.isArray(state.players) ? state.players : [];
+    state.tokens ??= players.map(() => STARTING_TOKENS);
+    state.bets ??= [];
+    state.declined ??= [];
+    state.locked ??= null;
   },
 ];
 
