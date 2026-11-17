@@ -1,5 +1,5 @@
-import { MAX_NAME_LENGTH, SEAT_COUNT, type RoomView, type SeatView } from "@cardgame/protocol";
-import { useEffect, useState, type FormEvent } from "react";
+import { MAX_CHAT_LENGTH, MAX_NAME_LENGTH, SEAT_COUNT, type ChatMessage, type RoomView, type SeatView } from "@cardgame/protocol";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { navigate } from "./App";
 import { gameUIs } from "./games";
 import { describeSettings } from "./NewTable";
@@ -8,7 +8,14 @@ import { KEYS, storage } from "./storage";
 import { useRoom } from "./useRoom";
 
 export function Room({ code }: { code: string }) {
-  const { room, connection, error, send } = useRoom(code);
+  const { room, connection, error, send, chats } = useRoom(code);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [seenChatId, setSeenChatId] = useState<string | null>(null);
+  const lastChatId = chats.at(-1)?.id ?? null;
+  useEffect(() => {
+    if (chatOpen) setSeenChatId(lastChatId);
+  }, [chatOpen, lastChatId]);
+  const unread = !chatOpen && lastChatId !== null && lastChatId !== seenChatId;
   const [menuFor, setMenuFor] = useState<string | null>(null);
   // Hooks must run on every render, so this sits above the early returns below.
   const secondsLeft = useSecondsLeft(room?.game && !room.game.result ? room.game.timer : null);
@@ -50,6 +57,9 @@ export function Room({ code }: { code: string }) {
           ‹
         </button>
         <span className="topbar-code">table {room.code}</span>
+        <button className="topbar-chat" onClick={() => setChatOpen((o) => !o)} aria-expanded={chatOpen} aria-label={unread ? "Chat (new messages)" : "Chat"}>
+          💬{unread && <span className="chat-unread" />}
+        </button>
         <ShareButton code={room.code} />
       </header>
 
@@ -192,6 +202,10 @@ export function Room({ code }: { code: string }) {
             </button>
           </div>
         </div>
+      )}
+
+      {chatOpen && (
+        <Chat chats={chats} youId={you.id} canSend={connection === "open" && !!you.name} named={!!you.name} send={send} />
       )}
 
       {room.spectators.length > 0 && (
@@ -354,5 +368,59 @@ function Notice({ title, text, quiet }: { title: string; text: string; quiet?: b
         )}
       </section>
     </main>
+  );
+}
+
+/** Plain-text chat. Messages are rendered as React text children, never as HTML. */
+function Chat({
+  chats,
+  youId,
+  canSend,
+  named,
+  send,
+}: {
+  chats: ChatMessage[];
+  youId: string;
+  canSend: boolean;
+  named: boolean;
+  send: ReturnType<typeof useRoom>["send"];
+}) {
+  const [text, setText] = useState("");
+  const log = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    log.current?.scrollTo({ top: log.current.scrollHeight });
+  }, [chats]);
+  const submit = (e: FormEvent) => {
+    e.preventDefault();
+    const trimmed = text.trim();
+    if (!canSend || !trimmed) return;
+    send({ type: "chat", text: trimmed });
+    setText("");
+  };
+  return (
+    <div className="chat" role="region" aria-label="Table chat">
+      <div className="chat-log" ref={log} aria-live="polite">
+        {chats.length === 0 && <div className="chat-empty">No messages yet.</div>}
+        {chats.map((m) => (
+          <div key={m.id} className={m.from.id === youId ? "chat-line mine" : "chat-line"}>
+            <b>{m.from.name}</b> <span>{m.text}</span>
+          </div>
+        ))}
+      </div>
+      <form className="chat-form" onSubmit={submit}>
+        <input
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          maxLength={MAX_CHAT_LENGTH}
+          disabled={!canSend}
+          placeholder={!named ? "Choose a name to chat" : canSend ? "Say something..." : "Reconnecting..."}
+          aria-label="Chat message"
+          autoComplete="off"
+        />
+        <button className="btn" disabled={!canSend || !text.trim()}>
+          Send
+        </button>
+      </form>
+    </div>
   );
 }

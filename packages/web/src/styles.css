@@ -224,6 +224,10 @@ button:disabled { cursor: default; }
   width: 2.25rem; height: 2.25rem; border: 0; border-radius: 8px;
   background: var(--charcoal); color: var(--cream); font-size: 1.6rem; line-height: 1;
 }
+.topbar-chat {
+  position: relative; width: 2.25rem; height: 2.25rem; border: 0; border-radius: 8px;
+  background: var(--charcoal); color: var(--cream); font-size: 1.1rem; line-height: 1;
+}
 .topbar-code {
   flex: 1; font-size: 1.35rem; color: var(--plate); letter-spacing: 0.06em;
   text-shadow: 0 2px 0 var(--ink);
@@ -425,4 +429,31 @@ button.seat:hover .avatar, button.seat.open:not(:disabled):hover .avatar { trans
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* ---------- Chat ---------- */
+.chat {
+  /* Opens under the top bar so your hand and action buttons stay reachable during a game. */
+  position: absolute; z-index: 20; left: 0.5rem; right: 0.5rem; top: calc(env(safe-area-inset-top) + 3.2rem);
+  max-width: 28rem; max-height: 45%; display: flex; flex-direction: column;
+  background: var(--charcoal); border: 2px solid var(--ink); border-radius: 10px;
+  padding: 0.5rem; box-shadow: 0 4px 0 var(--ink);
+}
+.chat-unread {
+  position: absolute; top: -3px; right: -3px; width: 0.7rem; height: 0.7rem;
+  border-radius: 50%; background: var(--red); border: 2px solid var(--ink);
+}
+.chat-log { flex: 1; min-height: 4rem; overflow-y: auto; font-size: 1.05rem; }
+.chat-line { overflow-wrap: anywhere; white-space: pre-wrap; padding: 0.1rem 0; }
+.chat-line b { color: var(--gold); }
+.chat-line.mine b { color: var(--blue); }
+.chat-empty { color: var(--muted); }
+.chat-form { display: flex; gap: 0.4rem; margin-top: 0.4rem; }
+.chat-form input {
+  flex: 1; min-width: 0; font: inherit; padding: 0.3rem 0.5rem; border-radius: 6px;
+  border: 2px solid var(--ink); background: var(--panel); color: var(--cream);
+}
+.chat-form input:disabled { opacity: 0.6; }
+@media (min-width: 760px) {
+  .chat { left: auto; right: 0.75rem; width: 22rem; }
 }

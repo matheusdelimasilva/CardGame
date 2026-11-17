@@ -6,6 +6,18 @@ export type { SelectSetting, SettingDef, SettingValues, ToggleSetting } from "@c
 
 export const SEAT_COUNT = 8;
 export const MAX_NAME_LENGTH = 14;
+export const MAX_CHAT_LENGTH = 500;
+/** At most this many chat messages per member in any CHAT_WINDOW_MS. */
+export const CHAT_RATE_LIMIT = 5;
+export const CHAT_WINDOW_MS = 10_000;
+
+/** One plain-text chat line. Identity and time are stamped by the server. */
+export interface ChatMessage {
+  id: string;
+  from: { id: string; name: string };
+  text: string;
+  at: number;
+}
 
 export interface GameInfo {
   id: string;
@@ -65,11 +77,13 @@ export type ClientMessage =
   | { type: "move"; move: unknown }
   | { type: "skip"; playerId: string }
   | { type: "kick"; playerId: string }
-  | { type: "endGame" };
+  | { type: "endGame" }
+  | { type: "chat"; text: string };
 
 export type ServerMessage =
   | { type: "welcome"; memberToken: string }
   | { type: "state"; room: RoomView }
+  | { type: "chat"; message: ChatMessage }
   | { type: "error"; message: string }
   | { type: "kicked" };
 

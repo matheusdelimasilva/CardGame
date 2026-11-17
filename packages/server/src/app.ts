@@ -225,6 +225,14 @@ export function createApp(options: AppOptions): { server: Server; close: () => v
       }
       if (!room.members.includes(member)) return; // kicked
 
+      if (msg.type === "chat") {
+        const result = rooms.chat(room, member, msg.text);
+        if ("error" in result) return send(ws, { type: "error", message: result.error });
+        // Chat is ephemeral: sent to this room's sockets only, not stored, not part of the saved state.
+        for (const other of sockets.get(room)?.keys() ?? []) send(other, { type: "chat", message: result.message });
+        return;
+      }
+
       const wasFinished = room.game?.result != null;
       let refusal: rooms.Refusal;
       switch (msg.type) {
