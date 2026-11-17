@@ -12,7 +12,7 @@ import {
   type RunningGame,
 } from "./model";
 
-/** Starts the turn clock when the game begins waiting on someone new. */
+/** Starts the turn clock when a new clock period begins (see GameModule.clockKey). */
 function syncClock(room: Room, now: number): void {
   const running = room.game;
   if (!running) return;
@@ -20,7 +20,8 @@ function syncClock(room: Room, now: number): void {
   const key =
     running.result || running.resumeAt !== null
       ? ""
-      : game.activePlayers(running.state).join(",");
+      : (game.clockKey?.(running.state) ??
+        game.activePlayers(running.state).join(","));
   if (key === running.turnKey) return;
   running.turnKey = key;
   const seconds = key ? (game.turnTimeLimit?.(running.state) ?? null) : null;

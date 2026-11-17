@@ -97,6 +97,13 @@ export interface GameModule<S, M, V> {
   autoMove?(state: S, player: PlayerId): M | null;
   /** Seconds the current turn may take, or null for no limit. When it runs out the server plays autoMove. */
   turnTimeLimit?(state: S): number | null;
+  /**
+   * Names the current clock period. The server restarts the turn clock only
+   * when this changes, so a game can keep one deadline while the players it
+   * waits on come and go. Defaults to the active players, so the clock
+   * restarts whenever they change.
+   */
+  clockKey?(state: S): string;
   /** The recording to play for everyone at this point in the game, if any. */
   currentTrack?(state: S): Track | null;
   /** Milliseconds to hold this state before resuming, or null for no pause. */
@@ -121,6 +128,8 @@ export function defineGame<S, M, V>(module: GameModule<S, M, V>): AnyGame {
     activePlayers: (state) => module.activePlayers(state as S),
     autoMove: (state, player) => module.autoMove?.(state as S, player) ?? null,
     turnTimeLimit: (state) => module.turnTimeLimit?.(state as S) ?? null,
+    // Left undefined when the game has none, so the server applies the default.
+    clockKey: module.clockKey && ((state) => module.clockKey!(state as S)),
     currentTrack: (state) => module.currentTrack?.(state as S) ?? null,
     pauseMs: (state) => module.pauseMs?.(state as S) ?? null,
     resume: (state) => (module.resume ? module.resume(state as S) : state),
