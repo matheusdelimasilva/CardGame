@@ -59,7 +59,8 @@ export const STATUS_BOX = {
   opponent: { x: 71, y: 28.5, w: 17 },
   under: { x: 41, y: 29.9, w: 45.5 },
 } as const;
-export type StatusPlace = keyof typeof STATUS_BOX;
+/** "betting": where the status goes while the bet bar is part of it (portrait.ts). */
+export type StatusPlace = keyof typeof STATUS_BOX | "betting";
 
 // ---------------------------------------------------------------- the hand
 
@@ -441,6 +442,150 @@ export function feltGapBox(g: number, count: number): Box {
   return { x: feltGapX(g, count) - w / 2, y: y - h / 2, w, h };
 }
 
+// ---------------------------------------------------------------- betting
+
+/** A bet token's diameter, and the chips beside a seat card (at its scale) and under the plate. */
+export const BET_TOKEN = 2.2;
+export const SEAT_CHIP = 1.7;
+export const PLATE_CHIP = 2.2;
+/** Pending tokens wait in a row this far apart, as in the design. */
+const PENDING_STEP = 2.7;
+/** Tokens bet on the same gap stack upwards this far apart, closer in a tall stack. */
+const STACK_STEP = 2.4;
+const STACK_MAX = 7.2;
+/** The design's pending row and landing spots over a line on the felt, above its cards' top at full size. */
+const FELT_PENDING_ABOVE = 4.1;
+const FELT_LANDING_ABOVE = 1.9;
+/** On the viewer's turn: pending tokens under the card's home, landed ones above the hand's cards. */
+const MY_PENDING = { x: 50, y: 36.7 } as const;
+const HAND_LANDING_ABOVE = 1.9;
+
+/** How far up the `level`-th of `count` tokens on one gap sits. */
+export function stackOffset(level: number, count: number): number {
+  const step = count > 1 ? Math.min(STACK_STEP, STACK_MAX / (count - 1)) : 0;
+  return level * step;
+}
+
+/** The i-th of n tokens in a row centred on `centre`. */
+export function tokenRow(centre: Point, i: number, n: number): Point {
+  return { x: centre.x + (i - (n - 1) / 2) * PENDING_STEP, y: centre.y };
+}
+
+/**
+ * Where gap `g` of a line is, from where the line's cards are drawn:
+ * `cards` holds them oldest first, with the card being revealed at
+ * `placedAt` among them (null: none). On the revealed card for its own gap;
+ * else between the two cards around the gap, or half a `step` past the
+ * card at an end or at the end of a row. Returns the cards it lies by too,
+ * so callers can keep clear of them; null for a line with no cards.
+ */
+export function gapPoint(
+  cards: readonly FeltCard[],
+  g: number,
+  placedAt: number | null,
+  step: number,
+): { at: Point; by: FeltCard[] } | null {
+  if (placedAt !== null && g === placedAt) {
+    const card = cards[placedAt]!;
+    return { at: { x: card.x, y: card.y }, by: [card] };
+  }
+  const count = cards.length - (placedAt === null ? 0 : 1);
+  const slot = (j: number) => (placedAt !== null && j >= placedAt ? j + 1 : j);
+  const left = g > 0 ? cards[slot(g - 1)] : undefined;
+  const right = g < count ? cards[slot(g)] : undefined;
+  if (left && right && Math.abs(left.y - right.y) < 1e-6)
+    return {
+      at: { x: (left.x + right.x) / 2, y: left.y },
+      by: [left, right],
+    };
+  if (left) return { at: { x: left.x + step / 2, y: left.y }, by: [left] };
+  if (right) return { at: { x: right.x - step / 2, y: right.y }, by: [right] };
+  return null;
+}
+
+/** Where a token sits over the cards it lies by: `above` their tallest top, in units at full size. */
+const over = (
+  spot: { at: Point; by: FeltCard[] },
+  h: number,
+  above: number,
+) => ({
+  x: spot.at.x,
+  y: Math.min(...spot.by.map((c) => c.y - (h / 2) * c.scale)) - above,
+});
+
+/**
+ * Where betting things go on one shape of stage. Tokens are placed by their
+ * centre; the hand's spots are in hand units (they scroll with the hand).
+ */
+export interface BetGeometry {
+  /** The i-th of n bets waiting on the viewer's own turn. */
+  pendingMine(i: number, n: number): Point;
+  /** The i-th of n bets waiting over an opponent's line of `count` cards on the felt. */
+  pendingFelt(i: number, n: number, count: number): Point;
+  /** Where a token bet on gap `g` lands over the felt's line of `count` cards, the revealed card at `placedAt`. */
+  feltSpot(g: number, count: number, placedAt: number | null): Point;
+  /** Where a token bet on gap `g` lands over the viewer's hand of `count` cards, the revealed card in slot `placedAt`. */
+  handSpot(g: number, count: number, placedAt: number | null): Point;
+  /** The viewer's chips: the row's left end and its vertical centre. */
+  plateChips: Point;
+  /** Chips drawn beside a seat card before the rest are counted ("+2"). */
+  seatChipsMax: number;
+  /** How much lower a seat's chips go while it is that player's turn (their card grows and drops), at scale 1. */
+  activeChipsDrop: number;
+  /**
+   * The bet bar floats centred on `at`, or is part of the status ("betting"
+   * place). A floating bar too wide to be centred keeps its right end at
+   * `right` and grows leftwards, as far as `left`.
+   */
+  bar:
+    | { kind: "floating"; at: Point; left: number; right: number }
+    | { kind: "status" };
+}
+
+/** The felt's line and hand as betting reads them, for either stage. */
+export function betGeometry(
+  layout: Pick<StageLayout, "feltTimeline" | "hand">,
+  felt: {
+    pending: (count: number) => Point;
+    /** Units above the cards' top, at full size (scale 2), a token lands; negative: over them. */
+    landing: number;
+    /** Distance between neighbouring cards on the felt, at the line's scale. */
+    step: (count: number) => number;
+  },
+  mine: { pending: Point; landing: number },
+  plateChips: Point,
+  seatChipsMax: number,
+  activeChipsDrop: number,
+  bar: BetGeometry["bar"],
+): BetGeometry {
+  const handCards = (count: number, placedAt: number | null) => {
+    const total = count + (placedAt === null ? 0 : 1);
+    return Array.from({ length: total }, (_, k) => layout.hand.slot(k, total));
+  };
+  return {
+    pendingMine: (i, n) => tokenRow(mine.pending, i, n),
+    pendingFelt: (i, n, count) => tokenRow(felt.pending(count), i, n),
+    feltSpot(g, count, placedAt) {
+      const cards = layout.feltTimeline(count, placedAt);
+      const spot = gapPoint(cards, g, placedAt, felt.step(count));
+      if (!spot) return felt.pending(count);
+      return over(spot, MINI_CARD.h, (felt.landing * spot.by[0]!.scale) / 2);
+    },
+    handSpot(g, count, placedAt) {
+      const cards = handCards(count, placedAt);
+      const step =
+        cards.length > 1 ? cards[1]!.x - cards[0]!.x : HAND_CARD.w * 1.1;
+      const spot = gapPoint(cards, g, placedAt, step);
+      if (!spot) return mine.pending;
+      return over(spot, HAND_CARD.h, mine.landing);
+    },
+    plateChips,
+    seatChipsMax,
+    activeChipsDrop,
+    bar,
+  };
+}
+
 // ------------------------------------------------------------------ colour
 
 // Same palette as games/hitster-cards.tsx, from docs/design/song-cards.html.
@@ -550,6 +695,7 @@ export interface StageLayout {
   feltStatus(count: number): StatusPlace;
   feltTimeline(count: number, placedAt?: number | null): FeltCard[];
   feltGapBox(g: number, count: number): Box;
+  bets: BetGeometry;
 }
 
 const LANDSCAPE_HAND: HandGeometry = {
@@ -561,9 +707,25 @@ const LANDSCAPE_HAND: HandGeometry = {
   edgeSpeed: () => 0,
 };
 
+/** Where the design's felt line puts pending tokens: centred over the line, above its cards. */
+function feltPending(count: number): Point {
+  const row = feltTimeline(count);
+  const { y, scale } = feltLayout(count);
+  const x = row.length ? (row[0]!.x + row.at(-1)!.x) / 2 : feltGapX(0, count);
+  return {
+    x,
+    y:
+      y - (MINI_CARD.h / 2) * scale - (FELT_PENDING_ABOVE * scale) / FELT_SCALE,
+  };
+}
+
 /** The design's stage for `opponents` opponents. */
 export function landscapeLayout(opponents: number): StageLayout {
   const lines = { headline: 2, sub: 3 };
+  const parts = {
+    feltTimeline,
+    hand: LANDSCAPE_HAND,
+  };
   return {
     kind: "landscape",
     stage: STAGE,
@@ -596,6 +758,13 @@ export function landscapeLayout(opponents: number): StageLayout {
         align: "center",
         lines: { headline: 1, sub: 2 },
       },
+      // The bar floats under the felt here, so the status stays where the felt puts it.
+      betting: {
+        ...STATUS_BOX.opponent,
+        anchor: "middle",
+        align: "start",
+        lines,
+      },
     },
     chat: { box: CHAT_BOX, drawer: false },
     tools: null,
@@ -605,6 +774,27 @@ export function landscapeLayout(opponents: number): StageLayout {
     feltStatus: (count) => feltLayout(count).status,
     feltTimeline,
     feltGapBox,
+    bets: betGeometry(
+      parts,
+      {
+        pending: feltPending,
+        landing: FELT_LANDING_ABOVE,
+        step: (count) =>
+          (FELT_STEP_PLACED / FELT_SCALE) * feltLayout(count).scale,
+      },
+      { pending: MY_PENDING, landing: HAND_LANDING_ABOVE },
+      { x: 3.2, y: STAGE.h - 1.2 - PLATE_CHIP / 2 },
+      4,
+      // Beside the seat card, the chips clear it on its turn too.
+      0,
+      // Clear of the chat on the right; on the left the plate is lower down.
+      {
+        kind: "floating",
+        at: { x: 50, y: 43.4 },
+        left: 3,
+        right: CHAT_BOX.x - 1.5,
+      },
+    ),
   };
 }
 

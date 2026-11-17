@@ -1,4 +1,3 @@
-import type { HitsterView } from "@cardgame/games";
 import type { RoomView } from "@cardgame/protocol";
 import { describe, expect, it } from "vitest";
 import { scenarios } from "./dev/fixtures";
@@ -6,16 +5,19 @@ import {
   describeGap,
   gameModel,
   joinNames,
+  myBetOf,
+  playerOf,
   rankLabel,
   ranking,
   revealedPlacement,
   seating,
   stageOf,
   statusText,
+  stolenCard,
   tablePlayer,
   whoseTurn,
 } from "./model";
-import type { GameModel } from "./types";
+import type { GameModel, HitsterView } from "./types";
 
 const model = (room: RoomView): GameModel => {
   const m = gameModel(room);
@@ -117,6 +119,8 @@ describe("stageOf", () => {
       song: { title: "Hey Ya!", artist: "OutKast", year: 2003 },
       outcome: "wrong" as const,
       index: 0,
+      bets: [],
+      thief: null,
     };
     expect(
       stageOf(
@@ -269,6 +273,10 @@ describe("statusText", () => {
     const m = model(scenarios.opponentTurn());
     expect(statusText(m, { index: 0, dragging: true })).toEqual({
       headline: "Mika's turn",
+      sub: "Tap a gap to bet they miss. They're still choosing.",
+    });
+    expect(sub(scenarios.spectator())).toEqual({
+      headline: "Jonathan Silva's turn",
       sub: "Still choosing.",
     });
   });
@@ -277,10 +285,12 @@ describe("statusText", () => {
     const room = scenarios.disconnectedOpponent();
     expect(sub(room)).toEqual({
       headline: "Mika's turn",
-      sub: "They're away. You can skip their turn.",
+      sub: "Tap a gap to bet they miss. They're away. You can skip their turn.",
     });
     const guest = { ...room, you: { ...room.you, isHost: false } };
-    expect(sub(guest).sub).toBe("They're away. The host can skip their turn.");
+    expect(sub(guest).sub).toMatch(
+      /They're away\. The host can skip their turn\.$/,
+    );
   });
 
   it("shows another player's turn to spectators and benched viewers", () => {
@@ -349,6 +359,133 @@ describe("statusText", () => {
   });
 });
 
+describe("betting", () => {
+  it("says what the viewer may do on someone else's turn", () => {
+    expect(model(scenarios.opponentTurn()).myBet).toEqual({ kind: "open" });
+    expect(model(scenarios.opponentPassedBet()).myBet).toEqual({
+      kind: "passed",
+    });
+    expect(model(scenarios.opponentNoTokens()).myBet).toEqual({
+      kind: "noTokens",
+    });
+    const placed = model(scenarios.opponentBetPlaced());
+    expect(placed.myBet.kind).toBe("placed");
+    // The viewer's own gap is known; nobody else's is.
+    const stage = placed.stage;
+    if (stage.kind !== "placing") throw new Error("not placing");
+    expect(stage.bets.find((b) => b.player === "p0")?.index).toEqual(
+      expect.any(Number),
+    );
+    expect(
+      stage.bets
+        .filter((b) => b.player !== "p0")
+        .every((b) => b.index === null),
+    ).toBe(true);
+  });
+
+  it("offers nothing to bet on my own turn, to spectators or outside a turn", () => {
+    for (const room of [
+      scenarios.myTurn(),
+      scenarios.myTurnLocked(),
+      scenarios.spectator(),
+      scenarios.opponentRevealRefund(),
+      scenarios.intro(),
+    ])
+      expect(model(room).myBet).toEqual({ kind: "none" });
+    expect(myBetOf({ kind: "dealing" }, "p0", { p0: 2 })).toEqual({
+      kind: "none",
+    });
+  });
+
+  it("carries the betting fields into the placing stage and the tokens into the model", () => {
+    const m = model(scenarios.opponentLocked({ players: 4 }));
+    expect(m.stage).toMatchObject({ kind: "placing", locked: true });
+    expect(m.timer).toEqual({ remainingMs: 3200, totalMs: 5000 });
+    expect(m.tokens.p0).toBe(2);
+    const mine = model(scenarios.myTurnLocked());
+    expect(mine.stage).toMatchObject({ locked: true, lockedIndex: 0 });
+  });
+
+  it("finds a stolen card in the thief's timeline", () => {
+    const m = model(scenarios.opponentRevealIStole());
+    const stolen = stolenCard(m)!;
+    expect(stolen.thief).toBe("p0");
+    expect(m.timelines.p0![stolen.index]).toBe(stolen.card);
+    expect(stolen.card.year).toBe(m.lastTurn!.song.year);
+    expect(stolenCard(model(scenarios.opponentRevealRefund()))).toBeNull();
+    expect(playerOf(m, "p0")?.isMe).toBe(true);
+    expect(playerOf(m, "nobody")).toBeNull();
+  });
+});
+
+describe("betting status", () => {
+  const status = (room: RoomView, seconds: number | null = null) =>
+    statusText(model(room), null, seconds);
+
+  it("says what I did about betting and what the opponent is doing", () => {
+    expect(status(scenarios.opponentBetPlaced({ players: 2 }))).toEqual({
+      headline: "Mika's turn",
+      sub: "Bet placed. All bets are in. They're still choosing.",
+    });
+    expect(status(scenarios.opponentPassedBet()).sub).toBe(
+      "You passed. They're still choosing.",
+    );
+    expect(status(scenarios.opponentNoTokens()).sub).toBe(
+      "No tokens left to bet. They're still choosing.",
+    );
+  });
+
+  it("counts down the betting window once they have placed", () => {
+    expect(status(scenarios.opponentLocked(), 4)).toEqual({
+      headline: "Mika has placed",
+      sub: "Tap a gap to bet they miss.",
+      timer: "Bets close in 4s.",
+    });
+    expect(status(scenarios.opponentLockedBetPlaced(), 1)).toEqual({
+      headline: "Mika has placed",
+      sub: "Bet placed.",
+      timer: "Bets close in 1s.",
+    });
+  });
+
+  it("tells me who bet while others may still bet on my card", () => {
+    expect(status(scenarios.myTurnLocked({ players: 4 }), 3)).toEqual({
+      headline: "Locked in",
+      sub: "Mika and Priya placed bets.",
+      timer: "Opponents can bet for 3s.",
+    });
+    expect(status(scenarios.myTurnLocked({ players: 2 }), 5)).toEqual({
+      headline: "Locked in",
+      sub: "Mika placed a bet.",
+      timer: "Opponents can bet for 5s.",
+    });
+  });
+
+  it("says what became of my bet at the reveal", () => {
+    const refund = status(scenarios.opponentRevealRefund());
+    expect(refund.headline).toBe("Mika got it");
+    expect(refund.sub).toMatch(/Your token comes back\.$/);
+    const stole = status(scenarios.opponentRevealIStole());
+    expect(stole.headline).toBe("You steal it!");
+    expect(stole.sub).not.toMatch(/token/);
+    const other = status(scenarios.opponentRevealOtherStole({ players: 4 }));
+    expect(other.headline).toBe("Priya steals it");
+    expect(other.sub).toMatch(/You lose your token\.$/);
+  });
+
+  it("names the thief of my card", () => {
+    expect(status(scenarios.myRevealStolen({ players: 4 })).headline).toBe(
+      "Priya steals it",
+    );
+  });
+
+  it("says when the stolen card wins the game", () => {
+    const won = status(scenarios.opponentRevealThiefWins({ goal: 5 }));
+    expect(won.headline).toBe("Priya steals it");
+    expect(won.sub).toMatch(/That's 5 songs: they win!$/);
+  });
+});
+
 describe("ranking", () => {
   it("puts the winner first, then orders by cards", () => {
     const rows = ranking(
@@ -408,10 +545,21 @@ describe("fixtures", () => {
               const years = line.map((c) => c.year);
               expect(years).toEqual([...years].sort((a, b) => a - b));
             }
-            // A correct card may reach the goal while it is being revealed.
+            // A correct or stolen card may reach the goal while it is being revealed.
             if (m.stage.kind === "placing" || m.stage.kind === "intro")
               for (const line of Object.values(view.timelines))
                 expect(line.length).toBeLessThan(goal);
+            for (const tokens of Object.values(view.tokens))
+              expect(tokens).toBeGreaterThanOrEqual(0);
+            // Whoever bet had a token to bet with, and may not bet again.
+            const bets =
+              m.stage.kind === "revealing"
+                ? m.stage.turn.bets
+                : m.stage.kind === "placing"
+                  ? m.stage.bets
+                  : [];
+            for (const bet of bets)
+              expect(view.canBet).not.toContain(bet.player);
           }
   });
 });

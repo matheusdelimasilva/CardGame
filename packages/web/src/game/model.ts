@@ -2,12 +2,12 @@
  * Pure functions from a RoomView to what the game screen draws. Nothing here
  * keeps state: the viewer's own, not yet sent placement is passed in.
  */
-// Types only: the song list (with its years) must never be bundled into the client.
-import type { HitsterView } from "@cardgame/games";
 import type { GameView, RoomView } from "@cardgame/protocol";
 import { seatLook } from "../ui/seats";
 import type {
   GameModel,
+  HitsterView,
+  MyBet,
   Placement,
   RankRow,
   SongCardView,
@@ -76,7 +76,16 @@ export function stageOf(
   if (view.revealing && view.lastTurn)
     return { kind: "revealing", turn: view.lastTurn, next: view.nextPlayer };
   if (view.currentPlayer && view.current)
-    return { kind: "placing", player: view.currentPlayer, song: view.current };
+    return {
+      kind: "placing",
+      player: view.currentPlayer,
+      song: view.current,
+      locked: view.locked,
+      lockedIndex: view.lockedIndex,
+      bets: view.bets,
+      declined: view.declined,
+      canBet: view.canBet,
+    };
   return { kind: "dealing" };
 }
 
@@ -97,6 +106,21 @@ export function whoseTurn(stage: Stage, meId: string | null): Whose {
   const player = stagePlayer(stage);
   if (player === null) return "nobody";
   return player === meId ? "mine" : "opponent";
+}
+
+/** The viewer's part in the betting of the turn in play. */
+export function myBetOf(
+  stage: Stage,
+  meId: string | null,
+  tokens: Record<string, number>,
+): MyBet {
+  if (meId === null || stage.kind !== "placing" || stage.player === meId)
+    return { kind: "none" };
+  const mine = stage.bets.find((b) => b.player === meId);
+  if (mine) return { kind: "placed", index: mine.index ?? 0 };
+  if (stage.declined.includes(meId)) return { kind: "passed" };
+  if (stage.canBet.includes(meId)) return { kind: "open" };
+  return (tokens[meId] ?? 0) < 1 ? { kind: "noTokens" } : { kind: "none" };
 }
 
 /** The Hitster game in a room, typed, or null when the room is not running one. */
@@ -135,6 +159,8 @@ export function gameModel(room: RoomView): GameModel | null {
     pauseMs: game.pause?.remainingMs ?? null,
     timer: stage.kind === "placing" ? game.timer : null,
     viewerIsHost: room.you.isHost,
+    tokens: view.tokens,
+    myBet: myBetOf(stage, me?.id ?? null, view.tokens),
   };
 }
 
@@ -167,6 +193,29 @@ export function revealedPlacement(model: GameModel): {
   };
 }
 
+/**
+ * During a reveal with a thief, the stolen card: the server has already put
+ * it in the thief's timeline, at `index`, so it is taken out until it has
+ * flown there.
+ */
+export function stolenCard(model: GameModel): {
+  thief: string;
+  index: number;
+  card: SongCardView;
+} | null {
+  if (model.stage.kind !== "revealing") return null;
+  const { thief, song } = model.stage.turn;
+  if (!thief) return null;
+  const line = timelineOf(model, thief);
+  const index = line.findIndex(
+    (c) =>
+      c.year === song.year &&
+      c.title === song.title &&
+      c.artist === song.artist,
+  );
+  return index < 0 ? null : { thief, index, card: line[index]! };
+}
+
 /** "Between 1976 and 1981", "Before 1976", "After 1981", or null for an empty timeline. */
 export function describeGap(
   line: readonly { year: number }[],
@@ -189,7 +238,39 @@ export function joinNames(names: readonly string[]): string {
   return `${names.slice(0, -1).join(", ")} and ${names.at(-1)!}`;
 }
 
-function myTurnStatus(model: GameModel, placement: Placement | null) {
+/** A player of this game by id, as the table draws them. */
+export function playerOf(model: GameModel, id: string): TablePlayer | null {
+  if (model.me?.id === id) return model.me;
+  return model.opponents.find((p) => p.id === id) ?? null;
+}
+
+/** "Mika placed a bet.", "Mika and Jon placed bets.", or null with no bets. */
+function bettorsNote(model: GameModel, bets: readonly { player: string }[]) {
+  if (bets.length === 0) return null;
+  const names = bets.map((b) => playerOf(model, b.player)?.name ?? "Someone");
+  return names.length === 1
+    ? `${names[0]!} placed a bet.`
+    : `${joinNames(names)} placed bets.`;
+}
+
+const sentence = (...parts: (string | null)[]) =>
+  parts.filter(Boolean).join(" ");
+
+function myTurnStatus(
+  model: GameModel,
+  stage: Extract<Stage, { kind: "placing" }>,
+  placement: Placement | null,
+  secondsLeft: number | null,
+): StatusText {
+  if (stage.locked)
+    return {
+      headline: "Locked in",
+      sub: bettorsNote(model, stage.bets) ?? "",
+      timer:
+        secondsLeft === null
+          ? "Opponents can still bet."
+          : `Opponents can bet for ${secondsLeft}s.`,
+    };
   const line = model.me ? timelineOf(model, model.me.id) : [];
   if (!placement)
     return {
@@ -205,32 +286,98 @@ function myTurnStatus(model: GameModel, placement: Placement | null) {
     : { headline: `${where}?`, sub: "Drag again to change your mind." };
 }
 
+/** The viewer's part in an opponent's turn, said before what the opponent is doing. */
+function myBetNote(myBet: MyBet): string | null {
+  switch (myBet.kind) {
+    case "open":
+      return "Tap a gap to bet they miss.";
+    case "placed":
+      return "Bet placed.";
+    case "passed":
+      return "You passed.";
+    case "noTokens":
+      return "No tokens left to bet.";
+    case "none":
+      return null;
+  }
+}
+
 /** The headline already names the player, so the line under it does not repeat a long name. */
-function opponentTurnStatus(model: GameModel): StatusText {
+function opponentTurnStatus(
+  model: GameModel,
+  stage: Extract<Stage, { kind: "placing" }>,
+  secondsLeft: number | null,
+): StatusText {
   const player = model.active!;
+  const note = myBetNote(model.myBet);
+  if (stage.locked)
+    return {
+      headline: `${player.name} has placed`,
+      sub: note ?? "",
+      timer:
+        secondsLeft === null
+          ? "Bets close soon."
+          : `Bets close in ${secondsLeft}s.`,
+    };
+  const headline = `${player.name}'s turn`;
   if (!player.connected)
     return {
-      headline: `${player.name}'s turn`,
-      sub: model.viewerIsHost
-        ? "They're away. You can skip their turn."
-        : "They're away. The host can skip their turn.",
+      headline,
+      sub: sentence(
+        note,
+        model.viewerIsHost
+          ? "They're away. You can skip their turn."
+          : "They're away. The host can skip their turn.",
+      ),
     };
-  return { headline: `${player.name}'s turn`, sub: "Still choosing." };
+  // Everyone who could bet has bet or passed: the card is judged as soon as it is locked in.
+  const allIn =
+    stage.canBet.length === 0 && stage.bets.length + stage.declined.length > 0;
+  const before = sentence(note, allIn ? "All bets are in." : null);
+  return {
+    headline,
+    sub: before ? `${before} They're still choosing.` : "Still choosing.",
+  };
+}
+
+/** What became of the viewer's own bet, if they made one and did not steal the card. */
+function myBetResult(model: GameModel, turn: TurnSummary): string | null {
+  const mine = turn.bets.find((b) => b.player === model.me?.id);
+  if (mine?.result === "refunded") return "Your token comes back.";
+  if (mine?.result === "lost") return "You lose your token.";
+  return null;
 }
 
 function revealStatus(model: GameModel, turn: TurnSummary): StatusText {
   const song = songLine(turn.song);
   const mine = model.whose === "mine";
   const name = model.active?.name ?? "Someone";
+  const result = myBetResult(model, turn);
+  if (turn.thief) {
+    const thief = playerOf(model, turn.thief);
+    const won = timelineOf(model, turn.thief).length >= model.goal;
+    return {
+      headline: thief?.isMe
+        ? "You steal it!"
+        : `${thief?.name ?? "Someone"} steals it`,
+      sub: sentence(
+        song,
+        won
+          ? `That's ${model.goal} songs: ${thief?.isMe ? "you win!" : "they win!"}`
+          : null,
+        result,
+      ),
+    };
+  }
   switch (turn.outcome) {
     case "correct":
       return mine
         ? { headline: "Nailed it!", sub: song }
-        : { headline: `${name} got it`, sub: song };
+        : { headline: `${name} got it`, sub: sentence(song, result) };
     case "wrong":
       return mine
         ? { headline: "Not quite", sub: `${song} The card is discarded.` }
-        : { headline: `${name} missed`, sub: song };
+        : { headline: `${name} missed`, sub: sentence(song, result) };
     case "passed":
       return mine
         ? {
@@ -239,7 +386,7 @@ function revealStatus(model: GameModel, turn: TurnSummary): StatusText {
           }
         : {
             headline: `${name} was skipped`,
-            sub: `${song} The card is discarded.`,
+            sub: sentence(song, "The card is discarded.", result),
           };
   }
 }
@@ -275,11 +422,13 @@ function overStatus(model: GameModel): StatusText {
 
 /**
  * The status headline and the line under it. `placement` is the viewer's
- * local choice on their own turn (ignored otherwise).
+ * local choice on their own turn (ignored otherwise); `secondsLeft` is the
+ * betting window's countdown, ticking on the client.
  */
 export function statusText(
   model: GameModel,
   placement: Placement | null = null,
+  secondsLeft: number | null = null,
 ): StatusText {
   const stage = model.stage;
   switch (stage.kind) {
@@ -292,8 +441,8 @@ export function statusText(
       return { headline: "Dealing…", sub: "" };
     case "placing":
       return model.whose === "mine"
-        ? myTurnStatus(model, placement)
-        : opponentTurnStatus(model);
+        ? myTurnStatus(model, stage, placement, secondsLeft)
+        : opponentTurnStatus(model, stage, secondsLeft);
     case "revealing":
       return revealStatus(model, stage.turn);
     case "over":

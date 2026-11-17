@@ -1,5 +1,6 @@
 import type { RoomView } from "@cardgame/protocol";
 import { describe, expect, it } from "vitest";
+import { betReducer, freshBet, type BetState } from "./betting";
 import type { Beat } from "./choreography";
 import { scenarios } from "./dev/fixtures";
 import {
@@ -9,15 +10,16 @@ import {
   feltLayout,
   feltTimeline,
   handSlot,
+  landscapeLayout,
 } from "./layout";
-import { gameModel, revealedPlacement, timelineOf } from "./model";
+import { gameModel, revealedPlacement, stolenCard, timelineOf } from "./model";
 import { portraitLayout } from "./portrait";
 import {
   freshPlacement,
   placementReducer,
   type PlacementState,
 } from "./placement";
-import { DISCARD_CLEAR_MS, dealCount, scene } from "./scene";
+import { DISCARD_CLEAR_MS, STEAL_LAND_MS, dealCount, scene } from "./scene";
 
 const options = { players: 4, goal: 10, timelines: "mixed" } as const;
 const sceneOf = (
@@ -353,7 +355,12 @@ describe("the scene on the portrait stage", () => {
     const piled = s.minis.filter((m) => m.layer === "pile");
     expect(piled.length + felt.length).toBe(s.minis.length);
     expect(piled.every((m) => m.zoom === 1)).toBe(true);
-    expect(s.statusBox).toBe("opponent");
+    // The bet bar is part of the status here, which moves up for it.
+    expect(s.statusBox).toBe("betting");
+    expect(s.betBar?.place).toBe("status");
+    expect(portraitOf(scenarios.opponentNoTokens(long)).scene.statusBox).toBe(
+      "opponent",
+    );
     expect(s.mystery.pose).toEqual(layout.mysteryDeal);
   });
 });
@@ -368,4 +375,263 @@ it("counts every starting card for the deal", () => {
       0,
     ),
   );
+});
+
+describe("betting on an opponent's turn", () => {
+  const four = { ...options, players: 4 } as const;
+  const withBet = (room: RoomView, bet: BetState, secondsLeft = 3) => {
+    const model = gameModel(room)!;
+    return scene({
+      model,
+      beat: "ready",
+      placement: freshPlacement(null),
+      bet,
+      secondsLeft,
+    });
+  };
+  const picked = (index: number, sent = false): BetState => {
+    let s = betReducer(freshBet("current"), {
+      type: "pick",
+      index,
+      turn: "current",
+    });
+    if (sent)
+      s = betReducer(s, {
+        type: "send",
+        move: "bet",
+        error: null,
+        turn: "current",
+      });
+    return s;
+  };
+
+  it("offers every gap of their line and the bar, which confirms only a picked gap", () => {
+    const room = scenarios.opponentTurn(four);
+    const s = withBet(room, freshBet("current"));
+    const line = s.felt!.line;
+    expect(s.gaps).toHaveLength(line.length + 1);
+    expect(s.gaps[0]).toMatchObject({
+      label: `Bet: Before ${line[0]!.year}`,
+      state: "open",
+      disabled: false,
+    });
+    expect(s.gaps[1]!.label).toBe(
+      `Bet: Between ${line[0]!.year} and ${line[1]!.year}`,
+    );
+    for (const gap of s.gaps) expect(gap.reach).toBeGreaterThan(gap.box.w);
+    expect(s.betBar).toEqual({
+      text: "Tap a gap in Mika's timeline to bet",
+      seconds: null,
+      canConfirm: false,
+      sending: false,
+      place: "floating",
+    });
+    const pick = withBet(room, picked(1));
+    expect(pick.gaps[1]!.state).toBe("picked");
+    expect(pick.betBar).toMatchObject({
+      text: `Bet 1 token: Between ${line[0]!.year} and ${line[1]!.year}`,
+      canConfirm: true,
+    });
+    const sending = withBet(room, picked(1, true));
+    expect(sending.betBar).toMatchObject({ canConfirm: false, sending: true });
+    expect(sending.gaps.every((g) => g.disabled)).toBe(true);
+  });
+
+  it("counts the bar down once they have locked in", () => {
+    const s = withBet(scenarios.opponentLocked(four), freshBet("current"), 4);
+    expect(s.betBar?.seconds).toBe(4);
+    expect(s.status.timer).toBe("Bets close in 4s.");
+  });
+
+  it("keeps my gap marked once I have bet, without the bar", () => {
+    const room = scenarios.opponentBetPlaced(four);
+    const model = gameModel(room)!;
+    const s = withBet(room, freshBet("current"));
+    expect(s.betBar).toBeNull();
+    expect(s.gaps).toHaveLength(1);
+    expect(s.gaps[0]).toMatchObject({
+      state: "mine",
+      index: model.myBet.kind === "placed" ? model.myBet.index : -1,
+    });
+    expect(s.gaps[0]!.label).toMatch(/^Your bet: /);
+  });
+
+  it.each([
+    "opponentPassedBet",
+    "opponentNoTokens",
+    "spectator",
+    "myTurn",
+    "myTurnLocked",
+  ] as const)("offers no betting in %s", (name) => {
+    const s = withBet(scenarios[name](four), freshBet("current"));
+    expect(s.gaps).toEqual([]);
+    expect(s.betBar).toBeNull();
+  });
+
+  it("shows a waiting token per bet, a BET tag on bettors and their chips less the bet", () => {
+    const room = scenarios.opponentBetPlaced(four);
+    const model = gameModel(room)!;
+    const s = withBet(room, freshBet("current"));
+    const layout = landscapeLayout(model.opponents.length);
+    const count = s.felt!.line.length;
+    expect(s.bets.map((b) => b.label)).toEqual([
+      "You placed a bet.",
+      "Priya placed a bet.",
+      "Jonathan Silva placed a bet.",
+    ]);
+    s.bets.forEach((b, i) => {
+      expect(b.at).toEqual(layout.bets.pendingFelt(i, 3, count));
+      expect(b).toMatchObject({ motion: "move", inHand: false });
+    });
+    const bettors = s.seats.filter((seat) => seat.bet).map((x) => x.player.id);
+    expect(bettors.sort()).toEqual(["p2", "p3"]);
+    for (const seat of s.seats)
+      expect(seat.chips).toBe(model.tokens[seat.player.id]);
+    expect(s.plate.chips).toBe(model.tokens.p0);
+    // Each token flies in from its bettor's chips.
+    const priya = s.seats.find((seat) => seat.player.name === "Priya")!;
+    expect(s.bets[1]!.from.x).toBeGreaterThan(priya.chipsAt.x);
+  });
+});
+
+describe("the viewer's locked card", () => {
+  it("rests in its slot, cannot be moved, and counts down the others' bets", () => {
+    const room = scenarios.myTurnLocked(options);
+    const model = gameModel(room)!;
+    const s = scene({
+      model,
+      beat: "ready",
+      placement: freshPlacement("current"),
+      secondsLeft: 3,
+    });
+    expect(s.mystery).toMatchObject({ slot: 0, draggable: false });
+    expect(s.lock).toBe("hidden");
+    expect(s.timer).toEqual({ filled: 3, total: 5 });
+    expect(s.status.headline).toBe("Locked in");
+    expect(s.status.timer).toBe("Opponents can bet for 3s.");
+    const layout = landscapeLayout(model.opponents.length);
+    s.bets.forEach((b, i) =>
+      expect(b.at).toEqual(layout.bets.pendingMine(i, s.bets.length)),
+    );
+  });
+});
+
+describe("the reveal of bets", () => {
+  const four = { ...options, players: 4 } as const;
+  const at = (room: RoomView, beat: Beat) => sceneOf(room, beat).scene;
+
+  it("keeps an opponent's bets waiting while their card is shown, then lands them on their gaps", () => {
+    const room = scenarios.opponentRevealRefund(four);
+    const model = gameModel(room)!;
+    const layout = landscapeLayout(model.opponents.length);
+    const show = at(room, "show");
+    expect(show.bets.every((b) => b.motion === "move")).toBe(true);
+    const bets = at(room, "bets");
+    expect(bets.status).toEqual({ headline: "Bets are in", sub: "" });
+    const turn = model.lastTurn!;
+    const reveal = revealedPlacement(model)!;
+    const mine = bets.bets.find((b) => b.player.isMe)!;
+    expect(mine.at).toEqual(
+      layout.bets.feltSpot(
+        turn.bets[0]!.index,
+        reveal.line.length,
+        reveal.placedAt,
+      ),
+    );
+    // Two bets on one gap stack upwards.
+    const [, second, third] = bets.bets;
+    expect(second!.level).toBe(0);
+    expect(third!.level).toBe(1);
+    expect(third!.at.y).toBeLessThan(second!.at.y);
+  });
+
+  it("holds a refund back until the tokens settle, then sends it home and the rest away", () => {
+    const room = scenarios.opponentRevealRefund(four);
+    const model = gameModel(room)!;
+    const flip = at(room, "flip");
+    expect(flip.plate.chips).toBe(model.tokens.p0! - 1);
+    const settle = at(room, "settle");
+    expect(settle.plate.chips).toBe(model.tokens.p0);
+    const mine = settle.bets.find((b) => b.player.isMe)!;
+    expect(mine).toMatchObject({ motion: "home", inHand: false });
+    expect(mine.at).toEqual(mine.from);
+    expect(
+      settle.bets
+        .filter((b) => !b.player.isMe)
+        .every((b) => b.motion === "vanish"),
+    ).toBe(true);
+    expect(at(room, "return").bets).toEqual([]);
+  });
+
+  it("says nobody bet when nobody did", () => {
+    expect(at(scenarios.opponentRevealWrong(four), "bets").status).toEqual({
+      headline: "Bets are in",
+      sub: "Nobody bet.",
+    });
+  });
+
+  it("lands bets on the viewer's hand, the card still face down", () => {
+    const room = scenarios.myRevealBets(four);
+    const s = at(room, "bets");
+    expect(s.status).toEqual({
+      headline: "Locked in",
+      sub: "Bets against you are revealed.",
+    });
+    expect(s.mystery.face).toBeNull();
+    expect(s.mystery.slot).not.toBeNull();
+    expect(s.bets.every((b) => b.inHand)).toBe(true);
+    expect(at(room, "flip").mystery.face).not.toBeNull();
+  });
+
+  it("flies a card I steal into my hand, which makes room for it", () => {
+    const room = scenarios.opponentRevealIStole(four);
+    const model = gameModel(room)!;
+    const stolen = stolenCard(model)!;
+    const full = timelineOf(model, "p0");
+    const flip = at(room, "flip");
+    expect(flip.hand).toHaveLength(full.length - 1);
+    expect(flip.plate.count).toBe(full.length - 1);
+    const settle = at(room, "settle");
+    expect(settle.hand).toHaveLength(full.length - 1);
+    expect(settle.handSlots).toBe(full.length);
+    const card = settle.minis.find((m) => m.key === stolen.card.id)!;
+    expect(card).toMatchObject({ inHand: true, layer: "placed" });
+    const slot = handSlot(stolen.index, full.length);
+    expect(card.pose).toEqual({ x: slot.x, y: slot.y, r: slot.r });
+    const after = at(room, "return");
+    expect(after.hand!.map((c) => c.song.id)).toContain(stolen.card.id);
+    expect(after.minis.some((m) => m.key === stolen.card.id)).toBe(false);
+  });
+
+  it("flies a card someone else steals to their seat", () => {
+    const room = scenarios.opponentRevealOtherStole(four);
+    const model = gameModel(room)!;
+    const stolen = stolenCard(model)!;
+    const seat = (s: ReturnType<typeof at>) =>
+      s.seats.find((x) => x.player.id === stolen.thief)!;
+    const full = timelineOf(model, stolen.thief).length;
+    expect(seat(at(room, "flip")).count).toBe(full - 1);
+    const settle = at(room, "settle");
+    expect(seat(settle).count).toBe(full);
+    const cards = settle.minis.filter((m) => m.key === stolen.card.id);
+    expect(cards).toHaveLength(1);
+    expect(cards[0]!.layer).toBe("placed");
+    expect(
+      at(room, "return").minis.find((m) => m.key === stolen.card.id)!.layer,
+    ).toBe("seat");
+  });
+
+  it("flies my stolen card to the thief's seat, where it appears once it lands", () => {
+    const room = scenarios.myRevealStolen(four);
+    const model = gameModel(room)!;
+    const stolen = stolenCard(model)!;
+    const flip = at(room, "flip");
+    expect(flip.status.headline).toBe("Not quite");
+    const settle = at(room, "settle");
+    expect(settle.status.headline).toBe("Priya steals it");
+    expect(settle.mystery).toMatchObject({ motion: "steal", visible: false });
+    const landed = settle.minis.find((m) => m.key === stolen.card.id)!;
+    expect(landed).toMatchObject({ motion: "land", delayMs: STEAL_LAND_MS });
+    expect(settle.mystery.pose).toEqual(landed.pose);
+  });
 });

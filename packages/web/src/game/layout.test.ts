@@ -16,6 +16,9 @@ import {
   TABLE_BOX,
   decadeColor,
   feltGapBox,
+  gapPoint,
+  landscapeLayout,
+  stackOffset,
   feltGapX,
   feltLayout,
   feltTimeline,
@@ -469,5 +472,77 @@ describe("CSS helpers", () => {
     expect(placeAt({ x: 10, y: 10 }, MINI_CARD, 2)).toBe(
       "translate(calc(var(--u) * 8.85), calc(var(--u) * 8.4)) rotate(0deg) scale(2)",
     );
+  });
+});
+
+describe("betting on the design's stage", () => {
+  const layout = landscapeLayout(3);
+  const bets = layout.bets;
+
+  it("finds a gap between its cards, past the ends, and on the revealed card", () => {
+    const cards = [
+      { x: 10, y: 5, scale: 1 },
+      { x: 14, y: 5, scale: 1 },
+      { x: 18, y: 5, scale: 1 },
+    ];
+    expect(gapPoint(cards, 1, null, 4)!.at).toEqual({ x: 12, y: 5 });
+    expect(gapPoint(cards, 0, null, 4)!.at).toEqual({ x: 8, y: 5 });
+    expect(gapPoint(cards, 3, null, 4)!.at).toEqual({ x: 20, y: 5 });
+    // With the revealed card at 1, gap 1 is on it and gap 2 is past it.
+    expect(gapPoint(cards, 1, 1, 4)!.at).toEqual({ x: 14, y: 5 });
+    expect(gapPoint(cards, 2, 1, 4)!.at).toEqual({ x: 20, y: 5 });
+    expect(gapPoint(cards, 0, 1, 4)!.at).toEqual({ x: 8, y: 5 });
+    // A row break: beside the card before it.
+    const rows = [cards[0]!, { x: 10, y: 9, scale: 1 }];
+    expect(gapPoint(rows, 1, null, 4)!.at).toEqual({ x: 12, y: 5 });
+    expect(gapPoint([], 0, null, 4)).toBeNull();
+  });
+
+  it("stacks tokens upwards, closer in a tall stack", () => {
+    expect(stackOffset(0, 1)).toBe(0);
+    expect(stackOffset(1, 2)).toBe(2.4);
+    expect(stackOffset(5, 6)).toBeCloseTo(7.2, 9);
+  });
+
+  it("puts the design's waiting row and landing spots over a short line on the felt", () => {
+    const pending = bets.pendingFelt(0, 1, 4);
+    expect(pending.x).toBeCloseTo(55.5, 9);
+    expect(pending.y).toBeCloseTo(21.2, 9);
+    const gap = feltGapX(2, 4);
+    const landed = bets.feltSpot(2, 4, null);
+    expect(landed.x).toBeCloseTo(gap, 9);
+    expect(landed.y).toBeCloseTo(23.4, 9);
+    // Tokens wait in a row 2.7 apart.
+    expect(
+      bets.pendingFelt(1, 2, 4).x - bets.pendingFelt(0, 2, 4).x,
+    ).toBeCloseTo(2.7, 9);
+    expect(bets.pendingMine(0, 1)).toEqual({ x: 50, y: 36.7 });
+  });
+
+  it("lands tokens over the viewer's hand, clear of its cards", () => {
+    for (let count = 1; count <= 9; count++)
+      for (let g = 0; g <= count; g++) {
+        const spot = bets.handSpot(g, count, 0);
+        const slot = handSlot(0, count + 1);
+        expect(spot.y + 1.1).toBeLessThan(
+          slot.y - (HAND_CARD.h / 2) * slot.scale + 1e-9,
+        );
+      }
+  });
+
+  it("keeps the viewer's chips under the plate and the bar under the felt", () => {
+    expect(bets.plateChips.x).toBe(3.2);
+    expect(bets.plateChips.y + 1.1).toBeCloseTo(STAGE.h - 1.2, 9);
+    expect(bets.bar).toMatchObject({
+      kind: "floating",
+      at: { x: 50, y: 43.4 },
+    });
+    // It may grow leftwards past the plate's column (the plate is lower), never under the chat.
+    if (bets.bar.kind === "floating") {
+      expect(bets.bar.right).toBeLessThan(CHAT_BOX.x);
+      expect(bets.bar.left).toBeGreaterThan(0);
+      expect(bets.bar.at.y + 3).toBeLessThan(STAGE.h - PLATE.bottom - 6);
+    }
+    expect(bets.seatChipsMax).toBe(4);
   });
 });
