@@ -16,7 +16,7 @@ export interface RunningGame {
   players: string[];
   state: unknown;
   result: GameResult | null;
-  /** Who the game was waiting on when the turn clock last started. */
+  /** The game's clock key when the turn clock last started; "" while paused or over. */
   turnKey: string;
   /** When the current turn runs out (epoch ms), or null if it is not timed. */
   deadline: number | null;

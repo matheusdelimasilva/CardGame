@@ -14,24 +14,32 @@ import {
   type RefObject,
 } from "react";
 import {
+  Chips,
   Deck,
   MiniCard,
   MysteryCard,
   SeatCard,
   SongCard,
+  TokenFace,
   useFitText,
 } from "./cards";
 import {
+  BET_TOKEN,
   HAND_CARD,
   MINI_CARD,
+  PLATE_CHIP,
   SEAT_CARD,
+  SEAT_CHIP,
   boxStyle,
   placeAt,
   u,
   type StageLayout,
 } from "./layout";
 import type {
+  BetBarScene,
+  BetTokenScene,
   FeltScene,
+  GapScene,
   HandCardScene,
   MiniScene,
   MysteryScene,
@@ -59,6 +67,16 @@ export interface MysteryActions {
   onTap: () => void;
 }
 
+/** What the viewer can do about betting on someone else's turn. */
+export interface BetActions {
+  onPick: (index: number) => void;
+  onConfirm: () => void;
+  onPass: () => void;
+}
+
+/** "2 tokens", "1 token". */
+const tokens = (n: number) => `${n} ${n === 1 ? "token" : "tokens"}`;
+
 /** The oval table: black rail, red pinstripe, felt with a dashed inner line. */
 function Table({ box }: { box: Box }) {
   return (
@@ -72,18 +90,31 @@ function Table({ box }: { box: Box }) {
   );
 }
 
+/** The design's five-segment countdown, filled for each second left. */
+function TimerSegments({ timer }: { timer: NonNullable<Scene["timer"]> }) {
+  return (
+    <span className="gs-timer" aria-hidden="true">
+      {Array.from({ length: timer.total }, (_, i) => (
+        <span key={i} className={cx(i < timer.filled && "is-on")} />
+      ))}
+    </span>
+  );
+}
+
 function Status({
   scene,
   layout,
   onLock,
+  bet,
 }: {
   scene: Scene;
   layout: StageLayout;
   onLock: () => void;
+  bet: BetActions;
 }) {
   const place = scene.statusBox;
   const spot = layout.status[place];
-  const { headline, sub } = scene.status;
+  const { headline, sub, timer } = scene.status;
   // The spot's position is in the key: text is measured again where it moves to.
   const where = `${layout.kind}\n${place}`;
   const headlineRef = useFitText<HTMLHeadingElement>(
@@ -92,7 +123,7 @@ function Status({
     0.6,
   );
   const subRef = useFitText<HTMLParagraphElement>(
-    `${where}\n${sub}`,
+    `${where}\n${sub}\n${timer ?? ""}`,
     spot.lines.sub,
     0.75,
   );
@@ -103,7 +134,22 @@ function Status({
       aria-live="polite"
     >
       <h1 ref={headlineRef}>{headline}</h1>
-      {sub && <p ref={subRef}>{sub}</p>}
+      {(sub || timer) && (
+        <p ref={subRef}>
+          {sub}
+          {sub && timer && " "}
+          {/* A timer is not read out every second; it can still be read on demand. */}
+          {timer && (
+            <span role="timer" aria-live="off">
+              {timer}
+            </span>
+          )}
+        </p>
+      )}
+      {scene.timer && <TimerSegments timer={scene.timer} />}
+      {scene.betBar?.place === "status" && (
+        <BetBar bar={scene.betBar} actions={bet} />
+      )}
       {scene.lock !== "hidden" && (
         <button
           className="tl-button tl-gold gs-lock"
@@ -136,9 +182,86 @@ function Seats({
       goal={goal}
       active={seat.active}
       tilt={seat.tilt}
+      badge={seat.bet ? "BET" : null}
       onClick={onSeat ? () => onSeat(seat.player) : undefined}
     />
   ));
+}
+
+/** Each opponent's tokens beside their seat card. */
+function SeatChips({
+  scene,
+  max,
+  delay,
+}: {
+  scene: Scene;
+  max: number;
+  delay: string;
+}) {
+  return scene.seats.map((seat) => (
+    <Chips
+      key={seat.player.id}
+      className="gs-placed gs-seat-chips"
+      style={{
+        transform: `translate(${u(seat.chipsAt.x)}, ${u(seat.chipsAt.y)}) scale(${seat.scale})`,
+        height: u(SEAT_CHIP),
+        ...({ "--gs-chip-delay": delay } as CSSProperties),
+      }}
+      count={seat.chips}
+      max={max}
+      chip={seat.player.chip}
+      edge={seat.player.chipEdge}
+      role="img"
+      aria-label={`${seat.player.name}: ${tokens(seat.chips)}`}
+    />
+  ));
+}
+
+/**
+ * The viewer's tokens under their plate, with the design's note on hover
+ * and on focus.
+ */
+function MyChips({
+  count,
+  layout,
+  delay,
+}: {
+  count: number;
+  layout: StageLayout;
+  delay: string;
+}) {
+  const tip =
+    count === 0
+      ? "You have no chips left to bet."
+      : `You have ${count} ${count === 1 ? "chip" : "chips"}. Use ${count === 1 ? "it" : "them"} to bet against their guesses.`;
+  const { x, y } = layout.bets.plateChips;
+  return (
+    <span
+      className="gs-my-chips"
+      style={
+        {
+          left: u(x),
+          top: u(y - PLATE_CHIP / 2),
+          height: u(PLATE_CHIP),
+          "--gs-chip-delay": delay,
+        } as CSSProperties
+      }
+      tabIndex={0}
+      role="img"
+      aria-label={tip}
+    >
+      <Chips
+        count={count}
+        chip="var(--gold)"
+        edge="#c9a52e"
+        showEmpty
+        aria-hidden="true"
+      />
+      <span className="gs-tip" aria-hidden="true">
+        {tip}
+      </span>
+    </span>
+  );
 }
 
 function Minis({ minis }: { minis: MiniScene[] }) {
@@ -153,6 +276,7 @@ function Minis({ minis }: { minis: MiniScene[] }) {
             `is-${mini.layer}`,
             `is-${mini.motion}`,
             !mini.dealt && "is-undealt",
+            mini.inHand && "is-in-hand",
           )}
           style={
             {
@@ -169,23 +293,147 @@ function Minis({ minis }: { minis: MiniScene[] }) {
   );
 }
 
+/** A gap to bet on: a dashed outline as the design draws it, in a target at least a thumb wide where the line allows. */
+function Gap({ gap, onPick }: { gap: GapScene; onPick: (i: number) => void }) {
+  const style = {
+    left: u(gap.box.x + gap.box.w / 2),
+    top: u(gap.box.y),
+    height: u(gap.box.h),
+    "--gs-gap-w": u(gap.box.w),
+    "--gs-gap-reach": u(gap.reach),
+  } as CSSProperties;
+  if (gap.state === "mine")
+    return (
+      <span
+        className="gs-gap is-mine"
+        style={style}
+        role="img"
+        aria-label={gap.label}
+      />
+    );
+  return (
+    <button
+      type="button"
+      className={cx("gs-gap", `is-${gap.state}`)}
+      style={style}
+      aria-label={gap.label}
+      aria-pressed={gap.state === "picked"}
+      disabled={gap.disabled}
+      onClick={() => onPick(gap.index)}
+    />
+  );
+}
+
 /**
  * The active opponent's timeline on the felt. The cards themselves are
  * drawn with every other mini card (so they glide between the seat and the
- * felt); this is the felt's own layer, where things that belong to that
- * timeline alone (later, the betting gaps) go.
+ * felt); this is the felt's own layer: the line read out, and the gaps to
+ * bet on.
  */
-function FeltTimeline({ felt }: { felt: FeltScene }) {
+function FeltTimeline({
+  felt,
+  gaps,
+  onPick,
+}: {
+  felt: FeltScene;
+  gaps: GapScene[];
+  onPick: (i: number) => void;
+}) {
   return (
-    <ol
-      className="gs-visually-hidden"
-      aria-label={`${felt.player.name}'s timeline`}
-    >
-      {felt.line.map((song) => (
-        <li key={song.id}>{song.year}</li>
-      ))}
-    </ol>
+    <>
+      <ol
+        className="gs-visually-hidden"
+        aria-label={`${felt.player.name}'s timeline`}
+      >
+        {felt.line.map((song) => (
+          <li key={song.id}>{song.year}</li>
+        ))}
+      </ol>
+      {gaps.length > 0 && (
+        <div role="group" aria-label={`Gaps in ${felt.player.name}'s timeline`}>
+          {gaps.map((gap) => (
+            <Gap key={gap.index} gap={gap} onPick={onPick} />
+          ))}
+        </div>
+      )}
+    </>
   );
+}
+
+/**
+ * "Confirm bet" and "Pass", with the countdown once the player has locked
+ * in. Floating, it also says what the bet is; in the status, the status
+ * says it.
+ */
+function BetBar({ bar, actions }: { bar: BetBarScene; actions: BetActions }) {
+  const floating = bar.place === "floating";
+  return (
+    <div
+      className={cx("gs-bet-bar", `is-${bar.place}`)}
+      role="group"
+      aria-label="Your bet"
+    >
+      {floating && bar.seconds !== null && (
+        <span className="gs-bet-count" role="timer" aria-live="off">
+          {bar.seconds}s
+        </span>
+      )}
+      {floating && (
+        <span className="gs-bet-text" aria-live="polite">
+          {bar.text}
+        </span>
+      )}
+      <button
+        type="button"
+        className="tl-button tl-gold gs-bet-confirm"
+        disabled={!bar.canConfirm}
+        onClick={actions.onConfirm}
+      >
+        Confirm bet
+      </button>
+      <button
+        type="button"
+        className="tl-button gs-bet-pass"
+        disabled={bar.sending}
+        onClick={actions.onPass}
+      >
+        Pass
+      </button>
+    </div>
+  );
+}
+
+/** This turn's bet tokens, each with "Mika placed a bet." on hover and on focus. */
+function BetTokens({ bets }: { bets: BetTokenScene[] }) {
+  const half = BET_TOKEN / 2;
+  return bets.map((token) => (
+    // The carrier scrolls a token with the hand while it lies over it (see stage.css).
+    <div
+      key={token.key}
+      className="gs-token-carrier"
+      style={{ "--gs-in-hand": token.inHand ? 1 : 0 } as CSSProperties}
+    >
+      <span
+        className={cx("gs-placed gs-bet-token", `is-${token.motion}`)}
+        style={
+          {
+            transform: `translate(${u(token.at.x - half)}, ${u(token.at.y - half)})`,
+            "--gs-from-x": u(token.from.x - token.at.x),
+            "--gs-from-y": u(token.from.y - token.at.y),
+            zIndex: 7 + token.level,
+          } as CSSProperties
+        }
+        tabIndex={token.motion === "move" ? 0 : -1}
+        role="img"
+        aria-label={token.label}
+      >
+        <TokenFace player={token.player} />
+        <span className="gs-tip" aria-hidden="true">
+          {token.label}
+        </span>
+      </span>
+    </div>
+  ));
 }
 
 function Hand({ cards }: { cards: HandCardScene[] }) {
@@ -393,6 +641,7 @@ export interface StageProps {
   /** The song is audible: the face-down record spins. */
   playing: boolean;
   actions: MysteryActions;
+  bet: BetActions;
   /** The host's player menu, from an opponent's seat card. */
   onSeat?: (player: TablePlayer) => void;
   chat: ReactNode;
@@ -410,6 +659,7 @@ export function Stage({
   goal,
   playing,
   actions,
+  bet,
   onSeat,
   chat,
   chatCount,
@@ -423,11 +673,16 @@ export function Stage({
     layout.hand,
     layout.stage.w,
     scene.handSlots,
-    scene.mystery.slot,
+    scene.handFocus,
   );
   const drawer = useChatDrawer(chatCount, scene.mystery.draggable);
   const chatId = useId();
   const view = scene.hand ? layout.hand.view : null;
+  const barAt = layout.bets.bar.kind === "floating" ? layout.bets.bar : null;
+  // A refunded token flies home first; the chip it becomes hops in as it lands.
+  const chipDelay = scene.bets.some((b) => b.motion === "home")
+    ? "0.55s"
+    : "0s";
   return (
     <div
       className="gs-stage"
@@ -444,10 +699,33 @@ export function Stage({
       <div className="gs-goal" style={boxStyle(layout.goalLabel)}>
         FIRST TO {goal}
       </div>
-      <Status scene={scene} layout={layout} onLock={actions.onLock} />
       <Seats scene={scene} goal={goal} onSeat={onSeat} />
+      <SeatChips
+        scene={scene}
+        max={layout.bets.seatChipsMax}
+        delay={chipDelay}
+      />
       <Minis minis={scene.minis} />
-      {scene.felt && <FeltTimeline felt={scene.felt} />}
+      {scene.felt && (
+        <FeltTimeline felt={scene.felt} gaps={scene.gaps} onPick={bet.onPick} />
+      )}
+      {/* After the gaps, so Tab goes from a gap to "Confirm bet". */}
+      <Status scene={scene} layout={layout} onLock={actions.onLock} bet={bet} />
+      {scene.betBar?.place === "floating" && barAt && (
+        <div
+          className="gs-bet-bar-spot"
+          style={
+            {
+              left: u(2 * barAt.at.x - barAt.right),
+              top: u(barAt.at.y),
+              width: u(2 * (barAt.right - barAt.at.x)),
+              "--gs-bar-max": u(barAt.right - barAt.left),
+            } as CSSProperties
+          }
+        >
+          <BetBar bar={scene.betBar} actions={bet} />
+        </div>
+      )}
       {scene.hand && (
         <div
           className="gs-ruler"
@@ -478,6 +756,7 @@ export function Stage({
         scroller={scroller}
         actions={actions}
       />
+      <BetTokens bets={scene.bets} />
       <div
         id={chatId}
         className={cx(
@@ -529,6 +808,9 @@ export function Stage({
       >
         {plate}
       </div>
+      {scene.hand && (
+        <MyChips count={scene.plate.chips} layout={layout} delay={chipDelay} />
+      )}
     </div>
   );
 }

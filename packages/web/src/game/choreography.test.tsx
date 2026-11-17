@@ -3,7 +3,9 @@ import { act, create, type ReactTestRenderer } from "react-test-renderer";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   ARRIVE_MS,
+  MY_BET_REVEAL,
   MY_REVEAL,
+  OPPONENT_BET_REVEAL,
   OPPONENT_REVEAL,
   beatPlan,
   dealMs,
@@ -47,7 +49,7 @@ describe("beat plans", () => {
       beatPlan(model(scenarios.opponentRevealCorrect()), false, 4).map(
         (s) => s.beat,
       ),
-    ).toEqual(["launch", "show", "flip", "settle", "return"]);
+    ).toEqual(["launch", "show", "bets", "flip", "settle", "return"]);
     // A skipped turn has no gap: the card turns over on the deck.
     expect(
       beatPlan(model(scenarios.opponentRevealPassed()), false, 4).map(
@@ -63,6 +65,44 @@ describe("beat plans", () => {
       beat: "return",
       at: OPPONENT_REVEAL.return / 2,
     });
+  });
+
+  it("lands the bets before the card turns over, in the longer pause bets get", () => {
+    // The server holds a reveal with bets 6s: the beats play at full length.
+    const theirs = model(scenarios.opponentRevealRefund());
+    expect(theirs.pauseMs).toBe(6000);
+    expect(beatPlan(theirs, false, 4)).toEqual([
+      { beat: "launch", at: 0 },
+      { beat: "show", at: 60 },
+      { beat: "bets", at: OPPONENT_BET_REVEAL.bets },
+      { beat: "flip", at: OPPONENT_BET_REVEAL.flip },
+      { beat: "settle", at: OPPONENT_BET_REVEAL.settle },
+      { beat: "return", at: OPPONENT_BET_REVEAL.return },
+    ]);
+    expect(OPPONENT_BET_REVEAL.return).toBeLessThan(6000);
+    expect(beatPlan(model(scenarios.myRevealBets()), false, 4)).toEqual([
+      { beat: "bets", at: 0 },
+      { beat: "flip", at: MY_BET_REVEAL.flip },
+      { beat: "settle", at: MY_BET_REVEAL.settle },
+    ]);
+    // Half the pause left: everything plays twice as fast.
+    const late = { ...model(scenarios.myRevealStolen()), pauseMs: 3000 };
+    expect(beatPlan(late, false, 4).at(-1)).toEqual({
+      beat: "settle",
+      at: MY_BET_REVEAL.settle / 2,
+    });
+  });
+
+  it("says the bets are in for an opponent's turn without bets too, within the usual pause", () => {
+    const plan = beatPlan(model(scenarios.opponentRevealWrong()), false, 4);
+    expect(plan.find((s) => s.beat === "bets")?.at).toBe(OPPONENT_REVEAL.bets);
+    expect(plan.at(-1)!.at).toBeLessThan(4000);
+  });
+
+  it("keeps one plan through the lock-in and the betting window", () => {
+    expect(stageKey(model(scenarios.myTurnLocked()))).toBe(
+      stageKey(model(scenarios.myTurn())),
+    );
   });
 
   it("keys a placing turn by its song and a reveal by its turn", () => {

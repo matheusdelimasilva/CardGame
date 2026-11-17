@@ -12,6 +12,7 @@
 import {
   HAND_CARD,
   MINI_CARD,
+  betGeometry,
   insertionIndex,
   type FeltCard,
   type HandGeometry,
@@ -171,7 +172,8 @@ function seatSpot(seat: { x: number; y: number }, scale: number): OpponentSpot {
   return {
     seat,
     scale,
-    tokens: { x: seat.x - w / 2, y: seat.y + h / 2 - 1.2 * scale },
+    // Just under the seat card, clear of its score: between the two rows there is room for a chip.
+    tokens: { x: seat.x - w / 2, y: seat.y + h / 2 + 0.1 * scale },
     lane: {
       x: at.x - MINI_CARD.w * scale,
       y: at.y - MINI_CARD.h * scale,
@@ -215,6 +217,12 @@ const ZONE_A_H = 14.6;
 const ZONE_B_MIN = 14;
 /** The mystery card's home: right of the deck, near the middle. */
 const HOME_X = 23;
+/** The top of the felt line's room is kept for the tokens of bets waiting on it. */
+const BET_ROW = 2.8;
+/** Bet tokens land over a felt card's upper half rather than above it: the rows are close. */
+const FELT_LANDING = -MINI_CARD.h / 2;
+/** Above the hand's cards. */
+const HAND_LANDING = 1.6;
 
 /** The active opponent's line: as large as the felt allows, up to the design's size on the felt. */
 const FELT_SCALES = [2, 1.8, 1.6, 1.4, 1.25, 1.1, 1];
@@ -367,6 +375,7 @@ export function portraitLayout(height: number, opponents: number): StageLayout {
   const tableTop = rows.nearY - TABLE_OVER_SEATS;
   const tableBottom = handTop - TABLE_UNDER;
   const zoneB = { top: zoneBTop, bottom: h - ZONE_B_FROM_BOTTOM };
+  const feltZone = { top: zoneB.top + BET_ROW, bottom: zoneB.bottom };
   const deck: Box = { x: DECK_X, y: zoneATop, w: 8.4, h: 11.8 };
   const deckCentre = { x: deck.x + deck.w / 2, y: deck.y + deck.h / 2 };
   const statusMine: StatusSpot = {
@@ -380,6 +389,11 @@ export function portraitLayout(height: number, opponents: number): StageLayout {
   const opponentsSpots = rows.seats.map((seat) => seatSpot(seat, rows.scale));
   const view: Box = { x: 0, y: handTop - 1, w: PORTRAIT_W, h: HAND_H + 2 };
   const statusX = deck.x + deck.w + 1.6;
+  // The viewer's chips sit at the ruler's left end; the ruler starts after them.
+  const ruler: Box = { x: 14, y: h - BOTTOM.ruler, w: PORTRAIT_W - 20, h: 1.9 };
+  const hand = handGeometry(handY, view);
+  const feltTimeline = (count: number, placedAt: number | null = null) =>
+    feltCards(feltGrid(count, feltZone), count + (placedAt === null ? 0 : 1));
   return {
     kind: "portrait",
     stage: { w: PORTRAIT_W, h },
@@ -407,7 +421,7 @@ export function portraitLayout(height: number, opponents: number): StageLayout {
       h: HAND_H + 1.6,
     },
     dropLineY: handTop - DROP_ABOVE_HAND,
-    ruler: { x: 6, y: h - BOTTOM.ruler, w: PORTRAIT_W - 12, h: 1.9 },
+    ruler,
     plate: {
       x: 1.2,
       bottom: BOTTOM.plate,
@@ -423,6 +437,15 @@ export function portraitLayout(height: number, opponents: number): StageLayout {
         anchor: "middle",
         align: "start",
         lines: { headline: 2, sub: 3 },
+      },
+      // Over the bet bar's buttons, from the top of the deck's row.
+      betting: {
+        x: statusX,
+        y: zoneATop + 0.3,
+        w: FELT_MAX_X - statusX,
+        anchor: "top",
+        align: "start",
+        lines: { headline: 1, sub: 2 },
       },
     },
     chat: {
@@ -440,16 +463,13 @@ export function portraitLayout(height: number, opponents: number): StageLayout {
       w: TOOLS_W,
       h: BOTTOM.toolsH,
     },
-    hand: handGeometry(handY, view),
+    hand,
     opponents: opponentsSpots,
     miniTimeline: pile,
     feltStatus: () => "opponent",
-    feltTimeline(count, placedAt = null) {
-      const grid = feltGrid(count, zoneB);
-      return feltCards(grid, count + (placedAt === null ? 0 : 1));
-    },
+    feltTimeline,
     feltGapBox(g, count) {
-      const grid = feltGrid(count, zoneB);
+      const grid = feltGrid(count, feltZone);
       const { scale, perRow } = grid;
       const step = FELT_STEP * scale;
       const w = FELT_GAP.w * scale;
@@ -464,5 +484,27 @@ export function portraitLayout(height: number, opponents: number): StageLayout {
       const y = card ? card.y : grid.top;
       return { x: x - w / 2, y: y - gh / 2, w, h: gh };
     },
+    bets: betGeometry(
+      { feltTimeline, hand },
+      {
+        pending: () => ({
+          x: (FELT_MIN_X + FELT_MAX_X) / 2,
+          y: zoneB.top + BET_ROW / 2,
+        }),
+        landing: FELT_LANDING,
+        step: (count) => FELT_STEP * feltGrid(count, feltZone).scale,
+      },
+      {
+        // Under the card's home, a little right so a long row clears the deck's label.
+        pending: { x: HOME_X + 2, y: deck.y + deck.h + 1.4 },
+        landing: HAND_LANDING,
+      },
+      { x: 1.4, y: ruler.y + ruler.h / 2 },
+      // Four and a count would reach past the stage at the rightmost seat.
+      3,
+      // Under the seat card, they keep clear of its lower edge on its turn.
+      ACTIVE.drop + SEAT_HALF.h * (ACTIVE.grow - 1),
+      { kind: "status" },
+    ),
   };
 }

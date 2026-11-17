@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
+  BET_REVEAL_MS,
+  BET_WINDOW_SECONDS,
   DECK_SIZE,
   INTRO_MS,
+  STARTING_TOKENS,
+  addToken,
   REVEAL_MS,
   WIN_REVEAL_MS,
   SONGS,
@@ -30,10 +34,18 @@ const currentYear = (s: HitsterState) =>
   songOf(cards(s, "current")[0]!.face, s.songList).year;
 const current = (s: HitsterState) => s.players[s.turn]!;
 
-function apply(s: HitsterState, player: string, move: unknown): HitsterState {
+/** Plays one move; throws if it is refused. */
+function play(s: HitsterState, player: string, move: unknown): HitsterState {
   const result = hitster.applyMove(s, player, move as never);
   if (!result.ok) throw new Error(result.error);
   return result.state;
+}
+/** Plays a move, then has everyone decline any betting window it opens, so a placement is judged at once. */
+function apply(s: HitsterState, player: string, move: unknown): HitsterState {
+  let next = play(s, player, move);
+  while (next.locked != null && !next.revealing)
+    next = play(next, hitster.activePlayers(next)[0]!, { type: "declineBet" });
+  return next;
 }
 const complete = (s: HitsterState, player: string, move: unknown) =>
   hitster.resume!(apply(s, player, move));
@@ -224,11 +236,8 @@ describe("song list", () => {
     expect(hitster.view(legacy, null)).toEqual(hitster.view(state, null));
     expect(hitster.currentTrack!(legacy)).toEqual(hitster.currentTrack!(state));
     expect(
-      hitster.applyMove(legacy, "a", {
-        type: "place",
-        index: spot(state, true)!,
-      }),
-    ).toMatchObject({ ok: true, state: { lastTurn: { outcome: "correct" } } });
+      apply(legacy, "a", { type: "place", index: spot(state, true)! }),
+    ).toMatchObject({ lastTurn: { outcome: "correct" } });
   });
 
   it("deals a different sample of songs for a different seed, and the same one for the same seed", () => {
@@ -555,5 +564,498 @@ describe("hitster", () => {
       s = complete(s, current(s), { type: "place", index: spot(s, true)! });
     expect(s.winners).toEqual(["a"]);
     for (const p of s.players) expect(sorted(years(s, p))).toBe(true);
+  });
+});
+
+/** A started game whose timelines and current song have these years. Player a is on turn. */
+function rig(
+  lines: Record<string, number[]>,
+  song: number,
+  who = players,
+): HitsterState {
+  const s = start(11, defaults, who);
+  const deck = cards(s, "deck");
+  const used = new Map<number, number>();
+  const face = (year: number) => {
+    const n = used.get(year) ?? 0;
+    used.set(year, n + 1);
+    return songKey(SONGS.filter((x) => x.year === year)[n]!);
+  };
+  for (const [p, line] of Object.entries(lines)) {
+    const zone = s.table.zones[`timeline:${p}`]!;
+    deck.push(...zone.cards.splice(0));
+    zone.cards = line.map((year) => ({
+      ...deck.shift()!,
+      face: face(year),
+      visibleTo: "all",
+    }));
+  }
+  cards(s, "current")[0]!.face = face(song);
+  return s;
+}
+const refusal = (s: HitsterState, player: string, move: unknown) => {
+  const result = hitster.applyMove(s, player, move as never);
+  return result.ok ? null : result.error;
+};
+const bet = (index: number) => ({ type: "bet", index }) as const;
+const decline = { type: "declineBet" } as const;
+const place = (index: number) => ({ type: "place", index }) as const;
+
+describe("betting", () => {
+  // a's timeline is 1970, 1990; the song is from 1980, so gap 1 is the only right one.
+  const base = () => rig({ a: [1970, 1990], b: [2000], c: [1960] }, 1980);
+
+  it("starts everyone with two public tokens and no bets", () => {
+    const s = start();
+    expect(STARTING_TOKENS).toBe(2);
+    expect(s.tokens).toEqual([2, 2, 2]);
+    for (const viewer of [...players, null])
+      expect(hitster.view(s, viewer)).toMatchObject({
+        tokens: { a: 2, b: 2, c: 2 },
+        locked: false,
+        lockedIndex: null,
+        bets: [],
+        declined: [],
+        canBet: ["b", "c"],
+      });
+  });
+
+  it("takes a token at once, in order, and keeps each gap secret from everyone but its bettor", () => {
+    let s = base();
+    const before = structuredClone(s);
+    s = play(s, "c", bet(2));
+    expect(base()).toEqual(before);
+    s = play(s, "b", bet(0));
+    expect(s.tokens).toEqual([2, 1, 1]);
+    expect(s.bets).toEqual([
+      { player: "c", index: 2 },
+      { player: "b", index: 0 },
+    ]);
+    expect(hitster.view(s, "c").bets).toEqual([
+      { player: "c", index: 2 },
+      { player: "b", index: null },
+    ]);
+    expect(hitster.view(s, "b").bets).toEqual([
+      { player: "c", index: null },
+      { player: "b", index: 0 },
+    ]);
+    for (const viewer of ["a", null])
+      expect(hitster.view(s, viewer).bets).toEqual([
+        { player: "c", index: null },
+        { player: "b", index: null },
+      ]);
+    // Bets before the lock do not change who the game waits on.
+    expect(hitster.activePlayers(s)).toEqual(["a"]);
+    expect(hitster.view(s, null).canBet).toEqual([]);
+  });
+
+  it("refuses every illegal bet with a precise reason", () => {
+    const s = base();
+    expect(refusal(s, "z", bet(0))).toBe("You are not in this game.");
+    expect(refusal(s, "a", bet(0))).toBe("You cannot bet on your own turn.");
+    expect(refusal(s, "a", decline)).toBe("You cannot bet on your own turn.");
+    // Gaps are counted in a's timeline (3 gaps), not the bettor's (2 gaps).
+    expect(refusal(s, "b", bet(3))).toBe(
+      "That is not a gap in the current player's timeline.",
+    );
+    for (const index of [-1, 0.5, NaN])
+      expect(refusal(s, "b", bet(index))).toBe(
+        "That is not a gap in the current player's timeline.",
+      );
+    expect(refusal(s, "b", bet(2))).toBeNull();
+    const after = play(s, "b", bet(2));
+    expect(refusal(after, "b", bet(1))).toBe("You have already bet this turn.");
+    expect(refusal(after, "b", decline)).toBe(
+      "You have already bet this turn.",
+    );
+    const declined = play(s, "c", decline);
+    expect(refusal(declined, "c", bet(1))).toBe(
+      "You have already passed on betting this turn.",
+    );
+    expect(refusal(declined, "c", decline)).toBe(
+      "You have already passed on betting this turn.",
+    );
+    const broke = structuredClone(s);
+    broke.tokens = [2, 0, 2];
+    expect(refusal(broke, "b", bet(1))).toBe("You have no tokens to bet.");
+    expect(refusal(broke, "b", decline)).toBe("You have no tokens to bet.");
+    expect(hitster.view(broke, null).canBet).toEqual(["c"]);
+
+    const intro = hitster.setup({ players, seed: 11, settings: defaults });
+    expect(refusal(intro, "b", bet(0))).toBe("The game is getting ready.");
+    const revealing = apply(s, "a", { type: "pass" });
+    expect(refusal(revealing, "b", bet(0))).toBe(
+      "The previous turn is still being revealed.",
+    );
+    expect(refusal(revealing, "b", decline)).toBe(
+      "The previous turn is still being revealed.",
+    );
+    const over = { ...s, winners: ["a"] };
+    expect(refusal(over, "b", bet(0))).toBe("The game is over.");
+    expect(hitster.moveSchema.safeParse(bet(-1)).success).toBe(false);
+    expect(hitster.moveSchema.safeParse(bet(1.5)).success).toBe(false);
+    expect(hitster.moveSchema.safeParse(bet(1)).success).toBe(true);
+    expect(hitster.moveSchema.safeParse(decline).success).toBe(true);
+  });
+
+  it("hides the locked placement and opens a five-second window that waits on whoever can still bet", () => {
+    let s = play(base(), "b", bet(1));
+    s = play(s, "a", place(0));
+    expect(s).toMatchObject({ locked: 0, revealing: false });
+    expect(cards(s, "current")).toHaveLength(1);
+    expect(hitster.activePlayers(s)).toEqual(["c"]);
+    expect(hitster.turnTimeLimit!(s)).toBe(BET_WINDOW_SECONDS);
+    expect(BET_WINDOW_SECONDS).toBe(5);
+    expect(hitster.pauseMs!(s)).toBeNull();
+    expect(hitster.autoMove!(s, "a")).toBeNull();
+    expect(hitster.autoMove!(s, "b")).toBeNull();
+    expect(hitster.autoMove!(s, "c")).toEqual(decline);
+    expect(refusal(s, "a", place(1))).toBe(
+      "You have already placed this song.",
+    );
+    expect(refusal(s, "a", { type: "pass" })).toBe(
+      "You have already placed this song.",
+    );
+    expect(hitster.view(s, "a")).toMatchObject({
+      locked: true,
+      lockedIndex: 0,
+    });
+    for (const viewer of ["b", "c", null])
+      expect(hitster.view(s, viewer)).toMatchObject({
+        locked: true,
+        lockedIndex: null,
+        canBet: ["c"],
+      });
+  });
+
+  it("serializes no hidden placement, gap or year into any viewer's view", () => {
+    let s = rig({ a: [1970, 1990], b: [2000], c: [1960], d: [] }, 1980, [
+      "a",
+      "b",
+      "c",
+      "d",
+    ]);
+    s = play(s, "b", bet(2));
+    s = play(s, "a", place(1));
+    const json = (viewer: string | null) =>
+      JSON.parse(JSON.stringify(hitster.view(s, viewer))) as Record<
+        string,
+        unknown
+      >;
+    const active = json("a");
+    expect(active).toMatchObject({
+      lockedIndex: 1,
+      bets: [{ player: "b", index: null }],
+    });
+    const bettor = json("b");
+    expect(bettor).toMatchObject({
+      lockedIndex: null,
+      bets: [{ player: "b", index: 2 }],
+    });
+    for (const viewer of ["c", "d", null]) {
+      expect(json(viewer)).toMatchObject({
+        lockedIndex: null,
+        locked: true,
+        bets: [{ player: "b", index: null }],
+      });
+      expect(JSON.stringify(json(viewer))).not.toMatch(
+        /"(index|lockedIndex)":\d/,
+      );
+    }
+    for (const view of [active, bettor, json("c"), json(null)]) {
+      expect(JSON.stringify(view)).not.toContain("1980");
+      expect(Object.keys(view.current as object).sort()).toEqual([
+        "artist",
+        "id",
+        "title",
+      ]);
+    }
+    expect(JSON.stringify(active)).not.toContain('"index":2');
+  });
+
+  it("keeps the clock key for the whole window while bets arrive, and closes it early once nobody can bet", () => {
+    let s = base();
+    const placing = hitster.clockKey!(s);
+    s = play(s, "b", bet(1));
+    expect(hitster.clockKey!(s)).toBe(placing);
+    expect(hitster.turnTimeLimit!(s)).toBeNull();
+    s = play(s, "a", place(0));
+    const window = hitster.clockKey!(s);
+    expect(window).not.toBe(placing);
+    expect(hitster.activePlayers(s)).toEqual(["c"]);
+    const judged = play(s, "c", bet(2));
+    expect(judged.revealing).toBe(true);
+    expect(hitster.activePlayers(judged)).toEqual([]);
+    expect(hitster.turnTimeLimit!(judged)).toBeNull();
+
+    // With four players, a bet changes who is waited on but not the key.
+    let four = rig({ a: [1970, 1990], b: [], c: [], d: [] }, 1980, [
+      "a",
+      "b",
+      "c",
+      "d",
+    ]);
+    four = play(four, "a", place(0));
+    const key = hitster.clockKey!(four);
+    four = play(four, "b", bet(1));
+    expect(hitster.activePlayers(four)).toEqual(["c", "d"]);
+    expect(hitster.clockKey!(four)).toBe(key);
+    four = play(four, "d", decline);
+    expect(hitster.clockKey!(four)).toBe(key);
+    expect(hitster.view(four, null).declined).toEqual(["d"]);
+    expect(play(four, "c", decline).revealing).toBe(true);
+  });
+
+  it("judges at once when nobody can bet as the placement is locked in", () => {
+    let s = play(play(base(), "b", bet(1)), "c", decline);
+    expect(play(s, "a", place(1)).revealing).toBe(true);
+    s = base();
+    s.tokens = [2, 0, 0];
+    const judged = play(s, "a", place(1));
+    expect(judged.revealing).toBe(true);
+    expect(judged.lastTurn).toMatchObject({ bets: [], thief: null });
+    expect(hitster.pauseMs!(judged)).toBe(REVEAL_MS);
+  });
+
+  it("lets the first right bet steal a missed card; later right bets and wrong bets lose", () => {
+    // a's timeline 1970, 1985, 1990; a song from 1985 fits at gaps 1 and 2.
+    let s = rig(
+      { a: [1970, 1985, 1990], b: [2000], c: [1960], d: [1990] },
+      1985,
+      ["a", "b", "c", "d"],
+    );
+    s = play(s, "c", bet(2));
+    s = play(s, "b", bet(1));
+    s = play(s, "a", place(0));
+    s = play(s, "d", bet(3));
+    expect(s.revealing).toBe(true);
+    expect(s.lastTurn).toMatchObject({
+      outcome: "wrong",
+      index: 0,
+      thief: "c",
+      bets: [
+        { player: "c", index: 2, result: "stole" },
+        { player: "b", index: 1, result: "lost" },
+        { player: "d", index: 3, result: "lost" },
+      ],
+    });
+    expect(s.tokens).toEqual([2, 1, 1, 1]);
+    expect(years(s, "a")).toEqual([1970, 1985, 1990]);
+    expect(years(s, "c")).toEqual([1960, 1985]);
+    expect(cards(s, "timeline:c")[1]!.visibleTo).toBe("all");
+    expect(cards(s, "discard")).toHaveLength(0);
+    expect(totalCards(s)).toBe(DECK_SIZE);
+    expect(hitster.pauseMs!(s)).toBe(REVEAL_MS + BET_REVEAL_MS);
+    expect(BET_REVEAL_MS).toBe(2000);
+    for (const viewer of [...s.players, null])
+      expect(hitster.view(s, viewer)).toMatchObject({
+        revealing: true,
+        locked: false,
+        bets: [],
+        declined: [],
+        canBet: [],
+        tokens: { a: 2, b: 1, c: 1, d: 1 },
+        lastTurn: s.lastTurn,
+      });
+    const next = hitster.resume!(s);
+    expect(next).toMatchObject({
+      turn: 1,
+      bets: [],
+      declined: [],
+      locked: null,
+    });
+    expect(hitster.view(next, null).canBet).toEqual(["a", "c", "d"]);
+  });
+
+  it("refunds a bet on the placed gap whether the placement is right or wrong", () => {
+    // Right: a places at 1, b bets 1 too, c bets the wrong gap 0.
+    let right = play(base(), "b", bet(1));
+    right = play(right, "c", bet(0));
+    right = play(right, "a", place(1));
+    expect(right.lastTurn).toMatchObject({
+      outcome: "correct",
+      thief: null,
+      bets: [
+        { player: "b", index: 1, result: "refunded" },
+        { player: "c", index: 0, result: "lost" },
+      ],
+    });
+    expect(right.tokens).toEqual([2, 2, 1]);
+    expect(years(right, "a")).toEqual([1970, 1980, 1990]);
+
+    // Wrong: a places at 0, b bets 0 too (refunded), c bets 1 and steals.
+    let wrong = play(base(), "b", bet(0));
+    wrong = play(wrong, "a", place(0));
+    wrong = play(wrong, "c", bet(1));
+    expect(wrong.lastTurn).toMatchObject({
+      outcome: "wrong",
+      thief: "c",
+      bets: [
+        { player: "b", index: 0, result: "refunded" },
+        { player: "c", index: 1, result: "stole" },
+      ],
+    });
+    expect(wrong.tokens).toEqual([2, 2, 1]);
+  });
+
+  it("loses a right bet when the current player is also right, even on another same-year gap", () => {
+    // a's timeline 1985; a 1985 song fits on either side.
+    let s = rig({ a: [1985], b: [], c: [] }, 1985);
+    s = play(s, "b", bet(1));
+    s = play(s, "c", decline);
+    s = play(s, "a", place(0));
+    expect(s.lastTurn).toMatchObject({
+      outcome: "correct",
+      thief: null,
+      bets: [{ player: "b", index: 1, result: "lost" }],
+    });
+    expect(s.tokens).toEqual([2, 1, 2]);
+  });
+
+  it("discards a missed card when no bet is right", () => {
+    let s = play(base(), "b", bet(2));
+    s = play(s, "a", place(0));
+    s = play(s, "c", bet(0));
+    expect(s.lastTurn).toMatchObject({
+      outcome: "wrong",
+      thief: null,
+      bets: [
+        { player: "b", index: 2, result: "lost" },
+        { player: "c", index: 0, result: "refunded" },
+      ],
+    });
+    expect(cards(s, "discard")).toHaveLength(1);
+  });
+
+  it("puts a stolen card into an empty timeline, or before equal years", () => {
+    let empty = rig({ a: [1970, 1990], b: [], c: [] }, 1980);
+    empty = play(empty, "b", bet(1));
+    empty = play(empty, "a", place(2));
+    empty = play(empty, "c", decline);
+    expect(empty.lastTurn!.thief).toBe("b");
+    expect(years(empty, "b")).toEqual([1980]);
+
+    let equal = rig({ a: [1970, 1985], b: [1990, 1990, 1990], c: [] }, 1990);
+    equal = play(equal, "b", bet(2));
+    equal = play(equal, "a", place(0));
+    equal = play(equal, "c", decline);
+    expect(equal.lastTurn!.thief).toBe("b");
+    expect(years(equal, "b")).toEqual([1990, 1990, 1990, 1990]);
+    expect(cards(equal, "timeline:b")[0]!.face).toBe(
+      cards(
+        rig({ a: [1970, 1985], b: [1990, 1990, 1990], c: [] }, 1990),
+        "current",
+      )[0]!.face,
+    );
+  });
+
+  it("lets a steal win the game for the thief", () => {
+    let s = rig({ a: [1970, 1990], b: [2000, 2010], c: [] }, 1980);
+    s.cardsToWin = 3;
+    s = play(s, "b", bet(1));
+    s = play(s, "a", place(0));
+    s = play(s, "c", decline);
+    expect(s.lastTurn!.thief).toBe("b");
+    expect(hitster.result(s)).toBeNull();
+    expect(hitster.pauseMs!(s)).toBe(WIN_REVEAL_MS + BET_REVEAL_MS);
+    expect(hitster.view(s, null).nextPlayer).toBeNull();
+    const over = hitster.resume!(s);
+    expect(hitster.result(over)).toEqual({ winners: ["b"] });
+    expect(hitster.activePlayers(over)).toEqual([]);
+  });
+
+  it("refunds every bet and discards the card when the turn is passed", () => {
+    let s = play(base(), "b", bet(1));
+    s = play(s, "c", bet(0));
+    expect(hitster.autoMove!(s, "a")).toEqual({ type: "pass" });
+    expect(hitster.autoMove!(s, "b")).toBeNull();
+    s = play(s, "a", hitster.autoMove!(s, "a"));
+    expect(s.lastTurn).toMatchObject({
+      outcome: "passed",
+      thief: null,
+      bets: [
+        { player: "b", index: 1, result: "refunded" },
+        { player: "c", index: 0, result: "refunded" },
+      ],
+    });
+    expect(s.lastTurn).not.toHaveProperty("index");
+    expect(s.tokens).toEqual([2, 2, 2]);
+    expect(cards(s, "discard")).toHaveLength(1);
+  });
+
+  it("never lets tokens go below zero", () => {
+    // b bets wrong twice and is left with none.
+    let s = start(11, defaults, ["a", "b"]);
+    for (let turn = 0; turn < 4; turn++) {
+      const active = current(s);
+      if (active === "a" && s.tokens![1]! > 0) {
+        const line = years(s, "a");
+        const wrong = [...line.keys(), line.length].find(
+          (i) => !fitsAt(line, i, currentYear(s)),
+        );
+        if (wrong === undefined) {
+          s = complete(s, active, { type: "pass" });
+          continue;
+        }
+        s = play(s, "b", bet(wrong));
+        s = complete(s, "a", place(spot(s, true)!));
+      } else s = complete(s, active, { type: "pass" });
+    }
+    expect(s.tokens![1]).toBe(0);
+    if (current(s) === "b") s = complete(s, "b", { type: "pass" });
+    expect(refusal(s, "b", bet(0))).toBe("You have no tokens to bet.");
+    expect(hitster.view(s, null).canBet).toEqual([]);
+    expect(play(s, "a", place(0)).revealing).toBe(true);
+  });
+
+  it("adds tokens with a pure helper, without an upper limit", () => {
+    const s = start();
+    const before = structuredClone(s);
+    let more = addToken(s, "c");
+    for (let i = 0; i < 5; i++) more = addToken(more, "c");
+    expect(s).toEqual(before);
+    expect(more.tokens).toEqual([2, 2, 8]);
+    expect(() => addToken(s, "z")).toThrow();
+    const legacy = structuredClone(s);
+    delete legacy.tokens;
+    expect(addToken(legacy, "a").tokens).toEqual([3, 2, 2]);
+  });
+
+  it("plays a legacy saved state without betting fields as if nobody had bet", () => {
+    const s = base();
+    const legacy = structuredClone(s);
+    delete legacy.tokens;
+    delete legacy.bets;
+    delete legacy.declined;
+    delete legacy.locked;
+    expect(hitster.view(legacy, "a")).toEqual(hitster.view(s, "a"));
+    expect(hitster.activePlayers(legacy)).toEqual(["a"]);
+    expect(hitster.clockKey!(legacy)).toBe(hitster.clockKey!(s));
+    const after = play(play(legacy, "b", bet(1)), "a", place(0));
+    expect(after).toMatchObject({ locked: 0, tokens: [2, 1, 2] });
+  });
+
+  it("is deterministic: the same seed and moves give the same states", () => {
+    const run = () => {
+      const states: HitsterState[] = [];
+      let s = start(7);
+      for (let turn = 0; turn < 12 && !s.winners; turn++) {
+        const active = current(s);
+        const others = s.players.filter((p) => p !== active);
+        const gaps = years(s, active).length + 1;
+        if (s.tokens![s.players.indexOf(others[0]!)]! > 0)
+          s = play(s, others[0]!, bet(turn % gaps));
+        s = play(s, active, place((turn * 2) % gaps));
+        states.push(s);
+        for (const p of hitster.activePlayers(s)) s = play(s, p, decline);
+        states.push(s);
+        s = hitster.resume!(s);
+        states.push(s);
+      }
+      return states;
+    };
+    const first = run();
+    expect(JSON.parse(JSON.stringify(first))).toEqual(run());
+    expect(first.some((s) => s.lastTurn?.thief)).toBe(true);
   });
 });

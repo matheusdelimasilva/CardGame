@@ -345,3 +345,72 @@ describe("the portrait bottom row", () => {
     }
   });
 });
+
+describe("betting on the portrait stage", () => {
+  it("keeps the waiting row, every landing spot and each seat's chips clear of their neighbours", () => {
+    for (const n of [1, 4, 5, 8])
+      for (const { layout } of layoutsFor(n)) {
+        const bets = layout.bets;
+        const felt: Box = {
+          x: layout.table.x + 1.6,
+          y: layout.table.y + 1.6,
+          w: layout.table.w - 3.2,
+          h: layout.table.h - 3.2,
+        };
+        const label = layout.goalLabel;
+        for (let count = 1; count <= 9; count++) {
+          // Up to seven waiting tokens, between the deck's label and the line.
+          for (let i = 0; i < 7; i++) {
+            const token = around(bets.pendingFelt(i, 7, count), 2.2, 2.2);
+            expect(inside(token, felt)).toBe(true);
+            expect(overlaps(token, label)).toBe(false);
+            for (const card of layout.feltTimeline(count))
+              expect(
+                overlaps(
+                  token,
+                  around(
+                    card,
+                    MINI_CARD.w * card.scale,
+                    MINI_CARD.h * card.scale,
+                  ),
+                ),
+              ).toBe(false);
+          }
+          for (let g = 0; g <= count; g++)
+            for (const placedAt of [null, 0, count])
+              expect(
+                inside(
+                  around(bets.feltSpot(g, count, placedAt), 2.2, 2.2),
+                  felt,
+                ),
+              ).toBe(true);
+        }
+        for (let i = 0; i < 7; i++)
+          expect(
+            overlaps(around(bets.pendingMine(i, 7), 2.2, 2.2), label),
+          ).toBe(false);
+        // Three chips and a count under each seat card, inside the stage.
+        for (const spot of layout.opponents) {
+          const chips: Box = {
+            x: spot.tokens.x,
+            y: spot.tokens.y,
+            w: (3 * 1.7 + 2 * 0.4 + 2) * spot.scale,
+            h: 1.7 * spot.scale,
+          };
+          expect(chips.x + chips.w).toBeLessThanOrEqual(PORTRAIT_W);
+          expect(chips.y).toBeGreaterThan(
+            spot.seat.y + (SEAT_CARD.h / 2) * spot.scale,
+          );
+          // Not under another seat card that is not having its turn.
+          for (const other of layout.opponents)
+            if (other !== spot)
+              expect(overlaps(chips, seatReach(other, false))).toBe(false);
+        }
+        expect(bets.plateChips.x + 4 * 2.2 + 3 * 0.5).toBeLessThan(
+          layout.ruler.x,
+        );
+        expect(bets.bar).toEqual({ kind: "status" });
+        expect(bets.seatChipsMax).toBe(3);
+      }
+  });
+});

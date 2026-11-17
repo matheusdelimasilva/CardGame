@@ -292,6 +292,10 @@ describe("a table over the network", () => {
     expect(JSON.stringify(guest.room)).not.toContain(played);
 
     host.send({ type: "move", move: { type: "place", index: 0 } });
+    await guest.until(() => guest.room!.game!.active[0] === guest.room!.you.id);
+    // The song stays current through the betting window; declining closes it.
+    expect(guest.room!.game!.track!.url).toBe(first);
+    guest.send({ type: "move", move: { type: "declineBet" } });
     await guest.until(() => guest.room!.game!.pause !== null);
     expect(guest.room!.game!.track!.url).toBe(first);
     expect((await fetch(`http://${base}${first}`)).status).toBe(200);

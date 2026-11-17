@@ -1,8 +1,9 @@
 /**
  * The Hitster game screen: header, the stage, the chat, and the overlays,
  * for one running (or just finished) game. The server's state comes in as
- * `room`; the beats inside each state (choreography.ts) and the viewer's
- * unsent placement (placement.ts) are kept here and turned into a Scene.
+ * `room`; the beats inside each state (choreography.ts), the viewer's
+ * unsent placement (placement.ts) and bet (betting.ts) are kept here and
+ * turned into a Scene.
  */
 import type { ChatMessage, ClientMessage, RoomView } from "@cardgame/protocol";
 import {
@@ -16,6 +17,7 @@ import {
 import type { TrackAudio } from "../audio";
 import { seatLook } from "../ui/seats";
 import type { Connection } from "../useRoom";
+import { betReducer, freshBet } from "./betting";
 import { ChatPanel, chatLines } from "./ChatPanel";
 import { MePlate, ViewerPlate } from "./cards";
 import { useBeat } from "./choreography";
@@ -35,13 +37,13 @@ import {
   type PlacementMove,
 } from "./placement";
 import { dealCount, scene as buildScene } from "./scene";
-import { Stage, type MysteryActions } from "./Stage";
+import { Stage, type BetActions, type MysteryActions } from "./Stage";
 import type { GameModel } from "./types";
 import { useSecondsLeft } from "./useSecondsLeft";
 import { useStageLayout } from "./useStageLayout";
 import "./game.css";
 
-/** With no answer from the server this long after "Lock it in", the player may press it again. */
+/** With no answer from the server this long after "Lock it in" (or a bet), the player may press it again. */
 export const LOCK_RETRY_MS = 6000;
 
 export interface GameScreenProps {
@@ -153,8 +155,10 @@ function GameTable({
 
   // A refusal arrives as an error while the state stays put: unlock the card.
   const sent = placement.sent;
+  const locked = stage.kind === "placing" && stage.locked;
   useEffect(() => {
-    if (!sent || turn === null) return;
+    // Once the server says the card is locked in, nothing is pending.
+    if (!sent || turn === null || locked) return;
     const refused = error !== null && error !== sent.error;
     const id = setTimeout(
       () => {
@@ -164,7 +168,7 @@ function GameTable({
       refused ? 0 : LOCK_RETRY_MS,
     );
     return () => clearTimeout(id);
-  }, [sent, error, turn]);
+  }, [sent, error, turn, locked]);
 
   const handCount = model.me ? (model.timelines[model.me.id]?.length ?? 0) : 0;
   const tap = () => {
@@ -193,7 +197,70 @@ function GameTable({
     onTap: tap,
   };
 
-  const scene = buildScene({ model, beat, placement, layout });
+  // A bet on someone else's turn, by its song, like the placement above.
+  const myBet = model.myBet;
+  const betTurn =
+    stage.kind === "placing" && myBet.kind !== "none" ? stage.song.id : null;
+  const [storedBet, dispatchBet] = useReducer(betReducer, null, () =>
+    freshBet(null),
+  );
+  const bet =
+    betTurn !== null && storedBet.turn !== betTurn
+      ? freshBet(betTurn)
+      : storedBet;
+  const betFor = useRef<string | null>(null);
+  const betSent = bet.sent;
+  const betOpen = myBet.kind === "open";
+  useEffect(() => {
+    // Once the server has the bet (or the pass), the turn's view says so and nothing is pending.
+    if (!betSent || betTurn === null || !betOpen) return;
+    const refused = error !== null && error !== betSent.error;
+    const id = setTimeout(
+      () => {
+        betFor.current = null;
+        dispatchBet({ type: "refused", turn: betTurn });
+      },
+      refused ? 0 : LOCK_RETRY_MS,
+    );
+    return () => clearTimeout(id);
+  }, [betSent, error, betTurn, betOpen]);
+  const sendBet = (move: "bet" | "pass") => {
+    if (
+      betTurn === null ||
+      !betOpen ||
+      betFor.current === betTurn ||
+      bet.sent ||
+      (move === "bet" && bet.pick === null)
+    )
+      return;
+    betFor.current = betTurn;
+    dispatchBet({ type: "send", move, error, turn: betTurn });
+    send({
+      type: "move",
+      move:
+        move === "bet"
+          ? { type: "bet", index: bet.pick! }
+          : { type: "declineBet" },
+    });
+  };
+  const betActions: BetActions = {
+    onPick: (index) => {
+      if (betTurn !== null && betOpen)
+        dispatchBet({ type: "pick", index, turn: betTurn });
+    },
+    onConfirm: () => sendBet("bet"),
+    onPass: () => sendBet("pass"),
+  };
+
+  const secondsLeft = useSecondsLeft(model.timer);
+  const scene = buildScene({
+    model,
+    beat,
+    placement,
+    bet,
+    secondsLeft,
+    layout,
+  });
   const introSeconds = useSecondsLeft(
     stage.kind === "intro" ? game.pause : null,
   );
@@ -230,6 +297,7 @@ function GameTable({
         goal={model.goal}
         playing={audio.status === "playing"}
         actions={actions}
+        bet={betActions}
         onSeat={
           model.viewerIsHost ? (player) => setMenuFor(player.id) : undefined
         }
@@ -261,12 +329,18 @@ function GameTable({
       {audio.status === "blocked" && <SoundPrompt onTurnOn={audio.toggle} />}
 
       {stage.kind === "intro" && (
-        <RoundNote mode="intro" goal={model.goal} secondsLeft={introSeconds} />
+        <RoundNote
+          mode="intro"
+          goal={model.goal}
+          secondsLeft={introSeconds}
+          betting
+        />
       )}
       {help && stage.kind !== "intro" && !over && (
         <RoundNote
           mode="help"
           goal={model.goal}
+          betting
           onClose={() => setHelp(false)}
         />
       )}

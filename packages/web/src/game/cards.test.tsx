@@ -7,6 +7,7 @@ import {
 } from "react-test-renderer";
 import { describe, expect, it, vi } from "vitest";
 import {
+  Chips,
   MePlate,
   MiniCard,
   MysteryCard,
@@ -14,6 +15,7 @@ import {
   SeatCard,
   SongBack,
   SongCard,
+  TokenFace,
   splitArtist,
 } from "./cards";
 import type { TablePlayer } from "./types";
@@ -235,5 +237,54 @@ describe("Pips and MePlate", () => {
     expect(text(root)).toContain("Jonathan Silva");
     expect(filled(root)).toHaveLength(4);
     expect(root.findByType("div").props.className).toBe("gs-me is-active");
+  });
+});
+
+describe("Chips", () => {
+  const chips = (root: ReactTestInstance) =>
+    root.findAll(
+      (n) =>
+        typeof n.type === "string" &&
+        String(n.props.className).startsWith("gs-chips-chip"),
+    );
+
+  it("draws up to four chips and counts the rest", () => {
+    expect(
+      chips(render(<Chips count={3} chip="red" edge="black" />)),
+    ).toHaveLength(3);
+    const many = render(<Chips count={7} chip="red" edge="black" />);
+    expect(chips(many)).toHaveLength(4);
+    expect(text(many)).toBe("+3");
+    expect(
+      chips(render(<Chips count={5} max={3} chip="red" edge="black" />)),
+    ).toHaveLength(3);
+  });
+
+  it("keeps an empty place only when asked", () => {
+    expect(
+      chips(render(<Chips count={0} chip="red" edge="black" />)),
+    ).toHaveLength(0);
+    const empty = chips(
+      render(<Chips count={0} chip="red" edge="black" showEmpty />),
+    );
+    expect(empty.map((c) => c.props.className)).toEqual([
+      "gs-chips-chip is-empty",
+    ]);
+  });
+
+  it("puts the bettor's animal on a token, cream for the viewer's own", () => {
+    const theirs = render(<TokenFace player={player} />);
+    expect(text(theirs)).toBe("🐻");
+    expect(
+      theirs.findByProps({ "aria-hidden": "true" }).props.style,
+    ).toMatchObject({
+      "--gs-chip": "#ef4a3c",
+    });
+    const mine = render(<TokenFace player={{ ...player, isMe: true }} />);
+    expect(
+      mine.findByProps({ "aria-hidden": "true" }).props.style,
+    ).toMatchObject({
+      "--gs-chip": "var(--cream)",
+    });
   });
 });
