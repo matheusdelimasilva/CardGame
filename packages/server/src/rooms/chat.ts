@@ -12,6 +12,17 @@ const recentChats = new WeakMap<Member, number[]>();
 
 const newId = () => randomBytes(6).toString("hex");
 
+/** A line from the table rather than a person, e.g. announcing a correct guess. */
+export function systemMessage(text: string, now = Date.now()): ChatMessage {
+  return {
+    id: newId(),
+    kind: "system",
+    from: { id: "", name: "" },
+    text,
+    at: now,
+  };
+}
+
 /** Validates one chat line from a current, named member and stamps it. Nothing is stored. */
 export function chat(
   room: Room,

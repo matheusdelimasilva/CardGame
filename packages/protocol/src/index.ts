@@ -20,6 +20,12 @@ export const CHAT_WINDOW_MS = 10_000;
 /** One plain-text chat line. Identity and time are stamped by the server. */
 export interface ChatMessage {
   id: string;
+  /**
+   * "system": a line from the table, not a person, such as "Mika guessed
+   * the song correctly." Absent means "message".
+   */
+  kind?: "message" | "system";
+  /** Who sent a message. Meaningless for a system line, where it is { id: "", name: "" }. */
   from: { id: string; name: string };
   text: string;
   at: number;
@@ -121,6 +127,8 @@ export type ServerMessage =
   | { type: "welcome"; memberToken: string }
   | { type: "state"; room: RoomView }
   | { type: "chat"; message: ChatMessage }
+  /** A private chat line for this member only, e.g. why their message was not sent. Not an error. */
+  | { type: "notice"; text: string }
   | { type: "error"; message: string }
   | { type: "kicked" };
 
