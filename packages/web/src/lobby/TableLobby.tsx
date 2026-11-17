@@ -71,7 +71,7 @@ export function TableLobby({
       <TableHeader
         code={room.code}
         gameName={info.name}
-        watchers={room.spectators.map((s) => s.name)}
+        watchers={room.spectators.flatMap((s) => (s.connected ? [s.name] : []))}
         onLeave={() => {
           setLeaving(true);
           leaveTimer.current = setTimeout(

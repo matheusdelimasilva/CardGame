@@ -321,53 +321,57 @@
   }
 }
 
-/* Portrait phones (see lobby.css): larger, centred header controls and a narrower paper. */
+/*
+ * Portrait phones (see lobby.css): the lobby's larger, centred header controls
+ * and a narrower paper. The game screen lays out its own header (game/overlays.css),
+ * so the header rules are the lobby's only; :where keeps their weight as it was.
+ */
 @media (max-width: 759px) {
-  .tl-table-info {
+  :where(.table-lobby) .tl-table-info {
     top: max(18px, env(safe-area-inset-top));
     left: 16px;
     gap: 10px;
     right: 16px;
   }
-  .tl-back {
+  :where(.table-lobby) .tl-back {
     width: 44px;
     height: 44px;
     font-size: 24px;
   }
-  .tl-code > span {
+  :where(.table-lobby) .tl-code > span {
     font-size: 11px;
   }
-  .tl-code > strong {
+  :where(.table-lobby) .tl-code > strong {
     font-size: 22px;
   }
-  .tl-watchers {
+  :where(.table-lobby) .tl-watchers {
     font-size: 12px;
     max-width: calc(100vw - 90px);
   }
-  .tl-marquee {
+  :where(.table-lobby) .tl-marquee {
     top: 86px;
     max-width: calc(100vw - 36px);
     padding: 12px 34px;
   }
-  .tl-now-playing {
+  :where(.table-lobby) .tl-now-playing {
     font-size: 16px;
   }
-  .tl-game-title {
+  :where(.table-lobby) .tl-game-title {
     font-size: 40px;
   }
-  .tl-header-actions {
+  :where(.table-lobby) .tl-header-actions {
     top: 182px;
     left: 0;
     right: 0;
     justify-content: center;
     gap: 14px;
   }
-  .tl-button {
+  :where(.table-lobby, .tl-dialog) .tl-button {
     min-height: 44px;
     padding: 10px 18px;
     font-size: 16px;
   }
-  .tl-copied {
+  :where(.table-lobby) .tl-copied {
     font-size: 21px;
     top: -30px;
   }

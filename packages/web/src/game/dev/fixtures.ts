@@ -2,14 +2,20 @@
  * Realistic RoomViews for the dev gallery and tests: every stage of a Hitster
  * game, for 2–8 players and 5, 8 or 10 cards to win. Development data only.
  */
-import type { HitsterView, SongCardView, TurnSummary } from "@cardgame/games";
 import type { RoomView, SeatView } from "@cardgame/protocol";
 import { SEAT_COUNT } from "@cardgame/protocol";
+import type {
+  BetResult,
+  HitsterView,
+  PendingBet,
+  SongCardView,
+  TurnSummary,
+} from "../types";
 
 type Song = Omit<SongCardView, "id">;
 
 /** Real songs, several with long titles and featured artists. */
-const SONGS: Song[] = [
+export const SONGS: Song[] = [
   { title: "Johnny B. Goode", artist: "Chuck Berry", year: 1958 },
   {
     title: "Can't Help Falling in Love",
@@ -119,7 +125,12 @@ interface Table {
   goal: Goal;
   showSongInfo: boolean;
   lengths: Record<string, number>;
+  /** Betting tokens at the start of the turn. */
+  tokens: Record<string, number>;
 }
+
+/** Tokens by join order: mostly the starting two, a few more or none, so every chip row is on screen. */
+const TOKENS = [2, 2, 1, 3, 6, 2, 0, 2];
 
 const clampPlayers = (n: number, viewer: Viewer) =>
   Math.max(2, Math.min(viewer === "benched" ? 7 : 8, Math.round(n)));
@@ -204,6 +215,7 @@ function table(viewer: Viewer, options: FixtureOptions): Table {
     goal,
     showSongInfo: options.showSongInfo ?? false,
     lengths,
+    tokens: Object.fromEntries(ids.map((id, i) => [id, TOKENS[i % 8]!])),
   };
 }
 
@@ -235,6 +247,7 @@ interface ViewParts {
   view?: Partial<HitsterView>;
   active?: string[];
   pause?: number | null;
+  timer?: number | null;
   winners?: string[] | null;
 }
 
@@ -253,6 +266,12 @@ function withGame(t: Table, parts: ViewParts): RoomView {
     cardsToWin: t.goal,
     lastTurn: null,
     winners: parts.winners ?? null,
+    tokens: t.tokens,
+    locked: false,
+    lockedIndex: null,
+    bets: [],
+    declined: [],
+    canBet: [],
     ...parts.view,
   };
   return {
@@ -264,7 +283,10 @@ function withGame(t: Table, parts: ViewParts): RoomView {
       view,
       result: parts.winners ? { winners: parts.winners } : null,
       track: parts.winners ? null : { url: "/api/tracks/dev-fixture" },
-      timer: null,
+      timer:
+        parts.timer === undefined || parts.timer === null
+          ? null
+          : { remainingMs: parts.timer, totalMs: 5000 },
       pause:
         parts.pause === undefined || parts.pause === null
           ? null
@@ -273,12 +295,74 @@ function withGame(t: Table, parts: ViewParts): RoomView {
   };
 }
 
-/** The player `who` is placing a fresh song. */
-function placing(t: Table, who: string): RoomView {
+/** Gap `index` in a timeline of these years, as the rules judge it. */
+const fitsAt = (years: number[], index: number, year: number) =>
+  (index === 0 || years[index - 1]! <= year) &&
+  (index === years.length || year <= years[index]!);
+
+/** Where a bet goes: on the placed card's gap, on a right gap, or on a wrong one. */
+type BetSpot = "placed" | "right" | "wrong";
+
+interface Betting {
+  /** Bets of the turn, oldest first. */
+  bets?: { player: string; on: BetSpot }[];
+  declined?: string[];
+  /** Tokens to start the turn with instead of the table's. */
+  tokens?: Record<string, number>;
+}
+
+/** The bets of players who have a token to bet with. */
+const withTokens = (betting: Betting, tokens: Record<string, number>) =>
+  (betting.bets ?? []).filter((b) => tokens[b.player]! > 0);
+
+/** The gap a bet on `on` takes in a line of `years`, with the song placed at `placed`. */
+function betIndex(
+  years: number[],
+  year: number,
+  placed: number,
+  on: BetSpot,
+): number {
+  if (on === "placed") return placed;
+  const gaps = Array.from({ length: years.length + 1 }, (_, g) => g);
+  const right = gaps.filter((g) => fitsAt(years, g, year));
+  const wrong = gaps.filter((g) => !fitsAt(years, g, year) && g !== placed);
+  return (on === "right" ? right : wrong)[0] ?? placed;
+}
+
+/**
+ * The player `who` is placing a fresh song. `locked`: they have locked it in
+ * at a wrong gap, and the betting window has `timer` ms left.
+ */
+function placing(
+  t: Table,
+  who: string,
+  betting: Betting & { locked?: boolean; timer?: number } = {},
+): RoomView {
   const lines = timelines(t);
   const song = freshSong(lines[who] ?? [], t.players.indexOf(who) + 3);
+  const years = (lines[who] ?? []).map((c) => c.year);
+  const placed = betIndex(years, song.year, -1, "wrong");
+  const tokens = { ...t.tokens, ...betting.tokens };
+  const bets: PendingBet[] = withTokens(betting, tokens).map(
+    ({ player, on }) => {
+      tokens[player] = tokens[player]! - 1;
+      const index = betIndex(years, song.year, placed, on);
+      // Only the viewer is told where their own bet is.
+      return { player, index: player === me ? index : null };
+    },
+  );
+  const declined = betting.declined ?? [];
+  const canBet = t.players.filter(
+    (p) =>
+      p !== who &&
+      tokens[p]! > 0 &&
+      !bets.some((b) => b.player === p) &&
+      !declined.includes(p),
+  );
+  const locked = betting.locked ?? false;
   return withGame(t, {
-    active: [who],
+    active: locked ? canBet : [who],
+    timer: locked ? (betting.timer ?? 3200) : null,
     view: {
       timelines: lines,
       currentPlayer: who,
@@ -287,44 +371,76 @@ function placing(t: Table, who: string): RoomView {
         title: t.showSongInfo ? song.title : null,
         artist: t.showSongInfo ? song.artist : null,
       },
+      tokens,
+      locked,
+      lockedIndex: locked && who === me ? placed : null,
+      bets,
+      declined,
+      canBet,
     },
   });
 }
 
 /**
- * `who` has just placed a song with this outcome. A correct card is already
- * in their timeline, as the server sends it.
+ * `who` has just placed a song with this outcome, and the bets are settled
+ * as the rules settle them. A kept card is already in its timeline, and a
+ * stolen one in the thief's, as the server sends them.
  */
 function revealing(
   t: Table,
   who: string,
   outcome: TurnSummary["outcome"],
+  betting: Betting = {},
 ): RoomView {
   const lines = timelines(t);
   const before = lines[who] ?? [];
+  const years = before.map((c) => c.year);
   const song = freshSong(before, t.players.indexOf(who) + 5);
   const fit = before.filter((c) => c.year <= song.year).length;
   const index = outcome === "correct" ? fit : fit === 0 ? before.length : 0;
-  if (outcome === "correct")
-    lines[who] = [
-      ...before.slice(0, index),
-      { id: `${who}-won`, ...song },
-      ...before.slice(index),
-    ];
+  const tokens = { ...t.tokens, ...betting.tokens };
+  let thief: string | null = null;
+  const bets: BetResult[] = withTokens(betting, tokens).map(
+    ({ player, on }) => {
+      const gap = betIndex(years, song.year, index, on);
+      let result: BetResult["result"] = "lost";
+      if (outcome === "passed" || gap === index) result = "refunded";
+      else if (outcome === "wrong" && !thief && fitsAt(years, gap, song.year)) {
+        result = "stole";
+        thief = player;
+      }
+      // The token was spent on the bet; a refund brings it back.
+      if (result !== "refunded") tokens[player] = tokens[player]! - 1;
+      return { player, index: gap, result };
+    },
+  );
+  const insert = (id: string, card: SongCardView) => {
+    const line = lines[id] ?? [];
+    const at = line.filter((c) => c.year <= card.year).length;
+    lines[id] = [...line.slice(0, at), card, ...line.slice(at)];
+  };
+  if (outcome === "correct") insert(who, { id: `${who}-won`, ...song });
+  if (thief) insert(thief, { id: `${thief}-stolen`, ...song });
+  const winner = [who, thief].find(
+    (p): p is string => !!p && lines[p]!.length >= t.goal,
+  );
   const next = t.players[(t.players.indexOf(who) + 1) % t.players.length]!;
   return withGame(t, {
-    pause: 4000,
+    pause: (winner ? 6000 : 4000) + (bets.length ? 2000 : 0),
     view: {
       timelines: lines,
       currentPlayer: who,
       revealing: true,
-      nextPlayer: next,
+      nextPlayer: winner ? null : next,
+      tokens,
       lastTurn: {
         turnNumber: 7,
         player: who,
         song,
         outcome,
         ...(outcome === "passed" ? {} : { index }),
+        bets,
+        thief,
       },
     },
   });
@@ -362,6 +478,11 @@ function disconnect(room: RoomView, id: string): RoomView {
 
 const me = "p0";
 const first = (t: Table) => t.others[0]!;
+/** Opponents after the first, for bets; fewer at a small table. */
+const rest = (t: Table) => t.others.slice(1);
+/** A bet on `on` by each of these players. */
+const betsBy = (players: string[], on: BetSpot) =>
+  players.map((player) => ({ player, on }));
 
 /** Every scenario the gallery offers, by name. */
 export const scenarios = {
@@ -377,6 +498,43 @@ export const scenarios = {
     const t = table("player", o);
     return placing(t, first(t));
   },
+  myTurnLocked: (o: FixtureOptions = {}) => {
+    const t = table("player", o);
+    return placing(t, me, {
+      locked: true,
+      bets: betsBy(t.others.slice(0, 2), "right"),
+    });
+  },
+  opponentBetPlaced: (o: FixtureOptions = {}) => {
+    const t = table("player", o);
+    return placing(t, first(t), {
+      bets: [{ player: me, on: "right" }, ...betsBy(rest(t), "wrong")],
+    });
+  },
+  opponentLocked: (o: FixtureOptions = {}) => {
+    const t = table("player", o);
+    return placing(t, first(t), {
+      locked: true,
+      bets: betsBy(rest(t).slice(0, 1), "right"),
+    });
+  },
+  opponentLockedBetPlaced: (o: FixtureOptions = {}) => {
+    const t = table("player", o);
+    return placing(t, first(t), {
+      locked: true,
+      timer: 1800,
+      bets: [{ player: me, on: "wrong" }],
+      declined: rest(t),
+    });
+  },
+  opponentPassedBet: (o: FixtureOptions = {}) => {
+    const t = table("player", o);
+    return placing(t, first(t), { declined: [me] });
+  },
+  opponentNoTokens: (o: FixtureOptions = {}) => {
+    const t = table("player", o);
+    return placing(t, first(t), { tokens: { [me]: 0 } });
+  },
   myRevealCorrect: (o: FixtureOptions = {}) =>
     revealing(table("player", o), me, "correct"),
   myRevealWrong: (o: FixtureOptions = {}) =>
@@ -388,6 +546,55 @@ export const scenarios = {
   opponentRevealWrong: (o: FixtureOptions = {}) => {
     const t = table("player", o);
     return revealing(t, first(t), "wrong");
+  },
+  myRevealBets: (o: FixtureOptions = {}) => {
+    const t = table("player", o);
+    return revealing(t, me, "correct", {
+      bets: [
+        ...betsBy(t.others.slice(0, 1), "placed"),
+        ...betsBy(t.others.slice(1, 3), "wrong"),
+      ],
+    });
+  },
+  myRevealStolen: (o: FixtureOptions = {}) => {
+    const t = table("player", o);
+    return revealing(t, me, "wrong", {
+      bets: [
+        ...betsBy(t.others.slice(0, 1), "wrong"),
+        ...betsBy(t.others.slice(1, 3), "right"),
+      ],
+    });
+  },
+  opponentRevealRefund: (o: FixtureOptions = {}) => {
+    const t = table("player", o);
+    return revealing(t, first(t), "correct", {
+      bets: [{ player: me, on: "placed" }, ...betsBy(rest(t), "wrong")],
+    });
+  },
+  opponentRevealIStole: (o: FixtureOptions = {}) => {
+    const t = table("player", o);
+    return revealing(t, first(t), "wrong", {
+      bets: [{ player: me, on: "right" }, ...betsBy(rest(t), "right")],
+    });
+  },
+  opponentRevealOtherStole: (o: FixtureOptions = {}) => {
+    const t = table("player", o);
+    return revealing(t, first(t), "wrong", {
+      bets: [
+        ...betsBy(rest(t).slice(0, 1), "right"),
+        { player: me, on: "wrong" },
+        ...betsBy(rest(t).slice(1), "placed"),
+      ],
+    });
+  },
+  opponentRevealThiefWins: (o: FixtureOptions = {}) => {
+    const t = table("player", o);
+    // The thief is one card short of the goal.
+    const thief = rest(t)[0] ?? me;
+    t.lengths[thief] = t.goal - 1;
+    return revealing(t, first(t), "wrong", {
+      bets: betsBy([thief], "right"),
+    });
   },
   opponentRevealPassed: (o: FixtureOptions = {}) => {
     const t = table("player", o);

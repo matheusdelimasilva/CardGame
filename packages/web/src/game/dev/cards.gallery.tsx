@@ -53,7 +53,7 @@ const EXTREMES: SongFace[] = [
   },
   { title: "Hey Ya!", artist: "OutKast", year: 2003 },
 ];
-const SPOT_COUNTS = [1, 2, 3, 4, 5, 6, 7];
+const SPOT_COUNTS = [1, 2, 3, 4, 5, 6, 7, 8];
 const TILTS = [-3, 2, -2, 3, -1];
 
 const page: CSSProperties = {
@@ -306,9 +306,9 @@ function CardsGallery({ context }: { context: GalleryContext }) {
         </Item>
       </Section>
 
-      <Section title="SeatCard at each table size (opponentSpots scale)">
+      <Section title="SeatCard at each table size (smallest opponentSpots scale)">
         {SPOT_COUNTS.map((n) => {
-          const scale = opponentSpots(n)[0]!.scale;
+          const scale = Math.min(...opponentSpots(n).map((s) => s.scale));
           const p = opponents[(n - 1) % opponents.length]!;
           return (
             <Item key={n} caption={`${n} opp: ×${scale}`}>
