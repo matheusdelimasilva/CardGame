@@ -131,6 +131,8 @@ export function gameModel(room: RoomView): GameModel | null {
     lastTurn: view.lastTurn,
     winners: stage.kind === "over" ? stage.winners.map(byId) : [],
     deckCount: view.deckCount,
+    turnNumber: view.turnNumber,
+    pauseMs: game.pause?.remainingMs ?? null,
     timer: stage.kind === "placing" ? game.timer : null,
     viewerIsHost: room.you.isHost,
   };

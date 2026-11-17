@@ -551,3 +551,48 @@ export function MePlate({
     </div>
   );
 }
+
+// --------------------------------------------------------------- ViewerPlate
+
+export interface ViewerPlateProps {
+  name: string;
+  animal: string;
+  /** What the viewer is doing, e.g. "Watching. The table is full." */
+  note: string;
+  /** One action, such as standing up or taking a seat. */
+  action?: { label: string; onClick: () => void } | null;
+  className?: string;
+  style?: CSSProperties;
+}
+
+/** The plate for someone at the table who is not in this game: a note instead of progress. */
+export function ViewerPlate({
+  name,
+  animal,
+  note,
+  action,
+  className,
+  style,
+}: ViewerPlateProps) {
+  return (
+    <div className={cx("gs-me gs-viewer", className)} style={style}>
+      <div className="gs-me-face">
+        <span className="gs-me-animal" aria-hidden="true">
+          {animal}
+        </span>
+        <span className="gs-me-text">
+          <span className="gs-me-name">{name}</span>
+          <span className="gs-viewer-note">{note}</span>
+        </span>
+        {action && (
+          <button
+            className="tl-button gs-viewer-action"
+            onClick={action.onClick}
+          >
+            {action.label}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}

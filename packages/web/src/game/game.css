@@ -47,3 +47,20 @@
   height: calc(var(--u) * 62.5);
   transform: translate(-50%, -50%);
 }
+
+/* Reduced motion: nothing animates or glides, but every state change still shows. */
+@media (prefers-reduced-motion: reduce) {
+  .game-screen *,
+  .game-screen *::before,
+  .game-screen *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* A screen inside another (the dev gallery's frames) takes its size and units from the frame. */
+.game-screen .game-screen {
+  --u: inherit;
+  height: 100%;
+  min-height: 0;
+}

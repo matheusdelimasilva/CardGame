@@ -9,7 +9,7 @@ import { SEAT_COUNT } from "@cardgame/protocol";
 type Song = Omit<SongCardView, "id">;
 
 /** Real songs, several with long titles and featured artists. */
-const SONGS: Song[] = [
+export const SONGS: Song[] = [
   { title: "Johnny B. Goode", artist: "Chuck Berry", year: 1958 },
   {
     title: "Can't Help Falling in Love",

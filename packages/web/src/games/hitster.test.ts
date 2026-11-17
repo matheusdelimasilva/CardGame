@@ -5,7 +5,6 @@ import type { HitsterMove, HitsterView } from "@cardgame/games";
 import { hitsterUI } from "./hitster";
 import { Placement } from "./hitster-dock";
 import type { GameProps, TypedGameView } from "./types";
-import { Announcement } from "../Room";
 
 const song = { title: "The song", artist: "The artist", year: 1987 };
 function game(): TypedGameView<HitsterView> {
@@ -72,7 +71,7 @@ afterEach(() => {
 
 describe("Hitster reveal presentation", () => {
   it.each([5, 8, 10])(
-    "shows opening instructions for a %s-card game with the held progress bar and first player",
+    "shows opening instructions for a %s-card game and the first player",
     (target) => {
       const state = game();
       state.view.intro = true;
@@ -88,23 +87,7 @@ describe("Hitster reveal presentation", () => {
         next: "First up: Ana",
       });
       act(() => {
-        renderer = create(
-          createElement(Announcement, { info, pause: state.pause }),
-        );
-      });
-      expect(
-        renderer!.root.findByProps({ className: "banner held" }),
-      ).toBeDefined();
-      expect(
-        renderer!.root.findByProps({ className: "banner-detail" }).children,
-      ).toEqual([info!.detail]);
-      expect(
-        renderer!.root
-          .findByProps({ className: "banner-progress" })
-          .findByType("span").props.style.animationDuration,
-      ).toBe("12000ms");
-      act(() => {
-        renderer!.update(createElement(hitsterUI.Center, propsFor(state)));
+        renderer = create(createElement(hitsterUI.Center, propsFor(state)));
       });
       expect(renderer!.root.findAllByType("button")).toHaveLength(0);
       act(() => {
