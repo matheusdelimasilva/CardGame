@@ -2,7 +2,15 @@ import type { ChatMessage } from "@cardgame/protocol";
 import { createElement } from "react";
 import { act, create, type ReactTestRenderer } from "react-test-renderer";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ChatPanel, chatLines, type ChatPanelProps } from "./ChatPanel";
+import type { ChatEntry } from "../useRoom";
+import {
+  ChatPanel,
+  GUESS_HINT,
+  chatLines,
+  withGuessHint,
+  type ChatLine,
+  type ChatPanelProps,
+} from "./ChatPanel";
 
 let renderer: ReactTestRenderer | undefined;
 afterEach(() => {
@@ -51,6 +59,64 @@ describe("chatLines", () => {
     ]);
     expect(chatLines([])).toEqual([]);
   });
+
+  it("maps table lines to system lines and private notices to notices, in order", () => {
+    const entries: ChatEntry[] = [
+      { id: "1", from: { id: "p1", name: "Ana" }, text: "Queen?", at: 1 },
+      {
+        id: "2",
+        kind: "system",
+        from: { id: "", name: "" },
+        text: "Ana guessed the song correctly.",
+        at: 2,
+      },
+      {
+        id: "notice:1",
+        kind: "notice",
+        text: "Close, but not quite. Your message wasn't sent.",
+        at: 3,
+      },
+      {
+        id: "3",
+        kind: "message",
+        from: { id: "p2", name: "Bo" },
+        text: "nice",
+        at: 4,
+      },
+    ];
+    expect(chatLines(entries)).toEqual([
+      { id: "1", kind: "message", name: "Ana", text: "Queen?" },
+      { id: "2", kind: "system", text: "Ana guessed the song correctly." },
+      {
+        id: "notice:1",
+        kind: "notice",
+        text: "Close, but not quite. Your message wasn't sent.",
+      },
+      { id: "3", kind: "message", name: "Bo", text: "nice" },
+    ]);
+  });
+});
+
+describe("withGuessHint", () => {
+  const lines: ChatLine[] = [
+    { id: "a", kind: "message", name: "Ana", text: "hi" },
+    { id: "b", kind: "message", name: "Bo", text: "gl" },
+  ];
+  const hint: ChatLine = { id: "guess-hint", kind: "system", text: GUESS_HINT };
+
+  it("puts the design's hint once, after the line the game began at", () => {
+    expect(GUESS_HINT).toBe(
+      "Type the song and the artist here. Get both for a token.",
+    );
+    expect(withGuessHint(lines, "a")).toEqual([lines[0], hint, lines[1]]);
+    expect(withGuessHint(lines, "b")).toEqual([...lines, hint]);
+  });
+
+  it("puts it at the top with no earlier line, or when that line has scrolled out of the history", () => {
+    expect(withGuessHint(lines, null)).toEqual([hint, ...lines]);
+    expect(withGuessHint(lines, "gone")).toEqual([hint, ...lines]);
+    expect(withGuessHint([], null)).toEqual([hint]);
+  });
 });
 
 describe("ChatPanel", () => {
@@ -82,7 +148,9 @@ describe("ChatPanel", () => {
   it("shows badges only when given, and reflects their state", () => {
     expect(badges(mount())).toHaveLength(0);
     act(() => renderer?.unmount());
-    const r = mount({ badges: { song: true, artist: false } });
+    expect(badges(mount({ badges: null }))).toHaveLength(0);
+    act(() => renderer?.unmount());
+    const r = mount({ badges: { song: true, artist: false, open: true } });
     const [song, artist] = badges(r);
     expect(song?.props["aria-label"]).toBe("Song guessed");
     expect(song?.props.className).toContain("gs-chat-badge-got");
@@ -90,13 +158,27 @@ describe("ChatPanel", () => {
     expect(artist?.props.className).not.toContain("gs-chat-badge-got");
   });
 
+  it("says a missed part is missed once guesses no longer count", () => {
+    const r = mount({ badges: { song: true, artist: false, open: false } });
+    expect(badges(r).map((b) => b.props["aria-label"])).toEqual([
+      "Song guessed",
+      "Artist not guessed",
+    ]);
+  });
+
   it("picks the placeholder for each state", () => {
     expect(input(mount()).props.placeholder).toBe("Say something…");
     act(() => renderer?.unmount());
     expect(
-      input(mount({ badges: { song: false, artist: false } })).props
+      input(mount({ badges: { song: false, artist: false, open: true } })).props
         .placeholder,
     ).toBe("Guess or chat…");
+    act(() => renderer?.unmount());
+    // During a reveal what is typed is plain chat again.
+    expect(
+      input(mount({ badges: { song: true, artist: false, open: false } })).props
+        .placeholder,
+    ).toBe("Say something…");
     act(() => renderer?.unmount());
     expect(
       input(mount({ named: false, canSend: false })).props.placeholder,

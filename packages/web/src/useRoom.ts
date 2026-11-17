@@ -13,12 +13,26 @@ export const MAX_CHAT_HISTORY = 50;
 export type Connection =
   "connecting" | "open" | "reconnecting" | "gone" | "kicked";
 
+/**
+ * A private line from the server for this viewer only, such as why their
+ * message was not sent. It lives only in this page's memory.
+ */
+export interface ChatNotice {
+  id: string;
+  kind: "notice";
+  text: string;
+  at: number;
+}
+
+/** One line of the chat history: a table line from the server, or a private notice. */
+export type ChatEntry = ChatMessage | ChatNotice;
+
 /** Keeps a live connection to one table and reconnects when it drops. */
 export function useRoom(code: string) {
   const [room, setRoom] = useState<RoomView | null>(null);
   const [connection, setConnection] = useState<Connection>("connecting");
   const [error, setError] = useState<string | null>(null);
-  const [chats, setChats] = useState<ChatMessage[]>([]);
+  const [chats, setChats] = useState<ChatEntry[]>([]);
   const socket = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -26,6 +40,10 @@ export function useRoom(code: string) {
     let attempts = 0;
     let retry: ReturnType<typeof setTimeout> | undefined;
     let everJoined = false;
+    // Notices carry no id from the server; a count gives each one its own.
+    let notices = 0;
+    const append = (entry: ChatEntry) =>
+      setChats((prev) => [...prev, entry].slice(-MAX_CHAT_HISTORY));
 
     const connect = () => {
       if (stopped) return;
@@ -52,7 +70,14 @@ export function useRoom(code: string) {
         } else if (msg.type === "state") {
           setRoom(msg.room);
         } else if (msg.type === "chat") {
-          setChats((prev) => [...prev, msg.message].slice(-MAX_CHAT_HISTORY));
+          append(msg.message);
+        } else if (msg.type === "notice") {
+          append({
+            id: `notice:${++notices}`,
+            kind: "notice",
+            text: msg.text,
+            at: Date.now(),
+          });
         } else if (msg.type === "kicked") {
           stopped = true;
           setChats([]);

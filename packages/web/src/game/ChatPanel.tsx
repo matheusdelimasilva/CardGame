@@ -1,4 +1,4 @@
-import { MAX_CHAT_LENGTH, type ChatMessage } from "@cardgame/protocol";
+import { MAX_CHAT_LENGTH } from "@cardgame/protocol";
 import {
   useLayoutEffect,
   useRef,
@@ -6,7 +6,11 @@ import {
   type FormEvent,
   type UIEvent,
 } from "react";
+import type { ChatEntry } from "../useRoom";
 import "./chat.css";
+import type { GuessBadges } from "./types";
+
+export type { GuessBadges };
 
 /**
  * One row of the chat log. `system` is public game news ("Mika guessed the
@@ -17,30 +21,44 @@ export type ChatLine =
   | { id: string; kind: "system"; text: string }
   | { id: string; kind: "notice"; text: string };
 
-/** What the viewer has guessed so far this turn. */
-export interface GuessBadges {
-  song: boolean;
-  artist: boolean;
-}
-
 export interface ChatPanelProps {
   lines: readonly ChatLine[];
   canSend: boolean;
   /** The viewer has chosen a name; without one they can read but not chat. */
   named: boolean;
   onSend: (text: string) => void;
-  /** Present only while guessing by chat is part of the game. */
-  badges?: GuessBadges;
+  /** Present only for a player while guessing in the chat is part of the game. */
+  badges?: GuessBadges | null;
 }
 
-/** The server only produces plain messages today. */
-export function chatLines(messages: readonly ChatMessage[]): ChatLine[] {
-  return messages.map((m) => ({
-    id: m.id,
-    kind: "message",
-    name: m.from.name,
-    text: m.text,
-  }));
+/** The history as the log draws it. */
+export function chatLines(entries: readonly ChatEntry[]): ChatLine[] {
+  return entries.map((e) => {
+    if (e.kind === "notice" || e.kind === "system")
+      return { id: e.id, kind: e.kind, text: e.text };
+    return { id: e.id, kind: "message", name: e.from.name, text: e.text };
+  });
+}
+
+/** The design's first line of the chat when the table guesses in it. */
+export const GUESS_HINT =
+  "Type the song and the artist here. Get both for a token.";
+
+/**
+ * The log with the guessing hint as a table line, written by this page, not
+ * the server: after the line with id `after` (the newest when the game
+ * began), or at the top when that line is gone or there was none.
+ */
+export function withGuessHint(
+  lines: readonly ChatLine[],
+  after: string | null,
+): ChatLine[] {
+  const at = lines.findIndex((l) => l.id === after) + 1;
+  return [
+    ...lines.slice(0, at),
+    { id: "guess-hint", kind: "system", text: GUESS_HINT },
+    ...lines.slice(at),
+  ];
 }
 
 /** Slack, in pixels, within which the log still counts as scrolled to the end. */
@@ -59,14 +77,17 @@ function placeholder(
 function Badge({
   label,
   guessed,
+  open,
 }: {
   label: "Song" | "Artist";
   guessed: boolean;
+  open: boolean;
 }) {
+  const missed = open ? "not guessed yet" : "not guessed";
   return (
     <span
       className={guessed ? "gs-chat-badge gs-chat-badge-got" : "gs-chat-badge"}
-      aria-label={`${label} ${guessed ? "guessed" : "not guessed yet"}`}
+      aria-label={`${label} ${guessed ? "guessed" : missed}`}
     >
       {label.toUpperCase()}
     </span>
@@ -125,8 +146,8 @@ export function ChatPanel({
         <h2 className="gs-chat-title">Chat</h2>
         {badges && (
           <>
-            <Badge label="Song" guessed={badges.song} />
-            <Badge label="Artist" guessed={badges.artist} />
+            <Badge label="Song" guessed={badges.song} open={badges.open} />
+            <Badge label="Artist" guessed={badges.artist} open={badges.open} />
           </>
         )}
       </div>
@@ -151,7 +172,7 @@ export function ChatPanel({
           onChange={(e) => setText(e.target.value)}
           maxLength={MAX_CHAT_LENGTH}
           disabled={!canSend}
-          placeholder={placeholder(named, canSend, badges !== undefined)}
+          placeholder={placeholder(named, canSend, badges?.open ?? false)}
           aria-label="Chat message"
           autoComplete="off"
         />

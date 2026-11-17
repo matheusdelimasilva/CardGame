@@ -7,6 +7,8 @@ import {
 } from "react-test-renderer";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { TrackAudio } from "../audio";
+import type { ChatEntry } from "../useRoom";
+import { GUESS_HINT } from "./ChatPanel";
 import { SCENARIO_NAMES, scenarios } from "./dev/fixtures";
 import { GameScreen, LOCK_RETRY_MS } from "./GameScreen";
 
@@ -21,12 +23,16 @@ const audio: TrackAudio = {
 const send = vi.fn();
 let renderer: ReactTestRenderer | undefined;
 
-const element = (room: RoomView, error: string | null = null) => (
+const element = (
+  room: RoomView,
+  error: string | null = null,
+  chats: readonly ChatEntry[] = [],
+) => (
   <GameScreen
     room={room}
     connection="open"
     error={error}
-    chats={[]}
+    chats={chats}
     send={send}
     audio={audio}
     onLeave={vi.fn()}
@@ -35,9 +41,9 @@ const element = (room: RoomView, error: string | null = null) => (
 );
 /** The screen's own box: a phone held upright, or none at all (landscape). */
 let screenBox: { width: number; height: number } | null = null;
-const render = (room: RoomView) => {
+const render = (room: RoomView, chats: readonly ChatEntry[] = []) => {
   act(() => {
-    renderer = create(element(room), {
+    renderer = create(element(room, null, chats), {
       createNodeMock: (node) => {
         if (node.type === "dialog") return dialog;
         const box = screenBox;
@@ -341,6 +347,127 @@ describe("betting", () => {
   });
 });
 
+describe("guessing in the chat", () => {
+  const said = (id: string, text: string): ChatEntry => ({
+    id,
+    from: { id: "p1", name: "Mika" },
+    text,
+    at: 0,
+  });
+  const notice: ChatEntry = {
+    id: "notice:1",
+    kind: "notice",
+    text: "Close, but not quite. Your message wasn't sent.",
+    at: 0,
+  };
+  const badgeLabels = (root: ReactTestInstance) =>
+    root
+      .findAll(
+        (n) =>
+          typeof n.type === "string" &&
+          String(n.props.className).includes("gs-chat-badge"),
+      )
+      .map((b) => b.props["aria-label"] as string);
+  const placeholder = (root: ReactTestInstance) =>
+    root.findByProps({ "aria-label": "Chat message" }).props.placeholder;
+  const log = (root: ReactTestInstance) =>
+    root
+      .findAll(
+        (n) =>
+          typeof n.type === "string" &&
+          String(n.props.className).startsWith("gs-chat-line"),
+      )
+      .map(textOf);
+  const update = (room: RoomView, chats: readonly ChatEntry[]) =>
+    act(() => renderer!.update(element(room, null, chats)));
+
+  it("shows the viewer's badges and asks for guesses while a song is placed", () => {
+    const root = render(scenarios.opponentTurn({ guessed: "song" }));
+    expect(badgeLabels(root)).toEqual([
+      "Song guessed",
+      "Artist not guessed yet",
+    ]);
+    expect(placeholder(root)).toBe("Guess or chat…");
+  });
+
+  it("keeps the badges through a reveal but takes plain chat, and drops them for the final scores", () => {
+    const root = render(scenarios.opponentRevealCorrect({ guessed: "both" }));
+    expect(badgeLabels(root)).toEqual(["Song guessed", "Artist guessed"]);
+    expect(placeholder(root)).toBe("Say something…");
+    update(scenarios.overOpponentWins(), []);
+    expect(badgeLabels(root)).toEqual([]);
+  });
+
+  it("has no badges, hint or step 5 when the table does not guess", () => {
+    for (const room of [
+      scenarios.myTurn({ guessInChat: false }),
+      scenarios.myTurn({ showSongInfo: true }),
+    ]) {
+      const root = render(room);
+      expect(badgeLabels(root)).toEqual([]);
+      expect(placeholder(root)).toBe("Say something…");
+      expect(textOf(root)).not.toContain(GUESS_HINT);
+      act(() => buttons(root, "Instructions")[0]!.props.onClick());
+      expect(textOf(root)).toContain("Bet a token");
+      expect(textOf(root)).not.toContain("Guess in the chat.");
+      act(() => renderer?.unmount());
+    }
+  });
+
+  it("gives spectators neither badges nor the hint", () => {
+    const root = render(scenarios.spectator());
+    expect(badgeLabels(root)).toEqual([]);
+    expect(placeholder(root)).toBe("Say something…");
+    expect(textOf(root)).not.toContain(GUESS_HINT);
+  });
+
+  it("adds step 5 to the intro and the help note", () => {
+    expect(textOf(render(scenarios.intro()))).toContain("Guess in the chat.");
+    act(() => renderer?.unmount());
+    const root = render(scenarios.myTurn());
+    expect(textOf(root)).not.toContain("Guess in the chat.");
+    act(() => buttons(root, "Instructions")[0]!.props.onClick());
+    expect(textOf(root)).toContain("Guess in the chat.");
+  });
+
+  it("starts the game's log with the hint once, and again for a new game where it begins", () => {
+    const before = [said("1", "gl all")];
+    const root = render(scenarios.intro(), before);
+    expect(log(root)).toEqual(["Mika: gl all", GUESS_HINT]);
+    const later = [...before, said("2", "is this Queen??"), notice];
+    update(scenarios.opponentTurn(), later);
+    update(scenarios.myTurn(), later);
+    expect(log(root)).toEqual([
+      "Mika: gl all",
+      GUESS_HINT,
+      "Mika: is this Queen??",
+      notice.text,
+    ]);
+    // Play again: the next game's hint follows the lines of the last one.
+    update(scenarios.overIWin(), later);
+    update(scenarios.intro(), later);
+    expect(log(root)).toEqual([
+      "Mika: gl all",
+      "Mika: is this Queen??",
+      notice.text,
+      GUESS_HINT,
+    ]);
+  });
+
+  it("never shows a sent line itself: only the server's lines appear", () => {
+    const root = render(scenarios.opponentTurn());
+    const input = root.findByProps({ "aria-label": "Chat message" });
+    act(() => input.props.onChange({ target: { value: "Bohemian Rhapsody" } }));
+    act(() => root.findByType("form").props.onSubmit({ preventDefault() {} }));
+    expect(send).toHaveBeenCalledWith({
+      type: "chat",
+      text: "Bohemian Rhapsody",
+    });
+    expect(textOf(root)).not.toContain("Bohemian Rhapsody");
+    expect(input.props.value).toBe("");
+  });
+});
+
 describe("game screen held upright", () => {
   beforeEach(() => {
     screenBox = { width: 375, height: 812 };
@@ -415,5 +542,43 @@ describe("game screen held upright", () => {
       ),
     );
     expect(chatSpot(root).props.className).toContain("is-closed");
+  });
+
+  it("marks a private note or a table line that arrives while the chat is closed, also once the history is full", () => {
+    const full: ChatEntry[] = Array.from({ length: 50 }, (_, i) => ({
+      id: String(i),
+      from: { id: "p1", name: "Mika" },
+      text: `line ${i}`,
+      at: 0,
+    }));
+    const root = render(scenarios.opponentTurn(), full);
+    expect(chatButton(root).props["aria-label"]).toBe("Chat");
+    const withNotice: ChatEntry[] = [
+      ...full.slice(1),
+      { id: "notice:1", kind: "notice", text: "Close, but not quite.", at: 0 },
+    ];
+    act(() =>
+      renderer!.update(element(scenarios.opponentTurn(), null, withNotice)),
+    );
+    expect(chatButton(root).props["aria-label"]).toBe("Chat, new messages");
+    act(() => chatButton(root).props.onClick());
+    act(() => chatButton(root).props.onClick());
+    expect(chatButton(root).props["aria-label"]).toBe("Chat");
+    const credit: ChatEntry = {
+      id: "51",
+      kind: "system",
+      from: { id: "", name: "" },
+      text: "Mika guessed the song correctly.",
+      at: 0,
+    };
+    act(() =>
+      renderer!.update(
+        element(scenarios.opponentTurn(), null, [
+          ...withNotice.slice(1),
+          credit,
+        ]),
+      ),
+    );
+    expect(chatButton(root).props["aria-label"]).toBe("Chat, new messages");
   });
 });
