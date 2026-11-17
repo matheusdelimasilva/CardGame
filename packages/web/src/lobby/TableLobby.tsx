@@ -8,7 +8,10 @@ import {
 } from "react";
 import { navigate } from "../App";
 import { inert } from "../home/inert";
+import { InviteButton } from "../ui/InviteButton";
+import { PaperDialog } from "../ui/PaperDialog";
 import { ANIMALS, CHIPS } from "../ui/seats";
+import { TableHeader } from "../ui/TableHeader";
 import type { Connection, useRoom } from "../useRoom";
 import "./lobby.css";
 
@@ -65,51 +68,30 @@ export function TableLobby({
 
   return (
     <main className={`table-lobby${leaving ? " tl-leaving" : ""}`}>
-      <header className="tl-header">
-        <div className="tl-table-info">
-          <button
-            className="tl-button tl-back"
-            aria-label="Leave table"
-            onClick={() => {
-              setLeaving(true);
-              leaveTimer.current = setTimeout(
-                () => navigate("/"),
-                matchMedia("(prefers-reduced-motion: reduce)").matches
-                  ? 0
-                  : 280,
-              );
-            }}
-          >
-            ←
-          </button>
-          <div className="tl-table-meta">
-            <div className="tl-code">
-              <span>TABLE</span> <strong>{room.code}</strong>
-            </div>
-            <div className="tl-watchers">
-              Watching:{" "}
-              {room.spectators.map((s) => s.name).join(", ") || "Nobody yet"}
-            </div>
-          </div>
-        </div>
-        <div className="tl-marquee" aria-label={`Now playing ${info.name}`}>
-          <div className="tl-marquee-border" />
-          <div className="tl-now-playing">NOW PLAYING</div>
-          <div className="tl-game-title">{info.name.toUpperCase()}</div>
-          <div className="tl-scan" aria-hidden="true" />
-          <div className="tl-roll" aria-hidden="true" />
-        </div>
-        <div className="tl-header-actions">
-          <button
-            className="tl-button"
-            onClick={() => setDialog("help")}
-            aria-haspopup="dialog"
-          >
-            Instructions
-          </button>
-          <InviteButton code={room.code} />
-        </div>
-      </header>
+      <TableHeader
+        code={room.code}
+        gameName={info.name}
+        watchers={room.spectators.map((s) => s.name)}
+        onLeave={() => {
+          setLeaving(true);
+          leaveTimer.current = setTimeout(
+            () => navigate("/"),
+            matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 280,
+          );
+        }}
+        actions={
+          <>
+            <button
+              className="tl-button"
+              onClick={() => setDialog("help")}
+              aria-haspopup="dialog"
+            >
+              Instructions
+            </button>
+            <InviteButton code={room.code} />
+          </>
+        }
+      />
 
       {connection === "reconnecting" && (
         <div className="tl-connection" role="status">
@@ -276,38 +258,6 @@ export function TableLobby({
   );
 }
 
-function InviteButton({ code }: { code: string }) {
-  const [copied, setCopied] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout>>();
-  useEffect(() => () => clearTimeout(timer.current), []);
-  const invite = async () => {
-    const url = `${location.origin}/t/${code}`;
-    try {
-      if (navigator.share && matchMedia("(pointer: coarse)").matches) {
-        await navigator.share({ title: "Join my card table", url });
-        return;
-      }
-      await navigator.clipboard.writeText(url);
-      clearTimeout(timer.current);
-      setCopied(true);
-      timer.current = setTimeout(() => setCopied(false), 1800);
-    } catch (error) {
-      if (error instanceof DOMException && error.name === "AbortError") return;
-      prompt("Copy this link and send it to your friends:", url);
-    }
-  };
-  return (
-    <div className="tl-invite">
-      <span className={`tl-copied${copied ? " visible" : ""}`} role="status">
-        {copied ? "Link copied!" : ""}
-      </span>
-      <button className="tl-button tl-gold" onClick={() => void invite()}>
-        Invite
-      </button>
-    </div>
-  );
-}
-
 function SettingsDrawer({ room }: { room: RoomView }) {
   const [open, setOpen] = useState(false);
   const [peek, setPeek] = useState(false);
@@ -374,47 +324,5 @@ function SettingsDrawer({ room }: { room: RoomView }) {
         )}
       </div>
     </section>
-  );
-}
-
-function PaperDialog({
-  title,
-  onClose,
-  children,
-}: {
-  title: string;
-  onClose: () => void;
-  children: ReactNode;
-}) {
-  const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    const dialog = ref.current!;
-    // Removing the element closes it. Calling close during Strict Mode's
-    // effect replay would queue a close event and dismiss the reopened dialog.
-    if (!dialog.open) dialog.showModal();
-  }, []);
-  return (
-    <dialog
-      ref={ref}
-      className="tl-dialog"
-      aria-labelledby="tl-dialog-title"
-      onClose={onClose}
-      onClick={(event) => {
-        if (event.target === event.currentTarget) onClose();
-      }}
-    >
-      <div className="tl-paper">
-        <button
-          className="tl-close"
-          aria-label="Close"
-          onClick={onClose}
-          autoFocus
-        >
-          ×
-        </button>
-        <h2 id="tl-dialog-title">{title}</h2>
-        {children}
-      </div>
-    </dialog>
   );
 }
