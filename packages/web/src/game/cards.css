@@ -559,6 +559,8 @@ button.gs-seat:focus-visible .gs-seat-face {
   font: 400 calc(var(--u) * 1.5) / 1 var(--mono);
   color: var(--cream);
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+  animation: gs-chip-hop 0.5s cubic-bezier(0.3, 1.4, 0.5, 1)
+    var(--gs-chip-delay, 0s) backwards;
 }
 /* A gained chip drops in with the design's chipHop. */
 @keyframes gs-chip-hop {
