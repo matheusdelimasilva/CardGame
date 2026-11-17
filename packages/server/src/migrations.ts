@@ -15,7 +15,7 @@ export interface Data {
   rooms: Room[];
 }
 
-export const ROOM_VERSION = 3;
+export const ROOM_VERSION = 4;
 export const DATA_VERSION = 1;
 const dictionary = <T>(values: Record<string, T> = {}): Record<string, T> =>
   Object.assign(Object.create(null) as Record<string, T>, values);
@@ -91,6 +91,19 @@ const roomMigrations: ((room: Room) => void)[] = [
     state.bets ??= [];
     state.declined ??= [];
     state.locked ??= null;
+  },
+  (room) => {
+    // Guessing in chat: on for tables made before the setting existed, like its default; nobody has guessed yet.
+    if (room.gameId !== "hitster") return;
+    room.settings.guessInChat ??= true;
+    if (typeof room.game?.state !== "object" || room.game.state === null)
+      return;
+    const state = room.game.state as {
+      guessInChat?: boolean;
+      guessed?: { title: string[]; artist: string[] };
+    };
+    state.guessInChat ??= true;
+    state.guessed ??= { title: [], artist: [] };
   },
 ];
 

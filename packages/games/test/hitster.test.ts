@@ -1059,3 +1059,229 @@ describe("betting", () => {
     expect(first.some((s) => s.lastTurn?.thief)).toBe(true);
   });
 });
+
+describe("guessing in chat", () => {
+  const rhapsody = songKey({ title: "Bohemian Rhapsody", artist: "Queen" });
+  /** Past the intro, guessing on (as for settings saved before it existed), a's turn, Bohemian Rhapsody playing. */
+  function table(settings: Record<string, string | boolean> = {}) {
+    const s = start(11, { cardsToWin: "10", ...settings });
+    cards(s, "current")[0]!.face = rhapsody;
+    return s;
+  }
+  const say = (s: HitsterState, player: string | null, text: string) =>
+    hitster.chat!(s, player, text, player ? player.toUpperCase() : "Watcher");
+  /** Says a line that must change the game, and returns the new state. */
+  const guess = (s: HitsterState, player: string, text: string) => {
+    const outcome = say(s, player, text);
+    if (!outcome?.state) throw new Error(`"${text}" changed nothing`);
+    return outcome.state;
+  };
+
+  it("is a host setting, on by default", () => {
+    expect(hitster.settings.find((d) => d.id === "guessInChat")).toEqual({
+      type: "toggle",
+      id: "guessInChat",
+      label: "Guess in chat",
+      description: expect.any(String),
+      default: true,
+    });
+    expect(table()).toMatchObject({
+      guessInChat: true,
+      guessed: { title: [], artist: [] },
+    });
+    expect(table({ guessInChat: false }).guessInChat).toBe(false);
+  });
+
+  it("credits each part once, announces it instead of the line, and gives one token for both", () => {
+    const s = table();
+    const before = structuredClone(s);
+    const first = say(s, "b", "bohemian rhapsody");
+    expect(first).toEqual({
+      state: expect.anything(),
+      deliver: false,
+      announce: ["B guessed the song correctly."],
+    });
+    expect(s).toEqual(before);
+    const titled = first!.state!;
+    expect(titled.guessed).toEqual({ title: ["b"], artist: [] });
+    expect(titled.tokens).toEqual([2, 2, 2]);
+
+    expect(say(titled, "b", "Bohemian Rhapsody!")).toEqual({
+      deliver: false,
+      note: "You already got the song.",
+    });
+    const both = say(titled, "b", "queen");
+    expect(both).toEqual({
+      state: expect.anything(),
+      deliver: false,
+      announce: [
+        "B guessed the artist correctly.",
+        "B got both and earns a token.",
+      ],
+    });
+    expect(both!.state).toMatchObject({
+      guessed: { title: ["b"], artist: ["b"] },
+      tokens: [2, 3, 2],
+    });
+    expect(say(both!.state!, "b", "QUEEN")).toEqual({
+      deliver: false,
+      note: "You already got the artist.",
+    });
+    expect(say(both!.state!, "b", "bohemian rhapsody by queen")).toEqual({
+      deliver: false,
+      note: "You already got the song.",
+    });
+  });
+
+  it("credits both parts named in one line with one token", () => {
+    const outcome = say(table(), "c", "Queen - Bohemian Rhapsody");
+    expect(outcome).toMatchObject({
+      deliver: false,
+      announce: [
+        "C guessed the song correctly.",
+        "C guessed the artist correctly.",
+        "C got both and earns a token.",
+      ],
+      state: { tokens: [2, 2, 3] },
+    });
+  });
+
+  it("holds back a near miss with a private note and lets ordinary chat through", () => {
+    const s = table();
+    expect(say(s, "b", "bohemian rapsodi")).toEqual({
+      deliver: false,
+      note: "Close, but not quite. Your message wasn't sent.",
+    });
+    expect(say(s, "b", "is this queen??")).toEqual({
+      deliver: false,
+      note: "Close, but not quite. Your message wasn't sent.",
+    });
+    expect(say(s, "b", "my dad plays this in the car")).toBeNull();
+    expect(say(s, "b", "love this one")).toBeNull();
+  });
+
+  it("lets the player whose turn it is guess their own song, and while the betting window is open", () => {
+    let s = guess(table(), "a", "bohemian rhapsody");
+    expect(s.guessed).toEqual({ title: ["a"], artist: [] });
+    s = play(s, "a", place(0));
+    expect(s).toMatchObject({ locked: 0, revealing: false });
+    s = guess(s, "a", "queen");
+    expect(s.tokens).toEqual([3, 2, 2]);
+    // The window stays one period, so earning a token does not restart its clock.
+    expect(hitster.clockKey!(s)).toBe(`${s.turnNumber}:bets`);
+  });
+
+  it("can give a player with no tokens a token to bet with before the window closes", () => {
+    let s = table();
+    s.tokens = [2, 0, 2];
+    s = play(s, "a", place(0));
+    expect(hitster.activePlayers(s)).toEqual(["c"]);
+    const key = hitster.clockKey!(s);
+    s = guess(guess(s, "b", "queen"), "b", "bohemian rhapsody");
+    expect(s.tokens).toEqual([2, 1, 2]);
+    expect(hitster.activePlayers(s)).toEqual(["b", "c"]);
+    expect(hitster.view(s, "b").canBet).toEqual(["b", "c"]);
+    expect(hitster.clockKey!(s)).toBe(key);
+    expect(play(s, "b", bet(1)).tokens).toEqual([2, 0, 2]);
+  });
+
+  it("is closed during the intro, a reveal and after the game", () => {
+    const intro = hitster.setup({
+      players,
+      seed: 11,
+      settings: { cardsToWin: "10" },
+    });
+    cards(intro, "current")[0]!.face = rhapsody;
+    expect(intro.intro).toBe(true);
+    expect(say(intro, "b", "bohemian rhapsody")).toBeNull();
+
+    const revealing = apply(table(), "a", place(0));
+    expect(revealing.revealing).toBe(true);
+    expect(say(revealing, "b", "bohemian rhapsody")).toBeNull();
+    expect(say(revealing, "b", "queen")).toBeNull();
+
+    const over = { ...table(), winners: ["a"] };
+    expect(say(over, "b", "bohemian rhapsody")).toBeNull();
+    expect(hitster.view(over, "b").guessing).toBe(true);
+  });
+
+  it("is off when the host turns it off or shows the title and artist", () => {
+    const off: Record<string, boolean>[] = [
+      { guessInChat: false },
+      { showSongInfo: true },
+    ];
+    for (const settings of off) {
+      const s = table(settings);
+      expect(say(s, "b", "bohemian rhapsody")).toBeNull();
+      expect(say(s, "b", "bohemian rapsodi")).toBeNull();
+      expect(hitster.view(s, "b").guessing).toBe(false);
+    }
+    expect(hitster.view(table(), "b").guessing).toBe(true);
+  });
+
+  it("holds back a watcher's right or near guess without credit, and lets their chat through", () => {
+    const s = table();
+    for (const player of [null, "z"])
+      for (const text of ["bohemian rhapsody", "queen", "bohemian rapsodi"])
+        expect(say(s, player, text)).toEqual({
+          deliver: false,
+          note: "Only players in this game can guess the song. Your message wasn't sent.",
+        });
+    expect(say(s, null, "go team")).toBeNull();
+  });
+
+  it("clears the credits when the next song is drawn", () => {
+    let s = guess(guess(table(), "b", "queen"), "c", "bohemian rhapsody");
+    s = apply(s, "a", place(0));
+    // The reveal still shows who guessed the song just revealed.
+    expect(hitster.view(s, null).guesses).toMatchObject({
+      b: { title: false, artist: true },
+      c: { title: true, artist: false },
+    });
+    s = hitster.resume!(s);
+    expect(s.guessed).toEqual({ title: [], artist: [] });
+    expect(hitster.view(s, "b")).toMatchObject({
+      yourGuess: { title: false, artist: false },
+      guesses: {
+        a: { title: false, artist: false },
+        b: { title: false, artist: false },
+        c: { title: false, artist: false },
+      },
+    });
+  });
+
+  it("shows each viewer their own credit and everyone's, but never the answer", () => {
+    const s = guess(table(), "b", "queen");
+    expect(hitster.view(s, "b")).toMatchObject({
+      guessing: true,
+      yourGuess: { title: false, artist: true },
+      current: { title: null, artist: null },
+    });
+    expect(hitster.view(s, "c").yourGuess).toEqual({
+      title: false,
+      artist: false,
+    });
+    expect(hitster.view(s, null).yourGuess).toBeNull();
+    for (const viewer of [...players, null]) {
+      const view = hitster.view(s, viewer);
+      expect(view.guesses).toEqual({
+        a: { title: false, artist: false },
+        b: { title: false, artist: true },
+        c: { title: false, artist: false },
+      });
+      expect(JSON.stringify(view)).not.toMatch(/bohemian|queen/i);
+    }
+  });
+
+  it("plays a legacy saved state without guessing fields with guessing on and nobody credited", () => {
+    const s = table();
+    const legacy = structuredClone(s);
+    delete legacy.guessInChat;
+    delete legacy.guessed;
+    expect(hitster.view(legacy, "a")).toEqual(hitster.view(s, "a"));
+    expect(guess(legacy, "b", "queen").guessed).toEqual({
+      title: [],
+      artist: ["b"],
+    });
+  });
+});

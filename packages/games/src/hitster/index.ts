@@ -15,6 +15,13 @@ import {
   type TableState,
 } from "@cardgame/engine";
 import {
+  answersFor,
+  buildLexicon,
+  judgeGuess,
+  type Lexicon,
+  type Part,
+} from "./guess";
+import {
   SONG_LISTS,
   songKey,
   songOf,
@@ -57,6 +64,13 @@ export const BET_WINDOW_SECONDS = 5;
  * refunded. If the placement is wrong, the first bet on a right gap steals the
  * card into the bettor's own timeline. Every other bet loses its token.
  *
+ * Guessing (the "Guess in chat" setting, off while the title and artist are
+ * shown): while a song is in play, any player may type its title or its
+ * artist in the chat. A right guess is never shown as typed; the table is
+ * told who got which part instead, and each player who gets both parts of
+ * a song earns one token. A near miss is held back with a private note.
+ * See guess.ts for how lines are matched.
+ *
  * A card's face is the song's key (see songKey). Zones:
  *   deck, discard      shared piles
  *   current            the song being placed; its year is hidden from everyone
@@ -89,6 +103,16 @@ export interface HitsterState {
   declined?: PlayerId[];
   /** Where the current player locked in this turn's song; null until they do. Absent in legacy saved games: null. */
   locked?: number | null;
+  /** The "Guess in chat" setting. Absent in legacy saved games: on. */
+  guessInChat?: boolean;
+  /** Who has guessed the current song's title and artist in the chat. Reset with every song. Absent in legacy saved games: nobody. */
+  guessed?: Guessed;
+}
+
+/** Players who have guessed each part of the current song. Never the guesses themselves. */
+export interface Guessed {
+  title: PlayerId[];
+  artist: PlayerId[];
 }
 
 /** A token on a gap in the current player's timeline: "the song really goes here". */
@@ -197,6 +221,21 @@ export interface HitsterView {
   declined?: PlayerId[];
   /** Players who may still bet this turn: not the current player, holding a token, not yet bet or declined. */
   canBet?: PlayerId[];
+  /**
+   * Whether this game lets players guess the song in the chat: the "Guess in
+   * chat" setting, off while the title and artist are shown. Guesses count
+   * only while a song is in play, not during the intro, a reveal or after
+   * the game.
+   */
+  guessing?: boolean;
+  /** What you have guessed of the current song; null for spectators. */
+  yourGuess?: { title: boolean; artist: boolean } | null;
+  /**
+   * Who has guessed which part of the current song, for every player. Public,
+   * like the chat lines announcing it. During a reveal it still shows the
+   * song just revealed; it clears when the next song is drawn.
+   */
+  guesses?: Record<PlayerId, { title: boolean; artist: boolean }>;
 }
 
 const timeline = (player: PlayerId) => `timeline:${player}`;
@@ -206,6 +245,16 @@ const tokensOf = (state: HitsterState) =>
 const betsOf = (state: HitsterState) => state.bets ?? [];
 const declinedOf = (state: HitsterState) => state.declined ?? [];
 const lockedOf = (state: HitsterState) => state.locked ?? null;
+const guessedOf = (state: HitsterState): Guessed =>
+  state.guessed ?? { title: [], artist: [] };
+/** Whether this game judges chat lines as guesses at all. */
+const guessing = (state: HitsterState) =>
+  (state.guessInChat ?? true) && !state.showSongInfo;
+
+const creditOf = (guessed: Guessed, player: PlayerId) => ({
+  title: guessed.title.includes(player),
+  artist: guessed.artist.includes(player),
+});
 
 /** Whether a song is in play: moves and bets are accepted. */
 const playing = (state: HitsterState) =>
@@ -225,6 +274,12 @@ function bettors(state: HitsterState): PlayerId[] {
       !declined.includes(p),
   );
 }
+
+/** Built from both song lists on first use, so starting the server does not wait on it. */
+let lexicon: Lexicon | undefined;
+const songLexicon = () => (lexicon ??= buildLexicon(Object.values(SONG_LISTS)));
+
+const PART_NAMES: Record<Part, string> = { title: "song", artist: "artist" };
 
 /** Gives a player one more token. For rewards such as guessing the song. */
 export function addToken(state: HitsterState, player: PlayerId): HitsterState {
@@ -278,6 +333,7 @@ function turnWinners(state: HitsterState): PlayerId[] | null {
 
 /** Draws the next song for the player whose turn it is, or ends the game if no songs are left. */
 function drawSong(state: HitsterState): void {
+  state.guessed = { title: [], artist: [] };
   let table = state.table;
   if (table.zones.deck!.cards.length === 0) {
     if (table.zones.discard!.cards.length === 0) {
@@ -405,6 +461,14 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
     },
     {
       type: "toggle",
+      id: "guessInChat",
+      label: "Guess in chat",
+      description:
+        "Type the song and the artist in the chat. Get both to earn a token.",
+      default: true,
+    },
+    {
+      type: "toggle",
       id: "showSongInfo",
       label: "Show title and artist",
       description:
@@ -448,6 +512,9 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       bets: [],
       declined: [],
       locked: null,
+      // Settings saved before this option existed lack it: on, like its default.
+      guessInChat: settings.guessInChat !== false,
+      guessed: { title: [], artist: [] },
     };
     drawSong(state);
     return state;
@@ -549,6 +616,7 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
     // the locked placement and other players' bet gaps cannot slip out.
     const tokens = tokensOf(state);
     const locked = lockedOf(state);
+    const guessed = guessedOf(state);
     const card =
       state.winners || state.revealing || state.intro
         ? undefined
@@ -596,6 +664,14 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       })),
       declined: declinedOf(state),
       canBet: bettors(state),
+      guessing: guessing(state),
+      yourGuess:
+        viewer !== null && state.players.includes(viewer)
+          ? creditOf(guessed, viewer)
+          : null,
+      guesses: Object.fromEntries(
+        state.players.map((p) => [p, creditOf(guessed, p)]),
+      ),
     };
   },
 
@@ -644,5 +720,57 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
 
   result(state) {
     return state.winners ? { winners: state.winners } : null;
+  },
+
+  chat(state, player, text, name) {
+    if (!guessing(state) || !playing(state)) return null;
+    const card = state.table.zones.current!.cards[0];
+    if (!card) return null;
+    const lexicon = songLexicon();
+    const answers = answersFor(songOf(card.face, state.songList), lexicon);
+    const guessed = guessedOf(state);
+    const inGame = player !== null && state.players.includes(player);
+    const had = inGame
+      ? creditOf(guessed, player)
+      : { title: false, artist: false };
+    const verdict = judgeGuess(text, answers, had, lexicon);
+    if (!verdict) return null;
+    // Held back from everyone, so watchers cannot spoil the song for the table either.
+    if (!inGame)
+      return {
+        deliver: false,
+        note: "Only players in this game can guess the song. Your message wasn't sent.",
+      };
+    if (verdict.kind === "near")
+      return {
+        deliver: false,
+        note: "Close, but not quite. Your message wasn't sent.",
+      };
+    if (verdict.kind === "repeat")
+      return {
+        deliver: false,
+        note: `You already got the ${PART_NAMES[verdict.part]}.`,
+      };
+    let next: HitsterState = {
+      ...state,
+      guessed: {
+        title: verdict.parts.includes("title")
+          ? [...guessed.title, player]
+          : guessed.title,
+        artist: verdict.parts.includes("artist")
+          ? [...guessed.artist, player]
+          : guessed.artist,
+      },
+    };
+    const announce = verdict.parts.map(
+      (part) => `${name} guessed the ${PART_NAMES[part]} correctly.`,
+    );
+    // Only the line that completes both parts earns the token, so it comes once per song.
+    const credit = creditOf(next.guessed!, player);
+    if (credit.title && credit.artist) {
+      next = addToken(next, player);
+      announce.push(`${name} got both and earns a token.`);
+    }
+    return { state: next, deliver: false, announce };
   },
 };
