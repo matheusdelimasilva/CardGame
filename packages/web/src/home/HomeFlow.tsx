@@ -316,6 +316,11 @@ export function HomeFlow({ path }: { path: string }) {
         </div>
       )}
       {email && <PastGames history={history} away={away} />}
+      {!away && (
+        <a className="home-library-link" href="/songs">
+          ♫ Explore the song library ↗
+        </a>
+      )}
     </div>
   );
 }

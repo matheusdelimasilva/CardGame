@@ -1,3 +1,4 @@
+import { rowsFromTables } from "./chart-tables.mjs";
 // Step 1 (Brazil): collect popular Brazilian songs from pt.wikipedia.
 //  a) chart pages: Crowley year-end top 100 lists + number-one lists of the Brazilian charts
 //  b) "Categoria:Canções de <ano>" pages that are Brazilian songs (best coverage before 1999)
@@ -44,50 +45,24 @@ function chartName(page) {
   return /número um na (.+?) em \d{4}/.exec(page)?.[1] ?? page;
 }
 
-function rowsFromTables(tables, chartYear, chart) {
-  const out = [];
-  for (const rows of tables) {
-    const artistHeader = /^(artista|cantor|int[ée]rprete)/i;
-    const hi = rows.findIndex(
-      (r) =>
-        r.some((c) => /^(can[çc][ãa]o|single|t[íi]tulo)/i.test(c)) &&
-        r.some((c) => artistHeader.test(c)),
-    );
-    if (hi < 0) continue;
-    const h = rows[hi];
-    const iTitle = h.findIndex((c) =>
-      /^(can[çc][ãa]o|single|t[íi]tulo)/i.test(c),
-    );
-    const iArtist = h.findIndex((c) => artistHeader.test(c));
-    const iRank = h.findIndex((c) => /^(posi|#|n\.?º|rank)/i.test(c));
-    for (const r of rows.slice(hi + 1)) {
-      const title = r[iTitle],
-        artist = r[iArtist];
-      if (!title || !artist) continue;
-      const rank = iRank >= 0 ? Number(r[iRank]) : 1;
-      if (!Number.isInteger(rank)) continue;
-      out.push({ chartYear, rank, title, artist, chart });
-    }
-  }
-  // number-one lists repeat a song for every week it led: keep it once
-  const seen = new Set();
-  return out.filter((r) => {
-    const k = `${r.title}|${r.artist}`.toLowerCase();
-    return seen.has(k) ? false : seen.add(k);
-  });
-}
-
 const chartsPath = join(BR_CACHE, "charts.json");
 const charts = await readJson(chartsPath, { pages: {} });
 for (const prefix of CHART_PREFIXES) {
   for (const page of await listPages(prefix)) {
-    if (SKIP.test(page) || charts.pages[page]?.rows.length) continue;
+    if (
+      SKIP.test(page) ||
+      (charts.pages[page]?.parserVersion === 2 &&
+        charts.pages[page]?.rows.length)
+    )
+      continue;
     const chartYear = Number(/em (\d{4})/.exec(page)?.[1]);
     const wt = await getWikitext(page);
     const rows = wt
-      ? rowsFromTables(parseTables(wt), chartYear, chartName(page))
+      ? rowsFromTables(parseTables(wt), chartYear, chartName(page), {
+          numberOne: /número um/i.test(page),
+        })
       : [];
-    charts.pages[page] = { chartYear, rows };
+    charts.pages[page] = { chartYear, rows, parserVersion: 2 };
     await writeJson(chartsPath, charts);
     console.log(`${page}: ${rows.length}`);
   }

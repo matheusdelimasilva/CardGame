@@ -34,6 +34,7 @@ async function fixture(t) {
     "brazil/sources-br.mjs",
     "brazil/curated-br.mjs",
     "brazil/verified-additions.mjs",
+    "brazil/accepted-chart-songs.json",
   ]) {
     const target = join(songsDir, file);
     await mkdir(dirname(target), { recursive: true });

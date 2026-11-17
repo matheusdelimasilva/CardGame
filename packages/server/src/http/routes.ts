@@ -3,6 +3,7 @@ import { guard } from "../guard";
 import { HttpError } from "../http";
 import { authRoutes } from "./auth";
 import { json, type HttpContext } from "./context";
+import { libraryRoutes } from "./library";
 import { roomRoutes } from "./rooms";
 import { serveStatic } from "./static";
 
@@ -10,7 +11,11 @@ import { serveStatic } from "./static";
 export function createRouter(
   context: HttpContext,
 ): (req: IncomingMessage, res: ServerResponse) => Promise<void> {
-  const routes = [...authRoutes(context), ...roomRoutes(context)];
+  const routes = [
+    ...authRoutes(context),
+    ...roomRoutes(context),
+    ...libraryRoutes(context),
+  ];
   return async (req, res) => {
     let code = "HTTP";
     try {

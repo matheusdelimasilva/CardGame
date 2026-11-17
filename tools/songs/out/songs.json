@@ -973,11 +973,11 @@
     "title": "Here in My Heart",
     "artist": "Al Martino",
     "year": 1952,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1952,
     "chartRank": 9,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "a69c6f9a-f265-42cb-b9b9-2074ca4d041f",
+    "deezerId": 5192121
   },
   {
     "title": "Delicado",
@@ -1397,7 +1397,7 @@
     "chartYear": 1954,
     "chartRank": 19,
     "mbid": "dd68393c-a366-4d1c-9fb5-69d016e53212",
-    "deezerId": null
+    "deezerId": 70646595
   },
   {
     "title": "Anna",
@@ -1597,7 +1597,7 @@
     "chartYear": 1955,
     "chartRank": 8,
     "mbid": "c0e79b95-3fad-495d-9990-5dfe2c0e24e8",
-    "deezerId": null
+    "deezerId": 1761781237
   },
   {
     "title": "Secret Love",
@@ -1623,11 +1623,11 @@
     "title": "Young at Heart",
     "artist": "Frank Sinatra",
     "year": 1954,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1954,
     "chartRank": 11,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "194a943f-ba9b-4ebb-b7a9-085ad3907fcd",
+    "deezerId": 97327606
   },
   {
     "title": "This Ole House",
@@ -1916,8 +1916,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1955,
     "chartRank": 14,
-    "mbid": "e8bf4f2f-60be-42e6-933f-d4c935c5d72b",
-    "deezerId": null
+    "mbid": "5d96ef21-a6ee-471a-b41d-6dfccc759cc2",
+    "deezerId": 97327610
   },
   {
     "title": "Tweedle Dee",
@@ -2143,11 +2143,11 @@
     "title": "Hound Dog",
     "artist": "Elvis Presley",
     "year": 1956,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1956,
     "chartRank": 6,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "8debe8d9-a657-4a93-b37f-0f5363c71958",
+    "deezerId": 17479889
   },
   {
     "title": "The Poor People of Paris",
@@ -2223,21 +2223,21 @@
     "title": "I Want You, I Need You, I Love You",
     "artist": "Elvis Presley",
     "year": 1956,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1956,
     "chartRank": 14,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "30821ea1-c1e6-4fe5-854c-b5a1d0c6599d",
+    "deezerId": 62874173
   },
   {
     "title": "Love Me Tender",
     "artist": "Elvis Presley",
     "year": 1956,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1956,
     "chartRank": 15,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "86788018-eb99-4de1-a3a1-e2004fe75ce9",
+    "deezerId": 7675088
   },
   {
     "title": "Hot Diggity (Dog Ziggity Boom)",
@@ -2297,7 +2297,7 @@
     "chartYear": 1956,
     "chartRank": 23,
     "mbid": "89f91d7a-b03e-4ac2-b7d8-f3a0f77fbea6",
-    "deezerId": null
+    "deezerId": 1064847
   },
   {
     "title": "Allegheny Moon",
@@ -2313,11 +2313,11 @@
     "title": "I'm in Love Again",
     "artist": "Fats Domino",
     "year": 1956,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1956,
     "chartRank": 25,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "0e174e58-defe-4446-9ab0-114085dd1208",
+    "deezerId": 514405772
   },
   {
     "title": "Tonight You Belong to Me",
@@ -2663,11 +2663,11 @@
     "title": "Bye Bye Love",
     "artist": "The Everly Brothers",
     "year": 1957,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1957,
     "chartRank": 11,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "764db607-e988-4ae4-8a62-e56af3c5ca86",
+    "deezerId": 74494806
   },
   {
     "title": "Tammy",
@@ -2693,11 +2693,11 @@
     "title": "(Let Me Be Your) Teddy Bear",
     "artist": "Elvis Presley",
     "year": 1957,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1957,
     "chartRank": 14,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "3d06ee8f-9c12-40aa-9149-0ade71064844",
+    "deezerId": 69070947
   },
   {
     "title": "Day-O (The Banana Boat Song)",
@@ -2743,11 +2743,11 @@
     "title": "Wake Up Little Susie",
     "artist": "The Everly Brothers",
     "year": 1957,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1957,
     "chartRank": 19,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "ffdb6e39-1584-4085-9691-796856caf086",
+    "deezerId": 691215
   },
   {
     "title": "You Send Me",
@@ -2763,11 +2763,11 @@
     "title": "Searchin'",
     "artist": "The Coasters",
     "year": 1957,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1957,
     "chartRank": 21,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "5a560dab-5def-4185-9594-487e79f7d53d",
+    "deezerId": 738209
   },
   {
     "title": "School Days",
@@ -2823,11 +2823,11 @@
     "title": "Honeycomb",
     "artist": "Jimmie Rodgers",
     "year": 1957,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1957,
     "chartRank": 27,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "aa8ad616-ec2d-4b3e-9ee1-9529c4463dab",
+    "deezerId": 61342427
   },
   {
     "title": "Whole Lotta Shakin' Goin On",
@@ -2963,11 +2963,11 @@
     "title": "Be-Bop Baby",
     "artist": "Ricky Nelson",
     "year": 1957,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1957,
     "chartRank": 42,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "28fb3015-b03c-4d1f-9c87-c10181fde1c4",
+    "deezerId": 391364032
   },
   {
     "title": "Short Fat Fannie",
@@ -3113,11 +3113,11 @@
     "title": "Tequila",
     "artist": "The Champs",
     "year": 1958,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1958,
     "chartRank": 8,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "80527d8b-fd42-4cca-b552-45d4c94dbc99",
+    "deezerId": 10677778
   },
   {
     "title": "It's All in the Game",
@@ -3273,11 +3273,11 @@
     "title": "Poor Little Fool",
     "artist": "Ricky Nelson",
     "year": 1958,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1958,
     "chartRank": 24,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "67030a01-450f-462c-bc72-5f67c48bd7ab",
+    "deezerId": 3291529
   },
   {
     "title": "A Wonderful Time Up There\" / \"It's Too Soon to Know",
@@ -3317,7 +3317,7 @@
     "chartYear": 1958,
     "chartRank": 27,
     "mbid": "88fcf71b-a087-4a84-a050-608d109f021f",
-    "deezerId": null
+    "deezerId": 1761304277
   },
   {
     "title": "Tom Dooley",
@@ -3667,7 +3667,7 @@
     "chartYear": 1959,
     "chartRank": 10,
     "mbid": "b0d383ae-1000-4dc9-9c44-bddfd9388f7b",
-    "deezerId": null
+    "deezerId": 3122822
   },
   {
     "title": "Sleep Walk",
@@ -3726,8 +3726,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1960,
     "chartRank": 15,
-    "mbid": "75aa0d0a-a51a-4f87-a661-c53d508227fa",
-    "deezerId": null
+    "mbid": "55ab4c7b-15a7-4402-9487-c113507dfe0e",
+    "deezerId": 850693
   },
   {
     "title": "Smoke Gets in Your Eyes",
@@ -3843,11 +3843,11 @@
     "title": "A Teenager in Love",
     "artist": "Dion and the Belmonts",
     "year": 1959,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1959,
     "chartRank": 25,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "28e894eb-6bfb-4453-938e-a03df14f0dde",
+    "deezerId": 3121408
   },
   {
     "title": "It's Just a Matter of Time",
@@ -3883,11 +3883,11 @@
     "title": "A Big Hunk o' Love",
     "artist": "Elvis Presley",
     "year": 1959,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1959,
     "chartRank": 30,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "18838aa7-803b-4dd8-b471-32efe7a6a5d5",
+    "deezerId": 7675097
   },
   {
     "title": "Red River Rock",
@@ -3923,11 +3923,11 @@
     "title": "(Now and Then There's) A Fool Such as I",
     "artist": "Elvis Presley",
     "year": 1959,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1959,
     "chartRank": 34,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "cae58ad7-29af-43ac-9eae-34669ef6a0e1",
+    "deezerId": 7675096
   },
   {
     "title": "Guitar Boogie Shuffle",
@@ -4173,11 +4173,11 @@
     "title": "Lonely Teardrops",
     "artist": "Jackie Wilson",
     "year": 1959,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1959,
     "chartRank": 56,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "48664fa8-2e3c-40dd-9023-c322dfad8ed1",
+    "deezerId": 116857974
   },
   {
     "title": "The Village of St. Bernadette",
@@ -4247,7 +4247,7 @@
     "chartYear": 1959,
     "chartRank": 61,
     "mbid": "99cc1ce9-4639-4ea9-bd4a-bba52255bc7b",
-    "deezerId": null
+    "deezerId": 593701162
   },
   {
     "title": "Forever",
@@ -4277,7 +4277,7 @@
     "chartYear": 1959,
     "chartRank": 63,
     "mbid": "9eacb823-5022-4513-ba19-8a321d143054",
-    "deezerId": null
+    "deezerId": 722316
   },
   {
     "title": "Enchanted",
@@ -4396,8 +4396,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1959,
     "chartRank": 74,
-    "mbid": "6afcbdd9-4d7e-4e3e-a159-bd168aa698ee",
-    "deezerId": null
+    "mbid": "6fbe3d92-2252-4ce9-ba1a-003d2bc615d8",
+    "deezerId": 391364472
   },
   {
     "title": "Petite Fleur",
@@ -4417,7 +4417,7 @@
     "chartYear": 1959,
     "chartRank": 76,
     "mbid": "32f92348-31a7-44ab-bf29-7fe99735b680",
-    "deezerId": null
+    "deezerId": 537438752
   },
   {
     "title": "The Tijuana Jail",
@@ -4733,11 +4733,11 @@
     "title": "It's Now or Never",
     "artist": "Elvis Presley",
     "year": 1960,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1960,
     "chartRank": 7,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "032c11d9-5863-49e9-84e5-da37b730208f",
+    "deezerId": 1055390
   },
   {
     "title": "Handy Man",
@@ -4753,11 +4753,11 @@
     "title": "Stuck on You",
     "artist": "Elvis Presley",
     "year": 1960,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1960,
     "chartRank": 9,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "4757351f-c8f9-4b28-80be-8af77e1294eb",
+    "deezerId": 7675098
   },
   {
     "title": "Everybody's Somebody's Fool",
@@ -4863,11 +4863,11 @@
     "title": "Puppy Love",
     "artist": "Paul Anka",
     "year": 1960,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1960,
     "chartRank": 23,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "c7fbc0bc-bfb8-44f4-b713-4f1c0552e98e",
+    "deezerId": 2106751367
   },
   {
     "title": "Why",
@@ -4883,11 +4883,11 @@
     "title": "Walk, Don't Run",
     "artist": "The Ventures",
     "year": 1960,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1960,
     "chartRank": 25,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "bc99b291-63a0-4295-bbdf-2ed49d83d317",
+    "deezerId": 3177883
   },
   {
     "title": "Save the Last Dance for Me",
@@ -4933,11 +4933,11 @@
     "title": "Chain Gang",
     "artist": "Sam Cooke",
     "year": 1960,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1960,
     "chartRank": 29,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "9783916c-3128-4a74-9588-547c58d23af8",
+    "deezerId": 71190907
   },
   {
     "title": "Let It Be Me",
@@ -5127,7 +5127,7 @@
     "chartYear": 1960,
     "chartRank": 49,
     "mbid": "9df36726-34b0-4ce5-aa13-ea57c4f0205d",
-    "deezerId": null
+    "deezerId": 732716482
   },
   {
     "title": "Harbor Lights",
@@ -5507,7 +5507,7 @@
     "chartYear": 1960,
     "chartRank": 88,
     "mbid": "3a6c1dbb-2fe1-48a9-aa61-cc56045fd5d1",
-    "deezerId": null
+    "deezerId": 1761715727
   },
   {
     "title": "Good Time Baby",
@@ -5587,7 +5587,7 @@
     "chartYear": 1960,
     "chartRank": 96,
     "mbid": "542742df-1942-438e-9695-abc5cbcccfdb",
-    "deezerId": null
+    "deezerId": 3012340
   },
   {
     "title": "Money (That's What I Want)",
@@ -5733,11 +5733,11 @@
     "title": "Running Scared",
     "artist": "Roy Orbison",
     "year": 1961,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1961,
     "chartRank": 13,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "a6480e8d-a26a-410e-961e-d1407e0c39cd",
+    "deezerId": 134945670
   },
   {
     "title": "Last Night",
@@ -5773,11 +5773,11 @@
     "title": "Where the Boys Are",
     "artist": "Connie Francis",
     "year": 1961,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1961,
     "chartRank": 18,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "23ff939d-cfce-447c-a0d9-b6f304a41b04",
+    "deezerId": 866224692
   },
   {
     "title": "Hit the Road Jack",
@@ -6053,11 +6053,11 @@
     "title": "Hurt",
     "artist": "Timi Yuro",
     "year": 1961,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1961,
     "chartRank": 48,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "4c1b37cb-8dc0-4dae-8465-bf8830766cef",
+    "deezerId": 3126389
   },
   {
     "title": "Hello Mary Lou",
@@ -6083,11 +6083,11 @@
     "title": "Surrender",
     "artist": "Elvis Presley",
     "year": 1961,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1961,
     "chartRank": 51,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "aeec6930-47fd-4001-99c7-3a13cd812bfe",
+    "deezerId": 7675102
   },
   {
     "title": "Smoky Places",
@@ -6203,11 +6203,11 @@
     "title": "Spanish Harlem",
     "artist": "Ben E. King",
     "year": 1961,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1961,
     "chartRank": 64,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "0d6029f7-f750-40ae-86d6-9659efbf0f28",
+    "deezerId": 136710428
   },
   {
     "title": "It's Gonna Work Out Fine",
@@ -6276,8 +6276,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1961,
     "chartRank": 71,
-    "mbid": "5afa82c2-6ce7-4c97-9863-b56fb2f2c5e1",
-    "deezerId": null
+    "mbid": "b5277e9d-b633-4cac-b464-14f1da5c2fae",
+    "deezerId": 7675103
   },
   {
     "title": "Wonderland by Night",
@@ -6563,11 +6563,11 @@
     "title": "Please Stay",
     "artist": "The Drifters",
     "year": 1961,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1961,
     "chartRank": 100,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "2d7aa331-412a-43d5-9fad-045fd085b6ad",
+    "deezerId": 740510
   },
   {
     "title": "Stranger on the Shore",
@@ -6713,11 +6713,11 @@
     "title": "Breaking Up Is Hard to Do",
     "artist": "Neil Sedaka",
     "year": 1962,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1962,
     "chartRank": 15,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "dac96f18-121a-4cc1-8386-d948e189c466",
+    "deezerId": 3912256011
   },
   {
     "title": "Wolverton Mountain",
@@ -6753,21 +6753,21 @@
     "title": "The One Who Really Loves You",
     "artist": "Mary Wells",
     "year": 1962,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1962,
     "chartRank": 19,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "6752390a-2a4f-49b9-8074-ba3576e44167",
+    "deezerId": 3051095
   },
   {
     "title": "Good Luck Charm",
     "artist": "Elvis Presley",
     "year": 1962,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1962,
     "chartRank": 20,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "c815b27e-df95-454e-a24a-a558fddc8325",
+    "deezerId": 7675105
   },
   {
     "title": "Midnight in Moscow",
@@ -6796,8 +6796,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1962,
     "chartRank": 23,
-    "mbid": "532f4658-ee90-47c2-819d-bfcdb93f1811",
-    "deezerId": null
+    "mbid": "cdc8b081-3eb1-4af8-8829-9df74e857a3f",
+    "deezerId": 71190932
   },
   {
     "title": "The Wah-Watusi",
@@ -6843,11 +6843,11 @@
     "title": "Playboy",
     "artist": "The Marvelettes",
     "year": 1962,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1962,
     "chartRank": 27,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "818490ff-c263-479d-9baf-6a1578f5d7d1",
+    "deezerId": 3051069
   },
   {
     "title": "Ramblin' Rose",
@@ -6867,7 +6867,7 @@
     "chartYear": 1963,
     "chartRank": 28,
     "mbid": "06beeb00-dd7b-4515-8c0b-68c6bc08b9ac",
-    "deezerId": null
+    "deezerId": 3176834
   },
   {
     "title": "Sealed with a Kiss",
@@ -7217,7 +7217,7 @@
     "chartYear": 1962,
     "chartRank": 63,
     "mbid": "efec2bad-6f92-4bb0-b095-4302a3be3e16",
-    "deezerId": null
+    "deezerId": 108317716
   },
   {
     "title": "You Belong to Me",
@@ -7233,11 +7233,11 @@
     "title": "Dream Baby (How Long Must I Dream)",
     "artist": "Roy Orbison",
     "year": 1962,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1962,
     "chartRank": 65,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "15acc0af-066a-438c-9215-4c8895bafc9f",
+    "deezerId": 7675278
   },
   {
     "title": "Snap Your Fingers",
@@ -7296,8 +7296,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1962,
     "chartRank": 70,
-    "mbid": "53842ece-edcc-4d3f-9c75-fae1818cd041",
-    "deezerId": null
+    "mbid": "ea78a832-b893-4736-88ab-77220244804c",
+    "deezerId": 76349299
   },
   {
     "title": "You'll Lose a Good Thing",
@@ -7376,8 +7376,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1962,
     "chartRank": 78,
-    "mbid": "856ff0b0-7a20-47b5-b5e2-5098429d06a8",
-    "deezerId": null
+    "mbid": "1176d2aa-397c-4189-9bdd-35b0eca8fc05",
+    "deezerId": 706690062
   },
   {
     "title": "Her Royal Majesty",
@@ -7767,7 +7767,7 @@
     "chartYear": 1963,
     "chartRank": 17,
     "mbid": "207bf898-d471-4a85-a838-80a370c84956",
-    "deezerId": null
+    "deezerId": 475625722
   },
   {
     "title": "Walk Like a Man",
@@ -7823,11 +7823,11 @@
     "title": "It's My Party",
     "artist": "Lesley Gore",
     "year": 1963,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1963,
     "chartRank": 23,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "eceb7cc0-bfca-4375-bd5d-2d9bdbcfee7d",
+    "deezerId": 24161411
   },
   {
     "title": "Glad All Over",
@@ -7896,8 +7896,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1963,
     "chartRank": 31,
-    "mbid": "a5e13261-7aed-48ac-8055-063ee942d54d",
-    "deezerId": null
+    "mbid": "4314c5a6-c93f-43f3-949b-9b3d37814842",
+    "deezerId": 992048922
   },
   {
     "title": "Our Day Will Come",
@@ -7947,7 +7947,7 @@
     "chartYear": 1964,
     "chartRank": 36,
     "mbid": "3b8500d6-9328-4998-8110-e842c60529cb",
-    "deezerId": null
+    "deezerId": 1758571727
   },
   {
     "title": "Days of Wine and Roses",
@@ -8083,11 +8083,11 @@
     "title": "In Dreams",
     "artist": "Roy Orbison",
     "year": 1963,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1963,
     "chartRank": 49,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "229aecc0-946c-4921-9e89-e3e7be10969b",
+    "deezerId": 3568036
   },
   {
     "title": "More",
@@ -8103,11 +8103,11 @@
     "title": "I Can't Stay Mad at You",
     "artist": "Skeeter Davis",
     "year": 1963,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1963,
     "chartRank": 51,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "13bd356e-813c-4ced-8128-806992acf4f9",
+    "deezerId": 1044578
   },
   {
     "title": "Losing You",
@@ -8126,8 +8126,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1963,
     "chartRank": 53,
-    "mbid": "62722d38-e7cd-46bc-a029-a798c5b5bd02",
-    "deezerId": null
+    "mbid": "554e6a56-042f-41ca-9510-a309192697d2",
+    "deezerId": 3570719
   },
   {
     "title": "You've Really Got a Hold on Me",
@@ -8153,11 +8153,11 @@
     "title": "(You're the) Devil in Disguise",
     "artist": "Elvis Presley",
     "year": 1963,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1963,
     "chartRank": 58,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "f318e3ea-f15b-4367-83d0-062bc80d8c4e",
+    "deezerId": 7675108
   },
   {
     "title": "Navy Blue",
@@ -8207,7 +8207,7 @@
     "chartYear": 1963,
     "chartRank": 61,
     "mbid": "ff551760-e9b6-40ed-997a-5bcb136718a3",
-    "deezerId": null
+    "deezerId": 540215312
   },
   {
     "title": "Deep Purple",
@@ -8257,7 +8257,7 @@
     "chartYear": 1964,
     "chartRank": 66,
     "mbid": "3648ecf0-a75c-4816-8014-24f00585d1ff",
-    "deezerId": null
+    "deezerId": 106067030
   },
   {
     "title": "The Night Has a Thousand Eyes",
@@ -8683,21 +8683,21 @@
     "title": "Everybody Loves Somebody",
     "artist": "Dean Martin",
     "year": 1964,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1964,
     "chartRank": 6,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "7525dd4b-0522-4738-95d5-42fd160e8a27",
+    "deezerId": 72398167
   },
   {
     "title": "My Guy",
     "artist": "Mary Wells",
     "year": 1964,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1964,
     "chartRank": 7,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "49a76317-aac5-4512-b88b-97d2cb6ca4e2",
+    "deezerId": 79083540
   },
   {
     "title": "We'll Sing in the Sunshine",
@@ -8723,11 +8723,11 @@
     "title": "Where Did Our Love Go",
     "artist": "The Supremes",
     "year": 1964,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1964,
     "chartRank": 10,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "0ab8dc6a-3244-4965-9a14-f97557a13a71",
+    "deezerId": 1182495
   },
   {
     "title": "People",
@@ -8737,7 +8737,7 @@
     "chartYear": 1964,
     "chartRank": 11,
     "mbid": "51362359-6189-4e70-b5a7-119ce37f69e8",
-    "deezerId": null
+    "deezerId": 623444
   },
   {
     "title": "Java",
@@ -8773,11 +8773,11 @@
     "title": "Do Wah Diddy Diddy",
     "artist": "Manfred Mann",
     "year": 1964,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1964,
     "chartRank": 15,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "49ff7482-7732-4317-9113-ddf27e63f2d7",
+    "deezerId": 1861004137
   },
   {
     "title": "Please Please Me",
@@ -8797,7 +8797,7 @@
     "chartYear": 1964,
     "chartRank": 17,
     "mbid": "822277ba-a95a-48e0-8f2a-acaa48fb7bc9",
-    "deezerId": null
+    "deezerId": 1761799607
   },
   {
     "title": "Little Children",
@@ -8823,11 +8823,11 @@
     "title": "Under the Boardwalk",
     "artist": "The Drifters",
     "year": 1964,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1964,
     "chartRank": 20,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "bc0a2c85-9e0a-4f97-ba60-a20a54a8850a",
+    "deezerId": 676880
   },
   {
     "title": "Chapel of Love",
@@ -8917,17 +8917,17 @@
     "chartYear": 1964,
     "chartRank": 29,
     "mbid": "710e97ec-1e0e-4ffc-9bad-240839c09c41",
-    "deezerId": null
+    "deezerId": 3243684
   },
   {
     "title": "A World Without Love",
     "artist": "Peter and Gordon",
     "year": 1964,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1964,
     "chartRank": 30,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "f8e2cddd-f237-4c43-87b5-e315974c1aff",
+    "deezerId": 3169982
   },
   {
     "title": "Have I the Right?",
@@ -8963,11 +8963,11 @@
     "title": "Baby Love",
     "artist": "The Supremes",
     "year": 1964,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1964,
     "chartRank": 33,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "5219188b-c66c-4437-b263-a7b3d7b01f7f",
+    "deezerId": 1182497
   },
   {
     "title": "Let It Be Me",
@@ -9703,31 +9703,31 @@
     "title": "My Girl",
     "artist": "The Temptations",
     "year": 1965,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1965,
     "chartRank": 10,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "a2e890c2-d341-403f-b875-719c0f24bb41",
+    "deezerId": 538643262
   },
   {
     "title": "Help Me, Rhonda",
     "artist": "The Beach Boys",
     "year": 1965,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1965,
     "chartRank": 11,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "de6dd011-c90b-4746-8be5-de5ebf0133e1",
+    "deezerId": 3091972
   },
   {
     "title": "King of the Road",
     "artist": "Roger Miller",
     "year": 1965,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1965,
     "chartRank": 12,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "d02ec137-e10f-4e9f-92b1-c9fbd7a5281c",
+    "deezerId": 549344342
   },
   {
     "title": "The Birds and the Bees",
@@ -9737,7 +9737,7 @@
     "chartYear": 1965,
     "chartRank": 13,
     "mbid": "d500be0b-e121-456a-a91b-03419cb7ecb9",
-    "deezerId": null
+    "deezerId": 6058798
   },
   {
     "title": "Hold Me, Thrill Me, Kiss Me",
@@ -9746,8 +9746,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1965,
     "chartRank": 14,
-    "mbid": "47b570e8-9fae-4958-955b-e184098e38c1",
-    "deezerId": null
+    "mbid": "2f5a1856-aa3b-4546-be3d-e75a9ba8b171",
+    "deezerId": 3339941
   },
   {
     "title": "Shotgun",
@@ -9763,11 +9763,11 @@
     "title": "I Got You Babe",
     "artist": "Sonny & Cher",
     "year": 1965,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1965,
     "chartRank": 16,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "ba61515c-1829-449c-bdb5-fb0f6a13e327",
+    "deezerId": 735788
   },
   {
     "title": "This Diamond Ring",
@@ -9843,11 +9843,11 @@
     "title": "Cara Mia",
     "artist": "Jay and the Americans",
     "year": 1965,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1965,
     "chartRank": 24,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "bb6bf7d3-b3ba-4fe2-b1ab-fe7d91147622",
+    "deezerId": 3243687
   },
   {
     "title": "Mr. Tambourine Man",
@@ -9946,8 +9946,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1965,
     "chartRank": 37,
-    "mbid": "48ce4b8a-66a5-4af7-bd56-ad5e5854d65a",
-    "deezerId": null
+    "mbid": "d3ced187-a872-443b-99d9-33548716188e",
+    "deezerId": 548823232
   },
   {
     "title": "Baby I'm Yours",
@@ -9973,11 +9973,11 @@
     "title": "Like a Rolling Stone",
     "artist": "Bob Dylan",
     "year": 1965,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1965,
     "chartRank": 41,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "26244520-0e1d-4d42-b101-ce6b83299d33",
+    "deezerId": 14477354
   },
   {
     "title": "I'm Telling You Now",
@@ -9993,11 +9993,11 @@
     "title": "Ferry Cross the Mersey",
     "artist": "Gerry and the Pacemakers",
     "year": 1965,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1965,
     "chartRank": 43,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "a5973496-7655-4ea6-990a-3207fabdeb9d",
+    "deezerId": 3164765
   },
   {
     "title": "Dirty Water",
@@ -10696,8 +10696,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1966,
     "chartRank": 7,
-    "mbid": "18dc4894-735d-4269-ba45-c059b1350639",
-    "deezerId": null
+    "mbid": "c0db7ad3-ae24-4dd2-902d-0c091a2018e6",
+    "deezerId": 733148
   },
   {
     "title": "Strangers in the Night",
@@ -10706,8 +10706,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1966,
     "chartRank": 8,
-    "mbid": "e0cd0bd2-d1ff-4b7a-bfd4-58952ee10a59",
-    "deezerId": null
+    "mbid": "647f8be9-b76e-4143-842a-03eb0e36c4f1",
+    "deezerId": 71483069
   },
   {
     "title": "Kicks",
@@ -10733,11 +10733,11 @@
     "title": "Good Lovin'",
     "artist": "The Young Rascals",
     "year": 1966,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1966,
     "chartRank": 11,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "a268ce37-6e2b-4277-8c6d-e4404798e28e",
+    "deezerId": 742102
   },
   {
     "title": "(You're My) Soul and Inspiration",
@@ -10753,11 +10753,11 @@
     "title": "You Can't Hurry Love",
     "artist": "The Supremes",
     "year": 1966,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1966,
     "chartRank": 13,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "adc3b7d9-8411-497b-8b29-b099407c5498",
+    "deezerId": 548823382
   },
   {
     "title": "Sunny",
@@ -10863,11 +10863,11 @@
     "title": "Monday, Monday",
     "artist": "The Mamas & the Papas",
     "year": 1966,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1966,
     "chartRank": 24,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "ee4dac8b-63e3-4583-9824-3c9b96ecdb12",
+    "deezerId": 2321272
   },
   {
     "title": "Red Rubber Ball",
@@ -10897,7 +10897,7 @@
     "chartYear": 1967,
     "chartRank": 26,
     "mbid": "8c5afa29-9cf5-45c4-b22b-c48657b1e3ff",
-    "deezerId": null
+    "deezerId": 78932933
   },
   {
     "title": "Walk Away Renée",
@@ -10907,7 +10907,7 @@
     "chartYear": 1966,
     "chartRank": 27,
     "mbid": "fc99e512-6657-4c97-a3ce-c3a35cc88d25",
-    "deezerId": null
+    "deezerId": 140602371
   },
   {
     "title": "Cool Jerk",
@@ -10986,18 +10986,18 @@
     "yearSource": "musicbrainz",
     "chartYear": 1966,
     "chartRank": 34,
-    "mbid": "7fecdb9a-a856-47d1-8663-46f8992ac4c6",
-    "deezerId": null
+    "mbid": "972c5f64-7895-4bc0-b697-53e2ce4fb2e1",
+    "deezerId": 7818900
   },
   {
     "title": "Summer in the City",
     "artist": "The Lovin' Spoonful",
     "year": 1966,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1966,
     "chartRank": 35,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "5005a3c4-da04-47bf-ba0c-eee1bac4f88a",
+    "deezerId": 629884
   },
   {
     "title": "I'm So Lonesome I Could Cry",
@@ -11057,7 +11057,7 @@
     "chartYear": 1966,
     "chartRank": 39,
     "mbid": "4f962353-775f-4ffe-b866-6b5ade34cbdf",
-    "deezerId": null
+    "deezerId": 598080652
   },
   {
     "title": "Wild Thing",
@@ -11633,11 +11633,11 @@
     "title": "Light My Fire",
     "artist": "The Doors",
     "year": 1967,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1967,
     "chartRank": 6,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "628b1e02-54a0-4259-a6e7-5455f2869d22",
+    "deezerId": 3614129
   },
   {
     "title": "Sunshine of Your Love",
@@ -11686,8 +11686,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1967,
     "chartRank": 10,
-    "mbid": "abee68c1-96df-4915-98a9-c4d213c1fafb",
-    "deezerId": null
+    "mbid": "e00ce662-d559-4901-a64f-25219a02c07a",
+    "deezerId": 725689
   },
   {
     "title": "Little Bit O' Soul",
@@ -11713,11 +11713,11 @@
     "title": "Respect",
     "artist": "Aretha Franklin",
     "year": 1967,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1967,
     "chartRank": 13,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "4855f9bc-1189-4915-aeba-1871cf6016c9",
+    "deezerId": 904732
   },
   {
     "title": "I Was Made to Love Her",
@@ -11726,8 +11726,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1967,
     "chartRank": 14,
-    "mbid": "b1caf8fb-9488-4660-9290-a4729194288e",
-    "deezerId": null
+    "mbid": "3074d9d1-206d-4632-a5b2-91047e10f0f0",
+    "deezerId": 538709402
   },
   {
     "title": "Come Back When You Grow Up",
@@ -11743,21 +11743,21 @@
     "title": "Kind of a Drag",
     "artist": "The Buckinghams",
     "year": 1967,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1967,
     "chartRank": 16,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "663e308f-5798-492c-baa4-8ce844cdc070",
+    "deezerId": 1030460
   },
   {
     "title": "Sweet Soul Music",
     "artist": "Arthur Conley",
     "year": 1967,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1967,
     "chartRank": 17,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "a1e483eb-2593-4c4b-b4c2-36d79f9b4401",
+    "deezerId": 6630762
   },
   {
     "title": "Expressway to Your Heart",
@@ -11773,21 +11773,21 @@
     "title": "Soul Man",
     "artist": "Sam & Dave",
     "year": 1967,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1967,
     "chartRank": 19,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "6e69ae2d-1f01-430d-97b3-de487f057e9e",
+    "deezerId": 3923661
   },
   {
     "title": "Never My Love",
     "artist": "The Association",
     "year": 1967,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1967,
     "chartRank": 20,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "56eb42a7-eee3-4f9d-a39a-df29a749f73d",
+    "deezerId": 6630442
   },
   {
     "title": "Dance to the Music",
@@ -11833,11 +11833,11 @@
     "title": "Ruby Tuesday",
     "artist": "The Rolling Stones",
     "year": 1967,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1967,
     "chartRank": 24,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "a4d53c4f-8044-404c-b6c9-a91f4412a672",
+    "deezerId": 9938452
   },
   {
     "title": "It Must Be Him",
@@ -12717,7 +12717,7 @@
     "chartYear": 1968,
     "chartRank": 10,
     "mbid": "321bdedd-6528-413d-bd13-70715c80f4be",
-    "deezerId": null
+    "deezerId": 737763
   },
   {
     "title": "Harper Valley PTA",
@@ -12737,7 +12737,7 @@
     "chartYear": 1969,
     "chartRank": 11,
     "mbid": "320ffeb5-c610-4378-a3d2-700fce233051",
-    "deezerId": null
+    "deezerId": 1559534
   },
   {
     "title": "Little Green Apples",
@@ -12767,17 +12767,17 @@
     "chartYear": 1968,
     "chartRank": 14,
     "mbid": "7834d11d-aa3f-47fc-99ee-4b639676b7a0",
-    "deezerId": null
+    "deezerId": 4085211
   },
   {
     "title": "Young Girl",
     "artist": "Gary Puckett & The Union Gap",
     "year": 1968,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1968,
     "chartRank": 15,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "13e6689a-5ac4-4699-9bcf-ac3d57318cd5",
+    "deezerId": 585613
   },
   {
     "title": "Cry Like a Baby",
@@ -12787,7 +12787,7 @@
     "chartYear": 1968,
     "chartRank": 16,
     "mbid": "7fe2be2f-b682-4c28-92f0-4bac85fd6a74",
-    "deezerId": null
+    "deezerId": 1093239
   },
   {
     "title": "Stoned Soul Picnic",
@@ -12797,7 +12797,7 @@
     "chartYear": 1968,
     "chartRank": 17,
     "mbid": "2abbefdd-c9c3-4a4a-8fbf-2d53169cf16b",
-    "deezerId": null
+    "deezerId": 966702
   },
   {
     "title": "Grazing in the Grass",
@@ -12806,8 +12806,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1968,
     "chartRank": 18,
-    "mbid": "2d36c82f-14dc-4b32-9c40-acdfd25bd8c4",
-    "deezerId": null
+    "mbid": "f3bd4bb1-4c1b-4193-85ca-ae24695a97e0",
+    "deezerId": 63183524
   },
   {
     "title": "Midnight Confessions",
@@ -12833,21 +12833,21 @@
     "title": "I Wish It Would Rain",
     "artist": "The Temptations",
     "year": 1968,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1968,
     "chartRank": 22,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "86bacc7c-ac93-47f9-9d70-177a4dce3624",
+    "deezerId": 81474650
   },
   {
     "title": "La-La (Means I Love You)",
     "artist": "The Delfonics",
     "year": 1968,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1968,
     "chartRank": 23,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "62ab42ea-ed35-4643-8542-b96d5b43d9d5",
+    "deezerId": 958892
   },
   {
     "title": "Turn Around, Look at Me",
@@ -12937,7 +12937,7 @@
     "chartYear": 1968,
     "chartRank": 32,
     "mbid": "642ddb44-2fea-4bf1-b224-ccba68405513",
-    "deezerId": null
+    "deezerId": 1031091
   },
   {
     "title": "Lady Willpower",
@@ -13737,7 +13737,7 @@
     "chartYear": 1969,
     "chartRank": 14,
     "mbid": "0a0ee9c5-2014-4960-87be-24e523ed9147",
-    "deezerId": null
+    "deezerId": 549282302
   },
   {
     "title": "Love Theme from Romeo and Juliet",
@@ -13767,7 +13767,7 @@
     "chartYear": 1969,
     "chartRank": 17,
     "mbid": "ccd77a88-8927-44dd-a8e2-be96ce627b8c",
-    "deezerId": null
+    "deezerId": 3017375
   },
   {
     "title": "Suspicious Minds",
@@ -13796,8 +13796,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1970,
     "chartRank": 19,
-    "mbid": "292651ab-c606-4557-84d0-2d78e899361b",
-    "deezerId": null
+    "mbid": "093c1742-ebda-45cd-a50c-734e5d92e7f2",
+    "deezerId": 851908
   },
   {
     "title": "What Does It Take (To Win Your Love)",
@@ -13807,17 +13807,17 @@
     "chartYear": 1969,
     "chartRank": 20,
     "mbid": "1c21d451-daac-4129-9f1b-8a231adfca5d",
-    "deezerId": null
+    "deezerId": 3051043
   },
   {
     "title": "It's Your Thing",
     "artist": "The Isley Brothers",
     "year": 1969,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1969,
     "chartRank": 21,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "99e23eb1-bbc2-4c36-aae7-2e4658a7741b",
+    "deezerId": 105515976
   },
   {
     "title": "Sweet Caroline",
@@ -13956,8 +13956,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1969,
     "chartRank": 33,
-    "mbid": "f91a7233-c242-495b-bedd-6b8ecffbcae5",
-    "deezerId": null
+    "mbid": "7d5501d6-1bba-4e61-be7d-8c03b8df10e9",
+    "deezerId": 391360432
   },
   {
     "title": "Baby It's You",
@@ -13966,18 +13966,18 @@
     "yearSource": "musicbrainz",
     "chartYear": 1969,
     "chartRank": 34,
-    "mbid": "fd01c42a-6e22-4709-ac79-6bcc73439d42",
-    "deezerId": null
+    "mbid": "4b3c355f-af25-482d-8e06-ad81cdf86fa5",
+    "deezerId": 116447850
   },
   {
     "title": "In the Ghetto",
     "artist": "Elvis Presley",
     "year": 1969,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1969,
     "chartRank": 35,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "f7988ca8-b874-44b7-8bda-9b202e7f8925",
+    "deezerId": 1057100
   },
   {
     "title": "A Boy Named Sue",
@@ -14027,7 +14027,7 @@
     "chartYear": 1969,
     "chartRank": 40,
     "mbid": "03352de2-61e6-48fa-b05a-958aa17d4e2b",
-    "deezerId": null
+    "deezerId": 959146
   },
   {
     "title": "Little Woman",
@@ -14057,17 +14057,17 @@
     "chartYear": 1970,
     "chartRank": 42,
     "mbid": "45249142-8125-45ce-92ad-4afec5a040fa",
-    "deezerId": null
+    "deezerId": 3131377
   },
   {
     "title": "Good Morning Starshine",
     "artist": "Oliver",
     "year": 1969,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1969,
     "chartRank": 43,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "5be92446-ca3a-46ce-b89d-72c71a31b9e3",
+    "deezerId": 984761222
   },
   {
     "title": "These Eyes",
@@ -14723,11 +14723,11 @@
     "title": "Ain't No Mountain High Enough",
     "artist": "Diana Ross",
     "year": 1970,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1970,
     "chartRank": 6,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "f51b66ce-b562-4fef-9298-4699ab97ae19",
+    "deezerId": 95231350
   },
   {
     "title": "I'll Be There",
@@ -14736,8 +14736,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1970,
     "chartRank": 7,
-    "mbid": "56145b57-f613-471e-b873-40a1c75c89aa",
-    "deezerId": null
+    "mbid": "3f119b17-238c-4b0d-b44b-3cd123b79418",
+    "deezerId": 4188290
   },
   {
     "title": "Get Ready",
@@ -14767,7 +14767,7 @@
     "chartYear": 1970,
     "chartRank": 10,
     "mbid": "813f4628-ff72-42e4-8484-ee60a093ca90",
-    "deezerId": null
+    "deezerId": 12164291
   },
   {
     "title": "Knock Three Times",
@@ -14777,7 +14777,7 @@
     "chartYear": 1971,
     "chartRank": 10,
     "mbid": "6cbb0cb1-0f12-4c8b-98db-89c6d220ce36",
-    "deezerId": null
+    "deezerId": 861047
   },
   {
     "title": "Mama Told Me (Not to Come)",
@@ -14787,7 +14787,7 @@
     "chartYear": 1970,
     "chartRank": 11,
     "mbid": "1f568049-4f03-4579-9627-f4b926b7c654",
-    "deezerId": null
+    "deezerId": 63290522
   },
   {
     "title": "Me and Bobby McGee",
@@ -14817,7 +14817,7 @@
     "chartYear": 1970,
     "chartRank": 13,
     "mbid": "cda29a96-9523-460d-bcfe-4b46f6f0a53a",
-    "deezerId": null
+    "deezerId": 675093
   },
   {
     "title": "Hitchin' a Ride",
@@ -14837,7 +14837,7 @@
     "chartYear": 1970,
     "chartRank": 15,
     "mbid": "da364084-570d-46c6-b053-f3644cac7cf0",
-    "deezerId": null
+    "deezerId": 920082
   },
   {
     "title": "The Love You Save",
@@ -14847,7 +14847,7 @@
     "chartYear": 1970,
     "chartRank": 16,
     "mbid": "5830cc6b-3b54-4ac5-aa87-8dbdd2ddc958",
-    "deezerId": null
+    "deezerId": 920084
   },
   {
     "title": "Cracklin' Rosie",
@@ -14857,7 +14857,7 @@
     "chartYear": 1970,
     "chartRank": 17,
     "mbid": "90ead349-5c14-4a59-9725-1998c51ce73e",
-    "deezerId": null
+    "deezerId": 529949701
   },
   {
     "title": "Candida",
@@ -14877,7 +14877,7 @@
     "chartYear": 1970,
     "chartRank": 20,
     "mbid": "c525937e-f279-4249-88de-f85c432727fc",
-    "deezerId": null
+    "deezerId": 143047952
   },
   {
     "title": "O-o-h Child",
@@ -15757,27 +15757,27 @@
     "chartYear": 1971,
     "chartRank": 7,
     "mbid": "17791cd4-6c05-4278-b85a-9ebd7db55ea9",
-    "deezerId": null
+    "deezerId": 471582392
   },
   {
     "title": "Take Me Home, Country Roads",
     "artist": "John Denver",
     "year": 1971,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1971,
     "chartRank": 8,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "6b03f838-c649-4be6-88f7-35977f6545dd",
+    "deezerId": 82697686
   },
   {
     "title": "Just My Imagination (Running Away with Me)",
     "artist": "The Temptations",
     "year": 1971,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1971,
     "chartRank": 9,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "24141167-df10-49bb-a907-a2a7b35c9faf",
+    "deezerId": 2499099
   },
   {
     "title": "Tired of Being Alone",
@@ -15796,8 +15796,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1971,
     "chartRank": 13,
-    "mbid": "f04e0014-9831-4470-9cf4-80ffe8e32297",
-    "deezerId": null
+    "mbid": "0de1122c-ca33-4576-a837-f479498d90c8",
+    "deezerId": 1260723282
   },
   {
     "title": "Smiling Faces Sometimes",
@@ -15823,11 +15823,11 @@
     "title": "Brown Sugar",
     "artist": "The Rolling Stones",
     "year": 1971,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1971,
     "chartRank": 16,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "8d2338a2-4acc-4d99-b2a7-1151f428cab6",
+    "deezerId": 4125582
   },
   {
     "title": "You've Got a Friend",
@@ -15837,7 +15837,7 @@
     "chartYear": 1971,
     "chartRank": 17,
     "mbid": "9e6b5de9-2b4a-4cd1-bb71-a17238b43b00",
-    "deezerId": null
+    "deezerId": 2794416
   },
   {
     "title": "Mr. Big Stuff",
@@ -15877,7 +15877,7 @@
     "chartYear": 1971,
     "chartRank": 20,
     "mbid": "e66526df-8d67-448e-8d4b-28baac82d71f",
-    "deezerId": null
+    "deezerId": 3507788
   },
   {
     "title": "What's Going On",
@@ -15917,7 +15917,7 @@
     "chartYear": 1972,
     "chartRank": 22,
     "mbid": "20a859a6-37e4-4a1b-b62a-d78e7b71aa88",
-    "deezerId": null
+    "deezerId": 118994416
   },
   {
     "title": "Ain't No Sunshine",
@@ -15927,7 +15927,7 @@
     "chartYear": 1971,
     "chartRank": 23,
     "mbid": "3442b706-8cef-4053-ab3e-dca0283c41dc",
-    "deezerId": null
+    "deezerId": 2312047
   },
   {
     "title": "Slippin' into Darkness",
@@ -15946,8 +15946,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1971,
     "chartRank": 25,
-    "mbid": "2fb5f013-77dd-4532-9f5c-10bcac7173c2",
-    "deezerId": null
+    "mbid": "4047089e-14ea-41d3-b482-522aa4b814f0",
+    "deezerId": 549298332
   },
   {
     "title": "How Do You Do",
@@ -15977,7 +15977,7 @@
     "chartYear": 1972,
     "chartRank": 27,
     "mbid": "90141c46-0f99-4435-a90a-af666d6599b7",
-    "deezerId": null
+    "deezerId": 727720
   },
   {
     "title": "Superstar",
@@ -16797,7 +16797,7 @@
     "chartYear": 1973,
     "chartRank": 6,
     "mbid": "94c637f4-8917-4f69-ba45-cfed97e9e14a",
-    "deezerId": null
+    "deezerId": 531949
   },
   {
     "title": "Lean on Me",
@@ -16807,7 +16807,7 @@
     "chartYear": 1972,
     "chartRank": 7,
     "mbid": "21c22022-3d36-4e6b-a542-5d964297491a",
-    "deezerId": null
+    "deezerId": 7634915
   },
   {
     "title": "Baby, Don't Get Hooked on Me",
@@ -16817,7 +16817,7 @@
     "chartYear": 1972,
     "chartRank": 8,
     "mbid": "4dceda1a-1464-4832-84be-7c0c175e061f",
-    "deezerId": null
+    "deezerId": 1132887
   },
   {
     "title": "Will It Go Round in Circles",
@@ -16827,7 +16827,7 @@
     "chartYear": 1973,
     "chartRank": 8,
     "mbid": "c3cb4a4a-6b73-422b-9ca9-b9a1441cd0df",
-    "deezerId": null
+    "deezerId": 7292567
   },
   {
     "title": "Brand New Key",
@@ -16847,7 +16847,7 @@
     "chartYear": 1973,
     "chartRank": 9,
     "mbid": "27089139-92c0-499c-9597-c66c9b11bdfd",
-    "deezerId": null
+    "deezerId": 766109
   },
   {
     "title": "Daddy Don't You Walk So Fast",
@@ -16857,7 +16857,7 @@
     "chartYear": 1972,
     "chartRank": 10,
     "mbid": "4cccde88-adc5-44f0-a135-dc57243f006f",
-    "deezerId": null
+    "deezerId": 705002542
   },
   {
     "title": "Let's Stay Together",
@@ -16886,8 +16886,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1972,
     "chartRank": 12,
-    "mbid": "48afc0dc-76af-4773-bf7b-7e370017111b",
-    "deezerId": null
+    "mbid": "accad857-6d36-410a-8859-3e456a08b1ac",
+    "deezerId": 6917710
   },
   {
     "title": "Playground in My Mind",
@@ -16953,11 +16953,11 @@
     "title": "Heart of Gold",
     "artist": "Neil Young",
     "year": 1972,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1972,
     "chartRank": 17,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "e832b734-62e9-4eb7-84f8-0951f39e719e",
+    "deezerId": 3826694
   },
   {
     "title": "I'll Take You There",
@@ -16966,8 +16966,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1972,
     "chartRank": 19,
-    "mbid": "2dfce7f2-e15d-4f10-b9ec-2ede21984f22",
-    "deezerId": null
+    "mbid": "ea535500-4c34-4706-af9b-4e7d86ac316b",
+    "deezerId": 1089521
   },
   {
     "title": "You Are the Sunshine of My Life",
@@ -17007,7 +17007,7 @@
     "chartYear": 1973,
     "chartRank": 25,
     "mbid": "a92a5ad2-bd91-47d9-9be5-85adb666ed08",
-    "deezerId": null
+    "deezerId": 1821370937
   },
   {
     "title": "Song Sung Blue",
@@ -17937,7 +17937,7 @@
     "chartYear": 1974,
     "chartRank": 12,
     "mbid": "afd7680d-0df0-41d8-8d80-318090702f90",
-    "deezerId": null
+    "deezerId": 646290872
   },
   {
     "title": "Brother Louie",
@@ -17946,8 +17946,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1973,
     "chartRank": 13,
-    "mbid": "897771b6-b752-420c-8387-43c220c71fce",
-    "deezerId": null
+    "mbid": "c2315276-95fd-4d1e-87e7-5d2480077506",
+    "deezerId": 82644586
   },
   {
     "title": "Delta Dawn",
@@ -17957,7 +17957,7 @@
     "chartYear": 1973,
     "chartRank": 14,
     "mbid": "4e640c1c-465c-4600-8d35-3198c935ba68",
-    "deezerId": null
+    "deezerId": 3127731
   },
   {
     "title": "You Make Me Feel Brand New",
@@ -17983,11 +17983,11 @@
     "title": "Drift Away",
     "artist": "Dobie Gray",
     "year": 1973,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1973,
     "chartRank": 17,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "c29c656c-0405-4d6a-85e7-2f5d346e3d45",
+    "deezerId": 620021372
   },
   {
     "title": "Rock On",
@@ -18063,21 +18063,21 @@
     "title": "We're an American Band",
     "artist": "Grand Funk Railroad",
     "year": 1973,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1973,
     "chartRank": 23,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "06a4fd43-4994-4a51-945a-f405cabb99bb",
+    "deezerId": 3137535
   },
   {
     "title": "Right Place Wrong Time",
     "artist": "Dr. John",
     "year": 1973,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1973,
     "chartRank": 24,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "eb11f93a-71fa-4db6-9c1d-36eb56343f0f",
+    "deezerId": 724461
   },
   {
     "title": "Superstition",
@@ -18096,8 +18096,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1974,
     "chartRank": 26,
-    "mbid": "3ba796a0-538d-4876-a3e7-2b4d484135aa",
-    "deezerId": null
+    "mbid": "d5766039-e1f0-4b75-bb20-00a506cb209c",
+    "deezerId": 3838105221
   },
   {
     "title": "Loves Me Like a Rock",
@@ -18907,7 +18907,7 @@
     "chartYear": 1974,
     "chartRank": 11,
     "mbid": "a3afb5f4-d189-482c-9608-8913396148e7",
-    "deezerId": null
+    "deezerId": 1234243782
   },
   {
     "title": "Midnight at the Oasis",
@@ -18926,8 +18926,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1975,
     "chartRank": 13,
-    "mbid": "d32625a2-0f25-45a2-a478-e17790c4d0e0",
-    "deezerId": null
+    "mbid": "4114f168-a828-4400-8829-029ce6ea7989",
+    "deezerId": 570036202
   },
   {
     "title": "Show and Tell",
@@ -18946,8 +18946,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1974,
     "chartRank": 16,
-    "mbid": "71a206c7-fe30-4c1b-81b1-e08b5bbcb3c7",
-    "deezerId": null
+    "mbid": "34ac48c0-ec90-43bd-891d-627df5c732d2",
+    "deezerId": 1762508367
   },
   {
     "title": "Sunshine on My Shoulders",
@@ -18977,7 +18977,7 @@
     "chartYear": 1974,
     "chartRank": 21,
     "mbid": "36e51db7-5733-49b5-8fd4-2e7d77dd1363",
-    "deezerId": null
+    "deezerId": 881808882
   },
   {
     "title": "The Most Beautiful Girl",
@@ -19007,7 +19007,7 @@
     "chartYear": 1974,
     "chartRank": 25,
     "mbid": "b2ca7aff-f26d-4648-b154-db04ec4e62cd",
-    "deezerId": null
+    "deezerId": 659836372
   },
   {
     "title": "Boogie On Reggae Woman",
@@ -19016,8 +19016,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1975,
     "chartRank": 26,
-    "mbid": "34ac823d-d57b-4953-832e-a57f6c46ea44",
-    "deezerId": null
+    "mbid": "72ae72fc-bb0d-4aa3-a59c-d4bd2d48cb7a",
+    "deezerId": 2303802
   },
   {
     "title": "Sundown",
@@ -19037,7 +19037,7 @@
     "chartYear": 1974,
     "chartRank": 28,
     "mbid": "b8dfdb4d-0c0b-4961-a038-ad7554219574",
-    "deezerId": null
+    "deezerId": 3313506
   },
   {
     "title": "Rock Me Gently",
@@ -19047,7 +19047,7 @@
     "chartYear": 1974,
     "chartRank": 29,
     "mbid": "76eff608-b3ae-47aa-8f94-298c6def02f3",
-    "deezerId": null
+    "deezerId": 3140436
   },
   {
     "title": "Boogie Down",
@@ -19066,8 +19066,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1975,
     "chartRank": 30,
-    "mbid": "ffe750a3-f206-449d-bde2-ece7ac9b9e6b",
-    "deezerId": null
+    "mbid": "30f30c05-cb81-4b6b-8f1a-e393ee9ae034",
+    "deezerId": 41265291
   },
   {
     "title": "If You Love Me (Let Me Know)",
@@ -19087,7 +19087,7 @@
     "chartYear": 1975,
     "chartRank": 32,
     "mbid": "3afab611-173b-402b-9f3e-5283dbf66d50",
-    "deezerId": null
+    "deezerId": 4832638
   },
   {
     "title": "Feel Like Makin' Love",
@@ -19126,8 +19126,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1975,
     "chartRank": 36,
-    "mbid": "7d98cc9b-a391-403f-a884-456dd0edb7a9",
-    "deezerId": null
+    "mbid": "d7c3e239-bc80-48c7-b410-b4e7955fc531",
+    "deezerId": 548250
   },
   {
     "title": "Nothing from Nothing",
@@ -19136,8 +19136,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1974,
     "chartRank": 37,
-    "mbid": "f302372b-b75f-47a3-916d-f92b5c7486dc",
-    "deezerId": null
+    "mbid": "31a13db7-b0c4-4b05-b96e-c5140cfdf665",
+    "deezerId": 115025002
   },
   {
     "title": "Have You Never Been Mellow",
@@ -19177,7 +19177,7 @@
     "chartYear": 1975,
     "chartRank": 39,
     "mbid": "f1a3e274-a2d5-4b43-86c4-3736757236a9",
-    "deezerId": null
+    "deezerId": 4118799
   },
   {
     "title": "The Joker",
@@ -19897,7 +19897,7 @@
     "chartYear": 1976,
     "chartRank": 8,
     "mbid": "f00a57a5-0c6b-47ba-933b-5729d92e6140",
-    "deezerId": null
+    "deezerId": 6581143
   },
   {
     "title": "Love Is Alive",
@@ -19907,7 +19907,7 @@
     "chartYear": 1976,
     "chartRank": 9,
     "mbid": "8223fee8-3e2a-49b2-b56b-b426794ec716",
-    "deezerId": null
+    "deezerId": 3821955
   },
   {
     "title": "One of These Nights",
@@ -19916,8 +19916,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1975,
     "chartRank": 10,
-    "mbid": "d6af2df3-6a35-4359-ab36-e878cca9675a",
-    "deezerId": null
+    "mbid": "bab67eb0-c46a-494c-9894-602595c303bf",
+    "deezerId": 68094422
   },
   {
     "title": "Thank God I'm a Country Boy",
@@ -19937,17 +19937,17 @@
     "chartYear": 1976,
     "chartRank": 11,
     "mbid": "9dad909a-84ab-4528-bdc0-23375708c180",
-    "deezerId": null
+    "deezerId": 576183
   },
   {
     "title": "Jive Talkin'",
     "artist": "Bee Gees",
     "year": 1975,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1975,
     "chartRank": 12,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "d4734031-c35b-4994-811d-da5d299e1f6e",
+    "deezerId": 139138745
   },
   {
     "title": "I Write the Songs",
@@ -19963,11 +19963,11 @@
     "title": "Lovin' You",
     "artist": "Minnie Riperton",
     "year": 1975,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1975,
     "chartRank": 14,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "898102d2-e9bd-4fa5-aaab-11f9ba15ad63",
+    "deezerId": 3126330
   },
   {
     "title": "Kung Fu Fighting",
@@ -20017,7 +20017,7 @@
     "chartYear": 1975,
     "chartRank": 18,
     "mbid": "c8e0a833-b8b8-4b8a-b2b1-798da9149183",
-    "deezerId": null
+    "deezerId": 750109232
   },
   {
     "title": "He Don't Love You (Like I Love You)",
@@ -20047,7 +20047,7 @@
     "chartYear": 1976,
     "chartRank": 20,
     "mbid": "475f28a7-bae7-46aa-811a-e695b549ba64",
-    "deezerId": null
+    "deezerId": 5522034
   },
   {
     "title": "Pick Up the Pieces",
@@ -20076,8 +20076,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1976,
     "chartRank": 22,
-    "mbid": "0f751e7c-2d19-4f72-95b6-92528d045ba0",
-    "deezerId": null
+    "mbid": "3a0e22be-2ad1-49ca-8de9-744388ebc033",
+    "deezerId": 3851859
   },
   {
     "title": "Lady Marmalade",
@@ -20097,7 +20097,7 @@
     "chartYear": 1975,
     "chartRank": 24,
     "mbid": "8a75474a-e267-4fe1-a71e-8e7c04d34a01",
-    "deezerId": null
+    "deezerId": 143043356
   },
   {
     "title": "Love Won't Let Me Wait",
@@ -20986,8 +20986,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1976,
     "chartRank": 6,
-    "mbid": "025609a7-ae9d-45d2-9aa8-53e7db13661d",
-    "deezerId": null
+    "mbid": "80f8523a-72c8-430b-8230-74fb4078906e",
+    "deezerId": 608701
   },
   {
     "title": "I Like Dreamin'",
@@ -21016,8 +21016,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1976,
     "chartRank": 10,
-    "mbid": "74b037d4-882d-4388-8575-3ec5fda0958d",
-    "deezerId": null
+    "mbid": "a744b77a-4b34-430d-a3a4-e9eebe251996",
+    "deezerId": 405255122
   },
   {
     "title": "Torn Between Two Lovers",
@@ -21037,7 +21037,7 @@
     "chartYear": 1976,
     "chartRank": 12,
     "mbid": "c9ea0f7e-1d5f-4e12-863f-2beddeb32a13",
-    "deezerId": null
+    "deezerId": 3451646191
   },
   {
     "title": "Dancing Queen",
@@ -21047,7 +21047,7 @@
     "chartYear": 1977,
     "chartRank": 12,
     "mbid": "a502f559-f70c-4e0d-a5e5-e0cc319d0bd7",
-    "deezerId": null
+    "deezerId": 884025
   },
   {
     "title": "Fly, Robin, Fly",
@@ -21077,7 +21077,7 @@
     "chartYear": 1977,
     "chartRank": 15,
     "mbid": "103ecfd9-6b27-4b38-92e8-6ba35a50f5d6",
-    "deezerId": null
+    "deezerId": 112660452
   },
   {
     "title": "Get Closer",
@@ -21107,7 +21107,7 @@
     "chartYear": 1977,
     "chartRank": 18,
     "mbid": "05b6bdda-3219-4756-af17-d0d9cdcdb104",
-    "deezerId": null
+    "deezerId": 676011612
   },
   {
     "title": "Misty Blue",
@@ -21137,7 +21137,7 @@
     "chartYear": 1976,
     "chartRank": 21,
     "mbid": "230083f4-f768-4c4e-a899-18a4a6371ccd",
-    "deezerId": null
+    "deezerId": 3919664
   },
   {
     "title": "Gonna Fly Now",
@@ -21147,7 +21147,7 @@
     "chartYear": 1977,
     "chartRank": 21,
     "mbid": "98aa9630-1e89-42dd-be8c-81a3aa1c78c4",
-    "deezerId": null
+    "deezerId": 99127208
   },
   {
     "title": "Love Hurts",
@@ -21197,7 +21197,7 @@
     "chartYear": 1977,
     "chartRank": 25,
     "mbid": "310d81ba-3918-4d14-97fe-e0d7ece2b48a",
-    "deezerId": null
+    "deezerId": 725641762
   },
   {
     "title": "(Shake, Shake, Shake) Shake Your Booty",
@@ -21907,7 +21907,7 @@
     "chartYear": 1978,
     "chartRank": 7,
     "mbid": "e01e5c3e-e3d1-4e9c-b26f-b497b16ee5bb",
-    "deezerId": null
+    "deezerId": 665411512
   },
   {
     "title": "(Your Love Has Lifted Me) Higher and Higher",
@@ -21917,7 +21917,7 @@
     "chartYear": 1977,
     "chartRank": 8,
     "mbid": "b0a6b81a-2025-4fad-9e51-018d9a1187a1",
-    "deezerId": null
+    "deezerId": 642698062
   },
   {
     "title": "(Love Is) Thicker Than Water",
@@ -21927,7 +21927,7 @@
     "chartYear": 1978,
     "chartRank": 8,
     "mbid": "22f12856-977f-4033-82a0-5eaa2546344d",
-    "deezerId": null
+    "deezerId": 483554592
   },
   {
     "title": "Undercover Angel",
@@ -21936,8 +21936,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1977,
     "chartRank": 9,
-    "mbid": "318d65b1-9c96-4281-9293-b842ed9f97f9",
-    "deezerId": null
+    "mbid": "603bd837-527d-4634-8652-590107d3534c",
+    "deezerId": 3313038361
   },
   {
     "title": "I'm Your Boogie Man",
@@ -21957,7 +21957,7 @@
     "chartYear": 1978,
     "chartRank": 12,
     "mbid": "31f2b3d9-19fb-431a-85b9-616a09be3eaa",
-    "deezerId": null
+    "deezerId": 75486907
   },
   {
     "title": "You Make Me Feel Like Dancing",
@@ -21973,11 +21973,11 @@
     "title": "Margaritaville",
     "artist": "Jimmy Buffett",
     "year": 1977,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1977,
     "chartRank": 14,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "4679c870-3d32-4009-bca1-7088a86f00ba",
+    "deezerId": 2491667
   },
   {
     "title": "Emotion",
@@ -21987,7 +21987,7 @@
     "chartYear": 1978,
     "chartRank": 14,
     "mbid": "4012a80b-8fd4-4f3a-af9a-7ca527ea785e",
-    "deezerId": null
+    "deezerId": 130324858
   },
   {
     "title": "Whatcha Gonna Do?",
@@ -21997,7 +21997,7 @@
     "chartYear": 1977,
     "chartRank": 16,
     "mbid": "61e13cf7-4751-4ec4-8ff0-2fd164450882",
-    "deezerId": null
+    "deezerId": 1762612097
   },
   {
     "title": "Do You Wanna Make Love",
@@ -22017,7 +22017,7 @@
     "chartYear": 1978,
     "chartRank": 17,
     "mbid": "489e88ff-323a-449f-8dd2-f7521691880a",
-    "deezerId": null
+    "deezerId": 988630
   },
   {
     "title": "If I Can't Have You",
@@ -22027,7 +22027,7 @@
     "chartYear": 1978,
     "chartRank": 19,
     "mbid": "81490a96-2177-4da2-abc4-276d9a076ebe",
-    "deezerId": null
+    "deezerId": 2780958001
   },
   {
     "title": "Got to Give It Up",
@@ -22966,8 +22966,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1978,
     "chartRank": 10,
-    "mbid": "3de8557c-6ef7-478f-ac39-fcf82f013651",
-    "deezerId": null
+    "mbid": "37d2362d-9738-4e0a-84ac-93593cbf35bd",
+    "deezerId": 918065
   },
   {
     "title": "Grease",
@@ -22986,8 +22986,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1979,
     "chartRank": 12,
-    "mbid": "b2c85b43-49a5-42f9-a86b-90bf964fd9c2",
-    "deezerId": null
+    "mbid": "c1ffcae7-e7fa-47d3-8d8a-90a941197a4e",
+    "deezerId": 487042412
   },
   {
     "title": "You're the One That I Want",
@@ -22997,7 +22997,7 @@
     "chartYear": 1978,
     "chartRank": 13,
     "mbid": "6be10f3e-e2c3-45d6-b75b-ef1ef64c94d8",
-    "deezerId": null
+    "deezerId": 781563062
   },
   {
     "title": "Lay Down Sally",
@@ -23013,11 +23013,11 @@
     "title": "Miss You",
     "artist": "The Rolling Stones",
     "year": 1978,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1978,
     "chartRank": 16,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "a4cfa060-a5e3-47a2-baf8-d52aeb975cf7",
+    "deezerId": 14458087
   },
   {
     "title": "A Little More Love",
@@ -23027,7 +23027,7 @@
     "chartYear": 1979,
     "chartRank": 17,
     "mbid": "94ad7264-054e-4c92-9bd7-9dd54ab4fd3b",
-    "deezerId": null
+    "deezerId": 3838467961
   },
   {
     "title": "With a Little Luck",
@@ -23046,8 +23046,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1979,
     "chartRank": 19,
-    "mbid": "e1925c62-daf7-4973-91b9-ee3413da9f85",
-    "deezerId": null
+    "mbid": "6764b741-fc9f-40d5-bbd5-d0ed0982ef07",
+    "deezerId": 4688887
   },
   {
     "title": "Feels So Good",
@@ -23086,8 +23086,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1979,
     "chartRank": 25,
-    "mbid": "cfbac956-61e7-4f23-b64b-7c93b0f710da",
-    "deezerId": null
+    "mbid": "744fbc6a-f0b3-4662-9e3a-94d3a30d9d66",
+    "deezerId": 611491
   },
   {
     "title": "Baker Street",
@@ -23096,8 +23096,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1978,
     "chartRank": 26,
-    "mbid": "090e05ca-3a4d-4e06-a0e2-451dd6ad0029",
-    "deezerId": null
+    "mbid": "9235e22e-afbd-48f7-b329-21dae6da2810",
+    "deezerId": 3169189
   },
   {
     "title": "Don't Cry Out Loud",
@@ -23113,21 +23113,21 @@
     "title": "Can't Smile Without You",
     "artist": "Barry Manilow",
     "year": 1978,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1978,
     "chartRank": 27,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "b96f1da4-7d33-441a-b36c-806a497d1fa5",
+    "deezerId": 548263
   },
   {
     "title": "Too Much, Too Little, Too Late",
     "artist": "Johnny Mathis & Deniece Williams",
     "year": 1978,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1978,
     "chartRank": 28,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "2bf57c36-2e32-4cc6-b8f8-f23da5ea0c55",
+    "deezerId": 585873
   },
   {
     "title": "My Life",
@@ -23876,8 +23876,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1980,
     "chartRank": 6,
-    "mbid": "d65d86f5-b527-4ceb-98f2-4480194e18d2",
-    "deezerId": null
+    "mbid": "fd125370-5ac9-45eb-86ad-ab99e258404b",
+    "deezerId": 4091936691
   },
   {
     "title": "Hot Stuff",
@@ -23886,8 +23886,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1979,
     "chartRank": 7,
-    "mbid": "2abc1ffe-481a-4b1d-8d49-dfbfb4c2b31a",
-    "deezerId": null
+    "mbid": "8494b7ae-0629-45f7-ace0-ab5fc7c3af77",
+    "deezerId": 1175278
   },
   {
     "title": "Y.M.C.A.",
@@ -23917,7 +23917,7 @@
     "chartYear": 1979,
     "chartRank": 10,
     "mbid": "43879e37-7f8b-447b-a71c-6ed8eda2a21a",
-    "deezerId": null
+    "deezerId": 5522014
   },
   {
     "title": "The Rose",
@@ -23927,7 +23927,7 @@
     "chartYear": 1980,
     "chartRank": 10,
     "mbid": "2cfb9d2e-be00-4317-9542-406116f13381",
-    "deezerId": null
+    "deezerId": 4736197
   },
   {
     "title": "Too Much Heaven",
@@ -23946,8 +23946,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1980,
     "chartRank": 11,
-    "mbid": "47a3b817-2666-48a5-882a-ae0b8750dc35",
-    "deezerId": null
+    "mbid": "71709e8c-fb6b-48c6-972a-851ecff0a60d",
+    "deezerId": 1760979217
   },
   {
     "title": "When You're in Love with a Beautiful Woman",
@@ -23996,8 +23996,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1979,
     "chartRank": 16,
-    "mbid": "c254c246-f7e8-4d0e-8a42-35617a040c31",
-    "deezerId": null
+    "mbid": "8434805e-4982-4e10-941f-ae27d3730c09",
+    "deezerId": 350027801
   },
   {
     "title": "Ride Like the Wind",
@@ -24036,8 +24036,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1980,
     "chartRank": 20,
-    "mbid": "8002b960-a3df-4679-8e23-551d277ca3f9",
-    "deezerId": null
+    "mbid": "526534f0-f805-4055-86c5-49800d40eb95",
+    "deezerId": 61286642
   },
   {
     "title": "You Don't Bring Me Flowers",
@@ -24076,8 +24076,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1980,
     "chartRank": 23,
-    "mbid": "b2b47bdc-0346-4bbc-8f26-4a07909744d7",
-    "deezerId": null
+    "mbid": "17a9b6b6-2c3e-4260-9f9d-d40a09dfb889",
+    "deezerId": 918123
   },
   {
     "title": "Lead Me On",
@@ -24096,8 +24096,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1980,
     "chartRank": 25,
-    "mbid": "dd238933-b077-4272-940d-cfb35fd9013d",
-    "deezerId": null
+    "mbid": "382f4e69-edb4-42b2-9e7a-e5d75e79bdfe",
+    "deezerId": 3444583
   },
   {
     "title": "The Logical Song",
@@ -24963,11 +24963,11 @@
     "title": "Coming Up",
     "artist": "Paul McCartney",
     "year": 1980,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1980,
     "chartRank": 7,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "cd7dc999-5ca1-41a2-a5b0-8271ab36d87e",
+    "deezerId": 640962932
   },
   {
     "title": "Kiss on My List",
@@ -24976,8 +24976,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1981,
     "chartRank": 7,
-    "mbid": "4db6d5f3-82c0-43c5-a17c-af6ee7630b5d",
-    "deezerId": null
+    "mbid": "4d8c74f9-4b81-423c-8822-f40ecaa4f940",
+    "deezerId": 545936
   },
   {
     "title": "Funkytown",
@@ -24996,8 +24996,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1980,
     "chartRank": 9,
-    "mbid": "034a6f7b-b9f9-4c86-b8c8-0d439ce55221",
-    "deezerId": null
+    "mbid": "7eb9d210-ebbd-4aad-8b0a-5b3b6e182564",
+    "deezerId": 625836
   },
   {
     "title": "Cars",
@@ -25017,7 +25017,7 @@
     "chartYear": 1981,
     "chartRank": 12,
     "mbid": "976b3e7f-3506-41e9-bfb1-78aa7a8f17ff",
-    "deezerId": null
+    "deezerId": 4832669
   },
   {
     "title": "Cruisin",
@@ -25053,11 +25053,11 @@
     "title": "Upside Down",
     "artist": "Diana Ross",
     "year": 1980,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1980,
     "chartRank": 18,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "9c3b4e20-7ba0-4f38-91b1-3e45a6745352",
+    "deezerId": 4677572
   },
   {
     "title": "Just the Two of Us",
@@ -25106,8 +25106,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1980,
     "chartRank": 22,
-    "mbid": "b0bfc2a5-3293-4769-950e-af0323302bf0",
-    "deezerId": null
+    "mbid": "6052013b-988c-461e-8719-d75b32ef00c1",
+    "deezerId": 1027373
   },
   {
     "title": "Sukiyaki",
@@ -25126,8 +25126,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1981,
     "chartRank": 23,
-    "mbid": "7b25f6bc-ca9a-4b99-a054-d9fca356b0b2",
-    "deezerId": null
+    "mbid": "e097e9bc-8263-4e24-a6e6-8fa326b506c3",
+    "deezerId": 884035
   },
   {
     "title": "Yes, I'm Ready",
@@ -25147,7 +25147,7 @@
     "chartYear": 1980,
     "chartRank": 26,
     "mbid": "12dbcc94-8007-4ba8-89f7-dcb33c313b2f",
-    "deezerId": null
+    "deezerId": 671871032
   },
   {
     "title": "Biggest Part of Me",
@@ -25197,7 +25197,7 @@
     "chartYear": 1981,
     "chartRank": 30,
     "mbid": "dc36105f-57a3-44bb-a05d-b97c27964c4c",
-    "deezerId": null
+    "deezerId": 2289256
   },
   {
     "title": "Don't Fall in Love with a Dreamer",
@@ -25207,7 +25207,7 @@
     "chartYear": 1980,
     "chartRank": 31,
     "mbid": "db0eb5f6-cf3b-4538-b9cd-d5ef981c7d08",
-    "deezerId": null
+    "deezerId": 555636542
   },
   {
     "title": "Ladies' Night",
@@ -25226,8 +25226,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1981,
     "chartRank": 35,
-    "mbid": "466de330-00ff-4a56-84ca-d51a171da11b",
-    "deezerId": null
+    "mbid": "ec82eada-62ad-4ea1-891a-c4be7a450cc5",
+    "deezerId": 625398
   },
   {
     "title": "Too Hot",
@@ -25947,7 +25947,7 @@
     "chartYear": 1982,
     "chartRank": 6,
     "mbid": "9f1a6ddb-d896-4936-9864-bcfe115c9a7d",
-    "deezerId": null
+    "deezerId": 3092940
   },
   {
     "title": "I Love a Rainy Night",
@@ -26016,8 +26016,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1982,
     "chartRank": 13,
-    "mbid": "99c9a9f5-59aa-4663-a902-15f60b818251",
-    "deezerId": null
+    "mbid": "83705a74-561f-4b53-876d-cd128e64e449",
+    "deezerId": 25036181
   },
   {
     "title": "Queen of Hearts",
@@ -26047,7 +26047,7 @@
     "chartYear": 1982,
     "chartRank": 15,
     "mbid": "1f6eaa57-5298-4c8b-94cd-1903f40f34c3",
-    "deezerId": null
+    "deezerId": 569559
   },
   {
     "title": "A Woman Needs Love (Just Like You Do)",
@@ -26093,11 +26093,11 @@
     "title": "Slow Hand",
     "artist": "The Pointer Sisters",
     "year": 1981,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1981,
     "chartRank": 19,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "313edafb-b9b8-49c7-acc4-e323ee842c96",
+    "deezerId": 426639562
   },
   {
     "title": "Woman",
@@ -26147,7 +26147,7 @@
     "chartYear": 1981,
     "chartRank": 25,
     "mbid": "54def520-333d-4a26-bb8d-8ea623482141",
-    "deezerId": null
+    "deezerId": 3127743
   },
   {
     "title": "We Got the Beat",
@@ -26156,8 +26156,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1982,
     "chartRank": 25,
-    "mbid": "a018b4e6-7420-45ad-b97a-e05c4fdc1924",
-    "deezerId": null
+    "mbid": "eb4464d7-e91c-4899-82b5-2f3ffa41e58c",
+    "deezerId": 11233716
   },
   {
     "title": "Love on the Rocks",
@@ -26196,8 +26196,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1981,
     "chartRank": 28,
-    "mbid": "a5c59870-6eb9-4cf4-982b-f0bf44dc580e",
-    "deezerId": null
+    "mbid": "2802bab5-c967-4ac5-a23b-cb9446caa29b",
+    "deezerId": 454843332
   },
   {
     "title": "Sweet Dreams",
@@ -26216,8 +26216,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1982,
     "chartRank": 30,
-    "mbid": "d0d8e9df-9438-479a-8732-36416018905b",
-    "deezerId": null
+    "mbid": "34111948-8e27-4422-8012-2e41980094c1",
+    "deezerId": 72191377
   },
   {
     "title": "Elvira",
@@ -26256,8 +26256,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1982,
     "chartRank": 33,
-    "mbid": "5d5a7efc-44ff-4a52-be59-e0b28282d665",
-    "deezerId": null
+    "mbid": "7b02a5c7-0d6e-494b-b533-ec67e774536b",
+    "deezerId": 27533911
   },
   {
     "title": "Living Inside Myself",
@@ -26277,7 +26277,7 @@
     "chartYear": 1982,
     "chartRank": 34,
     "mbid": "725024b2-4698-4550-9749-a3176c25eb81",
-    "deezerId": null
+    "deezerId": 625672
   },
   {
     "title": "Leader of the Band",
@@ -26977,7 +26977,7 @@
     "chartYear": 1983,
     "chartRank": 7,
     "mbid": "d84143a8-b7fc-4bba-91ff-b354cb3cebfa",
-    "deezerId": null
+    "deezerId": 569561
   },
   {
     "title": "Hurts So Good",
@@ -26993,11 +26993,11 @@
     "title": "Abracadabra",
     "artist": "Steve Miller Band",
     "year": 1982,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1982,
     "chartRank": 9,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "c0dfa075-6172-46ba-8059-4a92443a7bf0",
+    "deezerId": 404237102
   },
   {
     "title": "Hard to Say I'm Sorry",
@@ -27006,8 +27006,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1982,
     "chartRank": 10,
-    "mbid": "75b0810f-cf73-45a7-be54-409e42073142",
-    "deezerId": null
+    "mbid": "928922ee-4d64-4a94-a24d-6a90848d1ce7",
+    "deezerId": 3667365
   },
   {
     "title": "Sweet Dreams (Are Made of This)",
@@ -27043,11 +27043,11 @@
     "title": "Rosanna",
     "artist": "Toto",
     "year": 1982,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1982,
     "chartRank": 14,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "5bfbc273-73f4-42df-971b-8075b0414aae",
+    "deezerId": 1079628
   },
   {
     "title": "Shame on the Moon",
@@ -27057,7 +27057,7 @@
     "chartYear": 1983,
     "chartRank": 14,
     "mbid": "8e2328e5-6690-4afa-80b5-6d35845d7122",
-    "deezerId": null
+    "deezerId": 639379502
   },
   {
     "title": "You Should Hear How She Talks About You",
@@ -27067,17 +27067,17 @@
     "chartYear": 1982,
     "chartRank": 18,
     "mbid": "37d69c44-2db4-40bc-94a3-0ddc8d48edfd",
-    "deezerId": null
+    "deezerId": 15749764
   },
   {
     "title": "Waiting for a Girl Like You",
     "artist": "Foreigner",
     "year": 1982,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1982,
     "chartRank": 19,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "ce75b716-6e8d-49c5-9914-64d9a97e3ba0",
+    "deezerId": 2814886
   },
   {
     "title": "Don't Talk to Strangers",
@@ -27086,8 +27086,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1982,
     "chartRank": 20,
-    "mbid": "2e44b8d2-d2ac-48a9-87d7-f60ca78d6b87",
-    "deezerId": null
+    "mbid": "0eadea13-90d1-43e8-9344-d63dae5503bf",
+    "deezerId": 15641166
   },
   {
     "title": "I Know There's Something Going On",
@@ -27096,8 +27096,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1983,
     "chartRank": 20,
-    "mbid": "0c078748-fe77-4955-bb9d-f07b22c2c8e5",
-    "deezerId": null
+    "mbid": "abc22d90-34c8-4223-85b4-54bb968ad581",
+    "deezerId": 503337892
   },
   {
     "title": "Always on My Mind",
@@ -27106,8 +27106,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1982,
     "chartRank": 22,
-    "mbid": "29380554-09b1-4e6b-990e-c7140e927f2b",
-    "deezerId": null
+    "mbid": "19d0be93-fdbc-4510-8a5e-c849967a927f",
+    "deezerId": 15178077
   },
   {
     "title": "She Blinded Me with Science",
@@ -27116,18 +27116,18 @@
     "yearSource": "musicbrainz",
     "chartYear": 1983,
     "chartRank": 23,
-    "mbid": "7dbc037e-174a-4fde-b128-844d4b13d6e9",
-    "deezerId": null
+    "mbid": "4c966f63-8f81-4195-bb54-aa85327a9800",
+    "deezerId": 3803080602
   },
   {
     "title": "Let It Whip",
     "artist": "Dazz Band",
     "year": 1982,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1982,
     "chartRank": 24,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "3f075211-5087-4f49-ad28-9b1cd03a4844",
+    "deezerId": 705006132
   },
   {
     "title": "Africa",
@@ -27913,11 +27913,11 @@
     "title": "Total Eclipse of the Heart",
     "artist": "Bonnie Tyler",
     "year": 1983,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1983,
     "chartRank": 6,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "d17185df-a693-4bdf-8b43-9ab55881d1fb",
+    "deezerId": 911445762
   },
   {
     "title": "Jump",
@@ -27926,8 +27926,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1984,
     "chartRank": 6,
-    "mbid": "ea89a7ac-58bb-4617-beac-32809f36900b",
-    "deezerId": null
+    "mbid": "99b75401-cd5c-4678-998d-1c034c94ce24",
+    "deezerId": 97098410
   },
   {
     "title": "Baby, Come to Me",
@@ -27946,8 +27946,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1984,
     "chartRank": 8,
-    "mbid": "af266c6f-4d67-4286-b1b7-41a2ffa63970",
-    "deezerId": null
+    "mbid": "d8bb0832-9bb3-42ef-a861-ae9bf07a2089",
+    "deezerId": 3613215
   },
   {
     "title": "Maniac",
@@ -27956,8 +27956,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1983,
     "chartRank": 9,
-    "mbid": "c15c2f21-e462-43ca-836c-11a3dad946f9",
-    "deezerId": null
+    "mbid": "3d89eb37-4edf-4bc2-b7e5-dfed377bdc17",
+    "deezerId": 540168502
   },
   {
     "title": "Do You Really Want to Hurt Me",
@@ -27986,8 +27986,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1984,
     "chartRank": 12,
-    "mbid": "5d26f7f6-a029-4a5d-9476-c73dd300ad59",
-    "deezerId": null
+    "mbid": "402a1951-02d0-40a4-8ccb-687c1969bd8c",
+    "deezerId": 917931
   },
   {
     "title": "She Works Hard for the Money",
@@ -28006,8 +28006,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1983,
     "chartRank": 16,
-    "mbid": "412ba5d6-4891-453b-b4c1-a9e7cddae4ba",
-    "deezerId": null
+    "mbid": "4707cce4-431e-4dc3-a7e0-510fd30f6abb",
+    "deezerId": 10263271
   },
   {
     "title": "Hungry Like the Wolf",
@@ -28067,7 +28067,7 @@
     "chartYear": 1984,
     "chartRank": 22,
     "mbid": "fa440c67-f13f-482e-ab83-e9d89b32513b",
-    "deezerId": null
+    "deezerId": 569564
   },
   {
     "title": "Little Red Corvette",
@@ -28107,7 +28107,7 @@
     "chartYear": 1984,
     "chartRank": 27,
     "mbid": "b8245723-7691-44b6-a40b-ec4148a7f533",
-    "deezerId": null
+    "deezerId": 5503498
   },
   {
     "title": "Mr. Roboto",
@@ -28116,8 +28116,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1983,
     "chartRank": 28,
-    "mbid": "7c039072-c862-49f9-8bfc-5edf91bf27a9",
-    "deezerId": null
+    "mbid": "1e950eab-884f-4802-b7f7-b2e012acbb85",
+    "deezerId": 952547
   },
   {
     "title": "99 Luftballons",
@@ -28933,11 +28933,11 @@
     "title": "Missing You",
     "artist": "John Waite",
     "year": 1984,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1984,
     "chartRank": 11,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "d60b4791-b0c3-47e4-aede-9456843f4b2c",
+    "deezerId": 4216602
   },
   {
     "title": "Easy Lover",
@@ -28947,7 +28947,7 @@
     "chartYear": 1985,
     "chartRank": 12,
     "mbid": "8aa63029-06e4-4273-8c4f-a2b8a9f61d0b",
-    "deezerId": null
+    "deezerId": 102241218
   },
   {
     "title": "Let's Hear It for the Boy",
@@ -28956,8 +28956,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1984,
     "chartRank": 13,
-    "mbid": "90984b50-a1eb-42df-8db9-1f601ecf767c",
-    "deezerId": null
+    "mbid": "7ebc2426-9419-4555-a865-e665998d76fa",
+    "deezerId": 10357261
   },
   {
     "title": "Dancing in the Dark",
@@ -28966,8 +28966,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1984,
     "chartRank": 14,
-    "mbid": "3ecd975b-f6ef-4f44-b181-6ec822323756",
-    "deezerId": null
+    "mbid": "f2f99a81-9375-4557-8138-2a0a297f5c85",
+    "deezerId": 15586246
   },
   {
     "title": "Girls Just Want to Have Fun",
@@ -28983,11 +28983,11 @@
     "title": "The Reflex",
     "artist": "Duran Duran",
     "year": 1984,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1984,
     "chartRank": 16,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "349aba01-507c-48d0-b94f-65374b3b749f",
+    "deezerId": 3130428
   },
   {
     "title": "Time After Time",
@@ -29037,7 +29037,7 @@
     "chartYear": 1984,
     "chartRank": 21,
     "mbid": "715138fa-c498-4fce-883d-f5e1f6e90797",
-    "deezerId": null
+    "deezerId": 2806039622
   },
   {
     "title": "Hold Me Now",
@@ -29066,8 +29066,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1984,
     "chartRank": 25,
-    "mbid": "da2502d6-35ef-461f-b202-5cf3d5a7b09e",
-    "deezerId": null
+    "mbid": "632a2454-b1b5-4483-b85d-4e5c39e8590d",
+    "deezerId": 538709362
   },
   {
     "title": "Everything She Wants",
@@ -29077,7 +29077,7 @@
     "chartYear": 1985,
     "chartRank": 25,
     "mbid": "2afa442d-33bc-46eb-9df2-4fa2b182cb06",
-    "deezerId": null
+    "deezerId": 15189062
   },
   {
     "title": "Cool It Now",
@@ -29943,11 +29943,11 @@
     "title": "Everybody Wants to Rule the World",
     "artist": "Tears for Fears",
     "year": 1985,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1985,
     "chartRank": 7,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "e4b347be-ecb2-44ff-aaa8-3d4c517d7ea5",
+    "deezerId": 88845911
   },
   {
     "title": "Party All the Time",
@@ -29956,18 +29956,18 @@
     "yearSource": "musicbrainz",
     "chartYear": 1986,
     "chartRank": 7,
-    "mbid": "04718382-4231-4428-8281-b89c1474840c",
-    "deezerId": null
+    "mbid": "bb76979c-c79e-40b2-b752-29407854e1c9",
+    "deezerId": 5318659
   },
   {
     "title": "Money for Nothing",
     "artist": "Dire Straits",
     "year": 1985,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1985,
     "chartRank": 8,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "e6c7f0d6-2b44-435c-b321-2fb6bff9a555",
+    "deezerId": 84885581
   },
   {
     "title": "Burning Heart",
@@ -29976,8 +29976,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1986,
     "chartRank": 8,
-    "mbid": "104e2247-04d4-40e0-b2cc-5baf8d3dd167",
-    "deezerId": null
+    "mbid": "fbf5793d-88ac-4e30-be41-5c6e7e11d0b9",
+    "deezerId": 576423
   },
   {
     "title": "Crazy for You",
@@ -29997,7 +29997,7 @@
     "chartYear": 1986,
     "chartRank": 9,
     "mbid": "8217bbf4-72ff-47d9-a343-7c12e3765722",
-    "deezerId": null
+    "deezerId": 15391704
   },
   {
     "title": "Take On Me",
@@ -30037,7 +30037,7 @@
     "chartYear": 1986,
     "chartRank": 12,
     "mbid": "d8b59ba9-e7d3-4350-8462-2e06389229b5",
-    "deezerId": null
+    "deezerId": 1761583777
   },
   {
     "title": "Can't Fight This Feeling",
@@ -30053,31 +30053,31 @@
     "title": "We Built This City",
     "artist": "Starship",
     "year": 1985,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1985,
     "chartRank": 14,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "7b2a32ca-cac6-4f22-ac44-5c77ad99f155",
+    "deezerId": 602137972
   },
   {
     "title": "The Power of Love",
     "artist": "Huey Lewis and the News",
     "year": 1985,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1985,
     "chartRank": 15,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "1dfbcfbe-26b9-4a88-9c8d-a778f68d0059",
+    "deezerId": 3116046
   },
   {
     "title": "Don't You (Forget About Me)",
     "artist": "Simple Minds",
     "year": 1985,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1985,
     "chartRank": 16,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "afc636a0-372c-46f5-aa2b-0174ebef2cf1",
+    "deezerId": 3158973
   },
   {
     "title": "Cherish",
@@ -30106,8 +30106,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1986,
     "chartRank": 18,
-    "mbid": "449f19ee-d4ad-4cc8-a393-44e463044704",
-    "deezerId": null
+    "mbid": "e91ce103-eb58-4266-87eb-3bb4a56def6f",
+    "deezerId": 365822511
   },
   {
     "title": "The Heat Is On",
@@ -30133,11 +30133,11 @@
     "title": "Shout",
     "artist": "Tears for Fears",
     "year": 1985,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1985,
     "chartRank": 21,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "548f642b-b441-424f-ad35-efb88efd2df4",
+    "deezerId": 88845907
   },
   {
     "title": "Part-Time Lover",
@@ -30916,8 +30916,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1987,
     "chartRank": 10,
-    "mbid": "8ddfc3c4-3956-481e-9ffa-9f8ef75a51ae",
-    "deezerId": null
+    "mbid": "c7e5ae79-b20b-46ab-89b4-63612ac3206f",
+    "deezerId": 538660022
   },
   {
     "title": "Everybody Have Fun Tonight",
@@ -30927,7 +30927,7 @@
     "chartYear": 1987,
     "chartRank": 12,
     "mbid": "a5568389-9ffc-42da-8cb2-fe52392ebb71",
-    "deezerId": null
+    "deezerId": 1758505347
   },
   {
     "title": "Friends and Lovers",
@@ -30946,18 +30946,18 @@
     "yearSource": "musicbrainz",
     "chartYear": 1986,
     "chartRank": 14,
-    "mbid": "a3c586a0-4b0f-446f-a9cf-3f6a95292bc1",
-    "deezerId": null
+    "mbid": "657b9110-7204-45bb-9eb0-254d96c253c7",
+    "deezerId": 2627636
   },
   {
     "title": "West End Girls",
     "artist": "Pet Shop Boys",
     "year": 1986,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1986,
     "chartRank": 15,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "9dc0e882-6346-498d-b390-16408edba7ef",
+    "deezerId": 462775272
   },
   {
     "title": "There'll Be Sad Songs (To Make You Cry)",
@@ -30966,8 +30966,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1986,
     "chartRank": 16,
-    "mbid": "c047e30d-f39e-467e-b30c-726616d75e51",
-    "deezerId": null
+    "mbid": "87d43fbe-3138-46ff-8123-0916bd0001be",
+    "deezerId": 6071041
   },
   {
     "title": "Looking for a New Love",
@@ -31003,11 +31003,11 @@
     "title": "Higher Love",
     "artist": "Steve Winwood",
     "year": 1986,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1986,
     "chartRank": 20,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "ccead19c-d8d2-4eab-b89a-0fbc02fe11d6",
+    "deezerId": 617572932
   },
   {
     "title": "Stuck with You",
@@ -31016,8 +31016,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1986,
     "chartRank": 21,
-    "mbid": "a7926194-0a54-4177-acc2-c5739de7ef84",
-    "deezerId": null
+    "mbid": "34609b35-7b57-44e8-bdc1-2a249075bb01",
+    "deezerId": 3121964
   },
   {
     "title": "The Lady in Red",
@@ -31026,8 +31026,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1987,
     "chartRank": 21,
-    "mbid": "ee083930-0625-4a56-8012-7dd87e747c0b",
-    "deezerId": null
+    "mbid": "5f66cdcc-4832-4733-bb94-2e63ae79d603",
+    "deezerId": 522720742
   },
   {
     "title": "Holding Back the Years",
@@ -31043,11 +31043,11 @@
     "title": "Sledgehammer",
     "artist": "Peter Gabriel",
     "year": 1986,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1986,
     "chartRank": 23,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "b633dbf5-5e55-4a7f-8d98-84b8fef661b1",
+    "deezerId": 538707842
   },
   {
     "title": "Sara",
@@ -31096,8 +31096,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1986,
     "chartRank": 27,
-    "mbid": "6b4b30ba-8de6-4bc3-8d97-f874769d8620",
-    "deezerId": null
+    "mbid": "f45c5a92-c668-4070-a078-4f11c397b8c2",
+    "deezerId": 7675055
   },
   {
     "title": "Papa Don't Preach",
@@ -31107,7 +31107,7 @@
     "chartYear": 1986,
     "chartRank": 29,
     "mbid": "cc63a878-8663-41ea-884e-873625b6af68",
-    "deezerId": null
+    "deezerId": 678363
   },
   {
     "title": "You Give Love a Bad Name",
@@ -31116,8 +31116,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1986,
     "chartRank": 30,
-    "mbid": "971fa464-7637-4225-b6ff-d6d4c8f52c3f",
-    "deezerId": null
+    "mbid": "c7d9ec69-c397-4084-8f0c-2d9777fbfa11",
+    "deezerId": 577487242
   },
   {
     "title": "Open Your Heart",
@@ -31876,18 +31876,18 @@
     "yearSource": "musicbrainz",
     "chartYear": 1988,
     "chartRank": 6,
-    "mbid": "609152a3-8603-43c4-8c1b-06afecf475ed",
-    "deezerId": null
+    "mbid": "c8ef59bc-89f6-4759-aabb-c9134d08459b",
+    "deezerId": 75981532
   },
   {
     "title": "Here I Go Again",
     "artist": "Whitesnake",
     "year": 1987,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1987,
     "chartRank": 7,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "68de8206-6ce2-41f8-9c70-a1debe60e320",
+    "deezerId": 3746036962
   },
   {
     "title": "Heaven Is a Place on Earth",
@@ -31917,7 +31917,7 @@
     "chartYear": 1988,
     "chartRank": 8,
     "mbid": "96a794f6-c0c6-406e-9c14-b30e3b010fc3",
-    "deezerId": null
+    "deezerId": 65121043
   },
   {
     "title": "Shakedown",
@@ -31936,8 +31936,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1987,
     "chartRank": 11,
-    "mbid": "83385d07-d9e6-44f5-826a-1ce9ec30a6f5",
-    "deezerId": null
+    "mbid": "97d7df0b-d10b-4b69-a0bc-4725829ab272",
+    "deezerId": 4736112
   },
   {
     "title": "One More Try",
@@ -31946,8 +31946,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1988,
     "chartRank": 11,
-    "mbid": "0eb970b0-d5dc-4d66-9841-23ecfe2d6444",
-    "deezerId": null
+    "mbid": "e0aff6c5-4898-4f14-8335-9485f01ff4c4",
+    "deezerId": 8146782
   },
   {
     "title": "Wishing Well",
@@ -31993,11 +31993,11 @@
     "title": "With or Without You",
     "artist": "U2",
     "year": 1987,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1987,
     "chartRank": 15,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "6b9a509f-6907-4a6e-9345-2f12da09ba4b",
+    "deezerId": 347363311
   },
   {
     "title": "Seasons Change",
@@ -32006,8 +32006,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1988,
     "chartRank": 16,
-    "mbid": "7528827b-ab0c-4f9a-a94c-6e72d7e904e2",
-    "deezerId": null
+    "mbid": "d9c2c04a-12e4-43a7-a542-595f5247ad7b",
+    "deezerId": 71195462
   },
   {
     "title": "Head to Toe",
@@ -32016,8 +32016,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1987,
     "chartRank": 17,
-    "mbid": "262da422-e441-4fd4-8d84-c021c31559f8",
-    "deezerId": null
+    "mbid": "eca04666-498a-4586-90e6-88f0f492681e",
+    "deezerId": 7410160
   },
   {
     "title": "I Think We're Alone Now",
@@ -33017,7 +33017,7 @@
     "chartYear": 1989,
     "chartRank": 7,
     "mbid": "e2b78a40-95a4-4059-b0c9-0af0b35579ff",
-    "deezerId": null
+    "deezerId": 3616256
   },
   {
     "title": "Girl You Know It's True",
@@ -33036,8 +33036,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1988,
     "chartRank": 9,
-    "mbid": "b661c025-ff6d-40dc-b084-30cb5fd523b0",
-    "deezerId": null
+    "mbid": "2381099a-2977-4486-a7cd-c93727d36b66",
+    "deezerId": 4220963
   },
   {
     "title": "Roll with It",
@@ -33056,8 +33056,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1989,
     "chartRank": 10,
-    "mbid": "ad502c37-48fc-40be-a651-08c35c01f42e",
-    "deezerId": null
+    "mbid": "0d6940b8-1acb-4f50-86db-9a644b9146f5",
+    "deezerId": 1651280602
   },
   {
     "title": "Waiting for a Star to Fall",
@@ -33067,7 +33067,7 @@
     "chartYear": 1989,
     "chartRank": 12,
     "mbid": "80214d59-9f71-4cee-b3fb-f677720eaa7b",
-    "deezerId": null
+    "deezerId": 471297912
   },
   {
     "title": "The Flame",
@@ -33076,8 +33076,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1988,
     "chartRank": 14,
-    "mbid": "a0cc8a82-6c4f-4d7a-ab47-0c0cb494bde8",
-    "deezerId": null
+    "mbid": "a723a2b5-30b9-42be-80c7-714d85715b22",
+    "deezerId": 611354
   },
   {
     "title": "Get Outta My Dreams, Get into My Car",
@@ -33087,7 +33087,7 @@
     "chartYear": 1988,
     "chartRank": 15,
     "mbid": "09723868-b2e9-470e-860f-35699929c39d",
-    "deezerId": null
+    "deezerId": 6071034
   },
   {
     "title": "Is This Love",
@@ -33127,7 +33127,7 @@
     "chartYear": 1989,
     "chartRank": 20,
     "mbid": "3fb0dabb-c57d-4541-94fb-d777e79a09d2",
-    "deezerId": null
+    "deezerId": 134036390
   },
   {
     "title": "Shake Your Love",
@@ -33143,11 +33143,11 @@
     "title": "Simply Irresistible",
     "artist": "Robert Palmer",
     "year": 1988,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1988,
     "chartRank": 23,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "3203fc19-e833-4f8a-a99f-61ccaf4a557e",
+    "deezerId": 17588394
   },
   {
     "title": "I'll Be There for You",
@@ -33156,8 +33156,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1989,
     "chartRank": 23,
-    "mbid": "6a13006e-2fdc-42c1-96ae-b65adcfe7687",
-    "deezerId": null
+    "mbid": "fe44c60a-a3ac-4c73-8b31-3f67adb5920d",
+    "deezerId": 79795694
   },
   {
     "title": "Hold On to the Nights",
@@ -33926,8 +33926,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1990,
     "chartRank": 7,
-    "mbid": "a44dcaa1-18f2-4f51-ba53-9d332ef35793",
-    "deezerId": null
+    "mbid": "4777b119-4892-4cfc-8def-b6ec76a2e0f6",
+    "deezerId": 134036248
   },
   {
     "title": "Baby, I Love Your Way/Freebird Medley",
@@ -33943,11 +33943,11 @@
     "title": "Right Here Waiting",
     "artist": "Richard Marx",
     "year": 1989,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1989,
     "chartRank": 11,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "629422b2-6558-4b73-ac71-c455bb5709d3",
+    "deezerId": 3168937
   },
   {
     "title": "Lost in Your Eyes",
@@ -33957,17 +33957,17 @@
     "chartYear": 1989,
     "chartRank": 13,
     "mbid": "3b03ed7f-9ff3-4786-9d22-1f41000ade90",
-    "deezerId": null
+    "deezerId": 675613
   },
   {
     "title": "Don't Wanna Lose You",
     "artist": "Gloria Estefan",
     "year": 1989,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1989,
     "chartRank": 14,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "ee150dc2-a004-40b5-b18c-71154f9a8df6",
+    "deezerId": 565058
   },
   {
     "title": "Heaven",
@@ -33987,7 +33987,7 @@
     "chartYear": 1990,
     "chartRank": 15,
     "mbid": "16db3b75-c58b-42cf-b5b8-0f5e7e332fe8",
-    "deezerId": null
+    "deezerId": 571865242
   },
   {
     "title": "Girl I'm Gonna Miss You",
@@ -34036,8 +34036,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1989,
     "chartRank": 19,
-    "mbid": "1baf6c31-dfde-435d-ac55-759c05a5e6c7",
-    "deezerId": null
+    "mbid": "4a1eef10-681f-4317-8262-a4f1a269f2e3",
+    "deezerId": 83939081
   },
   {
     "title": "Don't Know Much",
@@ -34047,7 +34047,7 @@
     "chartYear": 1990,
     "chartRank": 20,
     "mbid": "e1f0dc99-dd7b-4944-a7d3-37bc7307d237",
-    "deezerId": null
+    "deezerId": 7125589
   },
   {
     "title": "Blame It on the Rain",
@@ -34056,8 +34056,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1989,
     "chartRank": 21,
-    "mbid": "5be4af1a-4df9-4c39-9975-7ae3349811ec",
-    "deezerId": null
+    "mbid": "b3fa5488-6a38-437e-87c9-b369a4398114",
+    "deezerId": 13160823
   },
   {
     "title": "Listen to Your Heart",
@@ -34077,7 +34077,7 @@
     "chartYear": 1990,
     "chartRank": 22,
     "mbid": "d387a5d1-fcfc-4641-b639-fcdb606193d5",
-    "deezerId": null
+    "deezerId": 469306732
   },
   {
     "title": "If You Don't Know Me by Now",
@@ -34086,8 +34086,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1989,
     "chartRank": 24,
-    "mbid": "df85bb36-cfb4-42b3-9297-5c94ffe07aad",
-    "deezerId": null
+    "mbid": "09ba4642-ac25-45ff-862b-c6dcccee72b1",
+    "deezerId": 2477046
   },
   {
     "title": "Like a Prayer",
@@ -34107,7 +34107,7 @@
     "chartYear": 1990,
     "chartRank": 30,
     "mbid": "28d30ecd-155f-4ee9-ad02-b74454d79fa1",
-    "deezerId": null
+    "deezerId": 1762674837
   },
   {
     "title": "Eternal Flame",
@@ -34133,11 +34133,11 @@
     "title": "When I See You Smile",
     "artist": "Bad English",
     "year": 1989,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1989,
     "chartRank": 34,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "da7ee105-62df-4cc1-ac93-2a00f493462b",
+    "deezerId": 1053549
   },
   {
     "title": "If I Could Turn Back Time",
@@ -35027,7 +35027,7 @@
     "chartYear": 1990,
     "chartRank": 6,
     "mbid": "8c4b22b3-222b-4cb7-a204-763a9eb9a8bb",
-    "deezerId": null
+    "deezerId": 1055713
   },
   {
     "title": "Hold On",
@@ -35036,8 +35036,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1990,
     "chartRank": 8,
-    "mbid": "26570bb7-60ed-4fa7-aab9-b19d46a67905",
-    "deezerId": null
+    "mbid": "8d8bb174-5a92-43a0-bc0e-5ebbfe503b8b",
+    "deezerId": 917648312
   },
   {
     "title": "I Like the Way (The Kissing Game)",
@@ -35047,7 +35047,7 @@
     "chartYear": 1991,
     "chartRank": 8,
     "mbid": "cbdeb0b1-cacf-41de-a444-51db9ed5ad21",
-    "deezerId": null
+    "deezerId": 1619942902
   },
   {
     "title": "Cradle of Love",
@@ -35056,8 +35056,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1990,
     "chartRank": 9,
-    "mbid": "d9ce181c-0c97-48d2-80f8-3ff9ee5a24f6",
-    "deezerId": null
+    "mbid": "7e6129f1-0f0b-4cdc-b6c8-9b4de02ae996",
+    "deezerId": 354284151
   },
   {
     "title": "The First Time",
@@ -35067,7 +35067,7 @@
     "chartYear": 1991,
     "chartRank": 9,
     "mbid": "28d42e13-3b97-4cd3-84a9-4bb7ddaa0400",
-    "deezerId": null
+    "deezerId": 1056571
   },
   {
     "title": "Blaze of Glory",
@@ -35076,8 +35076,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1990,
     "chartRank": 10,
-    "mbid": "6ac71b02-83df-467b-8854-addecb0155db",
-    "deezerId": null
+    "mbid": "8ba8ffc2-2943-4bf3-bbd1-66235e067f2e",
+    "deezerId": 1104054
   },
   {
     "title": "Do Me!",
@@ -35087,7 +35087,7 @@
     "chartYear": 1990,
     "chartRank": 11,
     "mbid": "7e4d3392-3e97-46f4-bb60-1b70ac449fee",
-    "deezerId": null
+    "deezerId": 7313221
   },
   {
     "title": "How Am I Supposed to Live Without You",
@@ -35126,8 +35126,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1991,
     "chartRank": 13,
-    "mbid": "11960c5b-32ef-4c47-9be8-773565eb52ad",
-    "deezerId": null
+    "mbid": "674d35e4-96c6-4e63-ab9d-ccb42e8c6e9a",
+    "deezerId": 1056637
   },
   {
     "title": "Opposites Attract",
@@ -35146,8 +35146,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1991,
     "chartRank": 14,
-    "mbid": "713d15f4-3d02-4390-9504-f0eccbac5ed0",
-    "deezerId": null
+    "mbid": "14e23a6e-f382-441c-a131-9bd4cdf264b6",
+    "deezerId": 3822022
   },
   {
     "title": "From a Distance",
@@ -35157,7 +35157,7 @@
     "chartYear": 1991,
     "chartRank": 15,
     "mbid": "0bcda106-510a-4d5c-9f6d-8bc7c0a4d70e",
-    "deezerId": null
+    "deezerId": 4736207
   },
   {
     "title": "All I Wanna Do Is Make Love to You",
@@ -35167,7 +35167,7 @@
     "chartYear": 1990,
     "chartRank": 16,
     "mbid": "1859df00-7561-4626-9202-32ab3cb3b3fe",
-    "deezerId": null
+    "deezerId": 3482138
   },
   {
     "title": "All the Man That I Need",
@@ -35967,7 +35967,7 @@
     "chartYear": 1992,
     "chartRank": 9,
     "mbid": "4efbf5a6-e936-49c4-a1a2-2a6d231ace9b",
-    "deezerId": null
+    "deezerId": 4089647
   },
   {
     "title": "Baby Baby",
@@ -35977,7 +35977,7 @@
     "chartYear": 1991,
     "chartRank": 10,
     "mbid": "943b8d20-b18d-48dc-b93b-fe3e7b8a6f88",
-    "deezerId": null
+    "deezerId": 3145500
   },
   {
     "title": "Motownphilly",
@@ -35986,8 +35986,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1991,
     "chartRank": 11,
-    "mbid": "37737a13-6aac-42ff-af68-218895a3d1fb",
-    "deezerId": null
+    "mbid": "026ac793-3154-486b-94ca-cb827fff6e4b",
+    "deezerId": 649771222
   },
   {
     "title": "I'm Too Sexy",
@@ -35996,8 +35996,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1992,
     "chartRank": 13,
-    "mbid": "bab48261-9ba4-4b10-a784-e5ce8b052fa6",
-    "deezerId": null
+    "mbid": "5a08b7a8-c58a-4c6d-97a6-761b7bad60ea",
+    "deezerId": 2625962812
   },
   {
     "title": "Black or White",
@@ -36006,8 +36006,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1992,
     "chartRank": 14,
-    "mbid": "935676e1-179e-44bf-9317-9a2caffb28dc",
-    "deezerId": null
+    "mbid": "bb562c93-143f-45e6-ac96-2917b878c0e0",
+    "deezerId": 15593566
   },
   {
     "title": "November Rain",
@@ -36016,8 +36016,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1992,
     "chartRank": 17,
-    "mbid": "26fee39d-057d-4bc0-8fa1-9a8208f7668b",
-    "deezerId": null
+    "mbid": "0681520a-6499-4cb8-91aa-7df5dfafea2e",
+    "deezerId": 1169683
   },
   {
     "title": "I Adore Mi Amor",
@@ -36027,7 +36027,7 @@
     "chartYear": 1991,
     "chartRank": 18,
     "mbid": "4753ea21-78d8-4c7b-90d0-9bad84f8c525",
-    "deezerId": null
+    "deezerId": 4089649
   },
   {
     "title": "Life Is a Highway",
@@ -36037,7 +36037,7 @@
     "chartYear": 1992,
     "chartRank": 18,
     "mbid": "3961059c-48f2-471f-9aa1-6067072b3e87",
-    "deezerId": null
+    "deezerId": 3182179
   },
   {
     "title": "Remember the Time",
@@ -36046,8 +36046,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1992,
     "chartRank": 19,
-    "mbid": "9c877635-9f56-4d8a-88c8-5656ee49a2d5",
-    "deezerId": null
+    "mbid": "a0a52320-cdc3-4245-91a6-4e4e684065c4",
+    "deezerId": 15593563
   },
   {
     "title": "Good Vibrations",
@@ -36067,7 +36067,7 @@
     "chartYear": 1991,
     "chartRank": 22,
     "mbid": "84371413-9190-4986-bc6b-2131a3c97d2f",
-    "deezerId": null
+    "deezerId": 1054624
   },
   {
     "title": "Joyride",
@@ -36076,8 +36076,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1991,
     "chartRank": 23,
-    "mbid": "0b1a7cb6-4d24-4778-9fd5-858b2a68726b",
-    "deezerId": null
+    "mbid": "82c72383-3863-4502-bf2a-cd1a53e2c489",
+    "deezerId": 1523248472
   },
   {
     "title": "Can't Let Go",
@@ -36087,7 +36087,7 @@
     "chartYear": 1992,
     "chartRank": 23,
     "mbid": "ccb8eb0a-031e-484e-8b15-f92c212ccb32",
-    "deezerId": null
+    "deezerId": 1057133
   },
   {
     "title": "Romantic",
@@ -36923,11 +36923,11 @@
     "title": "Tears in Heaven",
     "artist": "Eric Clapton",
     "year": 1992,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1992,
     "chartRank": 6,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "21ddde6c-90f4-469e-bdd0-1f438d011917",
+    "deezerId": 4654895
   },
   {
     "title": "Weak",
@@ -36936,8 +36936,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1993,
     "chartRank": 6,
-    "mbid": "738205c2-403d-4f43-9de7-58e64d211034",
-    "deezerId": null
+    "mbid": "488e6463-cbdd-431f-83a9-03073f34985d",
+    "deezerId": 13157903
   },
   {
     "title": "My Lovin' (You're Never Gonna Get It)",
@@ -36946,8 +36946,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1992,
     "chartRank": 7,
-    "mbid": "6ae31443-a2d2-487e-8da3-efaf47daa786",
-    "deezerId": null
+    "mbid": "9cf2bb20-ca0f-421b-a437-9d626850fc9b",
+    "deezerId": 772247
   },
   {
     "title": "Under the Bridge",
@@ -36966,8 +36966,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1993,
     "chartRank": 9,
-    "mbid": "44a7034f-570e-4074-8c08-3550c0c60ee1",
-    "deezerId": null
+    "mbid": "b3dd9134-d77b-4e34-8d56-f72b0634a1f8",
+    "deezerId": 1762377537
   },
   {
     "title": "Just Another Day",
@@ -36977,7 +36977,7 @@
     "chartYear": 1992,
     "chartRank": 10,
     "mbid": "0d6a8ed1-febb-40aa-bb38-fff50b604b6e",
-    "deezerId": null
+    "deezerId": 3359659
   },
   {
     "title": "I Love Your Smile",
@@ -37027,7 +37027,7 @@
     "chartYear": 1992,
     "chartRank": 15,
     "mbid": "94b6703e-3ea7-4156-827e-7d7baa33e385",
-    "deezerId": null
+    "deezerId": 921154
   },
   {
     "title": "I'll Be There",
@@ -37076,8 +37076,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1993,
     "chartRank": 20,
-    "mbid": "b7cf6ba9-ae20-48fa-9e0e-c1e2cc79d057",
-    "deezerId": null
+    "mbid": "c0a6757c-79fb-4262-b005-b5a28347cfc5",
+    "deezerId": 959402
   },
   {
     "title": "This Used to Be My Playground",
@@ -37086,8 +37086,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1992,
     "chartRank": 21,
-    "mbid": "a571d542-5e31-415d-9a7c-7ff8ccffd11e",
-    "deezerId": null
+    "mbid": "cdca35f4-9d93-4f86-86c8-c8ecbb0f24d2",
+    "deezerId": 776955
   },
   {
     "title": "Love Is",
@@ -37113,11 +37113,11 @@
     "title": "Jump Around",
     "artist": "House of Pain",
     "year": 1992,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1992,
     "chartRank": 24,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "8bba5bed-6b00-4401-b43b-713ffdf1b248",
+    "deezerId": 1584589772
   },
   {
     "title": "Ditty",
@@ -37147,7 +37147,7 @@
     "chartYear": 1992,
     "chartRank": 28,
     "mbid": "3a815d43-4757-477b-9a63-d6de838af932",
-    "deezerId": null
+    "deezerId": 1016702
   },
   {
     "title": "Giving Him Something He Can Feel",
@@ -37947,7 +37947,7 @@
     "chartYear": 1994,
     "chartRank": 7,
     "mbid": "365f2ebb-8e98-497f-9e67-bdc8f3e9609b",
-    "deezerId": null
+    "deezerId": 1047761
   },
   {
     "title": "Dreamlover",
@@ -37956,8 +37956,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1993,
     "chartRank": 8,
-    "mbid": "175e4f84-9de5-4f53-adcb-d263c17c9fbb",
-    "deezerId": null
+    "mbid": "bd6b5638-d6c7-4e63-ae67-51f6a17a5aaf",
+    "deezerId": 2442224765
   },
   {
     "title": "All That She Wants",
@@ -37973,11 +37973,11 @@
     "title": "Informer",
     "artist": "Snow",
     "year": 1993,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1993,
     "chartRank": 10,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "a089bede-e083-433e-a97b-d51d481216c8",
+    "deezerId": 3884974
   },
   {
     "title": "Don't Turn Around",
@@ -37987,7 +37987,7 @@
     "chartYear": 1994,
     "chartRank": 10,
     "mbid": "3eac2bd5-da07-4b5e-bc63-f100dc968f0b",
-    "deezerId": null
+    "deezerId": 94676694
   },
   {
     "title": "Nuthin' but a 'G' Thang",
@@ -38036,8 +38036,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1993,
     "chartRank": 15,
-    "mbid": "719ed3da-554d-4609-b713-f93167c76612",
-    "deezerId": null
+    "mbid": "78334ee5-383f-4cf7-a90a-d42830c4f352",
+    "deezerId": 24992891
   },
   {
     "title": "Show Me Love",
@@ -38057,7 +38057,7 @@
     "chartYear": 1994,
     "chartRank": 17,
     "mbid": "408d505b-5a9e-45bf-b661-21abb65db939",
-    "deezerId": null
+    "deezerId": 1045716
   },
   {
     "title": "If",
@@ -38097,7 +38097,7 @@
     "chartYear": 1994,
     "chartRank": 25,
     "mbid": "7c52e4f7-4479-4770-8e68-ce52fc959aa1",
-    "deezerId": null
+    "deezerId": 3087486
   },
   {
     "title": "The River of Dreams",
@@ -38107,7 +38107,7 @@
     "chartYear": 1993,
     "chartRank": 26,
     "mbid": "3eaa3df6-4f84-4dbc-a1af-3ea350ed922b",
-    "deezerId": null
+    "deezerId": 831291
   },
   {
     "title": "When Can I See You",
@@ -38117,7 +38117,7 @@
     "chartYear": 1994,
     "chartRank": 26,
     "mbid": "1931254f-af20-4178-b778-5adc6e2355d7",
-    "deezerId": null
+    "deezerId": 608916
   },
   {
     "title": "I'm Gonna Be (500 Miles)",
@@ -38857,7 +38857,7 @@
     "chartYear": 1995,
     "chartRank": 8,
     "mbid": "78fe9535-eaf5-4e6d-8bef-dd01767629ed",
-    "deezerId": null
+    "deezerId": 776930
   },
   {
     "title": "Bump n' Grind",
@@ -38877,7 +38877,7 @@
     "chartYear": 1995,
     "chartRank": 11,
     "mbid": "f34f7fc7-afdf-4eec-a477-a97e561a2641",
-    "deezerId": null
+    "deezerId": 413508042
   },
   {
     "title": "Water Runs Dry",
@@ -38887,7 +38887,7 @@
     "chartYear": 1995,
     "chartRank": 12,
     "mbid": "76398e85-174d-47cc-bfe3-3688872250d5",
-    "deezerId": null
+    "deezerId": 2426065
   },
   {
     "title": "I'll Remember",
@@ -38897,7 +38897,7 @@
     "chartYear": 1994,
     "chartRank": 13,
     "mbid": "a30dcbe3-b8bf-482f-b78e-8b804ad3cd9f",
-    "deezerId": null
+    "deezerId": 776919
   },
   {
     "title": "Wild Night",
@@ -38926,8 +38926,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1995,
     "chartRank": 17,
-    "mbid": "20859ba4-681e-4afd-aaa1-a62402817516",
-    "deezerId": null
+    "mbid": "a31cc4c3-6bc9-4879-a344-91096cba2f14",
+    "deezerId": 538586982
   },
   {
     "title": "Can You Feel the Love Tonight",
@@ -38966,8 +38966,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1995,
     "chartRank": 20,
-    "mbid": "5bc5c6f7-34dd-4373-a215-e03d191f1eec",
-    "deezerId": null
+    "mbid": "be03f2d6-6829-4f6d-8333-7cc449ffb868",
+    "deezerId": 866837
   },
   {
     "title": "Baby, I Love Your Way",
@@ -38997,7 +38997,7 @@
     "chartYear": 1995,
     "chartRank": 22,
     "mbid": "3ed37fe9-edd5-491c-b690-6349f3c5ae4a",
-    "deezerId": null
+    "deezerId": 4086674
   },
   {
     "title": "If You Go",
@@ -39037,7 +39037,7 @@
     "chartYear": 1995,
     "chartRank": 28,
     "mbid": "65fb57b6-d58b-4919-8a48-aebb1f4d16e9",
-    "deezerId": null
+    "deezerId": 1043890
   },
   {
     "title": "Any Time, Any Place\" / \"And On and On",
@@ -39067,7 +39067,7 @@
     "chartYear": 1995,
     "chartRank": 33,
     "mbid": "e97a92e7-ef42-4feb-937d-bf50b5967442",
-    "deezerId": null
+    "deezerId": 4086676
   },
   {
     "title": "All I Wanna Do",
@@ -39106,8 +39106,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1994,
     "chartRank": 37,
-    "mbid": "cc094b27-d486-40d1-8311-f1a99ae73f9a",
-    "deezerId": null
+    "mbid": "4814984e-953e-4fb5-a6eb-026a0b2da17b",
+    "deezerId": 1026800
   },
   {
     "title": "Baby",
@@ -39117,7 +39117,7 @@
     "chartYear": 1995,
     "chartRank": 37,
     "mbid": "2c4574b9-2717-414d-b7b4-808e32ffe70f",
-    "deezerId": null
+    "deezerId": 3822645
   },
   {
     "title": "Run Away",
@@ -39126,8 +39126,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1995,
     "chartRank": 38,
-    "mbid": "28b14b19-c285-442f-a11f-547edd8064e7",
-    "deezerId": null
+    "mbid": "6d58a3a8-4ffb-440f-8dce-084b93d69b54",
+    "deezerId": 1042280
   },
   {
     "title": "As I Lay Me Down",
@@ -39717,7 +39717,7 @@
     "chartYear": 1996,
     "chartRank": 6,
     "mbid": "1555f27a-6b44-4978-b53e-e8cfec7f936d",
-    "deezerId": null
+    "deezerId": 2477838
   },
   {
     "title": "Fantasy",
@@ -39727,7 +39727,7 @@
     "chartYear": 1995,
     "chartRank": 7,
     "mbid": "04ca399c-7529-4276-ae8c-4329911d6aaa",
-    "deezerId": null
+    "deezerId": 1013792
   },
   {
     "title": "Don't Take It Personal (Just One of Dem Days)",
@@ -39737,17 +39737,17 @@
     "chartYear": 1995,
     "chartRank": 9,
     "mbid": "6af9eb20-cfe7-4993-b4e4-d371f2702498",
-    "deezerId": null
+    "deezerId": 13165815
   },
   {
     "title": "This Is How We Do It",
     "artist": "Montell Jordan",
     "year": 1995,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1995,
     "chartRank": 10,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "2b7298a7-2f59-458f-b8d7-7a862901acb7",
+    "deezerId": 2522953
   },
   {
     "title": "Missing",
@@ -39766,8 +39766,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1995,
     "chartRank": 13,
-    "mbid": "731c0a00-ab5d-4abb-8122-2ce67eeaab77",
-    "deezerId": null
+    "mbid": "11dc9c3c-6850-447e-b7f7-a63030d1208b",
+    "deezerId": 730577
   },
   {
     "title": "Run-Around",
@@ -39787,7 +39787,7 @@
     "chartYear": 1996,
     "chartRank": 14,
     "mbid": "270b6060-36d3-4761-8b4d-ea6e7057409c",
-    "deezerId": null
+    "deezerId": 3410784541
   },
   {
     "title": "I Can Love You Like That",
@@ -39806,8 +39806,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1995,
     "chartRank": 16,
-    "mbid": "fd7dbc7f-d190-48d0-90f5-978b49f10e52",
-    "deezerId": null
+    "mbid": "5ee028b0-d588-4601-802b-7ebac6639e40",
+    "deezerId": 1582154
   },
   {
     "title": "Sittin' Up in My Room",
@@ -40666,8 +40666,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1996,
     "chartRank": 8,
-    "mbid": "fa1f12b2-153e-4cee-8792-1e31eb3b4fbf",
-    "deezerId": null
+    "mbid": "db6c6582-3650-478d-9b7c-08c5970af3f6",
+    "deezerId": 846048
   },
   {
     "title": "Return of the Mack",
@@ -40716,8 +40716,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1996,
     "chartRank": 11,
-    "mbid": "e5bfa3e7-d948-496c-8f36-566603af3478",
-    "deezerId": null
+    "mbid": "b23fad9e-6149-442d-b211-77de4eef2f92",
+    "deezerId": 6617606
   },
   {
     "title": "Quit Playing Games (With My Heart)",
@@ -40726,8 +40726,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1997,
     "chartRank": 11,
-    "mbid": "93f1a39e-0901-4c0a-9fad-078225cbb5ff",
-    "deezerId": null
+    "mbid": "553168d0-690f-4f0e-a263-bca9a59e03ba",
+    "deezerId": 4274199
   },
   {
     "title": "Ironic",
@@ -40747,7 +40747,7 @@
     "chartYear": 1997,
     "chartRank": 13,
     "mbid": "6960e2ba-92fc-44af-b1cf-6256479523cf",
-    "deezerId": null
+    "deezerId": 960952
   },
   {
     "title": "Follow You Down\" / \"Til I Hear It from You",
@@ -40766,8 +40766,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1997,
     "chartRank": 16,
-    "mbid": "2e35f370-8361-427d-9b23-8a0003fc33d0",
-    "deezerId": null
+    "mbid": "217fdd41-be2c-404d-a914-f24ac271bfdf",
+    "deezerId": 3616541
   },
   {
     "title": "How Do U Want It\" / \"California Love",
@@ -40787,7 +40787,7 @@
     "chartYear": 1996,
     "chartRank": 18,
     "mbid": "0d0a2d8f-43de-44c4-a559-57b278f52348",
-    "deezerId": null
+    "deezerId": 714269192
   },
   {
     "title": "Barely Breathing",
@@ -40796,18 +40796,18 @@
     "yearSource": "musicbrainz",
     "chartYear": 1997,
     "chartRank": 18,
-    "mbid": "daa5c8ef-ea9e-421d-ae0c-8bf9c71e7a8e",
-    "deezerId": null
+    "mbid": "bfb06747-86aa-4683-9f36-286cae1d4f78",
+    "deezerId": 3663560
   },
   {
     "title": "Change the World",
     "artist": "Eric Clapton",
     "year": 1996,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 1996,
     "chartRank": 19,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "a3355226-6023-4dbf-8999-e29a3318c974",
+    "deezerId": 1940201257
   },
   {
     "title": "Hard to Say I'm Sorry",
@@ -40956,8 +40956,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1997,
     "chartRank": 35,
-    "mbid": "65a79a63-2cc6-4579-9f92-536a152b4687",
-    "deezerId": null
+    "mbid": "7412a5ce-b89a-4ed1-b187-96b7c7031913",
+    "deezerId": 3133740
   },
   {
     "title": "You're the One",
@@ -40987,7 +40987,7 @@
     "chartYear": 1997,
     "chartRank": 37,
     "mbid": "3fbe85ee-99b2-469a-8bf6-4de29289421f",
-    "deezerId": null
+    "deezerId": 6624021
   },
   {
     "title": "Before You Walk Out of My Life\" / \"Like This and Like That",
@@ -41006,8 +41006,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1997,
     "chartRank": 38,
-    "mbid": "ecb98d69-0aa4-48cc-873d-e76bf1ebdb7b",
-    "deezerId": null
+    "mbid": "18e01fda-7df6-4a6b-8978-cd5bd47f719c",
+    "deezerId": 3667825
   },
   {
     "title": "Breakfast at Tiffany's",
@@ -41067,7 +41067,7 @@
     "chartYear": 1997,
     "chartRank": 44,
     "mbid": "2482e06a-fb45-470c-8fcc-758391e24d95",
-    "deezerId": null
+    "deezerId": 3015189
   },
   {
     "title": "Why I Love You So Much\" / \"Ain't Nobody",
@@ -41087,7 +41087,7 @@
     "chartYear": 1996,
     "chartRank": 47,
     "mbid": "ee34eb92-aadc-4478-9deb-c571ab151e03",
-    "deezerId": null
+    "deezerId": 62196498
   },
   {
     "title": "Get It Together",
@@ -41557,7 +41557,7 @@
     "chartYear": 1998,
     "chartRank": 6,
     "mbid": "8a925d6f-49b8-4571-a013-f027ee572d36",
-    "deezerId": null
+    "deezerId": 1939641407
   },
   {
     "title": "Don't Let Go (Love)",
@@ -41577,7 +41577,7 @@
     "chartYear": 1998,
     "chartRank": 7,
     "mbid": "bcc6250e-c9fc-4a95-a5be-ad1c3f41658c",
-    "deezerId": null
+    "deezerId": 2428523
   },
   {
     "title": "Nice & Slow",
@@ -41607,7 +41607,7 @@
     "chartYear": 1998,
     "chartRank": 11,
     "mbid": "2fa11c99-d7cc-40cf-8343-e8001d829df7",
-    "deezerId": null
+    "deezerId": 4111783
   },
   {
     "title": "MMMBop",
@@ -41616,8 +41616,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1997,
     "chartRank": 12,
-    "mbid": "87ad4ef9-e2b6-43a7-80b9-6b2f080d16eb",
-    "deezerId": null
+    "mbid": "8ff4f281-2c0d-443c-b1bf-83ce6167f6bb",
+    "deezerId": 88685889
   },
   {
     "title": "No, No, No",
@@ -41636,8 +41636,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1997,
     "chartRank": 14,
-    "mbid": "a28f8cac-7857-4f1f-aaf5-92b40db13604",
-    "deezerId": null
+    "mbid": "28b55838-b327-4462-99c8-c97f00f623b3",
+    "deezerId": 1909711527
   },
   {
     "title": "Gettin' Jiggy wit It",
@@ -41647,7 +41647,7 @@
     "chartYear": 1998,
     "chartRank": 14,
     "mbid": "979013be-6050-48d3-81cf-8fbe4130b9af",
-    "deezerId": null
+    "deezerId": 626418
   },
   {
     "title": "Bitch",
@@ -41656,8 +41656,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1997,
     "chartRank": 15,
-    "mbid": "263ecdad-5241-42bb-9150-b297edbf13f2",
-    "deezerId": null
+    "mbid": "b64f218e-5556-41fc-96cc-7b625614aebb",
+    "deezerId": 3156760
   },
   {
     "title": "My Way",
@@ -41667,7 +41667,7 @@
     "chartYear": 1998,
     "chartRank": 16,
     "mbid": "bf4120e9-cfab-42b8-890a-387da0133136",
-    "deezerId": null
+    "deezerId": 15388218
   },
   {
     "title": "Semi-Charmed Life",
@@ -41676,8 +41676,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1997,
     "chartRank": 17,
-    "mbid": "5b4cd65e-22a1-4e3f-8e5f-a404ab8021b9",
-    "deezerId": null
+    "mbid": "a5988926-e106-43b1-ba4a-84d7da3d9626",
+    "deezerId": 685709
   },
   {
     "title": "My All",
@@ -41687,7 +41687,7 @@
     "chartYear": 1998,
     "chartRank": 17,
     "mbid": "5f1da130-862d-4151-af7f-feb813e14794",
-    "deezerId": null
+    "deezerId": 15175178
   },
   {
     "title": "Been Around the World",
@@ -41746,8 +41746,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1997,
     "chartRank": 25,
-    "mbid": "03985ce6-e982-4d86-972e-3658cebb6090",
-    "deezerId": null
+    "mbid": "2c1d093a-ad4e-4f96-b27c-15a63210ec6f",
+    "deezerId": 3616651
   },
   {
     "title": "I Don't Ever Want to See You Again",
@@ -41786,8 +41786,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1998,
     "chartRank": 29,
-    "mbid": "c78def49-a18a-4fa3-9da3-9fc3eae88b4a",
-    "deezerId": null
+    "mbid": "9bbfb58c-da91-405d-8219-9bb8545910fe",
+    "deezerId": 15741831
   },
   {
     "title": "4 Seasons of Loneliness",
@@ -42466,8 +42466,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1999,
     "chartRank": 9,
-    "mbid": "ca157dbc-c755-45fb-b717-dd9a7ee009f0",
-    "deezerId": null
+    "mbid": "356cf277-40be-45c0-9e7d-44fd69328334",
+    "deezerId": 962223
   },
   {
     "title": "My Heart Will Go On",
@@ -42487,7 +42487,7 @@
     "chartYear": 1999,
     "chartRank": 13,
     "mbid": "aed4fe9c-85b0-4f6b-b544-e3377e4fb0fe",
-    "deezerId": null
+    "deezerId": 2680857
   },
   {
     "title": "Have You Ever?",
@@ -42497,7 +42497,7 @@
     "chartYear": 1999,
     "chartRank": 14,
     "mbid": "59fcd192-6716-47ee-944f-b8d857b0f49d",
-    "deezerId": null
+    "deezerId": 662368
   },
   {
     "title": "The First Night",
@@ -42507,7 +42507,7 @@
     "chartYear": 1998,
     "chartRank": 18,
     "mbid": "a0aa6905-bee7-48c8-a68d-2afba5e3c564",
-    "deezerId": null
+    "deezerId": 958160
   },
   {
     "title": "Angel",
@@ -42556,8 +42556,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1998,
     "chartRank": 23,
-    "mbid": "58587e90-3d72-485f-8d5f-e9d1b8cbb594",
-    "deezerId": null
+    "mbid": "2e2e66bd-a016-4713-bd7f-dbb4037cc9b8",
+    "deezerId": 70631608
   },
   {
     "title": "Body Bumpin' (Yippie-Yi-Yo)",
@@ -42577,7 +42577,7 @@
     "chartYear": 1998,
     "chartRank": 25,
     "mbid": "b602f538-fa2b-41c4-afaf-592e63720483",
-    "deezerId": null
+    "deezerId": 2680838
   },
   {
     "title": "All I Have to Give",
@@ -42597,7 +42597,7 @@
     "chartYear": 1999,
     "chartRank": 26,
     "mbid": "5cbfd195-aeb8-4c81-b6a5-c35fc565f0fd",
-    "deezerId": null
+    "deezerId": 2279352
   },
   {
     "title": "Let's Ride",
@@ -42627,7 +42627,7 @@
     "chartYear": 1999,
     "chartRank": 28,
     "mbid": "ecc4ec9d-986a-4491-a59e-2b4e46f1e110",
-    "deezerId": null
+    "deezerId": 1586973152
   },
   {
     "title": "Fly Away",
@@ -42637,7 +42637,7 @@
     "chartYear": 1999,
     "chartRank": 29,
     "mbid": "90f7b7f3-3815-4344-95ca-98b28b5591a5",
-    "deezerId": null
+    "deezerId": 3129589
   },
   {
     "title": "What You Want",
@@ -42706,8 +42706,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1999,
     "chartRank": 36,
-    "mbid": "99c0d56a-54a0-40f0-b48a-f0da80b17715",
-    "deezerId": null
+    "mbid": "92d1cdf8-1b42-4d74-86e4-c41c772f3346",
+    "deezerId": 15178134
   },
   {
     "title": "When the Lights Go Out",
@@ -42716,8 +42716,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1998,
     "chartRank": 38,
-    "mbid": "d8a99634-ce41-4387-ae0c-0885a7c05944",
-    "deezerId": null
+    "mbid": "ac90936c-759d-4667-a3cf-0592733aaed5",
+    "deezerId": 992385
   },
   {
     "title": "Make 'Em Say Uhh!",
@@ -43376,8 +43376,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2000,
     "chartRank": 6,
-    "mbid": "75e14884-e127-4c05-b6dc-b17f04f4919e",
-    "deezerId": null
+    "mbid": "946f2f12-121b-4906-b74a-0e7ba8ae2d29",
+    "deezerId": 580936
   },
   {
     "title": "Genie in a Bottle",
@@ -43386,8 +43386,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1999,
     "chartRank": 7,
-    "mbid": "0ae1a118-c636-458f-b011-0a92774e1102",
-    "deezerId": null
+    "mbid": "fbe9ad8c-3a31-4b5a-9710-228b8c77907b",
+    "deezerId": 15627386
   },
   {
     "title": "I Knew I Loved You",
@@ -43396,8 +43396,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2000,
     "chartRank": 7,
-    "mbid": "67455f0b-c9a2-42b5-9b99-fdf59b6f5ac8",
-    "deezerId": null
+    "mbid": "14a55797-9d44-4400-9c0b-ebdbdbf9ab8a",
+    "deezerId": 117262966
   },
   {
     "title": "Amazed",
@@ -43416,8 +43416,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1999,
     "chartRank": 10,
-    "mbid": "871d601d-136c-463f-a3dd-4e1a035c94ad",
-    "deezerId": null
+    "mbid": "3dd4b7a1-9153-4626-96f5-ff3d5dabe773",
+    "deezerId": 13704591
   },
   {
     "title": "He Wasn't Man Enough",
@@ -43436,8 +43436,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1999,
     "chartRank": 11,
-    "mbid": "b9366e4d-6a36-4bd7-aaa7-135a861868d7",
-    "deezerId": null
+    "mbid": "fd130912-cfd5-4acf-856a-80d29ec99fb9",
+    "deezerId": 1583246
   },
   {
     "title": "Higher",
@@ -43447,7 +43447,7 @@
     "chartYear": 2000,
     "chartRank": 11,
     "mbid": "be7c89ab-68a6-4625-b14d-698158a9e6d1",
-    "deezerId": null
+    "deezerId": 80274464
   },
   {
     "title": "If You Had My Love",
@@ -43456,8 +43456,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 1999,
     "chartRank": 12,
-    "mbid": "17ab90dd-6e67-4725-a180-87e4af24f9ac",
-    "deezerId": null
+    "mbid": "00ae6422-41d4-4a65-adfc-903a1027385f",
+    "deezerId": 15475926
   },
   {
     "title": "Jumpin', Jumpin'",
@@ -43467,7 +43467,7 @@
     "chartYear": 2000,
     "chartRank": 13,
     "mbid": "4c159f76-632d-49ec-942d-3889b1285e2c",
-    "deezerId": null
+    "deezerId": 580931
   },
   {
     "title": "I Want It That Way",
@@ -44417,7 +44417,7 @@
     "chartYear": 2001,
     "chartRank": 6,
     "mbid": "9d18ec48-7961-4a40-838f-6879f36d7890",
-    "deezerId": null
+    "deezerId": 3658085
   },
   {
     "title": "Thank You",
@@ -44436,8 +44436,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2000,
     "chartRank": 9,
-    "mbid": "11071f70-a29e-428c-aaf6-56a37e66b70c",
-    "deezerId": null
+    "mbid": "a90342c2-b2e3-4b05-9dac-d79c0393ca9d",
+    "deezerId": 3658089
   },
   {
     "title": "Again",
@@ -44446,8 +44446,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2001,
     "chartRank": 9,
-    "mbid": "eedf09d5-e600-4aa8-824b-1fc3ca210376",
-    "deezerId": null
+    "mbid": "942c1e62-a7d3-4340-833c-65430fc13c75",
+    "deezerId": 3129591
   },
   {
     "title": "Independent Women Part I",
@@ -44457,7 +44457,7 @@
     "chartYear": 2001,
     "chartRank": 10,
     "mbid": "3c1b83a3-e00a-4ec8-a1fc-3dda82545bbe",
-    "deezerId": null
+    "deezerId": 5817088
   },
   {
     "title": "Try Again",
@@ -44466,8 +44466,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2000,
     "chartRank": 12,
-    "mbid": "0f6824d4-1b66-42a6-8f05-90a61cdedacf",
-    "deezerId": null
+    "mbid": "a53470b4-523c-49f1-9c22-3bb247ade2f1",
+    "deezerId": 3380594501
   },
   {
     "title": "It Wasn't Me",
@@ -44536,8 +44536,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2001,
     "chartRank": 17,
-    "mbid": "ce0072bb-4bc5-4ee2-b5bc-bf1e514966a1",
-    "deezerId": null
+    "mbid": "f1622f94-49d9-4778-9c90-349aace569f7",
+    "deezerId": 620264672
   },
   {
     "title": "Doesn't Really Matter",
@@ -44556,8 +44556,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2000,
     "chartRank": 21,
-    "mbid": "874a0cff-65ab-42d2-98c7-347750470a2d",
-    "deezerId": null
+    "mbid": "5aa053a9-5b84-418f-bb3c-d61df67b3880",
+    "deezerId": 71183268
   },
   {
     "title": "Drive",
@@ -44577,7 +44577,7 @@
     "chartYear": 2001,
     "chartRank": 26,
     "mbid": "12e73e39-c206-493a-946b-aecacd268125",
-    "deezerId": null
+    "deezerId": 831175
   },
   {
     "title": "It's Gonna Be Me",
@@ -44586,8 +44586,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2000,
     "chartRank": 27,
-    "mbid": "4233f4d9-b35e-4ba0-9f03-0b1a99694ad6",
-    "deezerId": null
+    "mbid": "671fbe8f-1b41-48fb-868d-21de0508186c",
+    "deezerId": 82242212
   },
   {
     "title": "The Way You Love Me",
@@ -44676,8 +44676,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2001,
     "chartRank": 36,
-    "mbid": "8048c115-961a-4a3a-ab28-71e97a8cd9e6",
-    "deezerId": null
+    "mbid": "b28b3a8a-e4e3-45dc-ad85-eae69cbe054f",
+    "deezerId": 66274325
   },
   {
     "title": "Fill Me In",
@@ -44686,8 +44686,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2001,
     "chartRank": 37,
-    "mbid": "06416499-acd2-49a8-a3ba-9089f64e279d",
-    "deezerId": null
+    "mbid": "3149d6f4-c776-479b-a102-a226cd584bd5",
+    "deezerId": 143169092
   },
   {
     "title": "No More",
@@ -44696,8 +44696,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2000,
     "chartRank": 39,
-    "mbid": "f0b36f65-c6e9-47c4-a47a-15b1f28c3b36",
-    "deezerId": null
+    "mbid": "5959bda2-f73b-4a3a-a79e-e96b2248f08d",
+    "deezerId": 625939
   },
   {
     "title": "Case of the Ex (Whatcha Gonna Do)",
@@ -44707,7 +44707,7 @@
     "chartYear": 2001,
     "chartRank": 40,
     "mbid": "3cb25cb1-f53f-441c-9da9-15ccd34eee99",
-    "deezerId": null
+    "deezerId": 935301132
   },
   {
     "title": "All or Nothing",
@@ -45306,8 +45306,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2001,
     "chartRank": 7,
-    "mbid": "467fe3c1-ab61-4fab-b0f6-5cac67bac455",
-    "deezerId": null
+    "mbid": "c2d0b51c-90c7-455d-976d-5716bccabc38",
+    "deezerId": 1089861
   },
   {
     "title": "In the End",
@@ -45326,8 +45326,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2002,
     "chartRank": 9,
-    "mbid": "74e4dd8c-4a63-4cfd-8cb4-1efcd3c6780e",
-    "deezerId": null
+    "mbid": "8c86a294-ee9a-4978-be01-7a6cf1f2f0d8",
+    "deezerId": 969349
   },
   {
     "title": "Blurry",
@@ -45336,8 +45336,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2002,
     "chartRank": 10,
-    "mbid": "a39ea689-7c44-4586-a1bf-b54576848a9f",
-    "deezerId": null
+    "mbid": "ec1fc730-72a4-4086-bebf-d957a372382f",
+    "deezerId": 623731972
   },
   {
     "title": "Hit 'Em Up Style (Oops!)",
@@ -45346,8 +45346,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2001,
     "chartRank": 11,
-    "mbid": "0976eceb-e4ef-4a90-aa47-713051ee7836",
-    "deezerId": null
+    "mbid": "c788a9e1-25b8-49b5-9e62-3490d43451d6",
+    "deezerId": 958747
   },
   {
     "title": "Ain't It Funny (Murder Remix)",
@@ -45366,8 +45366,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2001,
     "chartRank": 14,
-    "mbid": "bff6173a-9772-423e-b2f8-82a0d3cef543",
-    "deezerId": null
+    "mbid": "685d9ea9-44d1-48ad-a20d-98aa393a9021",
+    "deezerId": 3611374
   },
   {
     "title": "U Remind Me",
@@ -45376,8 +45376,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2001,
     "chartRank": 15,
-    "mbid": "64bedb9f-b05f-41bb-8724-0df461fd1f16",
-    "deezerId": null
+    "mbid": "4d4bd21c-864f-4fca-9174-93a9e6577ad8",
+    "deezerId": 969347
   },
   {
     "title": "I Need a Girl (Part One)",
@@ -45407,7 +45407,7 @@
     "chartYear": 2002,
     "chartRank": 16,
     "mbid": "d42349a0-4f4f-4413-89e2-f80e2c493f8e",
-    "deezerId": null
+    "deezerId": 970659
   },
   {
     "title": "Family Affair",
@@ -45416,8 +45416,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2002,
     "chartRank": 17,
-    "mbid": "9a299338-3436-41c7-868e-a81d5f2028fa",
-    "deezerId": null
+    "mbid": "c0d6b00e-45f2-438b-b54e-a067ff55c65e",
+    "deezerId": 1161679
   },
   {
     "title": "Ride wit Me",
@@ -46257,7 +46257,7 @@
     "chartYear": 2002,
     "chartRank": 6,
     "mbid": "3dbae9d9-362b-442a-bcce-f862cb1213c5",
-    "deezerId": null
+    "deezerId": 983832
   },
   {
     "title": "Unwell",
@@ -46267,7 +46267,7 @@
     "chartYear": 2003,
     "chartRank": 6,
     "mbid": "efe280d1-74f1-4cfa-a0a6-65fd5f5aa17c",
-    "deezerId": null
+    "deezerId": 663165
   },
   {
     "title": "What's Luv?",
@@ -46276,8 +46276,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2002,
     "chartRank": 8,
-    "mbid": "493d8a63-80b1-4cb3-ae4e-9e82f3ecc2c0",
-    "deezerId": null
+    "mbid": "9690294c-8317-4a57-a339-0a7b055804c0",
+    "deezerId": 3886133
   },
   {
     "title": "Miss You",
@@ -46287,7 +46287,7 @@
     "chartYear": 2003,
     "chartRank": 8,
     "mbid": "8165c5bc-0ecf-4458-b6da-b1d16fd2da92",
-    "deezerId": null
+    "deezerId": 3380594271
   },
   {
     "title": "Picture",
@@ -46306,8 +46306,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2002,
     "chartRank": 11,
-    "mbid": "3a3c611f-2fea-44f3-9619-d7bbc7024ed9",
-    "deezerId": null
+    "mbid": "ef82bf7c-dd8b-4bac-85a8-2211376dc3b4",
+    "deezerId": 15587465
   },
   {
     "title": "Get Low",
@@ -46316,8 +46316,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2003,
     "chartRank": 11,
-    "mbid": "3cbb6a2c-89aa-4019-a281-c113fd666901",
-    "deezerId": null
+    "mbid": "c34c63d2-e84e-4faf-9e27-546d720a474c",
+    "deezerId": 2591105
   },
   {
     "title": "Always on Time",
@@ -46357,7 +46357,7 @@
     "chartYear": 2003,
     "chartRank": 16,
     "mbid": "77fba263-80bc-4233-9694-210567d5c947",
-    "deezerId": null
+    "deezerId": 967334
   },
   {
     "title": "I Need a Girl (Part Two)",
@@ -46377,7 +46377,7 @@
     "chartYear": 2003,
     "chartRank": 18,
     "mbid": "10763eef-00fe-4ed4-80b5-7e789cbeec72",
-    "deezerId": null
+    "deezerId": 15587475
   },
   {
     "title": "Drift Away",
@@ -46386,8 +46386,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2003,
     "chartRank": 19,
-    "mbid": "638206a3-4f45-40ea-8d75-d4819b64dc70",
-    "deezerId": null
+    "mbid": "29b910fa-cf35-4318-8cf0-a226106b39a6",
+    "deezerId": 661836
   },
   {
     "title": "Without Me",
@@ -46396,8 +46396,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2002,
     "chartRank": 21,
-    "mbid": "edda1de4-0241-4783-ba3f-bb364ebe102b",
-    "deezerId": null
+    "mbid": "2d0e1136-a36e-432f-a618-7f75a110bca8",
+    "deezerId": 916424
   },
   {
     "title": "Get the Party Started",
@@ -47207,7 +47207,7 @@
     "chartYear": 2003,
     "chartRank": 7,
     "mbid": "d77a9c2e-f501-49cd-bcdf-ee6bfcd31a59",
-    "deezerId": null
+    "deezerId": 3112414
   },
   {
     "title": "Hey Ya!",
@@ -47216,8 +47216,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2004,
     "chartRank": 8,
-    "mbid": "58faa092-f0b4-448e-a461-fa63df09901b",
-    "deezerId": null
+    "mbid": "d1a3d960-7668-4755-a09b-135dc1393845",
+    "deezerId": 628266
   },
   {
     "title": "Bring Me to Life",
@@ -47246,8 +47246,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2003,
     "chartRank": 12,
-    "mbid": "11946f67-eaf2-4c9f-aa36-612af94e5b3f",
-    "deezerId": null
+    "mbid": "1a949e29-88cd-482b-8958-4ad3d7e2b956",
+    "deezerId": 609381
   },
   {
     "title": "Shake Ya Tailfeather",
@@ -47267,7 +47267,7 @@
     "chartYear": 2004,
     "chartRank": 13,
     "mbid": "de4226b9-05b9-48e7-a58a-03129f586044",
-    "deezerId": null
+    "deezerId": 2330772
   },
   {
     "title": "All I Have",
@@ -47316,8 +47316,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2004,
     "chartRank": 17,
-    "mbid": "c6d3c46c-e4a5-4eaa-991d-69c7b30adbd8",
-    "deezerId": null
+    "mbid": "62345e3d-f6dd-4ea8-843a-5eb31596e65d",
+    "deezerId": 795239
   },
   {
     "title": "My Immortal",
@@ -47326,8 +47326,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2004,
     "chartRank": 19,
-    "mbid": "b1f91cca-d23c-41ee-8f7c-1360d44654e4",
-    "deezerId": null
+    "mbid": "4934b8fe-e00f-42bc-9b3b-92e42b34169d",
+    "deezerId": 80274516
   },
   {
     "title": "Magic Stick",
@@ -47336,8 +47336,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2003,
     "chartRank": 20,
-    "mbid": "3c4a5edb-3528-4a1e-ac76-7a61369031f2",
-    "deezerId": null
+    "mbid": "f276a30c-35f1-4cc7-9673-baacb94cf2e3",
+    "deezerId": 3892038
   },
   {
     "title": "Sunshine",
@@ -47406,8 +47406,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2004,
     "chartRank": 25,
-    "mbid": "8808699c-5f35-4bda-8ccc-5bc7ca320276",
-    "deezerId": null
+    "mbid": "3a01f046-d947-4ec7-95d0-31f4d4fb24c3",
+    "deezerId": 3112419
   },
   {
     "title": "Where Is the Love?",
@@ -47426,8 +47426,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2004,
     "chartRank": 26,
-    "mbid": "1162e5f4-1e20-4042-86b6-2c16040022da",
-    "deezerId": null
+    "mbid": "446028c6-591a-4c1e-ac2b-d0a27d8d7013",
+    "deezerId": 609376
   },
   {
     "title": "The First Cut Is the Deepest",
@@ -48186,8 +48186,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2004,
     "chartRank": 9,
-    "mbid": "1d931a70-4b04-4711-8976-93b6330fab58",
-    "deezerId": null
+    "mbid": "c08c23cb-262a-4abf-9161-ae2682e2b220",
+    "deezerId": 13145340
   },
   {
     "title": "Lean Back",
@@ -48206,8 +48206,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2005,
     "chartRank": 11,
-    "mbid": "95299c76-9a4e-4057-a9bf-862822497c4f",
-    "deezerId": null
+    "mbid": "aeb487dd-6fc2-4240-869f-48f10ff59ef8",
+    "deezerId": 145429542
   },
   {
     "title": "Confessions Part II",
@@ -48217,7 +48217,7 @@
     "chartYear": 2004,
     "chartRank": 12,
     "mbid": "ff837122-11b5-4ac2-b692-01587460e974",
-    "deezerId": null
+    "deezerId": 13783452
   },
   {
     "title": "Freek-a-Leek",
@@ -48247,7 +48247,7 @@
     "chartYear": 2005,
     "chartRank": 21,
     "mbid": "96beea1b-323e-455b-9799-8f56984dfec4",
-    "deezerId": null
+    "deezerId": 13145349
   },
   {
     "title": "Move Ya Body",
@@ -48256,8 +48256,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2004,
     "chartRank": 22,
-    "mbid": "d45bf328-a19c-4fc7-b131-372226c487cd",
-    "deezerId": null
+    "mbid": "2791610a-9c33-48df-89e0-68aa4434bcf5",
+    "deezerId": 2598368
   },
   {
     "title": "Dip It Low",
@@ -48276,8 +48276,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2005,
     "chartRank": 23,
-    "mbid": "47322ead-ffbd-4bbd-8d0e-599e55e8a99b",
-    "deezerId": null
+    "mbid": "85bd5844-ddf2-4587-88bc-87cbfcd6ddb2",
+    "deezerId": 1761305797
   },
   {
     "title": "My Boo",
@@ -48286,8 +48286,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2004,
     "chartRank": 24,
-    "mbid": "8bb83472-daa1-489d-9731-449f5ea6e22c",
-    "deezerId": null
+    "mbid": "6c40bc5d-0b21-47ae-9db1-c1a8a461e980",
+    "deezerId": 13783465
   },
   {
     "title": "Lovers & Friends",
@@ -48297,7 +48297,7 @@
     "chartYear": 2005,
     "chartRank": 25,
     "mbid": "205622f2-748f-49cc-b933-7da57e588665",
-    "deezerId": null
+    "deezerId": 10215873
   },
   {
     "title": "Turn Me On",
@@ -48316,8 +48316,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2004,
     "chartRank": 30,
-    "mbid": "6d0b1c9b-b0cd-492c-8da9-ff91ab2e58ed",
-    "deezerId": null
+    "mbid": "3bfcee99-8802-457a-b0ef-efdf0f19bcd9",
+    "deezerId": 4678214
   },
   {
     "title": "Overnight Celebrity",
@@ -48336,8 +48336,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2005,
     "chartRank": 31,
-    "mbid": "5855ff51-9f59-4f1c-9a63-67761f40532d",
-    "deezerId": null
+    "mbid": "c169ecb4-acbf-48b0-8f6e-545c1f2a7499",
+    "deezerId": 2426752
   },
   {
     "title": "Obsession (No Es Amor)",
@@ -48357,7 +48357,7 @@
     "chartYear": 2005,
     "chartRank": 34,
     "mbid": "1dec3220-42c6-4fd6-965e-8ec30251a897",
-    "deezerId": null
+    "deezerId": 13783454
   },
   {
     "title": "She Will Be Loved",
@@ -49006,8 +49006,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2005,
     "chartRank": 6,
-    "mbid": "c6fad580-504a-4a0a-9ee4-19d63848b69c",
-    "deezerId": null
+    "mbid": "ca2d4efe-89e3-4e63-9f69-27a2ec6cbe96",
+    "deezerId": 1184309
   },
   {
     "title": "Unwritten",
@@ -49026,8 +49026,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2005,
     "chartRank": 8,
-    "mbid": "2a928ce2-9b46-488e-b62a-623204fff469",
-    "deezerId": null
+    "mbid": "fea5f1b5-0697-4e73-bde2-1bb181d89c3e",
+    "deezerId": 145429544
   },
   {
     "title": "Ridin'",
@@ -49036,8 +49036,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2006,
     "chartRank": 8,
-    "mbid": "946508fc-2cfe-4b9a-991f-09a441d4ccff",
-    "deezerId": null
+    "mbid": "cee6da2c-7543-4f98-8b51-00fb234e8ad7",
+    "deezerId": 1172093
   },
   {
     "title": "Don't Cha",
@@ -49086,8 +49086,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2005,
     "chartRank": 12,
-    "mbid": "338a6cbe-0f3b-4bb0-9e20-9d4769c5e4d7",
-    "deezerId": null
+    "mbid": "87548c95-fcf8-4cc9-b9bb-14d5ebae655c",
+    "deezerId": 366451791
   },
   {
     "title": "Grillz",
@@ -49106,8 +49106,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2005,
     "chartRank": 13,
-    "mbid": "2d9a6e73-2bed-46e5-aa0c-43317e31de06",
-    "deezerId": null
+    "mbid": "a28fd793-c89a-47a4-a850-873665aed8cb",
+    "deezerId": 7375557
   },
   {
     "title": "Over My Head (Cable Car)",
@@ -49116,8 +49116,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2006,
     "chartRank": 13,
-    "mbid": "2d0c95c4-53e5-4a00-965d-6c3fa96c9b1d",
-    "deezerId": null
+    "mbid": "d77db5e1-15ba-4e37-87bf-34a6537b341c",
+    "deezerId": 7674864
   },
   {
     "title": "Lose Control",
@@ -49137,7 +49137,7 @@
     "chartYear": 2005,
     "chartRank": 15,
     "mbid": "0d5bc82d-9632-4ad2-ab58-466d54843dd8",
-    "deezerId": null
+    "deezerId": 1217611492
   },
   {
     "title": "Buttons",
@@ -49176,8 +49176,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2005,
     "chartRank": 17,
-    "mbid": "ffbc2f6b-ae73-4932-98e0-cb83006f0a20",
-    "deezerId": null
+    "mbid": "e360388a-d1fc-440b-9898-7dae45a3d14c",
+    "deezerId": 145429546
   },
   {
     "title": "Pon de Replay",
@@ -49186,8 +49186,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2005,
     "chartRank": 18,
-    "mbid": "fc534437-b0d4-480d-a3bd-835d505c9887",
-    "deezerId": null
+    "mbid": "f9845fce-5ab7-456f-8579-6a1fcfa8cf25",
+    "deezerId": 2953166
   },
   {
     "title": "How We Do",
@@ -50006,8 +50006,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2006,
     "chartRank": 7,
-    "mbid": "887a5d12-f9fd-499b-8424-61f28f00b393",
-    "deezerId": null
+    "mbid": "aa6c54d3-226b-47d6-85b9-2adf3e22ebaf",
+    "deezerId": 2752209141
   },
   {
     "title": "Hey There Delilah",
@@ -50016,8 +50016,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2007,
     "chartRank": 7,
-    "mbid": "e6df4ab8-50f9-469f-bb6b-d89394761d75",
-    "deezerId": null
+    "mbid": "c98bd54c-454e-4ad1-aa19-90eed19d07e7",
+    "deezerId": 921959412
   },
   {
     "title": "I Wanna Love You",
@@ -50066,8 +50066,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2006,
     "chartRank": 14,
-    "mbid": "aedfc001-ff22-4f84-ab78-fe5eecaf3b35",
-    "deezerId": null
+    "mbid": "ecc63154-e855-4a71-812d-79d425437e87",
+    "deezerId": 2793680
   },
   {
     "title": "Smack That",
@@ -50097,7 +50097,7 @@
     "chartYear": 2007,
     "chartRank": 17,
     "mbid": "a3f7e96d-c1d6-44ad-a730-7d2b7e6c8dc2",
-    "deezerId": null
+    "deezerId": 118996424
   },
   {
     "title": "It's Goin' Down",
@@ -50106,8 +50106,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2006,
     "chartRank": 18,
-    "mbid": "a292cbcb-29f4-47a0-999b-cf67a8a097b6",
-    "deezerId": null
+    "mbid": "4a410e43-7f17-4a91-ad7b-950e9e1c42fc",
+    "deezerId": 3658177
   },
   {
     "title": "SOS",
@@ -50136,8 +50136,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2006,
     "chartRank": 22,
-    "mbid": "357d59d7-d51c-4d9b-bb2f-e743d4b49ce5",
-    "deezerId": null
+    "mbid": "09442fa5-70ed-4c81-b4c8-9c8878f516ed",
+    "deezerId": 882290
   },
   {
     "title": "What Goes Around... Comes Around",
@@ -50156,8 +50156,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2006,
     "chartRank": 23,
-    "mbid": "536b4c7f-0cb8-496f-b56f-0ae36822512b",
-    "deezerId": null
+    "mbid": "8ebb47f5-d7d5-4c72-ba7d-cd09eb10ef94",
+    "deezerId": 680516
   },
   {
     "title": "Snap Yo Fingers",
@@ -50186,8 +50186,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2007,
     "chartRank": 25,
-    "mbid": "18f8a802-7da1-46e8-9492-1dd2440e9d97",
-    "deezerId": null
+    "mbid": "3d94d514-9ac4-4ddd-bb19-f92a4ebf52b7",
+    "deezerId": 118996426
   },
   {
     "title": "My Love",
@@ -50196,8 +50196,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2007,
     "chartRank": 26,
-    "mbid": "a260ea3d-f841-449c-881e-ed84f0f6e701",
-    "deezerId": null
+    "mbid": "26396706-52fa-4778-85c8-f358d2ad1330",
+    "deezerId": 15489385
   },
   {
     "title": "Unfaithful",
@@ -50237,7 +50237,7 @@
     "chartYear": 2006,
     "chartRank": 32,
     "mbid": "38aedf75-0622-4cd8-9bfa-9caa99cf410f",
-    "deezerId": null
+    "deezerId": 62417658
   },
   {
     "title": "This Ain't a Scene, It's an Arms Race",
@@ -50247,7 +50247,7 @@
     "chartYear": 2007,
     "chartRank": 32,
     "mbid": "08239d61-762e-44ac-8f68-aed6760c3caf",
-    "deezerId": null
+    "deezerId": 911492
   },
   {
     "title": "Pop, Lock & Drop It",
@@ -50837,7 +50837,7 @@
     "chartYear": 2008,
     "chartRank": 6,
     "mbid": "8c84090c-36b3-4fa2-a613-478bf59a7265",
-    "deezerId": null
+    "deezerId": 14876039
   },
   {
     "title": "Love Song",
@@ -50846,8 +50846,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2008,
     "chartRank": 7,
-    "mbid": "e6af17a0-5a48-48da-85f5-27cb564a0995",
-    "deezerId": null
+    "mbid": "68538f2a-9f40-4ef0-9a92-7f6cf36bf3ce",
+    "deezerId": 13132590
   },
   {
     "title": "With You",
@@ -50886,8 +50886,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2007,
     "chartRank": 12,
-    "mbid": "613565f6-a80b-4a87-a3f9-11d4034fc5d1",
-    "deezerId": null
+    "mbid": "33b9f733-cd53-4535-9dad-d48aff31aed4",
+    "deezerId": 5495885
   },
   {
     "title": "Makes Me Wonder",
@@ -50896,8 +50896,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2007,
     "chartRank": 13,
-    "mbid": "c7175ced-38a4-4ecb-9c01-f2f650fbee03",
-    "deezerId": null
+    "mbid": "a77a79fd-9c25-4028-b365-fd63361bd903",
+    "deezerId": 130688208
   },
   {
     "title": "Party Like a Rockstar",
@@ -50916,8 +50916,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2007,
     "chartRank": 16,
-    "mbid": "e3d7a5e8-2fbc-44f6-8361-0b769caf4fd2",
-    "deezerId": null
+    "mbid": "a1c3c855-eaa4-4e43-a6a8-0e7bf7d5f613",
+    "deezerId": 3154364
   },
   {
     "title": "Don't Stop the Music",
@@ -50927,7 +50927,7 @@
     "chartYear": 2008,
     "chartRank": 17,
     "mbid": "4c0566be-d3d9-42b2-964d-cf349972123b",
-    "deezerId": null
+    "deezerId": 925108
   },
   {
     "title": "The Way I Are",
@@ -50946,8 +50946,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2008,
     "chartRank": 19,
-    "mbid": "cbda3647-945e-4fe4-abbf-97e096f9580f",
-    "deezerId": null
+    "mbid": "7f5e09fe-6409-49e3-b293-61211ea60bf7",
+    "deezerId": 538352
   },
   {
     "title": "Crank That (Soulja Boy)",
@@ -50997,7 +50997,7 @@
     "chartYear": 2008,
     "chartRank": 25,
     "mbid": "57ddb1c0-6e7a-49cd-9e92-059286f1c9be",
-    "deezerId": null
+    "deezerId": 80275000
   },
   {
     "title": "Clumsy",
@@ -51017,7 +51017,7 @@
     "chartYear": 2007,
     "chartRank": 27,
     "mbid": "8009d470-912b-42fa-8261-b88c488eb935",
-    "deezerId": null
+    "deezerId": 630827242
   },
   {
     "title": "U + Ur Hand",
@@ -51037,7 +51037,7 @@
     "chartYear": 2008,
     "chartRank": 30,
     "mbid": "b8c900cc-9093-4a03-9961-debf4f2e265e",
-    "deezerId": null
+    "deezerId": 13705130
   },
   {
     "title": "Beautiful Girls",
@@ -51046,8 +51046,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2007,
     "chartRank": 31,
-    "mbid": "ac71a32d-e345-4de8-b9de-fcd2c945e0a2",
-    "deezerId": null
+    "mbid": "47e69f86-0f49-4803-b936-1384048c1644",
+    "deezerId": 13705276
   },
   {
     "title": "See You Again",
@@ -51706,8 +51706,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2009,
     "chartRank": 7,
-    "mbid": "4df51451-c8f4-42df-9682-97a7f1d05646",
-    "deezerId": null
+    "mbid": "a5a2330e-2fff-4601-a715-6e68a8e98fbf",
+    "deezerId": 2686140
   },
   {
     "title": "Love in This Club",
@@ -51716,8 +51716,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2008,
     "chartRank": 8,
-    "mbid": "56c8ea5e-bda4-4714-97a2-5d4e3b464cff",
-    "deezerId": null
+    "mbid": "f66afd75-9ede-4cd4-aa5f-b5db9d7dcf3b",
+    "deezerId": 15527509
   },
   {
     "title": "Single Ladies (Put a Ring on It)",
@@ -51726,8 +51726,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2009,
     "chartRank": 8,
-    "mbid": "2ba5879b-3f28-4ca4-89f2-d0bff101faa1",
-    "deezerId": null
+    "mbid": "67dc066b-d84e-444c-b250-82917db7281e",
+    "deezerId": 2485118
   },
   {
     "title": "Heartless",
@@ -51736,8 +51736,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2009,
     "chartRank": 9,
-    "mbid": "3dce9008-f3de-472c-b9db-b9c423dbed85",
-    "deezerId": null
+    "mbid": "986077d0-162b-43b3-b8ff-514cfd774eba",
+    "deezerId": 130412300
   },
   {
     "title": "Forever",
@@ -51747,7 +51747,7 @@
     "chartYear": 2008,
     "chartRank": 10,
     "mbid": "0b17aff1-0446-4a8e-b437-76c6bd1b43c0",
-    "deezerId": null
+    "deezerId": 15590961
   },
   {
     "title": "Gives You Hell",
@@ -51756,8 +51756,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2009,
     "chartRank": 10,
-    "mbid": "4ead3690-5986-4095-a24f-95d07717620f",
-    "deezerId": null
+    "mbid": "6a334e04-e8f2-4411-bf1d-a0acbffc55d9",
+    "deezerId": 3976201
   },
   {
     "title": "You Belong with Me",
@@ -51766,8 +51766,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2009,
     "chartRank": 11,
-    "mbid": "3e3cadd9-74d9-4718-87a3-8071386a8af8",
-    "deezerId": null
+    "mbid": "70ecebf2-6dc0-4cc8-8f6c-52f7de1fdeb0",
+    "deezerId": 871665102
   },
   {
     "title": "Take a Bow",
@@ -51776,8 +51776,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2008,
     "chartRank": 12,
-    "mbid": "8e2bb896-7877-46b9-88bb-1a85bc2e1ae8",
-    "deezerId": null
+    "mbid": "fa515490-6b24-4e54-9387-aed958600304",
+    "deezerId": 925119
   },
   {
     "title": "Dead and Gone",
@@ -51793,11 +51793,11 @@
     "title": "Viva la Vida",
     "artist": "Coldplay",
     "year": 2008,
-    "yearSource": "chart-year",
+    "yearSource": "musicbrainz",
     "chartYear": 2008,
     "chartRank": 13,
-    "mbid": null,
-    "deezerId": null
+    "mbid": "307ce9da-5690-4e21-ab71-9d12ea106e52",
+    "deezerId": 3157972
   },
   {
     "title": "You Found Me",
@@ -51807,7 +51807,7 @@
     "chartYear": 2009,
     "chartRank": 13,
     "mbid": "67e8d7b9-1306-4b41-9d00-b06370b6dc57",
-    "deezerId": null
+    "deezerId": 2889763
   },
   {
     "title": "I Kissed a Girl",
@@ -51816,8 +51816,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2008,
     "chartRank": 14,
-    "mbid": "6d85794f-bbc5-4bc1-b185-937d8f932245",
-    "deezerId": null
+    "mbid": "32e02581-0a95-43f0-a83c-17af5a0e0c63",
+    "deezerId": 3169173
   },
   {
     "title": "Use Somebody",
@@ -52637,7 +52637,7 @@
     "chartYear": 2010,
     "chartRank": 8,
     "mbid": "d76057c6-c29c-41f7-b83e-751b4269851d",
-    "deezerId": null
+    "deezerId": 4601933
   },
   {
     "title": "Break Your Heart",
@@ -52656,8 +52656,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2010,
     "chartRank": 11,
-    "mbid": "4adce308-7f28-4a6f-a6bc-ae94c0adff2a",
-    "deezerId": null
+    "mbid": "ff701bef-2637-4463-b76d-8ad1a60b3036",
+    "deezerId": 5979884
   },
   {
     "title": "In My Head",
@@ -52676,8 +52676,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2009,
     "chartRank": 15,
-    "mbid": "1a89d57b-c69b-4e56-a336-e8e40144b430",
-    "deezerId": null
+    "mbid": "4dab0d4f-2992-4140-8d08-1a364a6d4957",
+    "deezerId": 4229735
   },
   {
     "title": "Rude Boy",
@@ -52686,8 +52686,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2010,
     "chartRank": 15,
-    "mbid": "8415d708-b7d3-4ecf-9253-1ac558cc5863",
-    "deezerId": null
+    "mbid": "3d3314dc-1ce2-4625-bbfe-bb020d195d8b",
+    "deezerId": 4670273
   },
   {
     "title": "I Know You Want Me (Calle Ocho)",
@@ -52716,8 +52716,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2009,
     "chartRank": 20,
-    "mbid": "7d520594-4be6-4fb1-ba31-325806db0b84",
-    "deezerId": null
+    "mbid": "ea0ec70c-1634-4428-9eda-2f26b1bef19e",
+    "deezerId": 4585472
   },
   {
     "title": "Imma Be",
@@ -52727,7 +52727,7 @@
     "chartYear": 2010,
     "chartRank": 20,
     "mbid": "9ac15b6e-fdc7-4c54-9ed8-a161412d9f8b",
-    "deezerId": null
+    "deezerId": 90780905
   },
   {
     "title": "The Climb",
@@ -52736,8 +52736,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2009,
     "chartRank": 21,
-    "mbid": "4bd9722d-cad9-41ce-ad03-373ea2863ffa",
-    "deezerId": null
+    "mbid": "4fd5584d-458f-4664-b139-05018e0891d4",
+    "deezerId": 3068073
   },
   {
     "title": "Empire State of Mind",
@@ -52756,8 +52756,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2009,
     "chartRank": 22,
-    "mbid": "12ccbda4-f7b9-4676-87e8-22064e745385",
-    "deezerId": null
+    "mbid": "52351437-7209-4879-9cdb-3bcd64a5b7de",
+    "deezerId": 633377802
   },
   {
     "title": "My Life Would Suck Without You",
@@ -52767,7 +52767,7 @@
     "chartYear": 2009,
     "chartRank": 23,
     "mbid": "83267cbd-e245-4ccd-b981-45eac5f197a2",
-    "deezerId": null
+    "deezerId": 71901172
   },
   {
     "title": "Replay",
@@ -52776,8 +52776,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2010,
     "chartRank": 25,
-    "mbid": "59eb9565-bcbd-47ef-aec2-b7a2c2d96c35",
-    "deezerId": null
+    "mbid": "6c09e6c7-3986-4dc8-878b-230a5116a060",
+    "deezerId": 6276158
   },
   {
     "title": "Second Chance",
@@ -52796,8 +52796,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2010,
     "chartRank": 26,
-    "mbid": "a4ddcf84-e4d7-4a3a-b589-1c59b7bf220f",
-    "deezerId": null
+    "mbid": "cc2ed413-d85f-4dca-82c8-9b9dbed1c6c8",
+    "deezerId": 41594361
   },
   {
     "title": "Breakeven",
@@ -52826,8 +52826,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2010,
     "chartRank": 30,
-    "mbid": "4353c9e4-55c1-4877-816b-127ff00a5ae3",
-    "deezerId": null
+    "mbid": "059a2012-0bcf-4ef3-b550-69448247d1da",
+    "deezerId": 4188437
   },
   {
     "title": "Run This Town",
@@ -53537,7 +53537,7 @@
     "chartYear": 2011,
     "chartRank": 6,
     "mbid": "2ef0762b-b19d-4355-b19a-7af087497599",
-    "deezerId": null
+    "deezerId": 14616013
   },
   {
     "title": "Love the Way You Lie",
@@ -53546,8 +53546,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2010,
     "chartRank": 7,
-    "mbid": "c5f9e4f6-9347-420a-823a-d4b20bd844cc",
-    "deezerId": null
+    "mbid": "29d6a30b-b911-475c-808c-8b289844ca75",
+    "deezerId": 6461440
   },
   {
     "title": "Super Bass",
@@ -53586,8 +53586,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2011,
     "chartRank": 10,
-    "mbid": "feefa377-561f-4bfb-b88f-f46bdf29065c",
-    "deezerId": null
+    "mbid": "6204119d-ea38-4d8f-be8f-44afb2f59786",
+    "deezerId": 7706014
   },
   {
     "title": "I Like It",
@@ -53596,8 +53596,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2010,
     "chartRank": 12,
-    "mbid": "ce78b8c3-6acf-4faa-9cdd-64216e14d3e3",
-    "deezerId": null
+    "mbid": "618add31-4de2-44cf-a6f5-25ddbfb2e417",
+    "deezerId": 10202477
   },
   {
     "title": "S&M",
@@ -53607,7 +53607,7 @@
     "chartYear": 2011,
     "chartRank": 12,
     "mbid": "5a5056f9-1bec-426e-bc39-2ba1d22bb13b",
-    "deezerId": null
+    "deezerId": 13529559
   },
   {
     "title": "BedRock",
@@ -53626,8 +53626,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2011,
     "chartRank": 13,
-    "mbid": "4d7879e0-8dc3-4efd-8879-2bb5f01a477a",
-    "deezerId": null
+    "mbid": "55cfb83f-adc1-4730-a71b-90b369fd3f84",
+    "deezerId": 15546830
   },
   {
     "title": "Last Friday Night (T.G.I.F.)",
@@ -53637,7 +53637,7 @@
     "chartYear": 2011,
     "chartRank": 14,
     "mbid": "a2b6d3f6-2ab5-4522-9a40-e589fb8f6e02",
-    "deezerId": null
+    "deezerId": 17135109
   },
   {
     "title": "Just the Way You Are",
@@ -53646,8 +53646,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2011,
     "chartRank": 15,
-    "mbid": "f3334d3c-2fed-4104-995e-cd1f37234f6f",
-    "deezerId": null
+    "mbid": "4658bb93-57c4-4710-86f1-b87869f5781b",
+    "deezerId": 7216935
   },
   {
     "title": "Telephone",
@@ -53667,7 +53667,7 @@
     "chartYear": 2011,
     "chartRank": 16,
     "mbid": "2f709ac7-762a-420b-9749-aa19697863bf",
-    "deezerId": null
+    "deezerId": 10202491
   },
   {
     "title": "Teenage Dream",
@@ -53676,8 +53676,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2010,
     "chartRank": 17,
-    "mbid": "2f8cad48-e549-4ff9-8a80-8c1c46f0dd00",
-    "deezerId": null
+    "mbid": "8cf81f4a-05fd-4688-bb8c-eb59df2026a0",
+    "deezerId": 17135108
   },
   {
     "title": "What's My Name?",
@@ -53696,8 +53696,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2010,
     "chartRank": 22,
-    "mbid": "d106225b-beff-4a9d-b8b6-f48d6cd970e2",
-    "deezerId": null
+    "mbid": "85ee744a-c3d1-4684-868f-6cd403f2352d",
+    "deezerId": 15597245
   },
   {
     "title": "Down on Me",
@@ -54416,8 +54416,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2012,
     "chartRank": 6,
-    "mbid": "a1c3ac04-da72-4343-b693-32f8402e15ba",
-    "deezerId": null
+    "mbid": "571c10f9-911e-476a-9302-1cdf2125cace",
+    "deezerId": 14348462
   },
   {
     "title": "Fuck You (Forget You)",
@@ -54437,7 +54437,7 @@
     "chartYear": 2012,
     "chartRank": 7,
     "mbid": "5e89cda2-94ab-4f90-bb40-241e61cdd247",
-    "deezerId": null
+    "deezerId": 14241633
   },
   {
     "title": "We Found Love",
@@ -54446,8 +54446,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2012,
     "chartRank": 8,
-    "mbid": "6a762fac-1266-4859-b5a8-55cf60dffccb",
-    "deezerId": null
+    "mbid": "70b75f40-442e-48b2-a41e-6b7490b73fbe",
+    "deezerId": 14525574
   },
   {
     "title": "What Makes You Beautiful",
@@ -54457,7 +54457,7 @@
     "chartYear": 2012,
     "chartRank": 10,
     "mbid": "d9a5d65e-04b1-4bef-bb81-1c24f96cd396",
-    "deezerId": null
+    "deezerId": 16667911
   },
   {
     "title": "On the Floor",
@@ -54477,7 +54477,7 @@
     "chartYear": 2012,
     "chartRank": 11,
     "mbid": "ffbe9f3f-57a4-4453-b1dc-4fc5a5f2bc2a",
-    "deezerId": null
+    "deezerId": 15269141
   },
   {
     "title": "Set Fire to the Rain",
@@ -54496,8 +54496,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2012,
     "chartRank": 13,
-    "mbid": "ec3cb0bb-9e6b-406e-8bf9-6bf69c2f4c3f",
-    "deezerId": null
+    "mbid": "c8200a2c-fbae-4c01-be04-94818a069364",
+    "deezerId": 12660660
   },
   {
     "title": "Good Feeling",
@@ -54506,8 +54506,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2012,
     "chartRank": 16,
-    "mbid": "2bb71e9c-f111-4d05-baae-ed2f3eb80740",
-    "deezerId": null
+    "mbid": "27a3e84a-bdae-4fc3-9440-218371c6143d",
+    "deezerId": 65232772
   },
   {
     "title": "Raise Your Glass",
@@ -54546,8 +54546,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2012,
     "chartRank": 20,
-    "mbid": "2a719ea5-12fa-43cb-a828-1edf5f509a05",
-    "deezerId": null
+    "mbid": "ddb6fe69-a9ce-4a21-a13d-adb6052b2017",
+    "deezerId": 17347988
   },
   {
     "title": "Look at Me Now",
@@ -54567,7 +54567,7 @@
     "chartYear": 2012,
     "chartRank": 22,
     "mbid": "7be8d679-53b5-4fde-909e-de2dfd433c6b",
-    "deezerId": null
+    "deezerId": 17806810
   },
   {
     "title": "Take Care",
@@ -55307,7 +55307,7 @@
     "chartYear": 2013,
     "chartRank": 8,
     "mbid": "126241da-d2cb-42c2-a40e-f30909057647",
-    "deezerId": null
+    "deezerId": 62724019
   },
   {
     "title": "Starships",
@@ -55316,8 +55316,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2012,
     "chartRank": 9,
-    "mbid": "21dbf17b-3850-4a64-b1ce-801683f8abbf",
-    "deezerId": null
+    "mbid": "7101eeb1-5210-4a97-b4d6-81aa2ff92835",
+    "deezerId": 28852751
   },
   {
     "title": "Cruise",
@@ -55337,7 +55337,7 @@
     "chartYear": 2013,
     "chartRank": 11,
     "mbid": "9dbd4c26-c4ad-4abe-ba3e-88bfe6750518",
-    "deezerId": null
+    "deezerId": 62724015
   },
   {
     "title": "Ho Hey",
@@ -55346,8 +55346,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2013,
     "chartRank": 12,
-    "mbid": "0f6e2260-8713-4b3d-8567-05bcafff9ed0",
-    "deezerId": null
+    "mbid": "1243e386-d49c-48b8-aea7-ea14383eb67f",
+    "deezerId": 757246692
   },
   {
     "title": "Some Nights",
@@ -55356,8 +55356,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2012,
     "chartRank": 14,
-    "mbid": "149b5611-75dc-4f60-909e-3a98a3c78276",
-    "deezerId": null
+    "mbid": "582c0a72-1540-40a2-bf23-e86349575498",
+    "deezerId": 16501727
   },
   {
     "title": "Wide Awake",
@@ -55366,8 +55366,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2012,
     "chartRank": 15,
-    "mbid": "e3cbebb8-e3ff-4ce3-abb6-61d63e4378fa",
-    "deezerId": null
+    "mbid": "2c2b2fff-b527-4cfd-90ae-41647a7d2d35",
+    "deezerId": 17135122
   },
   {
     "title": "Royals",
@@ -55377,7 +55377,7 @@
     "chartYear": 2013,
     "chartRank": 15,
     "mbid": "04cccd2b-bbac-4309-a367-94325fd0ef93",
-    "deezerId": null
+    "deezerId": 70403437
   },
   {
     "title": "I Knew You Were Trouble",
@@ -55396,8 +55396,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2012,
     "chartRank": 17,
-    "mbid": "3326f920-f628-4698-b916-085769c1e925",
-    "deezerId": null
+    "mbid": "a63b42a6-916d-457a-827d-07d48f9f8502",
+    "deezerId": 18232117
   },
   {
     "title": "One More Night",
@@ -55407,7 +55407,7 @@
     "chartYear": 2012,
     "chartRank": 18,
     "mbid": "7c1fce2d-5f5b-4a5b-8287-d3452ae3677f",
-    "deezerId": null
+    "deezerId": 84124183
   },
   {
     "title": "Drive By",
@@ -55416,8 +55416,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2012,
     "chartRank": 19,
-    "mbid": "beea17de-8700-477b-b370-6270501b76d8",
-    "deezerId": null
+    "mbid": "e04a4d03-6eae-478c-8b41-4f1dc5f2b854",
+    "deezerId": 17880924
   },
   {
     "title": "Where Have You Been",
@@ -56157,7 +56157,7 @@
     "chartYear": 2013,
     "chartRank": 6,
     "mbid": "c01bd40c-5f23-4c34-9238-7a5f226f6c0e",
-    "deezerId": null
+    "deezerId": 65356224
   },
   {
     "title": "Talk Dirty",
@@ -56166,8 +56166,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2014,
     "chartRank": 6,
-    "mbid": "ccbdd535-6437-49d8-b10c-cba069721599",
-    "deezerId": null
+    "mbid": "24647d10-f3a8-4a03-bed9-b6f1846dc4d4",
+    "deezerId": 129314012
   },
   {
     "title": "Just Give Me a Reason",
@@ -56187,7 +56187,7 @@
     "chartYear": 2014,
     "chartRank": 7,
     "mbid": "447276a2-a59e-4fe6-beaa-13ae0676d168",
-    "deezerId": null
+    "deezerId": 79845486
   },
   {
     "title": "Roar",
@@ -56197,7 +56197,7 @@
     "chartYear": 2013,
     "chartRank": 10,
     "mbid": "3cb1a5a0-2a10-4bf5-96fb-7211703936ed",
-    "deezerId": null
+    "deezerId": 71645431
   },
   {
     "title": "Timber",
@@ -56247,7 +56247,7 @@
     "chartYear": 2014,
     "chartRank": 14,
     "mbid": "5e58bc59-aa38-43ca-9740-fa79533679b3",
-    "deezerId": null
+    "deezerId": 86646433
   },
   {
     "title": "Turn Down for What",
@@ -56257,7 +56257,7 @@
     "chartYear": 2014,
     "chartRank": 15,
     "mbid": "a4c1efe1-7b27-4604-be35-097326ed1c5f",
-    "deezerId": null
+    "deezerId": 73707710
   },
   {
     "title": "The Monster",
@@ -56267,7 +56267,7 @@
     "chartYear": 2014,
     "chartRank": 16,
     "mbid": "7e9e29c6-c643-41bb-bd1c-f77e4a453719",
-    "deezerId": null
+    "deezerId": 72160317
   },
   {
     "title": "We Can't Stop",
@@ -56287,7 +56287,7 @@
     "chartYear": 2014,
     "chartRank": 17,
     "mbid": "c362ddbb-fc98-413b-b2d4-985099c2e497",
-    "deezerId": null
+    "deezerId": 72299954
   },
   {
     "title": "Wrecking Ball",
@@ -56296,8 +56296,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2013,
     "chartRank": 18,
-    "mbid": "5b4179d1-9033-4c93-95d7-2c186d769112",
-    "deezerId": null
+    "mbid": "8c8b2d45-6043-47c5-8c12-16fb8050817b",
+    "deezerId": 71137166
   },
   {
     "title": "Team",
@@ -56306,8 +56306,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2014,
     "chartRank": 18,
-    "mbid": "51a1079a-6378-4a01-bdae-2cb4f59017b5",
-    "deezerId": null
+    "mbid": "9e0ced3f-b8eb-43be-93a3-d21fb6acf086",
+    "deezerId": 70403440
   },
   {
     "title": "Wake Me Up",
@@ -56336,8 +56336,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2013,
     "chartRank": 20,
-    "mbid": "927875b7-61f1-4e3f-80ba-27efda6d3a8c",
-    "deezerId": null
+    "mbid": "70003461-a6b3-4780-98e2-e1897cee0a7a",
+    "deezerId": 65356217
   },
   {
     "title": "Cups (Pitch Perfect's When I'm Gone)",
@@ -57057,7 +57057,7 @@
     "chartYear": 2015,
     "chartRank": 6,
     "mbid": "9656e1b2-87c1-4208-8a33-fa814961fc9e",
-    "deezerId": null
+    "deezerId": 90326361
   },
   {
     "title": "Blank Space",
@@ -57067,7 +57067,7 @@
     "chartYear": 2015,
     "chartRank": 7,
     "mbid": "c3fe7791-0a91-4f0a-a89b-b056f38d3cde",
-    "deezerId": null
+    "deezerId": 602092412
   },
   {
     "title": "All About That Bass",
@@ -57077,7 +57077,7 @@
     "chartYear": 2014,
     "chartRank": 8,
     "mbid": "759edfb8-0b3c-4d4b-9538-a4e20f21f1e3",
-    "deezerId": null
+    "deezerId": 113420702
   },
   {
     "title": "Problem",
@@ -57086,8 +57086,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2014,
     "chartRank": 9,
-    "mbid": "47aee8db-3efd-4acf-91ff-1545dc190970",
-    "deezerId": null
+    "mbid": "051da081-084d-448d-aa84-8bfdfd2e3c27",
+    "deezerId": 83837258
   },
   {
     "title": "Stay with Me",
@@ -57096,8 +57096,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2014,
     "chartRank": 10,
-    "mbid": "cce6495b-048d-449d-90a2-46b8c1d30c17",
-    "deezerId": null
+    "mbid": "e4c0494d-5ab6-479a-a527-cfdc41f7c595",
+    "deezerId": 111780376
   },
   {
     "title": "Cheerleader (Felix Jaehn Remix)",
@@ -57147,7 +57147,7 @@
     "chartYear": 2015,
     "chartRank": 22,
     "mbid": "18b7683b-e085-44d6-a4db-358d6284f51f",
-    "deezerId": null
+    "deezerId": 113420742
   },
   {
     "title": "Post to Be",
@@ -57157,7 +57157,7 @@
     "chartYear": 2015,
     "chartRank": 24,
     "mbid": "6f3335de-ffad-4dcc-bbe1-a5d6e7a59ac3",
-    "deezerId": null
+    "deezerId": 90465927
   },
   {
     "title": "Chandelier",
@@ -57186,8 +57186,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2014,
     "chartRank": 26,
-    "mbid": "84868396-b7f3-4f34-90e8-e828ef14e34f",
-    "deezerId": null
+    "mbid": "1aa8d2cd-ad17-472f-a8a8-f6940acf267a",
+    "deezerId": 77410136
   },
   {
     "title": "I'm Not the Only One",
@@ -57197,7 +57197,7 @@
     "chartYear": 2015,
     "chartRank": 26,
     "mbid": "02aef9de-df3c-4224-a53e-eb8c97e7f4c2",
-    "deezerId": null
+    "deezerId": 111780380
   },
   {
     "title": "Bang Bang",
@@ -57206,8 +57206,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2014,
     "chartRank": 27,
-    "mbid": "5fb5e4da-6a53-45cb-b685-0b1488ef6a5b",
-    "deezerId": null
+    "mbid": "146707fc-924f-48ce-b56e-fff3a6a19c06",
+    "deezerId": 81609384
   },
   {
     "title": "Maps",
@@ -58026,8 +58026,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2015,
     "chartRank": 10,
-    "mbid": "fa5d851e-6f7a-49f6-9b6b-5217b1c192c1",
-    "deezerId": null
+    "mbid": "ee458835-f356-4b20-b6ac-03bc2f7f3d9e",
+    "deezerId": 106506512
   },
   {
     "title": "Cheap Thrills",
@@ -58046,8 +58046,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2015,
     "chartRank": 12,
-    "mbid": "08b815da-5d60-4807-a605-f6af03d5471d",
-    "deezerId": null
+    "mbid": "06879155-b9ce-4777-bdc0-f83cd6162760",
+    "deezerId": 106506516
   },
   {
     "title": "7 Years",
@@ -58056,8 +58056,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2016,
     "chartRank": 12,
-    "mbid": "cc31df03-b8fa-4e0f-96d2-5fbe4c19d7e7",
-    "deezerId": null
+    "mbid": "87e36ab4-6914-44ab-b740-7abb37678040",
+    "deezerId": 121239412
   },
   {
     "title": "Love Me Like You Do",
@@ -58067,7 +58067,7 @@
     "chartYear": 2015,
     "chartRank": 13,
     "mbid": "a0d55631-bcb2-4bd7-8ad2-f981e2b081a7",
-    "deezerId": null
+    "deezerId": 111780476
   },
   {
     "title": "My House",
@@ -58077,7 +58077,7 @@
     "chartYear": 2016,
     "chartRank": 14,
     "mbid": "05e7bf75-c42e-486a-a34f-2402bc3ccf8b",
-    "deezerId": null
+    "deezerId": 97786984
   },
   {
     "title": "I Took a Pill in Ibiza",
@@ -58106,8 +58106,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2015,
     "chartRank": 17,
-    "mbid": "ba875a38-27ff-4a50-bd4d-ad907ac3eab3",
-    "deezerId": null
+    "mbid": "83451080-bcfe-4825-bef7-ed953c7fa162",
+    "deezerId": 100598482
   },
   {
     "title": "Cake by the Ocean",
@@ -58116,8 +58116,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2016,
     "chartRank": 18,
-    "mbid": "d2dd8704-a5d4-466c-a96e-40e171726a45",
-    "deezerId": null
+    "mbid": "495a17fb-3fbb-4847-a601-b9445ee5277c",
+    "deezerId": 136341758
   },
   {
     "title": "Where Are Ü Now",
@@ -58127,7 +58127,7 @@
     "chartYear": 2015,
     "chartRank": 19,
     "mbid": "c08b0227-b1c5-4426-af53-67baa1732894",
-    "deezerId": null
+    "deezerId": 95963378
   },
   {
     "title": "Fight Song",
@@ -58137,7 +58137,7 @@
     "chartYear": 2015,
     "chartRank": 20,
     "mbid": "68bea014-b25c-45f2-8a87-e6270f9802b5",
-    "deezerId": null
+    "deezerId": 95138146
   },
   {
     "title": "Ride",
@@ -58147,7 +58147,7 @@
     "chartYear": 2016,
     "chartRank": 20,
     "mbid": "e034e9ef-6266-46f7-8fdd-46d3b26e1911",
-    "deezerId": null
+    "deezerId": 99976954
   },
   {
     "title": "679",
@@ -58156,8 +58156,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2015,
     "chartRank": 21,
-    "mbid": "926800a2-74ef-478b-8402-a2a47ab40a40",
-    "deezerId": null
+    "mbid": "2817c604-a5c5-4696-b0f3-17c914a248ce",
+    "deezerId": 103014252
   },
   {
     "title": "Worth It",
@@ -58906,8 +58906,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2017,
     "chartRank": 6,
-    "mbid": "ddddc128-276a-43b2-95bd-75c01144c691",
-    "deezerId": null
+    "mbid": "de1b824d-b42a-4cca-b388-ad1aa1f2f665",
+    "deezerId": 1693337757
   },
   {
     "title": "Closer",
@@ -58916,8 +58916,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2017,
     "chartRank": 7,
-    "mbid": "b6c9b32f-a270-4251-a1e5-b7482623981d",
-    "deezerId": null
+    "mbid": "fb7963d0-d06f-45ca-a647-2b00a963179f",
+    "deezerId": 129310248
   },
   {
     "title": "Don't Let Me Down",
@@ -58926,8 +58926,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2016,
     "chartRank": 8,
-    "mbid": "6b29edd8-dcd8-4d44-b628-269356044a2e",
-    "deezerId": null
+    "mbid": "c02e64c8-c4fa-4e46-9a1c-73343717b32e",
+    "deezerId": 119302924
   },
   {
     "title": "Can't Stop the Feeling!",
@@ -58946,8 +58946,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2017,
     "chartRank": 10,
-    "mbid": "8df945b8-81bc-4ffa-8a94-dd57b505215a",
-    "deezerId": null
+    "mbid": "a614fca3-0339-49a8-9348-175acae56bdb",
+    "deezerId": 137726987
   },
   {
     "title": "Say You Won't Let Go",
@@ -58957,7 +58957,7 @@
     "chartYear": 2017,
     "chartRank": 11,
     "mbid": "364abea1-f6cd-42f3-a142-0818f17fc202",
-    "deezerId": null
+    "deezerId": 131742260
   },
   {
     "title": "Needed Me",
@@ -58967,7 +58967,7 @@
     "chartYear": 2016,
     "chartRank": 13,
     "mbid": "20ca09ca-6d25-40f8-9488-ea1c12836fa2",
-    "deezerId": null
+    "deezerId": 118190304
   },
   {
     "title": "Work from Home",
@@ -58987,7 +58987,7 @@
     "chartYear": 2017,
     "chartRank": 16,
     "mbid": "716f0fa1-c526-4995-a8ad-ff57c44bf9b1",
-    "deezerId": null
+    "deezerId": 136336110
   },
   {
     "title": "This Is What You Came For",
@@ -58996,8 +58996,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2016,
     "chartRank": 17,
-    "mbid": "822520c1-fa7b-406a-80e5-bc20ee583767",
-    "deezerId": null
+    "mbid": "30ac9667-bc70-4541-a022-a3a881784ec2",
+    "deezerId": 123883254
   },
   {
     "title": "Me, Myself & I",
@@ -59016,8 +59016,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2017,
     "chartRank": 19,
-    "mbid": "c5499d08-df86-45fe-ab98-d57431f6300d",
-    "deezerId": null
+    "mbid": "42ed33bb-248d-4c15-af8e-94383ec832b8",
+    "deezerId": 130105294
   },
   {
     "title": "Starboy",
@@ -59026,8 +59026,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2017,
     "chartRank": 20,
-    "mbid": "b364d4ff-b8cf-41ed-8f8c-7551bc707b57",
-    "deezerId": null
+    "mbid": "3da01a8e-3c71-408f-a9c7-0c4d10ad4e7d",
+    "deezerId": 136889400
   },
   {
     "title": "Heathens",
@@ -59036,8 +59036,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2016,
     "chartRank": 21,
-    "mbid": "c3fadad4-a70d-4fb0-ac21-1a559cfe2164",
-    "deezerId": null
+    "mbid": "3bf798f4-b3fa-4a0b-a7bb-655af72429b2",
+    "deezerId": 126884459
   },
   {
     "title": "Location",
@@ -59047,7 +59047,7 @@
     "chartYear": 2017,
     "chartRank": 21,
     "mbid": "fa99a2b9-0382-42f1-bfe9-197816e8895a",
-    "deezerId": null
+    "deezerId": 143172408
   },
   {
     "title": "Pillowtalk",
@@ -59677,7 +59677,7 @@
     "chartYear": 2017,
     "chartRank": 8,
     "mbid": "19a57520-a314-4656-bc2f-8be8d014dd13",
-    "deezerId": null
+    "deezerId": 141160791
   },
   {
     "title": "Believer",
@@ -59686,8 +59686,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2017,
     "chartRank": 9,
-    "mbid": "66b83c3f-baae-4260-8447-28b8f0b9dc20",
-    "deezerId": null
+    "mbid": "839a1658-53f7-4b2a-86d9-3e52d929d5a2",
+    "deezerId": 528330441
   },
   {
     "title": "Girls Like You",
@@ -59707,7 +59707,7 @@
     "chartYear": 2017,
     "chartRank": 12,
     "mbid": "35d03a98-805b-4752-8a44-1762e46ba5d1",
-    "deezerId": null
+    "deezerId": 375660351
   },
   {
     "title": "Lucid Dreams",
@@ -59717,7 +59717,7 @@
     "chartYear": 2018,
     "chartRank": 12,
     "mbid": "19c232bc-1960-4df2-bbc9-7742b7180a7f",
-    "deezerId": null
+    "deezerId": 601837422
   },
   {
     "title": "XO Tour Llif3",
@@ -59727,7 +59727,7 @@
     "chartYear": 2017,
     "chartRank": 13,
     "mbid": "82a56563-aa5f-4b8a-9c5b-fa193d9246c7",
-    "deezerId": null
+    "deezerId": 144949268
   },
   {
     "title": "Mask Off",
@@ -59736,8 +59736,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2017,
     "chartRank": 14,
-    "mbid": "7f205890-07f3-487c-bef1-e7d251dc867b",
-    "deezerId": null
+    "mbid": "09a613f7-5f9d-414a-9c4a-5c318dfe6b9a",
+    "deezerId": 142337683
   },
   {
     "title": "Unforgettable",
@@ -59746,8 +59746,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2017,
     "chartRank": 15,
-    "mbid": "a9f80def-3694-473e-a326-7fe31006293e",
-    "deezerId": null
+    "mbid": "cdef65b7-4a44-407f-b962-2315e40142d0",
+    "deezerId": 382428781
   },
   {
     "title": "Boo'd Up",
@@ -59766,8 +59766,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2018,
     "chartRank": 16,
-    "mbid": "bfe4f53f-490e-49f9-8ee1-c3fda969c1bf",
-    "deezerId": null
+    "mbid": "76ac63ee-9b00-4f70-b443-1c0c3bd1e445",
+    "deezerId": 366297921
   },
   {
     "title": "Stay",
@@ -60567,7 +60567,7 @@
     "chartYear": 2019,
     "chartRank": 6,
     "mbid": "623b7611-08d9-4115-acd6-69f734dd3f24",
-    "deezerId": null
+    "deezerId": 2441318935
   },
   {
     "title": "I Like It",
@@ -60576,8 +60576,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2018,
     "chartRank": 7,
-    "mbid": "bb94251c-65eb-41dc-b96b-60fba5dd5432",
-    "deezerId": null
+    "mbid": "e6e2b27b-2de0-445d-b4a8-bc722c3ebcfe",
+    "deezerId": 482986842
   },
   {
     "title": "The Middle",
@@ -60586,8 +60586,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2018,
     "chartRank": 8,
-    "mbid": "75d096ff-6d3e-422e-a799-72d6249b81da",
-    "deezerId": null
+    "mbid": "72d9a9e4-b716-445f-8121-a0aba34b5ba7",
+    "deezerId": 451254022
   },
   {
     "title": "In My Feelings",
@@ -60597,7 +60597,7 @@
     "chartYear": 2018,
     "chartRank": 9,
     "mbid": "dd6c0aa4-9b13-45e3-bac9-6f45f7c0607d",
-    "deezerId": null
+    "deezerId": 533609392
   },
   {
     "title": "Sicko Mode",
@@ -60607,7 +60607,7 @@
     "chartYear": 2019,
     "chartRank": 9,
     "mbid": "73784600-a665-4a6c-9687-187dbefc556d",
-    "deezerId": null
+    "deezerId": 536421002
   },
   {
     "title": "Nice for What",
@@ -60617,7 +60617,7 @@
     "chartYear": 2018,
     "chartRank": 11,
     "mbid": "09ce15f1-ea34-450e-8e6a-9232d8798efa",
-    "deezerId": null
+    "deezerId": 533609342
   },
   {
     "title": "High Hopes",
@@ -60626,8 +60626,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2019,
     "chartRank": 11,
-    "mbid": "a7f94810-4dad-4b6a-b135-18dbfeb5ac78",
-    "deezerId": null
+    "mbid": "c1296fc9-08d8-4c4b-af8b-d92da5397850",
+    "deezerId": 516351532
   },
   {
     "title": "Thank U, Next",
@@ -60646,8 +60646,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2018,
     "chartRank": 13,
-    "mbid": "a3b02b8d-ff5f-40f7-af2d-ca9b30414bb2",
-    "deezerId": null
+    "mbid": "6d75e581-54a5-4e7c-a22c-8a31c274406c",
+    "deezerId": 491446972
   },
   {
     "title": "Finesse",
@@ -60667,7 +60667,7 @@
     "chartYear": 2018,
     "chartRank": 17,
     "mbid": "f55b8704-f119-4103-9988-0eb4f713c880",
-    "deezerId": null
+    "deezerId": 472992602
   },
   {
     "title": "Eastside",
@@ -60677,7 +60677,7 @@
     "chartYear": 2019,
     "chartRank": 17,
     "mbid": "787087cb-cb94-442d-98dd-2eddc59f1f84",
-    "deezerId": null
+    "deezerId": 525343612
   },
   {
     "title": "Going Bad",
@@ -60686,8 +60686,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2019,
     "chartRank": 18,
-    "mbid": "33ea0ad8-80c0-4308-b964-9177526a7a94",
-    "deezerId": null
+    "mbid": "db552013-745d-457b-bc23-94369888d6d6",
+    "deezerId": 596680492
   },
   {
     "title": "Love Lies",
@@ -61507,7 +61507,7 @@
     "chartYear": 2020,
     "chartRank": 6,
     "mbid": "acc4e9ce-f9cb-4a7c-8f65-a77cc586c81a",
-    "deezerId": null
+    "deezerId": 830336932
   },
   {
     "title": "7 Rings",
@@ -61516,8 +61516,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2019,
     "chartRank": 7,
-    "mbid": "fc8a804f-7c62-4e99-b614-1f7eb75a9482",
-    "deezerId": null
+    "mbid": "7203c23a-5f31-4847-a50e-8a67bb26b43b",
+    "deezerId": 629899842
   },
   {
     "title": "Talk",
@@ -61537,7 +61537,7 @@
     "chartYear": 2020,
     "chartRank": 8,
     "mbid": "61c3a0dc-0ddf-4b8e-a5d4-f81cc4ad7df3",
-    "deezerId": null
+    "deezerId": 1400843202
   },
   {
     "title": "The Bones",
@@ -61556,8 +61556,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2019,
     "chartRank": 10,
-    "mbid": "abb7a870-6ffb-4d24-b103-bbe638fc6aeb",
-    "deezerId": null
+    "mbid": "31148286-91df-454f-a309-8e16767fac61",
+    "deezerId": 692002952
   },
   {
     "title": "Someone You Loved",
@@ -61577,7 +61577,7 @@
     "chartYear": 2020,
     "chartRank": 11,
     "mbid": "5cd7baaf-e1f7-49fb-981a-cf502c165fe9",
-    "deezerId": null
+    "deezerId": 797228462
   },
   {
     "title": "I Hope",
@@ -61606,8 +61606,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2019,
     "chartRank": 14,
-    "mbid": "5ee22faa-c68f-44f0-a09c-54d06cbd1258",
-    "deezerId": null
+    "mbid": "aa243e48-c9f6-4753-8b42-b2342bb8988b",
+    "deezerId": 613138092
   },
   {
     "title": "Dance Monkey",
@@ -61616,8 +61616,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2020,
     "chartRank": 14,
-    "mbid": "a086d2b1-b1c9-4b33-8797-b758d4e0ccd6",
-    "deezerId": null
+    "mbid": "c0f89d6a-d740-4f91-b6e1-d5e8572268c1",
+    "deezerId": 739870792
   },
   {
     "title": "Señorita",
@@ -61627,7 +61627,7 @@
     "chartYear": 2019,
     "chartRank": 15,
     "mbid": "62f09fd2-144a-439a-96f9-ce93f05b48ae",
-    "deezerId": null
+    "deezerId": 698905582
   },
   {
     "title": "I Don't Care",
@@ -61637,7 +61637,7 @@
     "chartYear": 2019,
     "chartRank": 16,
     "mbid": "09fe14ca-7734-4fa0-9365-8159d236d7af",
-    "deezerId": null
+    "deezerId": 678017492
   },
   {
     "title": "Roxanne",
@@ -61646,8 +61646,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2020,
     "chartRank": 16,
-    "mbid": "3dccb986-274d-4fee-bb6b-386b2b4d6b47",
-    "deezerId": null
+    "mbid": "5bddd95d-03c5-4c9f-b241-cfc8fcaa1172",
+    "deezerId": 806698322
   },
   {
     "title": "Everything I Wanted",
@@ -62417,7 +62417,7 @@
     "chartYear": 2020,
     "chartRank": 7,
     "mbid": "df9467b2-f33f-418b-8c0e-33e1da78f5b8",
-    "deezerId": null
+    "deezerId": 847699482
   },
   {
     "title": "Whats Poppin",
@@ -62436,8 +62436,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2021,
     "chartRank": 14,
-    "mbid": "b0abf764-db35-46f3-bd85-ae0bcb0e2f5d",
-    "deezerId": null
+    "mbid": "9ccbc110-3d50-498f-9edc-6bcdef21ab0c",
+    "deezerId": 1126047152
   },
   {
     "title": "Savage",
@@ -62456,8 +62456,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2020,
     "chartRank": 17,
-    "mbid": "ef0bce46-b230-4995-b403-a4367f33c638",
-    "deezerId": null
+    "mbid": "a6bbe74f-4de3-47f7-b957-f8a5a86423d4",
+    "deezerId": 870979432
   },
   {
     "title": "Without You",
@@ -62467,7 +62467,7 @@
     "chartYear": 2021,
     "chartRank": 17,
     "mbid": "b3a90570-9e76-4593-9987-954c289fd488",
-    "deezerId": null
+    "deezerId": 1445417732
   },
   {
     "title": "Forever After All",
@@ -62477,7 +62477,7 @@
     "chartYear": 2021,
     "chartRank": 18,
     "mbid": "bcb3e8ad-b75b-4c41-bf13-22479f04eda2",
-    "deezerId": null
+    "deezerId": 1110152132
   },
   {
     "title": "Go Crazy",
@@ -62487,7 +62487,7 @@
     "chartYear": 2021,
     "chartRank": 19,
     "mbid": "5f5c5714-ed78-4434-ad25-ea939e54582b",
-    "deezerId": null
+    "deezerId": 954203752
   },
   {
     "title": "34+35",
@@ -62506,8 +62506,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2020,
     "chartRank": 22,
-    "mbid": "e4c2bb8c-06e8-4539-bd62-12ffdb1f912d",
-    "deezerId": null
+    "mbid": "8239e764-3842-4455-a9f2-594ac91b317a",
+    "deezerId": 1421190662
   },
   {
     "title": "What You Know Bout Love",
@@ -62516,8 +62516,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2021,
     "chartRank": 22,
-    "mbid": "f665044e-676f-4295-bf57-9f97e0954d6d",
-    "deezerId": null
+    "mbid": "1fbe536a-bd18-4673-a2c2-8356c1a03ddb",
+    "deezerId": 3823782821
   },
   {
     "title": "My Ex's Best Friend",
@@ -62526,8 +62526,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2021,
     "chartRank": 23,
-    "mbid": "69c06abb-1df1-4d5f-b55f-e8a1b514574a",
-    "deezerId": null
+    "mbid": "6cd38dad-148f-4381-9cf4-b75f496238c6",
+    "deezerId": 1085153582
   },
   {
     "title": "WAP",
@@ -62536,8 +62536,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2020,
     "chartRank": 24,
-    "mbid": "45f08c3c-a449-404f-bbbf-a082efdca0d3",
-    "deezerId": null
+    "mbid": "3af602f0-e273-4d66-83c2-8d55243cc56b",
+    "deezerId": 1044791832
   },
   {
     "title": "Therefore I Am",
@@ -62547,7 +62547,7 @@
     "chartYear": 2021,
     "chartRank": 25,
     "mbid": "028eb5ad-3eba-4e8f-ac50-4cbc21c0c11e",
-    "deezerId": null
+    "deezerId": 1140484252
   },
   {
     "title": "Blueberry Faygo",
@@ -63286,8 +63286,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2021,
     "chartRank": 6,
-    "mbid": "1088b668-b74e-446b-bdf2-a1f471d67f1b",
-    "deezerId": null
+    "mbid": "16ba7915-2acf-42b2-8c87-ed67090dca91",
+    "deezerId": 1410738172
   },
   {
     "title": "Leave the Door Open",
@@ -63307,7 +63307,7 @@
     "chartYear": 2022,
     "chartRank": 7,
     "mbid": "4547ea39-e1da-412a-a116-030a5938920b",
-    "deezerId": null
+    "deezerId": 1491160132
   },
   {
     "title": "Drivers License",
@@ -63317,7 +63317,7 @@
     "chartYear": 2021,
     "chartRank": 8,
     "mbid": "143f1c88-f47f-4f37-b25d-614c74269dea",
-    "deezerId": null
+    "deezerId": 1378342592
   },
   {
     "title": "Ghost",
@@ -63327,7 +63327,7 @@
     "chartYear": 2022,
     "chartRank": 8,
     "mbid": "78a3a527-c8cb-4cd7-98b1-00af2a0a9d0c",
-    "deezerId": null
+    "deezerId": 1280165212
   },
   {
     "title": "Montero (Call Me by Your Name)",
@@ -63336,8 +63336,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2021,
     "chartRank": 9,
-    "mbid": "d6f62330-0ee9-4a97-ab2f-310464b2ab77",
-    "deezerId": null
+    "mbid": "6ed6a516-8b56-4ba2-a621-00678bc86ec5",
+    "deezerId": 1283264142
   },
   {
     "title": "Super Gremlin",
@@ -63347,7 +63347,7 @@
     "chartYear": 2022,
     "chartRank": 9,
     "mbid": "db5a2db6-cc47-4603-8e80-6256b96c652c",
-    "deezerId": null
+    "deezerId": 1537256952
   },
   {
     "title": "Peaches",
@@ -63356,8 +63356,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2021,
     "chartRank": 10,
-    "mbid": "f39a36c6-aff8-48aa-a7d4-2541b5659222",
-    "deezerId": null
+    "mbid": "8eb73d48-31c9-45e9-831f-63f53c1894a1",
+    "deezerId": 1280165222
   },
   {
     "title": "Cold Heart (Pnau Remix)",
@@ -63367,7 +63367,7 @@
     "chartYear": 2022,
     "chartRank": 10,
     "mbid": "a3906438-a1b2-403d-a7c2-7f48fca0a586",
-    "deezerId": null
+    "deezerId": 1457025872
   },
   {
     "title": "Butter",
@@ -63377,7 +63377,7 @@
     "chartYear": 2021,
     "chartRank": 11,
     "mbid": "e139bd8d-410c-41c1-967c-a30ee3b444e8",
-    "deezerId": null
+    "deezerId": 1576169062
   },
   {
     "title": "Deja Vu",
@@ -63386,8 +63386,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2021,
     "chartRank": 13,
-    "mbid": "76582cd4-7752-47af-90c0-b03ab4c4be53",
-    "deezerId": null
+    "mbid": "b5f3c969-1a8b-4bd4-ae48-ab5ebfb13774",
+    "deezerId": 1378342612
   },
   {
     "title": "Bad Habits",
@@ -64136,8 +64136,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2022,
     "chartRank": 6,
-    "mbid": "8ec0cfb0-77db-4c9e-816c-22cf6f8c34b2",
-    "deezerId": null
+    "mbid": "402681c9-426a-4edc-b8bc-d6bcc4ff6701",
+    "deezerId": 1711360637
   },
   {
     "title": "Calm Down",
@@ -64146,8 +64146,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2023,
     "chartRank": 6,
-    "mbid": "e71dd30e-f465-44c3-a1e3-04e081080c6c",
-    "deezerId": null
+    "mbid": "0c1feaff-c863-4083-8cb9-774f04d08037",
+    "deezerId": 1873297197
   },
   {
     "title": "Snooze",
@@ -64156,8 +64156,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2023,
     "chartRank": 9,
-    "mbid": "dcaf7c76-ebde-4375-9a4b-24bdfb158831",
-    "deezerId": null
+    "mbid": "6cf2ac53-82d4-4c6d-94ca-083cfd23db6d",
+    "deezerId": 2055292087
   },
   {
     "title": "I'm Good (Blue)",
@@ -64177,7 +64177,7 @@
     "chartYear": 2022,
     "chartRank": 11,
     "mbid": "1185dba0-4802-48a4-9441-e6259a3d84b0",
-    "deezerId": null
+    "deezerId": 1733245187
   },
   {
     "title": "Unholy",
@@ -64196,8 +64196,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2022,
     "chartRank": 12,
-    "mbid": "56f8565e-4696-4d35-bc16-7ddda1eb5c19",
-    "deezerId": null
+    "mbid": "c6ac0f0a-3c15-4615-ace6-64c92144801a",
+    "deezerId": 1818665207
   },
   {
     "title": "You Proof",
@@ -64207,7 +64207,7 @@
     "chartYear": 2023,
     "chartRank": 12,
     "mbid": "479de3c2-2950-4c26-82ea-fbd1c63f84c4",
-    "deezerId": null
+    "deezerId": 3398329151
   },
   {
     "title": "Something in the Orange",
@@ -64216,8 +64216,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2023,
     "chartRank": 13,
-    "mbid": "d71592a7-e88e-4117-ad51-1dd3805c466d",
-    "deezerId": null
+    "mbid": "95a87931-919e-4364-934a-24b70cf9ebff",
+    "deezerId": 1714552247
   },
   {
     "title": "Rich Flex",
@@ -64226,8 +64226,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2023,
     "chartRank": 14,
-    "mbid": "81a69a85-e0da-49cb-b23d-de75fc47ad89",
-    "deezerId": null
+    "mbid": "d7ca0b00-61b9-4757-9991-92402586586b",
+    "deezerId": 1999525067
   },
   {
     "title": "Enemy",
@@ -64247,7 +64247,7 @@
     "chartYear": 2023,
     "chartRank": 16,
     "mbid": "4b76d5cd-b2cd-4feb-924c-a37ec13fd99b",
-    "deezerId": null
+    "deezerId": 1767917347
   },
   {
     "title": "Under the Influence",
@@ -64276,8 +64276,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2022,
     "chartRank": 22,
-    "mbid": "8e34e6aa-126e-46f3-a7fd-e6761dd2fef2",
-    "deezerId": null
+    "mbid": "f094b32c-d8ec-46a0-a1b6-b4f3a9fc8d83",
+    "deezerId": 1741494317
   },
   {
     "title": "Thought You Should Know",
@@ -64286,8 +64286,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2023,
     "chartRank": 22,
-    "mbid": "1e97afa3-4af5-43a5-a75a-938cdac56f07",
-    "deezerId": null
+    "mbid": "935da01f-f574-4a06-8a5e-9d17df31a064",
+    "deezerId": 3398329131
   },
   {
     "title": "Running Up That Hill (A Deal with God)",
@@ -65027,7 +65027,7 @@
     "chartYear": 2023,
     "chartRank": 8,
     "mbid": "1f9e4d06-3ff6-47f5-a512-fb1f2677d4a7",
-    "deezerId": null
+    "deezerId": 2194033397
   },
   {
     "title": "I Remember Everything",
@@ -65037,7 +65037,7 @@
     "chartYear": 2024,
     "chartRank": 9,
     "mbid": "010e7b4d-9e25-45c6-aaaa-d259f7007e99",
-    "deezerId": null
+    "deezerId": 2417266335
   },
   {
     "title": "Stick Season",
@@ -65067,7 +65067,7 @@
     "chartYear": 2024,
     "chartRank": 13,
     "mbid": "882c925d-125e-415c-b236-c78f1b1db436",
-    "deezerId": null
+    "deezerId": 2444176345
   },
   {
     "title": "Agora Hills",
@@ -65076,8 +65076,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2024,
     "chartRank": 17,
-    "mbid": "b623387f-3ec7-48d9-8f8c-f2234c2c6da9",
-    "deezerId": null
+    "mbid": "acc7790a-dff9-40c1-ab5c-72d601e45bba",
+    "deezerId": 2459517745
   },
   {
     "title": "Thinkin' Bout Me",
@@ -65087,7 +65087,7 @@
     "chartYear": 2023,
     "chartRank": 19,
     "mbid": "70b25bff-ce3d-49c5-859f-70113d12e51a",
-    "deezerId": null
+    "deezerId": 3398329401
   },
   {
     "title": "Boy's a Liar Pt. 2",
@@ -65096,8 +65096,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2023,
     "chartRank": 20,
-    "mbid": "56ed0223-3d51-438b-9497-aee622b66476",
-    "deezerId": null
+    "mbid": "47e03598-1d37-4c29-8b0c-669d45253cb3",
+    "deezerId": 2106386037
   },
   {
     "title": "Favorite Song",
@@ -65107,7 +65107,7 @@
     "chartYear": 2023,
     "chartRank": 21,
     "mbid": "ff8a66c4-f742-4469-bf74-329b2ebb8ddb",
-    "deezerId": null
+    "deezerId": 2144509347
   },
   {
     "title": "Paint the Town Red",
@@ -65116,8 +65116,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2024,
     "chartRank": 21,
-    "mbid": "93ca302b-2ea3-46e1-a43c-47696cf4e5c4",
-    "deezerId": null
+    "mbid": "b9e20829-1d09-456a-b649-3138e305d9ca",
+    "deezerId": 2387373015
   },
   {
     "title": "Thank God",
@@ -65146,8 +65146,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2024,
     "chartRank": 24,
-    "mbid": "2b61d65c-5f92-435d-a030-530f9b8bd70f",
-    "deezerId": null
+    "mbid": "df1fd341-2119-441e-a863-7d21eaa3ab94",
+    "deezerId": 2381294455
   },
   {
     "title": "All My Life",
@@ -65156,8 +65156,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2023,
     "chartRank": 25,
-    "mbid": "967f9876-a1b5-4655-bad0-cfcafdfed3a3",
-    "deezerId": null
+    "mbid": "f2c00c27-e44b-4848-aadc-094d97d13a00",
+    "deezerId": 2267766057
   },
   {
     "title": "Feather",
@@ -65166,8 +65166,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2024,
     "chartRank": 25,
-    "mbid": "13e4cd58-7a0f-46a9-99f1-a25613e00273",
-    "deezerId": null
+    "mbid": "99ebdae8-1057-4dff-a134-0652cf51f62b",
+    "deezerId": 2185094157
   },
   {
     "title": "Ella Baila Sola",
@@ -65896,8 +65896,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2024,
     "chartRank": 6,
-    "mbid": "2c27c730-dc3f-421d-9593-17c96fa0fb85",
-    "deezerId": null
+    "mbid": "167b0a18-8923-4f64-82dd-30fb57e6216f",
+    "deezerId": 2783963122
   },
   {
     "title": "Espresso",
@@ -65906,8 +65906,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2024,
     "chartRank": 7,
-    "mbid": "cea42ffa-6d93-406c-964c-c4eb47c0a18b",
-    "deezerId": null
+    "mbid": "d3efc8d3-90e7-4696-8eda-2cab5ebc050d",
+    "deezerId": 2743578151
   },
   {
     "title": "Ordinary",
@@ -65926,8 +65926,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2024,
     "chartRank": 8,
-    "mbid": "8eaa7bc3-0fef-4027-8a91-c26aba8024eb",
-    "deezerId": null
+    "mbid": "a5dc8229-2b09-47eb-89bc-4bdf6fc83f01",
+    "deezerId": 2827724612
   },
   {
     "title": "APT.",
@@ -65937,7 +65937,7 @@
     "chartYear": 2025,
     "chartRank": 9,
     "mbid": "5dcf0f17-d13b-47c1-8386-fea1f5e25875",
-    "deezerId": null
+    "deezerId": 3050380851
   },
   {
     "title": "Too Sweet",
@@ -65947,7 +65947,7 @@
     "chartYear": 2024,
     "chartRank": 10,
     "mbid": "272be1e2-9599-4b8d-b872-5e879881d103",
-    "deezerId": null
+    "deezerId": 2710032012
   },
   {
     "title": "Pink Pony Club",
@@ -65967,7 +65967,7 @@
     "chartYear": 2025,
     "chartRank": 11,
     "mbid": "54413a65-2d19-4882-af75-470d153b2849",
-    "deezerId": null
+    "deezerId": 3040572191
   },
   {
     "title": "Like That",
@@ -65977,7 +65977,7 @@
     "chartYear": 2024,
     "chartRank": 14,
     "mbid": "d4133a55-d72a-4ced-9a4d-d8afb4bd2058",
-    "deezerId": null
+    "deezerId": 2715581062
   },
   {
     "title": "That's So True",
@@ -65986,8 +65986,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2025,
     "chartRank": 14,
-    "mbid": "c80164f2-c1da-433f-b72c-85a07baa7032",
-    "deezerId": null
+    "mbid": "a6ff57e9-5ba8-4a32-8ac3-e5e8c42796dc",
+    "deezerId": 3047560351
   },
   {
     "title": "TV Off",
@@ -65996,8 +65996,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2025,
     "chartRank": 15,
-    "mbid": "8df5ba11-9dff-4c9e-b640-a7a36b24a32c",
-    "deezerId": null
+    "mbid": "639da52f-d42c-431f-9a4c-6cc4f589754d",
+    "deezerId": 3106586681
   },
   {
     "title": "Please Please Please",
@@ -66687,7 +66687,7 @@
     "chartYear": 2025,
     "chartRank": 13,
     "mbid": "652bef3e-4b8e-4179-9ba9-5df7da818921",
-    "deezerId": null
+    "deezerId": 3206261161
   },
   {
     "title": "Just in Case",
@@ -66696,8 +66696,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2025,
     "chartRank": 18,
-    "mbid": "8d2e1078-36ef-4ef5-9585-8033beb33960",
-    "deezerId": null
+    "mbid": "ef43a792-92ca-49ac-97c1-51ca7daa2b00",
+    "deezerId": 3278152451
   },
   {
     "title": "30 for 30",
@@ -66716,8 +66716,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2025,
     "chartRank": 24,
-    "mbid": "cc2309e2-353b-49b4-9472-8a4c6f297467",
-    "deezerId": null
+    "mbid": "f14b5405-2d38-4693-adaf-38d27821943f",
+    "deezerId": 4295078752
   },
   {
     "title": "Golden",
@@ -66736,8 +66736,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2025,
     "chartRank": 27,
-    "mbid": "a165b2d6-f148-481d-a445-1cb354d57fad",
-    "deezerId": null
+    "mbid": "49de9de3-4504-420a-a8ca-eb03a98adf6c",
+    "deezerId": 3366676861
   },
   {
     "title": "All the Way",
@@ -66746,8 +66746,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2025,
     "chartRank": 33,
-    "mbid": "39b8dc3b-b9e2-47b7-aaa4-45fd10e1c4f7",
-    "deezerId": null
+    "mbid": "d114a974-d405-45e4-8f54-36160398ab80",
+    "deezerId": 3279419081
   },
   {
     "title": "Sorry I'm Here for Someone Else",
@@ -66757,7 +66757,7 @@
     "chartYear": 2025,
     "chartRank": 37,
     "mbid": "545aa58c-52e6-459f-87a2-52408f9db691",
-    "deezerId": null
+    "deezerId": 3245608751
   },
   {
     "title": "Manchild",
@@ -66766,8 +66766,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2025,
     "chartRank": 38,
-    "mbid": "44a89ba2-3f6f-46e1-bc7e-8c4676203b69",
-    "deezerId": null
+    "mbid": "b40bca50-273f-488f-811c-a37857916c3f",
+    "deezerId": 3400077541
   },
   {
     "title": "Anxiety",
@@ -66776,8 +66776,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2025,
     "chartRank": 39,
-    "mbid": "b762304f-ef9f-467d-a599-9ce2172d6577",
-    "deezerId": null
+    "mbid": "43d7be59-74d3-409f-a8b8-59636354e64c",
+    "deezerId": 3262675101
   },
   {
     "title": "I Got Better",
@@ -66787,7 +66787,7 @@
     "chartYear": 2025,
     "chartRank": 40,
     "mbid": "7c70eca6-cb2a-449d-b5c1-fd4552f0af90",
-    "deezerId": null
+    "deezerId": 3366676191
   },
   {
     "title": "Undressed",
@@ -66796,8 +66796,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2025,
     "chartRank": 42,
-    "mbid": "84fdf3e4-e5ae-4362-a04f-a53734b1b1ef",
-    "deezerId": null
+    "mbid": "9a79c037-0ef6-4146-81a5-8cdd8c558b9e",
+    "deezerId": 3278008371
   },
   {
     "title": "Sports Car",
@@ -66806,8 +66806,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2025,
     "chartRank": 46,
-    "mbid": "d220bea4-1077-4bc1-9531-e58557cf4e81",
-    "deezerId": null
+    "mbid": "7eddec06-b265-4f41-a4b3-18682068ed3d",
+    "deezerId": 3196460531
   },
   {
     "title": "Mystical Magical",
@@ -66816,8 +66816,8 @@
     "yearSource": "musicbrainz",
     "chartYear": 2025,
     "chartRank": 47,
-    "mbid": "1152396b-b292-4ff4-900b-5cb0222cbc44",
-    "deezerId": null
+    "mbid": "cd51a930-cfa5-4000-9eb7-bff8706ae4d2",
+    "deezerId": 3333720471
   },
   {
     "title": "DTMF",
@@ -66827,7 +66827,7 @@
     "chartYear": 2025,
     "chartRank": 51,
     "mbid": "5098d5cd-7f48-4cd7-8928-43e4f84cae0f",
-    "deezerId": null
+    "deezerId": 3171003131
   },
   {
     "title": "Blue Strips",
@@ -66837,7 +66837,7 @@
     "chartYear": 2025,
     "chartRank": 52,
     "mbid": "afa2240d-c99f-47bb-8f38-4b1dd9d82121",
-    "deezerId": null
+    "deezerId": 3314422221
   },
   {
     "title": "Your Idol",
@@ -66857,7 +66857,7 @@
     "chartYear": 2025,
     "chartRank": 56,
     "mbid": "4e0e2ac4-1f5a-48a2-ba7e-6ee24f83a844",
-    "deezerId": null
+    "deezerId": 3214169391
   },
   {
     "title": "Burning Blue",

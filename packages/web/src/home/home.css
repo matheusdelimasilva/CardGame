@@ -1191,3 +1191,19 @@
     transition-delay: 0s !important;
   }
 }
+
+.home-library-link {
+  position: fixed;
+  right: 24px;
+  bottom: 20px;
+  z-index: 10;
+  color: #fffaf0;
+  font:
+    13px "Rubik",
+    sans-serif;
+  text-decoration: none;
+  padding: 10px 14px;
+  background: #244a3d;
+  border: 1px solid #ffffff44;
+  border-radius: 6px;
+}

@@ -18,6 +18,17 @@ const mb = await readJson(join(CACHE_DIR, "musicbrainz.json"), {});
 const deezer = await readJson(join(CACHE_DIR, "deezer.json"), {});
 const deezerOverrides = await readJson(join(ROOT, "deezer-overrides.json"), {});
 
+// Verified international additions are checked in independently of disposable caches.
+const internationalAccepted = await readJson(
+  join(ROOT, "international", "accepted.json"),
+  {},
+);
+
+const internationalBaseline = await readJson(
+  join(ROOT, "international", "baseline.json"),
+  { ids: {} },
+);
+
 const yearOf = (d) => (d && /^\d{4}/.test(d) ? Number(d.slice(0, 4)) : null);
 
 function matches(song, c) {
@@ -81,15 +92,31 @@ let dropped = 0;
 const withDeezer = [];
 for (const s of seen.values()) {
   const label = `${s.artist} — ${s.title}`;
+  const verified = internationalAccepted[label];
   const id =
     label in deezerOverrides
       ? deezerOverrides[label]
-      : (deezer[`${deezerNorm(s.artist)}|${deezerNorm(s.title)}`]?.id ?? null);
+      : verified?.year === s.year
+        ? verified.deezerId
+        : (deezer[`${deezerNorm(s.artist)}|${deezerNorm(s.title)}`]?.id ??
+          internationalBaseline.ids[label] ??
+          null);
   if (label in deezerOverrides && id === null) {
     dropped++;
     continue;
   }
-  withDeezer.push({ ...s, deezerId: id });
+  withDeezer.push({
+    ...s,
+    yearSource:
+      verified?.year === s.year && id === verified.deezerId
+        ? "musicbrainz"
+        : s.yearSource,
+    mbid:
+      verified?.year === s.year && id === verified.deezerId
+        ? verified.recordingMbid
+        : s.mbid,
+    deezerId: id,
+  });
 }
 stats.deezerMatched = withDeezer.filter((s) => s.deezerId !== null).length;
 stats.droppedNoPreview = dropped;

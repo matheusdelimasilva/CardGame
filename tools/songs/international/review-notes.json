@@ -1,0 +1,11 @@
+{
+  "Alex Warren — Ordinary": {
+    "issue": "Existing catalog and MusicBrainz first-release year are 2024; independent first-party single-release evidence says 2025-02-07. Held from playable additions pending a separately reviewed catalog-year correction.",
+    "supportedReleaseDate": "2025-02-07",
+    "sources": [
+      "https://www.officialcharts.com/songs/alex-warren-ordinary/",
+      "https://www.warnermusic.ie/news/2025/alex-warrens-love-is-anything-but-ordinary-on-deeply-romantic-new-single/",
+      "https://api.deezer.com/track/3210709941"
+    ]
+  }
+}

@@ -63,6 +63,13 @@ export async function allSongs() {
     artist,
     source: "curated",
   }));
+  const accepted = await readJson(
+    new URL("./accepted-chart-songs.json", import.meta.url),
+    [],
+  );
+  for (const { title, artist, year, mbid, yearSource } of accepted) {
+    out.push({ title, artist, year, mbid, yearSource, source: "curated" });
+  }
   const charts = await readJson(join(BR_CACHE, "charts.json"), { pages: {} });
   for (const { rows } of Object.values(charts.pages)) {
     for (const r of rows) out.push({ ...r, source: r.chart });

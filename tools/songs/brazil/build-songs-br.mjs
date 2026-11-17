@@ -19,8 +19,12 @@ const deezerNorm = (s) =>
     /^the /,
     "",
   );
+const accepted = await readJson(
+  new URL("./accepted-chart-songs.json", import.meta.url),
+  [],
+);
 const verifiedIds = new Map(
-  VERIFIED_ADDITIONS.map((s) => [songKey(s), s.deezerId]),
+  [...VERIFIED_ADDITIONS, ...accepted].map((s) => [songKey(s), s.deezerId]),
 );
 const yearOf = (d) => (d && /^\d{4}/.test(d) ? Number(d.slice(0, 4)) : null);
 
@@ -43,8 +47,10 @@ function resolve(song) {
     const hit = cands.find((c) => Math.abs(c.year - song.year) <= 1);
     return {
       year: song.year,
-      yearSource: song.source === "curated" ? "curated" : "wikipedia",
-      mbid: hit?.id ?? null,
+      yearSource:
+        song.yearSource ??
+        (song.source === "curated" ? "curated" : "wikipedia"),
+      mbid: song.mbid ?? hit?.id ?? null,
     };
   }
   const hit = cands.find(
