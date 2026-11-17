@@ -8,7 +8,7 @@ import {
 } from "react";
 import { navigate } from "../App";
 import { inert } from "../home/inert";
-import { ANIMALS } from "../Seat";
+import { ANIMALS, CHIPS } from "../ui/seats";
 import type { Connection, useRoom } from "../useRoom";
 import "./lobby.css";
 
@@ -22,12 +22,6 @@ const POSITIONS = [
   [0, 50, -2, 2],
   [22, 0, 0, -3],
 ] as const;
-const CHIPS = [
-  ["#ffd84a", "#c9a52e"],
-  ["#ef4a3c", "#b8362b"],
-  ["#3b8cf0", "#2a69b8"],
-  ["#d8d2bf", "#a8a28f"],
-];
 
 export function TableLobby({
   room,
