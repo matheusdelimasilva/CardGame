@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { games, type HitsterState } from "@cardgame/games";
 import {
   DATA_VERSION,
   emptyData,
@@ -156,5 +157,54 @@ describe("snapshot migrations", () => {
         version: 1,
       }).game,
     ).toBeNull();
+  });
+
+  it("upgrades a v2 Hitster room saved mid-turn so it plays on with starting tokens and no bets", () => {
+    const hitster = games.hitster;
+    const live = hitster.resume!(
+      hitster.setup({
+        players: ["p1", "p2"],
+        seed: 3,
+        settings: { cardsToWin: "10" },
+      }),
+    ) as HitsterState;
+    const saved = structuredClone(live);
+    delete saved.tokens;
+    delete saved.bets;
+    delete saved.declined;
+    delete saved.locked;
+    const room = {
+      ...createRoom("HITS12", "host@example.com", "hitster"),
+      version: 2,
+      game: {
+        gameId: "hitster",
+        players: ["p1", "p2"],
+        state: saved,
+        result: null,
+        turnKey: "p1",
+        deadline: null,
+        resumeAt: null,
+        turnMs: 0,
+        trackKey: "",
+        trackNonce: null,
+      },
+    };
+    const migrated = migrateRoom(structuredClone(room));
+    expect(migrated.version).toBe(ROOM_VERSION);
+    expect(migrated.game!.state).toEqual(live);
+    expect(migrated.game!.state).toMatchObject({
+      tokens: [2, 2],
+      bets: [],
+      declined: [],
+      locked: null,
+    });
+    expect(migrateRoom(structuredClone(migrated))).toEqual(migrated);
+    const bet = hitster.applyMove(migrated.game!.state, "p2", {
+      type: "bet",
+      index: 0,
+    });
+    expect(bet).toMatchObject({ ok: true, state: { tokens: [2, 1] } });
+    const otherGame = migrateRoom({ ...room, gameId: "fixture", game: null });
+    expect(otherGame.game).toBeNull();
   });
 });
