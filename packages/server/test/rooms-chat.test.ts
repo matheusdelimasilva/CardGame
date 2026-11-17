@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import * as rooms from "../src/rooms";
 
 function table() {
-  const room = rooms.createRoom("ABC234", "host@example.com", "demo");
+  const room = rooms.createRoom("ABC234", "host@example.com", "hitster");
   const named = (name: string | null) => {
     const m = rooms.join(room, undefined, false);
     m.connected = true;

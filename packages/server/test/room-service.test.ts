@@ -1,11 +1,19 @@
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { games } from "@cardgame/games";
 import * as rooms from "../src/rooms";
 import { RoomRegistry } from "../src/rooms/registry";
 import { RoomService } from "../src/rooms/service";
 import { JsonStore, type Store } from "../src/store";
+import { fixture } from "./fixture-game";
 
-async function setup(gameId = "demo") {
+vi.mock("@cardgame/games", async (original) =>
+  (await import("./fixture-game")).withFixture(await original()),
+);
+
+async function setup(gameId = "fixture") {
   const store = new JsonStore(null);
   const registry = new RoomRegistry(store);
   await registry.ready;
@@ -45,11 +53,11 @@ describe("socket-free room service", () => {
     expect(save).toHaveBeenCalledExactlyOnceWith({ rooms: [room.code] });
     await store.close();
   });
-  it.each(["demo", "hitster"])(
+  it.each(["fixture", "hitster"])(
     "rejects invalid %s moves before calling the game or notifying",
     async (gameId) => {
       const { service, room, host } = await setup(gameId);
-      const game = gameId === "demo" ? games.demo : games.hitster;
+      const game = gameId === "fixture" ? fixture : games.hitster;
       const apply = vi.spyOn(game, "applyMove");
       const changed = vi.fn();
       service.onChange(changed);
@@ -71,7 +79,7 @@ describe("socket-free room service", () => {
       expect(
         service.command(room, host, {
           type: "move",
-          move: gameId === "demo" ? { type: "reveal" } : { type: "pass" },
+          move: gameId === "fixture" ? { type: "reveal" } : { type: "pass" },
         }),
       ).toBeNull();
       expect(apply).toHaveBeenCalledOnce();
@@ -82,7 +90,7 @@ describe("socket-free room service", () => {
   it("records a completed game once and persists without any transport listeners", async () => {
     const { store, service, room, host, members } = await setup();
     for (let i = 0; i < 500 && !room.game!.result; i++) {
-      const playerId = games.demo.activePlayers(room.game!.state)[0];
+      const playerId = fixture.activePlayers(room.game!.state)[0];
       const member = members.find((m) => m.id === playerId)!;
       expect(
         service.command(room, member, {
@@ -95,7 +103,7 @@ describe("socket-free room service", () => {
     expect(store.data.history[room.hostEmail]).toHaveLength(1);
     expect(store.data.history[room.hostEmail]![0]).toMatchObject({
       roomCode: room.code,
-      gameName: "Demo",
+      gameName: "Fixture",
       players: ["Ana", "Bo"],
     });
     service.command(room, host, { type: "setName", name: "Renamed" });
@@ -106,7 +114,7 @@ describe("socket-free room service", () => {
   it("recovers a projection failure, preserves seats, and notifies lobby instead", async () => {
     const { service, room, host } = await setup();
     const log = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.spyOn(games.demo, "view").mockImplementationOnce(() => {
+    vi.spyOn(fixture, "view").mockImplementationOnce(() => {
       throw new Error("bad projection");
     });
     const changed = vi.fn(() => rooms.viewFor(room, host));
@@ -124,7 +132,7 @@ describe("socket-free room service", () => {
 
   it("recovers a thrown command and leaves other rooms usable", async () => {
     const { registry, service, room, host } = await setup();
-    const other = registry.create("other@example.com", "demo", {});
+    const other = registry.create("other@example.com", "hitster", {});
     const otherMember = service.join(other, undefined, true)!;
     const log = vi.spyOn(console, "error").mockImplementation(() => {});
     vi.spyOn(rooms, "setName").mockImplementationOnce(() => {
@@ -192,7 +200,9 @@ describe("room registry", () => {
   });
   it("does not dirty an unchanged restored room", async () => {
     const store = new JsonStore(null);
-    store.data.rooms = [rooms.createRoom("ABC234", "host@example.com", "demo")];
+    store.data.rooms = [
+      rooms.createRoom("ABC234", "host@example.com", "hitster"),
+    ];
     const save = vi.spyOn(store, "save");
     await new RoomRegistry(store).ready;
     expect(save).not.toHaveBeenCalled();
@@ -200,8 +210,8 @@ describe("room registry", () => {
   });
   it("evicts only inactive idle rooms and notifies deletion listeners", async () => {
     const { registry, room } = await setup();
-    const active = registry.create("active@example.com", "demo", {});
-    const fresh = registry.create("fresh@example.com", "demo", {});
+    const active = registry.create("active@example.com", "hitster", {});
+    const fresh = registry.create("fresh@example.com", "hitster", {});
     room.updatedAt = active.updatedAt = Date.now() - 13 * 60 * 60 * 1000;
     const intervals = vi.spyOn(globalThis, "setInterval");
     const removed = vi.fn();
@@ -219,7 +229,7 @@ describe("room registry", () => {
 
   it("waits for storage and skips rooms for removed game modules", async () => {
     const store: Store = new JsonStore(null);
-    const removed = rooms.createRoom("OLD123", "a@example.com", "demo");
+    const removed = rooms.createRoom("OLD123", "a@example.com", "hitster");
     removed.gameId = "removed";
     store.data.rooms = [removed];
     let load!: () => void;
@@ -235,5 +245,51 @@ describe("room registry", () => {
     expect(registry.loaded).toBe(true);
     expect(store.data.rooms).toEqual([]);
     expect(log).toHaveBeenCalledWith("Room OLD123: unknown game removed");
+  });
+  it("drops saved rooms of the removed Demo game, idle or mid-game, and keeps its history readable", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "cardgame-demo-"));
+    try {
+      const file = join(dir, "db.json");
+      const { room: running } = await setup();
+      const idle = rooms.createRoom("IDLE12", "host@example.com", "hitster");
+      const saved = [
+        { ...structuredClone(running), code: "RUN123", gameId: "demo" },
+        { ...idle, gameId: "demo" },
+        rooms.createRoom("KEEP12", "host@example.com", "hitster"),
+      ];
+      saved[0]!.game!.gameId = "demo";
+      const entry = {
+        roomCode: "OLD123",
+        gameId: "demo",
+        gameName: "Demo",
+        players: ["Ana", "Bo"],
+        winners: ["Ana"],
+        endedAt: "2026-11-14T12:00:00.000Z",
+      };
+      const first = new JsonStore(file);
+      first.data.rooms = saved;
+      first.data.history["host@example.com"] = [entry];
+      first.save({ metadata: true });
+      await first.close();
+
+      const log = vi.spyOn(console, "error").mockImplementation(() => {});
+      const store = new JsonStore(file);
+      const registry = new RoomRegistry(store);
+      await registry.ready;
+      expect([...registry.values()].map((r) => r.code)).toEqual(["KEEP12"]);
+      expect(registry.get("RUN123")).toBeUndefined();
+      expect(registry.get("IDLE12")).toBeUndefined();
+      expect(log).toHaveBeenCalledWith("Room RUN123: unknown game demo");
+      expect(log).toHaveBeenCalledWith("Room IDLE12: unknown game demo");
+      await store.close();
+
+      const reloaded = JSON.parse(readFileSync(file, "utf8"));
+      expect(reloaded.rooms.map((r: { code: string }) => r.code)).toEqual([
+        "KEEP12",
+      ]);
+      expect(reloaded.history["host@example.com"]).toEqual([entry]);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });

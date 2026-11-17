@@ -168,7 +168,7 @@ describe("security boundaries", () => {
     for (const body of [
       "{}",
       '{"gameId":1}',
-      '{"gameId":"demo","settings":[]}',
+      '{"gameId":"hitster","settings":[]}',
     ]) {
       expect(
         (await post("/api/rooms", body, { Authorization: `Bearer ${token}` }))
@@ -177,7 +177,7 @@ describe("security boundaries", () => {
     }
     expect(
       (
-        await post("/api/rooms", '{"gameId":"demo"}', {
+        await post("/api/rooms", '{"gameId":"hitster"}', {
           Authorization: `Bearer ${token}`,
         })
       ).status,
@@ -196,7 +196,7 @@ describe("security boundaries", () => {
       )
     ).json();
     const { code } = await (
-      await post("/api/rooms", '{"gameId":"demo"}', {
+      await post("/api/rooms", '{"gameId":"hitster"}', {
         Authorization: `Bearer ${token}`,
       })
     ).json();

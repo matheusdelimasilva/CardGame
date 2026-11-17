@@ -13,31 +13,34 @@ import {
   shuffle,
   standardDeck,
   viewTable,
-  type GameModule,
+  defineGame,
+  type AnyGame,
   type PlayerId,
   type TableState,
   type TableView,
 } from "@cardgame/engine";
 
 /**
- * Demo game. Each round the table deals one face-down card to every player.
- * Players may peek at their own card at any time and reveal it on their turn.
- * The highest card scores a point. First to the target wins.
+ * Test-only fixture game. Hitster uses none of the engine features the server
+ * must still support, so this exercises them: hidden hands (peek and reveal),
+ * a single active player per turn, an optional turn timer with an autoMove on
+ * expiry, no audio, and toggle and select settings.
  *
- * Settings: an optional turn timer, and a tiebreaker suit for tied high cards.
+ * Each round deals one face-down card to every player. The highest card
+ * scores a point; the first to the target wins.
  */
 
-export const TARGET_SCORE = 5;
-export const TURN_SECONDS = 20;
+const TARGET_SCORE = 5;
+const TURN_SECONDS = 20;
 
 /** "none", or the suit letter that wins a tie. */
-export type Tiebreaker = "none" | "H" | "D" | "C" | "S";
+type Tiebreaker = "none" | "H" | "D" | "C" | "S";
 
 /**
  * Who scores this round: the highest rank. If several tie and one of them
  * holds the tiebreaker suit, only that player scores; otherwise all tied score.
  */
-export function roundWinners(
+function roundWinners(
   players: PlayerId[],
   cards: Record<PlayerId, string>,
   tiebreaker: Tiebreaker,
@@ -48,13 +51,13 @@ export function roundWinners(
   return tiebreaker !== "none" && favoured.length > 0 ? favoured : tied;
 }
 
-export interface RoundSummary {
+interface RoundSummary {
   round: number;
   cards: Record<PlayerId, string>;
   winners: PlayerId[];
 }
 
-export interface DemoState {
+export interface FixtureState {
   table: TableState;
   players: PlayerId[];
   scores: Record<PlayerId, number>;
@@ -70,9 +73,9 @@ export interface DemoState {
   tiebreaker: Tiebreaker;
 }
 
-export type DemoMove = { type: "peek" } | { type: "reveal" };
+export type FixtureMove = { type: "peek" } | { type: "reveal" };
 
-export interface DemoView {
+export interface FixtureView {
   table: TableView;
   players: PlayerId[];
   scores: Record<PlayerId, number>;
@@ -85,7 +88,7 @@ export interface DemoView {
 
 const slot = (player: PlayerId) => `slot:${player}`;
 
-function dealRound(state: DemoState): void {
+function dealRound(state: FixtureState): void {
   let table = state.table;
   if (table.zones.deck!.cards.length < state.players.length) {
     table = shuffle(moveAll(table, "discard", "deck"), "deck");
@@ -98,7 +101,7 @@ function dealRound(state: DemoState): void {
   state.turn = state.firstPlayer;
 }
 
-function finishRound(state: DemoState): void {
+function finishRound(state: FixtureState): void {
   const cards: Record<PlayerId, string> = {};
   for (const player of state.players) {
     cards[player] = state.table.zones[slot(player)]!.cards[0]!.face;
@@ -123,17 +126,16 @@ function finishRound(state: DemoState): void {
   dealRound(state);
 }
 
-export const demo: GameModule<DemoState, DemoMove, DemoView> = {
-  id: "demo",
+export const fixture = defineGame<FixtureState, FixtureMove, FixtureView>({
+  id: "fixture",
   moveSchema: z.discriminatedUnion("type", [
     z.object({ type: z.literal("peek") }),
     z.object({ type: z.literal("reveal") }),
   ]),
-  name: "Demo",
+  name: "Fixture",
   minPlayers: 2,
   maxPlayers: 8,
-  description:
-    "Not a real game: a tiny round of highest-card-wins that shows the table working.",
+  description: "Test fixture.",
   settings: [
     {
       type: "toggle",
@@ -163,7 +165,7 @@ export const demo: GameModule<DemoState, DemoMove, DemoView> = {
     let table = addZone(addZone(createTable(seed), "deck"), "discard");
     for (const player of players) table = addZone(table, slot(player), player);
     table = shuffle(addCards(table, "deck", standardDeck()), "deck");
-    const state: DemoState = {
+    const state: FixtureState = {
       table,
       players: [...players],
       scores: Object.fromEntries(players.map((p) => [p, 0])),
@@ -231,4 +233,26 @@ export const demo: GameModule<DemoState, DemoMove, DemoView> = {
   result(state) {
     return state.winners ? { winners: state.winners } : null;
   },
-};
+});
+
+/**
+ * Makes the fixture resolvable by id. Tests mount it with
+ * `vi.mock("@cardgame/games", async (original) => withFixture(await original()))`,
+ * so production code gets no test-only registration. The fixture is left out
+ * of `games` on purpose: that is the public catalogue, and it stays Hitster only.
+ */
+export function withFixture<
+  T extends {
+    getGame: (id: string) => AnyGame | null;
+    requireGame: (id: string) => AnyGame;
+  },
+>(real: T): T {
+  const getGame = (id: string) =>
+    id === fixture.id ? fixture : real.getGame(id);
+  const requireGame = (id: string) => {
+    const game = getGame(id);
+    if (!game) throw new Error(`Unknown game ${id}`);
+    return game;
+  };
+  return { ...real, getGame, requireGame };
+}

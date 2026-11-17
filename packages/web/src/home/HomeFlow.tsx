@@ -24,7 +24,7 @@ const STAGE_W = 1200;
 const SETTLED_LEFT = 150;
 const REST_TILT = [-2, 1, -1, 2];
 
-const SUITS: Record<string, string> = { hitster: "♪", demo: "♠" };
+const SUITS: Record<string, string> = { hitster: "♪" };
 const FALLBACK_SUITS = ["♠", "♦", "♥", "♣"];
 const suitOf = (g: GameInfo, i: number) =>
   SUITS[g.id] ?? FALLBACK_SUITS[i % FALLBACK_SUITS.length]!;

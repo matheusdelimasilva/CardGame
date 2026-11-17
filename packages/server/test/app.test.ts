@@ -10,6 +10,10 @@ import type {
 import { WebSocket } from "ws";
 import { createApp } from "../src/app";
 
+vi.mock("@cardgame/games", async (original) =>
+  (await import("./fixture-game")).withFixture(await original()),
+);
+
 let app: ReturnType<typeof createApp>;
 let base: string;
 const sent: { to: string; code: string }[] = [];
@@ -183,10 +187,7 @@ describe("a table over the network", () => {
     await boot();
     const session = await signIn();
     const listed = (await api("/api/games")).body.games;
-    expect(listed.map((g: { id: string }) => g.id)).toEqual([
-      "hitster",
-      "demo",
-    ]);
+    expect(listed.map((g: { id: string }) => g.id)).toEqual(["hitster"]);
     expect((await api("/api/rooms", {}, session)).status).toBe(400);
     expect(
       (await api("/api/rooms", { gameId: "__proto__" }, session)).status,
@@ -194,7 +195,7 @@ describe("a table over the network", () => {
     const { code } = (
       await api(
         "/api/rooms",
-        { gameId: "demo", settings: { tiebreaker: "S" } },
+        { gameId: "fixture", settings: { tiebreaker: "S" } },
         session,
       )
     ).body;
@@ -206,7 +207,7 @@ describe("a table over the network", () => {
     const host = await client(code, { sessionToken: session });
     const guest = await client(code);
     expect(host.room!.you.isHost).toBe(true);
-    expect(host.room!.gameInfo.name).toBe("Demo");
+    expect(host.room!.gameInfo.name).toBe("Fixture");
     expect(guest.room!.settings).toEqual({ turnTimer: false, tiebreaker: "S" });
     expect(guest.room!.you.isHost).toBe(false);
 
@@ -243,7 +244,7 @@ describe("a table over the network", () => {
     expect(history).toHaveLength(1);
     expect(history[0]).toMatchObject({
       roomCode: code,
-      gameName: "Demo",
+      gameName: "Fixture",
       players: ["Hosty", "Guesty"],
     });
 

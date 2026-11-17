@@ -8,7 +8,7 @@ One player signs in with an email code and hosts; everyone else joins from a sha
 | Step                                                         | State                           |
 | ------------------------------------------------------------ | ------------------------------- |
 | 1. Engine: cards, zones, visibility, per-player views        | Done                            |
-| 2. Demo game on the engine                                   | Done                            |
+| 2. First demo game on the engine (since removed)             | Done                            |
 | 3. Server: rooms, join by link, seats, spectators, reconnect | Done                            |
 | 4. Round-table web client, portrait-first on phones          | Done                            |
 | 5. Email sign-in for hosts, game history                     | Done (emails need a Resend key) |
@@ -144,7 +144,7 @@ CI supplies a PostgreSQL 17 service and sets `TEST_DATABASE_URL`, so these tests
   - Not built yet: betting on other players' placements. The "Show title and artist" setting (off by default) shows the song's name as well, for playing without sound.
   - Songs come from `tools/songs/out/songs.json` (see `tools/songs/README.md`). Each game deals a random 300 of those that have a Deezer id. The list lives only on the server: a client is sent a song's year only once the card is face up, and never its Deezer id.
   - Cards use the Vinyl design from `docs/design/song-cards.html`, coloured by decade; the song being placed uses its face-down back.
-- **Demo** (`packages/games/src/demo.ts`): not a real game. A round of highest-card-wins that exercises dealing, hidden cards, turns, a turn timer and scoring.
+    Hitster is the only game. An earlier highest-card-wins Demo game was removed; rooms saved with it are dropped when the server starts, and their history entries stay readable.
 
 ## How the engine works
 
@@ -156,7 +156,7 @@ CI supplies a PostgreSQL 17 service and sets `TEST_DATABASE_URL`, so these tests
 - Shuffles come from a seed stored in the state, so a game can be saved, restored and replayed.
 
 A game implements `GameModule`: `setup`, `applyMove` (rejects illegal moves), `view` and `result`.
-See `packages/games/src/demo.ts` for a complete example.
+See `packages/games/src/hitster` for a complete example.
 
 ## Checks
 

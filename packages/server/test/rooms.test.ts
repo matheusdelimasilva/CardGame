@@ -1,11 +1,16 @@
-import { describe, expect, it } from "vitest";
-import type { DemoView, HitsterState } from "@cardgame/games";
+import { describe, expect, it, vi } from "vitest";
+import type { HitsterState } from "@cardgame/games";
 import * as rooms from "../src/rooms";
+import type { FixtureView } from "./fixture-game";
+
+vi.mock("@cardgame/games", async (original) =>
+  (await import("./fixture-game")).withFixture(await original()),
+);
 
 function table(
   names = ["Ana", "Bo", "Cy"],
   settings: unknown = {},
-  gameId = "demo",
+  gameId = "fixture",
 ) {
   const room = rooms.createRoom("ABC234", "host@example.com", gameId, settings);
   const members = names.map((name, i) => {
@@ -18,7 +23,7 @@ function table(
   return { room, members, host: members[0]! };
 }
 const gameView = (room: rooms.Room, m: rooms.Member) =>
-  rooms.viewFor(room, m).game!.view as DemoView;
+  rooms.viewFor(room, m).game!.view as FixtureView;
 
 describe("rooms", () => {
   it("exposes Hitster song-list choices and carries the host selection into the game", () => {

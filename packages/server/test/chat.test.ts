@@ -47,7 +47,7 @@ async function newRoom(): Promise<string> {
     email: "host@example.com",
     code: devCode,
   });
-  return (await api("/api/rooms", { gameId: "demo" }, token)).code as string;
+  return (await api("/api/rooms", { gameId: "hitster" }, token)).code as string;
 }
 
 /** Connects, says hello and (unless name is null) picks a nickname. Records chat traffic. */
@@ -214,7 +214,7 @@ describe("room live chat", () => {
       email: "host@example.com",
       code: devCode,
     })) as { token: string };
-    const code = (await api("/api/rooms", { gameId: "demo" }, token))
+    const code = (await api("/api/rooms", { gameId: "hitster" }, token))
       .code as string;
 
     const host = await join(code, null, { hello: false });

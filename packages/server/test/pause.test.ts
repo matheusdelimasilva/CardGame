@@ -197,7 +197,7 @@ describe("held game states", () => {
       expect.objectContaining({ message: "resume failed" }),
     );
     expect(notify).toHaveBeenCalledWith(room);
-    const other = registry.create("other@example.com", "demo", {});
+    const other = registry.create("other@example.com", "hitster", {});
     const member = service.join(other, undefined, true)!;
     expect(
       service.command(other, member, { type: "setName", name: "Other" }),
