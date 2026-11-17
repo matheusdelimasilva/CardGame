@@ -1,0 +1,536 @@
+/* docs/design/game-screen.dc.html: cards and table furniture (game/cards.tsx). Sized in stage units; placed by the parent. */
+
+/* ------------------------------------------------------------ card faces */
+
+.gs-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.34);
+  width: calc(var(--u) * 8.4);
+  height: calc(var(--u) * 11.8);
+  box-sizing: border-box;
+  padding: calc(var(--u) * 0.42) calc(var(--u) * 0.42) calc(var(--u) * 0.46);
+  background: var(--charcoal);
+  border: 3px solid var(--ink);
+  border-radius: calc(var(--u) * 0.76);
+  /* MysteryCard swaps the shadow for its lifted and correct states. */
+  box-shadow: var(--gs-card-shadow, 0 calc(var(--u) * 0.5) 0 var(--ink));
+  color: var(--ink);
+  transition: box-shadow 0.2s;
+}
+
+.gs-record {
+  position: relative;
+  flex: none;
+  align-self: center;
+  width: calc(var(--u) * 7.2);
+  height: calc(var(--u) * 7.2);
+  margin-top: calc(var(--u) * 0.2);
+  border-radius: 50%;
+  box-shadow: 0 calc(var(--u) * 0.21) 0 #000;
+}
+.gs-disc {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--gs-label) 0 38.75%, transparent 39.4%),
+    repeating-radial-gradient(circle, #0d0e0f 0 1.6%, #26282a 1.6% 2.9%);
+  animation: gs-spin 2.4s linear infinite paused;
+}
+.gs-disc.is-spinning,
+.gs-back.is-playing .gs-disc,
+.gs-mystery.is-interactive:hover .gs-back .gs-disc {
+  animation-play-state: running;
+}
+/* The label's printed ring: the only part that shows the record turning. */
+.gs-print {
+  width: calc(var(--u) * 3.85);
+  height: calc(var(--u) * 3.85);
+  border-radius: 50%;
+  background: conic-gradient(
+    rgba(20, 22, 23, 0.28) 0 22%,
+    transparent 22% 50%,
+    rgba(255, 250, 240, 0.45) 50% 58%,
+    transparent 58% 70%,
+    rgba(20, 22, 23, 0.28) 70% 74%,
+    transparent 74%
+  );
+  mask: radial-gradient(
+    closest-side,
+    transparent 0 74%,
+    #000 76% 90%,
+    transparent 92%
+  );
+}
+.gs-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: conic-gradient(
+    from 20deg,
+    transparent 0 8%,
+    rgba(255, 255, 255, 0.1) 12%,
+    transparent 17% 52%,
+    rgba(255, 255, 255, 0.07) 57%,
+    transparent 62%
+  );
+  mask: radial-gradient(circle, transparent 0 39.4%, #000 40%);
+}
+.gs-label-text {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font: 400 calc(var(--u) * 1.8) / 1 var(--mono);
+  letter-spacing: 0.01em;
+}
+
+.gs-plate {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--u) * 0.13);
+  padding: calc(var(--u) * 0.21) calc(var(--u) * 0.34);
+  background: var(--plate);
+  border-radius: calc(var(--u) * 0.34);
+  text-align: center;
+}
+.gs-title {
+  display: block;
+  font: 700 calc(var(--u) * 0.97) / 1.02 var(--pixel);
+}
+.gs-artist {
+  display: block;
+  font: 400 calc(var(--u) * 0.8) / 1 var(--mono);
+  color: #4d4e48;
+}
+.gs-feat {
+  display: block;
+  margin-top: 0.15em;
+  font-size: 0.78em;
+  opacity: 0.75;
+}
+
+/* ------------------------------------------------------------- the back */
+
+/* Gold label, finer grooves: nothing on the back hints at the decade. */
+.gs-back .gs-disc {
+  background:
+    radial-gradient(circle, var(--gold) 0 31%, transparent 31.5%),
+    repeating-radial-gradient(circle, #0d0e0f 0 1.3%, #26282a 1.3% 2.3%);
+}
+.gs-hole {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--u) * 0.34);
+  height: calc(var(--u) * 0.34);
+  border-radius: 50%;
+  background: var(--charcoal);
+  transform: translate(-50%, -50%);
+}
+.gs-back .gs-plate {
+  gap: calc(var(--u) * 0.21);
+  padding: 0;
+}
+.gs-back .gs-plate.is-known {
+  gap: calc(var(--u) * 0.13);
+  padding: calc(var(--u) * 0.21) calc(var(--u) * 0.34);
+}
+.gs-qmarks {
+  font: 700 calc(var(--u) * 1.43) / 1 var(--pixel);
+  letter-spacing: 0.12em;
+}
+.gs-eq {
+  display: flex;
+  flex: none;
+  justify-content: center;
+  align-items: flex-end;
+  gap: calc(var(--u) * 0.13);
+  height: calc(var(--u) * 0.59);
+}
+.gs-eq i {
+  width: calc(var(--u) * 0.22);
+  height: 100%;
+  background: var(--ink);
+  transform-origin: bottom;
+  animation: gs-eq 0.9s ease-in-out infinite;
+}
+.gs-eq i:nth-child(2) {
+  animation-duration: 0.7s;
+  animation-delay: -0.3s;
+}
+.gs-eq i:nth-child(3) {
+  animation-duration: 1.1s;
+  animation-delay: -0.55s;
+}
+.gs-eq i:nth-child(4) {
+  animation-duration: 0.8s;
+  animation-delay: -0.15s;
+}
+
+/* --------------------------------------------------------- MysteryCard */
+
+.gs-mystery {
+  position: relative;
+  width: calc(var(--u) * 8.4);
+  height: calc(var(--u) * 11.8);
+  perspective: 900px;
+  touch-action: none;
+}
+.gs-mystery.is-interactive {
+  cursor: grab;
+}
+.gs-mystery.is-dragging {
+  cursor: grabbing;
+  --gs-card-shadow: 0 calc(var(--u) * 1.6) calc(var(--u) * 1.2)
+    rgba(0, 0, 0, 0.35);
+}
+.gs-mystery.is-correct {
+  --gs-card-shadow:
+    0 0 0 calc(var(--u) * 0.35) var(--gold),
+    0 calc(var(--u) * 0.5) 0 calc(var(--u) * 0.35) var(--ink);
+}
+.gs-mystery-hover,
+.gs-mystery-flip {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.gs-mystery.is-interactive:not(.is-dragging):hover .gs-mystery-hover {
+  animation: gs-wiggle 0.7s ease-in-out infinite;
+}
+.gs-mystery-flip {
+  transition: transform 0.55s cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+.gs-mystery.is-revealed .gs-mystery-flip {
+  transform: rotateY(180deg);
+}
+.gs-mystery-side {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.gs-mystery-front {
+  transform: rotateY(180deg);
+}
+/* The revealed year is printed larger than a hand card's. */
+.gs-mystery-front .gs-label-text {
+  font-size: calc(var(--u) * 2.5);
+  letter-spacing: 0.02em;
+}
+
+/* ------------------------------------------------------------- MiniCard */
+
+.gs-mini {
+  width: calc(var(--u) * 2.3);
+  height: calc(var(--u) * 3.2);
+}
+.gs-mini-face {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: var(--gs-label);
+  border: 2px solid var(--ink);
+  border-radius: calc(var(--u) * 0.4);
+  box-shadow: 0 calc(var(--u) * 0.25) 0 var(--ink);
+  color: var(--ink);
+  font: 400 calc(var(--u) * 1.15) / 1 var(--mono);
+  transition:
+    transform 0.18s cubic-bezier(0.3, 1.5, 0.5, 1),
+    box-shadow 0.2s;
+}
+.gs-mini-face.is-unknown {
+  background: var(--charcoal);
+  color: var(--plate);
+}
+.gs-mini-face.is-glowing {
+  box-shadow:
+    0 0 0 calc(var(--u) * 0.2) var(--gold),
+    0 calc(var(--u) * 0.25) 0 calc(var(--u) * 0.2) var(--ink);
+}
+
+/* ----------------------------------------------------------------- Deck */
+
+.gs-deck {
+  position: relative;
+  width: calc(var(--u) * 8.4);
+  height: calc(var(--u) * 11.8);
+}
+.gs-deck-card {
+  --dy: calc(var(--u) * -0.22 * var(--gs-deck-i));
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  border: calc(var(--u) * 0.35) solid var(--cream);
+  border-radius: calc(var(--u) * 0.76);
+  background: repeating-conic-gradient(#ef4a3c 0 25%, #d63e31 0 50%) 0 0 /
+    calc(var(--u) * 1.2) calc(var(--u) * 1.2);
+  box-shadow: 0 calc(var(--u) * 0.18) 0 rgba(0, 0, 0, 0.35);
+  transform: translate(0, var(--dy));
+}
+/* Alternate cards fan out to opposite sides, each a beat after the one below. */
+.gs-deck.is-shuffling .gs-deck-card {
+  animation: gs-riffle-r 1.6s cubic-bezier(0.4, 0, 0.3, 1)
+    calc(var(--gs-deck-i) * 70ms) infinite;
+}
+.gs-deck.is-shuffling .gs-deck-card:nth-child(even) {
+  animation-name: gs-riffle-l;
+}
+
+/* ------------------------------------------------------------- SeatCard */
+
+.gs-seat {
+  display: block;
+  width: calc(var(--u) * 6.4);
+  height: calc(var(--u) * 8.6);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: center;
+}
+button.gs-seat {
+  cursor: pointer;
+}
+button.gs-seat:focus-visible {
+  outline: none;
+}
+button.gs-seat:focus-visible .gs-seat-face {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+.gs-seat-face {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: calc(var(--u) * 0.6) calc(var(--u) * 0.5);
+  background: var(--cream);
+  border-radius: calc(var(--u) * 0.8);
+  box-shadow: 0 calc(var(--u) * 0.5) 0 rgba(0, 0, 0, 0.3);
+  transform: rotate(var(--gs-tilt, 0deg));
+  transition:
+    transform 0.3s cubic-bezier(0.3, 1.4, 0.5, 1),
+    box-shadow 0.2s;
+}
+.gs-seat.is-active .gs-seat-face {
+  transform: rotate(var(--gs-tilt, 0deg)) scale(1.12);
+  box-shadow:
+    0 0 0 calc(var(--u) * 0.4) var(--gold),
+    0 0 0 calc(var(--u) * 0.65) var(--ink),
+    0 calc(var(--u) * 0.6) 0 calc(var(--u) * 0.65) rgba(0, 0, 0, 0.3);
+}
+.gs-chip {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: calc(var(--u) * 3.3);
+  height: calc(var(--u) * 3.3);
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: calc(var(--u) * 0.3) dashed var(--cream);
+  background: var(--gs-chip);
+  box-shadow: 0 calc(var(--u) * 0.25) 0 var(--gs-chip-edge);
+  font: 400 calc(var(--u) * 1.8) / 1 sans-serif;
+}
+.gs-seat.is-away .gs-chip {
+  filter: grayscale(1);
+  opacity: 0.6;
+}
+.gs-seat-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font:
+    800 calc(var(--u) * 1.3) / 1.1 "Rubik",
+    sans-serif;
+}
+.gs-seat-score {
+  font: 400 calc(var(--u) * 1.3) / 1 var(--mono);
+  letter-spacing: 0.06em;
+  color: #4d4e48;
+}
+/* Corner tags: the badge (e.g. BET) top right, "away" across the bottom edge. */
+.gs-seat-badge,
+.gs-seat-away {
+  position: absolute;
+  padding: calc(var(--u) * 0.2) calc(var(--u) * 0.6);
+  background: var(--ink);
+  border-radius: calc(var(--u) * 0.5);
+  font: 400 calc(var(--u) * 1.4) / 1 var(--mono);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.gs-seat-badge {
+  right: calc(var(--u) * -1);
+  top: calc(var(--u) * -0.9);
+  color: var(--gold);
+  transform: rotate(8deg);
+}
+.gs-seat-away {
+  left: 50%;
+  bottom: calc(var(--u) * -1);
+  color: var(--cream);
+  font-size: calc(var(--u) * 1.2);
+  letter-spacing: 0.06em;
+  transform: translateX(-50%) rotate(-4deg);
+}
+
+/* -------------------------------------------------------------- MePlate */
+
+.gs-me {
+  width: max-content;
+}
+.gs-me-face {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1);
+  padding: calc(var(--u) * 0.5) calc(var(--u) * 1.4) calc(var(--u) * 0.7);
+  background: var(--cream);
+  border: 3px solid var(--ink);
+  border-radius: calc(var(--u) * 0.8);
+  box-shadow: 0 calc(var(--u) * 0.5) 0 var(--ink);
+  color: var(--ink);
+  transform: rotate(-2deg);
+  transition: background 0.2s;
+}
+.gs-me.is-active .gs-me-face {
+  background: var(--gold);
+}
+.gs-me-animal {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: calc(var(--u) * 4);
+  height: calc(var(--u) * 4);
+  border-radius: 50%;
+  background: var(--cream);
+  border: 3px solid var(--ink);
+  font: 400 calc(var(--u) * 2.4) / 1 sans-serif;
+}
+.gs-me-text {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.3);
+  min-width: 0;
+}
+/* Long names stop before the plate reaches the hand. */
+.gs-me-name {
+  max-width: calc(var(--u) * 12);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font:
+    700 calc(var(--u) * 2.6) / 1.1 "Caveat",
+    cursive;
+}
+
+.gs-pips {
+  display: flex;
+  gap: calc(var(--u) * 0.3);
+}
+.gs-pip {
+  width: calc(var(--u) * 0.8);
+  height: calc(var(--u) * 1.1);
+  box-sizing: border-box;
+  border: 1.5px solid var(--gs-pip, var(--ink));
+  border-radius: 2px;
+}
+.gs-pip.is-filled {
+  background: var(--gs-pip, var(--ink));
+}
+
+/* ----------------------------------------------------------- keyframes */
+
+@keyframes gs-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes gs-riffle-l {
+  0%,
+  12%,
+  78%,
+  100% {
+    transform: translate(0, var(--dy)) rotate(0);
+  }
+  30%,
+  48% {
+    transform: translate(calc(var(--u) * -5.2), var(--dy)) rotate(-9deg);
+  }
+}
+@keyframes gs-riffle-r {
+  0%,
+  12%,
+  78%,
+  100% {
+    transform: translate(0, var(--dy)) rotate(0);
+  }
+  30%,
+  48% {
+    transform: translate(calc(var(--u) * 5.2), var(--dy)) rotate(9deg);
+  }
+}
+@keyframes gs-eq {
+  0%,
+  100% {
+    transform: scaleY(0.25);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+@keyframes gs-wiggle {
+  0%,
+  100% {
+    transform: rotate(0) translateY(0);
+  }
+  25% {
+    transform: rotate(-3deg) translateY(calc(var(--u) * -0.5));
+  }
+  75% {
+    transform: rotate(3deg) translateY(calc(var(--u) * -0.5));
+  }
+}
+/* For the parent's hovered betting tokens. */
+@keyframes gs-floaty {
+  0%,
+  100% {
+    transform: translateY(calc(var(--u) * -0.35));
+  }
+  50% {
+    transform: translateY(calc(var(--u) * -0.9));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gs-card *,
+  .gs-mystery,
+  .gs-mystery *,
+  .gs-mini *,
+  .gs-deck *,
+  .gs-seat *,
+  .gs-me * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
