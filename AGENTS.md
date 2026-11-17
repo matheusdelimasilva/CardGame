@@ -1,4 +1,5 @@
 <!-- BEGIN AWS Agent Toolkit rules -->
+
 # AWS Guidance for the new AWS experience
 
 This user has signed up for the new AWS experience. This experience lets you sign into AWS using a social provider and requires the following additional context.

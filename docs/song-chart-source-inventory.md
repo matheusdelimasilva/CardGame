@@ -53,12 +53,12 @@ These are Brazilian-market chart observations, not a verified Brazilian-artists-
 
 Appended 65 visually checked weekly observations to the historical seeds (120 observations total):
 
-| Issue | Market / observation date | Printed page / zero-based PDF index | Observations |
-| --- | --- | --- | ---: |
-| [Billboard 1970-10-10](https://www.worldradiohistory.com/Archive-All-Music/Billboard/70s/1970/Billboard%201970-10-10.pdf) | Rio de Janeiro and São Paulo / no separate date printed | 86 / 101 | 20 |
-| [Billboard 1972-05-27](https://www.worldradiohistory.com/Archive-All-Music/Billboard/70s/1972/Billboard%201972-05-27.pdf) | Rio de Janeiro plus a separate Brazil singles list with no city printed | 52 / 79 | 20 |
-| [Billboard 1974-07-06](https://www.worldradiohistory.com/Archive-All-Music/Billboard/70s/1974/Billboard%201974-07-06.pdf) | Brazil, courtesy IBOPE / no separate date printed | 42 / 41 | 10 |
-| [Billboard 1976-09-25](https://www.worldradiohistory.com/Archive-All-Music/Billboard/70s/1976/Billboard%201976-09-25.pdf) | Rio de Janeiro / as of 1976-08-21 | 73 / 72 | 15 |
+| Issue                                                                                                                     | Market / observation date                                               | Printed page / zero-based PDF index | Observations |
+| ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------- | -----------: |
+| [Billboard 1970-10-10](https://www.worldradiohistory.com/Archive-All-Music/Billboard/70s/1970/Billboard%201970-10-10.pdf) | Rio de Janeiro and São Paulo / no separate date printed                 | 86 / 101                            |           20 |
+| [Billboard 1972-05-27](https://www.worldradiohistory.com/Archive-All-Music/Billboard/70s/1972/Billboard%201972-05-27.pdf) | Rio de Janeiro plus a separate Brazil singles list with no city printed | 52 / 79                             |           20 |
+| [Billboard 1974-07-06](https://www.worldradiohistory.com/Archive-All-Music/Billboard/70s/1974/Billboard%201974-07-06.pdf) | Brazil, courtesy IBOPE / no separate date printed                       | 42 / 41                             |           10 |
+| [Billboard 1976-09-25](https://www.worldradiohistory.com/Archive-All-Music/Billboard/70s/1976/Billboard%201976-09-25.pdf) | Rio de Janeiro / as of 1976-08-21                                       | 73 / 72                             |           15 |
 
 Each chart was rendered from the downloaded PDF and visually checked. The 1972 second singles list does not print São Paulo in its own heading; the city printed on the separate LP table below was not inherited. Duplicate song appearances across markets are separate observations, not new-song counts. The 1976 Mistura de Carimbo 2 row is flagged for possible medley/volume ambiguity; the printed Van MacCoy spelling is retained for review.
 

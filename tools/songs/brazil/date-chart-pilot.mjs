@@ -25,10 +25,13 @@ for (const item of candidates) {
     url.searchParams.set("fmt", "json");
     url.searchParams.set("limit", "100");
     let r;
-    for (let attempt=0; attempt<4; attempt++) {
-      r = await fetch(url, { headers: { "User-Agent": USER_AGENT }, signal: AbortSignal.timeout(20000) });
-      if (r.ok || ![429,503].includes(r.status)) break;
-      await new Promise(resolve=>setTimeout(resolve,2500*2**attempt));
+    for (let attempt = 0; attempt < 4; attempt++) {
+      r = await fetch(url, {
+        headers: { "User-Agent": USER_AGENT },
+        signal: AbortSignal.timeout(20000),
+      });
+      if (r.ok || ![429, 503].includes(r.status)) break;
+      await new Promise((resolve) => setTimeout(resolve, 2500 * 2 ** attempt));
     }
     if (!r.ok) throw Error(`HTTP ${r.status}`);
     const x = await r.json();

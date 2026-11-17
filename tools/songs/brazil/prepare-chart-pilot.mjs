@@ -25,24 +25,46 @@ const historical = seeds.rows.map((row) => ({
       publicationDate: seeds.source.publicationDate,
       printedPage: seeds.source.printedPage,
       sourceUrl: seeds.source.sourceUrl,
-      verification: seeds.source.visualVerification ? "scan-verified" : "provisional-index-transcription",
+      verification: seeds.source.visualVerification
+        ? "scan-verified"
+        : "provisional-index-transcription",
       rawTitle: row.rawTitle,
       rawArtist: row.rawArtist,
     },
   ],
 }));
-const additional = await readJson(new URL("./chart-seeds-historical.json", import.meta.url), []);
+const additional = await readJson(
+  new URL("./chart-seeds-historical.json", import.meta.url),
+  [],
+);
 for (const row of additional) {
- if (row.needsReview) continue;
- historical.push({title:row.rawTitle, artist:row.rawArtist, year:null, deezerId:null,
- state:"needs_nationality_release_and_recording_review",
- observations:[{...row, chart:row.chartTitle, periodType:row.period, verification:row.visualVerification ? "scan-verified" : "provisional-index-transcription"}]});
+  if (row.needsReview) continue;
+  historical.push({
+    title: row.rawTitle,
+    artist: row.rawArtist,
+    year: null,
+    deezerId: null,
+    state: "needs_nationality_release_and_recording_review",
+    observations: [
+      {
+        ...row,
+        chart: row.chartTitle,
+        periodType: row.period,
+        verification: row.visualVerification
+          ? "scan-verified"
+          : "provisional-index-transcription",
+      },
+    ],
+  });
 }
 const seen = new Map();
-for (const candidate of [...historical,...candidateQueue(songs,observations)]) {
- const key=`${candidate.artist}|${candidate.title}`;
- if(seen.has(key)) seen.get(key).observations.push(...candidate.observations);
- else seen.set(key,candidate);
+for (const candidate of [
+  ...historical,
+  ...candidateQueue(songs, observations),
+]) {
+  const key = `${candidate.artist}|${candidate.title}`;
+  if (seen.has(key)) seen.get(key).observations.push(...candidate.observations);
+  else seen.set(key, candidate);
 }
 const queue = [...seen.values()];
 await writeJson(join(OUT_DIR, "chart-pilot-br.json"), {

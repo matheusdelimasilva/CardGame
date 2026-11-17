@@ -5,3 +5,4 @@ data/
 tools/songs/out/
 tools/songs/.cache/
 pnpm-lock.yaml
+.lavish/
