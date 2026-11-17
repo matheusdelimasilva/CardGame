@@ -179,6 +179,32 @@ describe("game screen", () => {
     });
   });
 
+  it("only offers to remove, not end the game, for a seated person who is not in it", () => {
+    const room = scenarios.disconnectedOpponent();
+    room.seats = room.seats.map((s) =>
+      s && !s.isHost && s.id !== room.you.id ? { ...s, inGame: false } : s,
+    );
+    const root = render(room);
+    const seat = root.findAll(
+      (n) =>
+        n.type === "button" && String(n.props.className).includes("gs-seat"),
+    )[0]!;
+    act(() => seat.props.onClick());
+    expect(buttons(root, "Remove from table")).toHaveLength(1);
+    expect(buttons(root, "Remove and end this game")).toHaveLength(0);
+  });
+
+  it("lists only connected spectators as watching", () => {
+    const room = scenarios.spectator();
+    room.spectators = [
+      { id: "s1", name: "Here", connected: true },
+      { id: "s2", name: "Gone", connected: false },
+    ];
+    const text = textOf(render(room));
+    expect(text).toContain("Here");
+    expect(text).not.toContain("Gone");
+  });
+
   it("starts the next game from the final scores", () => {
     const root = render(scenarios.overIWin());
     act(() => buttons(root, "Play again")[0]!.props.onClick());

@@ -106,7 +106,7 @@ function viewerPlate(
 /** Spectators, and seated people sitting this game out. */
 function watchers(room: RoomView): string[] {
   return [
-    ...room.spectators.map((s) => s.name),
+    ...room.spectators.flatMap((s) => (s.connected ? [s.name] : [])),
     ...room.seats.flatMap((s) => (s && !s.inGame ? [s.name] : [])),
   ];
 }
@@ -286,7 +286,9 @@ function GameTable({
         <PlayerMenu
           player={menuPlayer}
           running={!over}
-          playing
+          playing={
+            room.seats.find((s) => s?.id === menuPlayer.id)?.inGame ?? true
+          }
           theirTurn={game.active.includes(menuPlayer.id)}
           onSkip={() => send({ type: "skip", playerId: menuPlayer.id })}
           onRemove={() => send({ type: "kick", playerId: menuPlayer.id })}

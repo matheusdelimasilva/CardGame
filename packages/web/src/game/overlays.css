@@ -294,7 +294,8 @@
   font-size: calc(var(--u) * 1);
 }
 .game-screen.is-portrait .gs-header .tl-code > strong {
-  font-size: calc(var(--u) * 1.9);
+  /* The marquee is centred, so the code has about 8 units beside the back button: a longer code gets smaller type. */
+  font-size: min(calc(var(--u) * 1.9), calc(var(--u) * 8 / var(--code-length)));
   line-height: 1;
 }
 .game-screen.is-portrait .gs-header .tl-watchers {

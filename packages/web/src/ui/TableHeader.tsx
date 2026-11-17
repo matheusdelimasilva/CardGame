@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import "./table-ui.css";
 
 /**
@@ -33,7 +33,10 @@ export function TableHeader({
           ←
         </button>
         <div className="tl-table-meta">
-          <div className="tl-code">
+          <div
+            className="tl-code"
+            style={{ "--code-length": code.length } as CSSProperties}
+          >
             <span>TABLE</span> <strong>{code}</strong>
           </div>
           {watchers && (

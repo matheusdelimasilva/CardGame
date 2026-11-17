@@ -17,7 +17,7 @@ export interface GalleryContext {
  * export and it appears at /dev/game; `/dev/game?only=<name>` shows it alone,
  * filling the window. Scenario and options come from the URL as well:
  * `scenario`, `players` (2–8), `goal` (5, 8 or 10), `timelines`
- * (short, long or mixed) and `songInfo` (1 to show the current title).
+ * (short, long or mixed) and `songInfo` (1 to show the current title) and `code` (the table code).
  */
 export interface GallerySection {
   title: string;
