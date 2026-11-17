@@ -4,7 +4,7 @@ import type { SeatLook } from "../ui/seats";
 
 export type { SongCardView, TurnSummary };
 
-/** A point in stage units (the stage is 100u wide and 62.5u tall). */
+/** A point in stage units (the landscape stage is 100u × 62.5u; see StageLayout). */
 export interface Point {
   x: number;
   y: number;
@@ -81,6 +81,10 @@ export interface GameModel {
   /** Empty until the game is over. */
   winners: TablePlayer[];
   deckCount: number;
+  /** Counts turns from 1; a turn's placing and its reveal share the number. */
+  turnNumber: number;
+  /** Time left on a held state (intro or reveal) when the view was sent. */
+  pauseMs: number | null;
   /** Time left on a timed turn when the view was sent. */
   timer: { remainingMs: number; totalMs: number } | null;
   viewerIsHost: boolean;

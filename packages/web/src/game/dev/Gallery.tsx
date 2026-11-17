@@ -105,9 +105,16 @@ export default function Gallery() {
     readOptions(new URLSearchParams(location.search)),
   );
   const only = new URLSearchParams(location.search).get("only");
+  const code = new URLSearchParams(location.search).get("code");
   const context: GalleryContext = useMemo(
-    () => ({ ...picked, room: scenarios[picked.scenario](picked.options) }),
-    [picked],
+    () => ({
+      ...picked,
+      room: {
+        ...scenarios[picked.scenario](picked.options),
+        ...(code ? { code } : {}),
+      },
+    }),
+    [picked, code],
   );
 
   if (only !== null) {

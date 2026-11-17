@@ -131,6 +131,8 @@ export function gameModel(room: RoomView): GameModel | null {
     lastTurn: view.lastTurn,
     winners: stage.kind === "over" ? stage.winners.map(byId) : [],
     deckCount: view.deckCount,
+    turnNumber: view.turnNumber,
+    pauseMs: game.pause?.remainingMs ?? null,
     timer: stage.kind === "placing" ? game.timer : null,
     viewerIsHost: room.you.isHost,
   };
@@ -203,19 +205,17 @@ function myTurnStatus(model: GameModel, placement: Placement | null) {
     : { headline: `${where}?`, sub: "Drag again to change your mind." };
 }
 
+/** The headline already names the player, so the line under it does not repeat a long name. */
 function opponentTurnStatus(model: GameModel): StatusText {
   const player = model.active!;
   if (!player.connected)
     return {
       headline: `${player.name}'s turn`,
       sub: model.viewerIsHost
-        ? `${player.name} is away. You can skip their turn.`
-        : `${player.name} is away. The host can skip their turn.`,
+        ? "They're away. You can skip their turn."
+        : "They're away. The host can skip their turn.",
     };
-  return {
-    headline: `${player.name}'s turn`,
-    sub: `${player.name} is still choosing.`,
-  };
+  return { headline: `${player.name}'s turn`, sub: "Still choosing." };
 }
 
 function revealStatus(model: GameModel, turn: TurnSummary): StatusText {

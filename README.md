@@ -10,7 +10,7 @@ One player signs in with an email code and hosts; everyone else joins from a sha
 | 1. Engine: cards, zones, visibility, per-player views        | Done                            |
 | 2. First demo game on the engine (since removed)             | Done                            |
 | 3. Server: rooms, join by link, seats, spectators, reconnect | Done                            |
-| 4. Round-table web client, portrait-first on phones          | Done                            |
+| 4. Web client: lobby and game screen, portrait on phones     | Done                            |
 | 5. Email sign-in for hosts, game history                     | Done (emails need a Resend key) |
 | 6. Deploy                                                    | Not started                     |
 
@@ -103,7 +103,7 @@ CI supplies a PostgreSQL 17 service and sets `TEST_DATABASE_URL`, so these tests
 - `packages/games`: one rules module per game.
 - `packages/protocol`: message and view types shared by server and client.
 - `packages/server`: `app.ts` wires transports, room lifecycle, sign-in (`auth.ts`) and storage (`store.ts`).
-- `packages/web`: React client. `Room.tsx` is the shared table; `games/` holds each game's table UI.
+- `packages/web`: React client. `Room.tsx` routes a table to the lobby (`lobby/`, before a game) or the game screen (`game/`); `ui/` holds the table chrome both share. The dev-only gallery at `/dev/game` (`game/dev`) shows the game screen's parts and every scenario (your turn, reveals, final scores, spectator, many players) with fixtures, no server needed.
 
 ### Server boundaries
 
@@ -129,23 +129,25 @@ CI supplies a PostgreSQL 17 service and sets `TEST_DATABASE_URL`, so these tests
 
 1. Implement the engine's `GameModule<State, Move, View>` in `packages/games/src`, exporting the game's view and move types. Supply a Zod `moveSchema` owned by the game; the room service validates wire payloads with it before calling the rules. Keep legality checks (turn, available cards, placement bounds) in `applyMove`.
    - `settings` lists what the host can choose before creating a table. Two kinds exist: `toggle` (on/off) and `select` (one option from a dropdown). The settings screen is generated from this list, and the chosen values arrive in `setup`.
-   - `currentTrack` (optional) names a recording everyone should hear at this point in the game. The server turns it into a secret per-recording URL and the table plays it; the game's UI gets playback state and a pause/replay toggle as `audio`.
+   - `currentTrack` (optional) names a recording everyone should hear at this point in the game. The server turns it into a secret per-recording URL and the table plays it, with a pause/replay toggle.
    - `turnTimeLimit` (optional) returns how many seconds the current turn may take. When it runs out, the server plays the game's `autoMove` for that player.
 2. Register `defineGame(yourModule)` in `games` in `packages/games/src/index.ts`. It then appears in the host's game picker; the server resolves ids through `getGame` rather than indexing an untyped registry.
-3. Write its table UI as a `GameUI<View, Move>` in `packages/web/src/games` and register `defineGameUI(yourUI)` in `gameUIs`. It supplies the table centre, the cards beside each seat, the seat label, your hand, your action buttons and announcements. A game whose hand and buttons share state, or need a phone's full width, supplies one `Dock` instead of `Hand` and `Actions` (Hitster does).
+3. Give it a screen. The game screen in `packages/web/src/game` is built for Hitster only (`model.ts` turns a `RoomView` into what it draws; `Room.tsx` shows it for `hitster` games and the lobby otherwise), so a second game needs its own screen model and scenes there.
    - Import the rules package with `import type` only, so hidden data such as Hitster's song years is not bundled into the client.
 4. Add rules, move-schema and room-service tests. Run the checks below and inspect the built JS for private game data before shipping.
 
 ## Games
 
 - **Hitster** (`packages/games/src/hitster`): each player builds a timeline of songs by release year. The table draws a song on your turn and you choose where it goes; a correct spot keeps the card, a wrong one discards it. First to 10 cards wins (5 or 8 as a setting).
-  - Sound: the song being placed plays on every player's and spectator's device (a 30-second Deezer preview). Tapping the record pauses or replays it, and the speaker button in the top bar turns sound off for that device. Phones refuse to start sound until the page has been tapped, so a "tap anywhere to turn on sound" strip appears when that happens.
+  - Game screen (`packages/web/src/game`): the table is a stage that scales to the window, designed in `docs/design/game-screen.dc.html`. On your turn the mystery card waits face down; drag it into your timeline (or focus it, choose a spot with the arrow keys and press Enter), then "Lock it in". Dragging again changes your mind until you lock in. Everyone sees the placement revealed, then the card kept or discarded, with the song's title, artist and year. A "Get ready" note with the rules and a countdown opens each game; the Instructions button (a "?" on phones) shows the rules again; the host can tap a player's seat to play an away player's turn or remove them. When someone reaches the goal, final scores show with Play again (host) and Back to lobby.
+  - On phones held upright the table is laid out in portrait: the timeline scrolls sideways under the table and chat opens from a Chat button that shows a dot for unread messages. Tables of up to 8 players, long timelines and spectators (who can take an open seat for the next game) are handled by the same screen.
+  - Sound: the song being placed plays on every player's and spectator's device (a 30-second Deezer preview). Tapping the record pauses or replays it, and the speaker button turns sound off for that device. Phones refuse to start sound until the page has been tapped, so a "tap anywhere to turn on sound" strip appears when that happens.
   - The browser is given an unguessable URL per song (`/api/rooms/CODE/track/...`) that the server streams from Deezer. It does not name the song and stops working when the turn ends, so the sound cannot be used to look up the year.
   - Betting: everyone starts with 2 tokens. While another player's song is in play you may bet one token on the gap in their timeline where it really goes, or pass. Once they lock in, the others have 5 seconds left to bet. A bet on the same gap as theirs is refunded; if they miss, the first bet on a right gap steals the card into the bettor's timeline; every other bet loses its token. Placements and bet gaps stay hidden until the reveal.
   - The "Show title and artist" setting (off by default) shows the song's name as well, for playing without sound.
   - Songs come from `tools/songs/out/songs.json` (see `tools/songs/README.md`). Each game deals a random 300 of those that have a Deezer id. The list lives only on the server: a client is sent a song's year only once the card is face up, and never its Deezer id.
   - Cards use the Vinyl design from `docs/design/song-cards.html`, coloured by decade; the song being placed uses its face-down back.
-    Hitster is the only game. An earlier highest-card-wins Demo game was removed; rooms saved with it are dropped when the server starts, and their history entries stay readable.
+- Hitster is the only game. An earlier highest-card-wins Demo game was removed; rooms saved with it are dropped when the server starts, and their history entries stay readable.
 
 ## How the engine works
 

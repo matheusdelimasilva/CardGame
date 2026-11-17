@@ -1,14 +1,23 @@
 import { describe, expect, it } from "vitest";
 import {
+  CHAT_BOX,
   DECK_BOX,
-  FELT_X_RANGE,
+  DROP_LINE_Y,
+  HAND_BAND,
   HAND_CARD,
+  HAND_MIN_SCALE,
+  HEADER_CLEARANCE,
+  MAX_OPPONENTS,
   MINI_CARD,
+  PLATE,
+  SEAT_CARD,
   STAGE,
   STATUS_BOX,
   TABLE_BOX,
   decadeColor,
+  feltGapBox,
   feltGapX,
+  feltLayout,
   feltTimeline,
   handCardWithGap,
   handInsertionIndex,
@@ -16,9 +25,13 @@ import {
   miniTimeline,
   opponentSpots,
   placeAt,
+  rotatedHalfWidth,
   seatCardBox,
   u,
+  type OpponentSpot,
 } from "./layout";
+import { dropTarget } from "./placement";
+import type { Box, Point } from "./types";
 
 /** The design's fan, copied from docs/design/game-screen.dc.html. */
 const mockSlot = (k: number, total: number) => {
@@ -36,33 +49,74 @@ describe("handSlot", () => {
         expect(got.x).toBeCloseTo(want.x, 10);
         expect(got.y).toBeCloseTo(want.y, 10);
         expect(got.r).toBeCloseTo(want.r, 10);
+        expect(got.scale).toBe(1);
       }
   });
 
-  it("keeps every centre between the player plate and the chat for up to ten slots", () => {
-    for (let total = 1; total <= 10; total++)
+  it("keeps the band between the player plate and the chat", () => {
+    expect(HAND_BAND.min).toBeGreaterThan(PLATE.x + PLATE.w);
+    expect(HAND_BAND.max).toBeLessThan(CHAT_BOX.x);
+  });
+
+  it("keeps every card, tilt included, inside the band for up to eleven slots", () => {
+    for (let total = 1; total <= 11; total++)
       for (const k of range(total)) {
-        const { x } = handSlot(k, total);
-        expect(x).toBeGreaterThanOrEqual(24 - 1e-9);
-        expect(x).toBeLessThanOrEqual(76 + 1e-9);
+        const { x, r, scale } = handSlot(k, total);
+        const reach = rotatedHalfWidth(HAND_CARD, r) * scale;
+        expect(x - reach).toBeGreaterThanOrEqual(HAND_BAND.min - 1e-9);
+        expect(x + reach).toBeLessThanOrEqual(HAND_BAND.max + 1e-9);
       }
   });
 
-  it("caps tilt and drop so the outer cards stay on the stage", () => {
-    for (let total = 1; total <= 10; total++)
+  it("shrinks longer hands, never below the floor, the same for every card", () => {
+    let last = 1;
+    for (let total = 7; total <= 11; total++) {
+      const scales = range(total).map((k) => handSlot(k, total).scale);
+      expect(new Set(scales).size).toBe(1);
+      expect(scales[0]!).toBeLessThan(1);
+      expect(scales[0]!).toBeLessThanOrEqual(last);
+      expect(scales[0]!).toBeGreaterThanOrEqual(HAND_MIN_SCALE);
+      last = scales[0]!;
+    }
+  });
+
+  it("does not overlap cards up to eight slots, and shows most of each up to ten", () => {
+    for (let total = 2; total <= 10; total++) {
+      const { scale } = handSlot(0, total);
+      const step = handSlot(1, total).x - handSlot(0, total).x;
+      const width = HAND_CARD.w * scale;
+      if (total <= 8) expect(step).toBeGreaterThanOrEqual(width - 1e-9);
+      else expect(step).toBeGreaterThanOrEqual(0.75 * width);
+    }
+  });
+
+  it("caps tilt and keeps the bottom edge on the stage", () => {
+    for (let total = 1; total <= 11; total++)
       for (const k of range(total)) {
-        const { y, r } = handSlot(k, total);
+        const { y, r, scale } = handSlot(k, total);
         expect(Math.abs(r)).toBeLessThanOrEqual(7.5 + 1e-9);
         // A rotated card's lowest corner, measured from its centre.
         const rad = (Math.abs(r) * Math.PI) / 180;
         const reach =
-          (HAND_CARD.w / 2) * Math.sin(rad) + (HAND_CARD.h / 2) * Math.cos(rad);
+          ((HAND_CARD.w / 2) * Math.sin(rad) +
+            (HAND_CARD.h / 2) * Math.cos(rad)) *
+          scale;
         expect(y + reach).toBeLessThanOrEqual(STAGE.h);
       }
   });
 
+  it("keeps a shrunken card's bottom edge where a full-size one's is", () => {
+    const full = handSlot(0, 1);
+    const small = handSlot(4, 9);
+    expect(small.scale).toBeLessThan(1);
+    expect(small.y + (HAND_CARD.h / 2) * small.scale).toBeCloseTo(
+      full.y + HAND_CARD.h / 2,
+      10,
+    );
+  });
+
   it("is symmetric and strictly increasing in x", () => {
-    for (let total = 2; total <= 10; total++) {
+    for (let total = 2; total <= 11; total++) {
       const xs = range(total).map((k) => handSlot(k, total).x);
       for (let k = 1; k < total; k++)
         expect(xs[k]!).toBeGreaterThan(xs[k - 1]!);
@@ -72,16 +126,36 @@ describe("handSlot", () => {
 });
 
 describe("handInsertionIndex", () => {
-  it("counts the cards left of the pointer, like the design's idxAt", () => {
-    expect(handInsertionIndex(50, 0)).toBe(0);
-    expect(handInsertionIndex(10, 2)).toBe(0);
-    expect(handInsertionIndex(50, 2)).toBe(1);
-    expect(handInsertionIndex(90, 2)).toBe(2);
-    expect(handInsertionIndex(handSlot(3, 9).x + 0.01, 9)).toBe(4);
+  /** The design's idxAt: how many cards of the unparted hand sit left of x. */
+  const designIndex = (x: number, count: number) =>
+    range(count).filter((k) => mockSlot(k, count).x < x).length;
+
+  it("is the design's idxAt for up to five cards", () => {
+    for (let count = 0; count <= 5; count++)
+      for (let x = 0; x <= 100; x += 0.25)
+        expect(handInsertionIndex(x, count)).toBe(designIndex(x, count));
+  });
+
+  it("targets the slot drawn under the pointer, each as wide as the slots are apart", () => {
+    // Nine cards and the gap: the longest hand a card is ever dropped into.
+    for (let count = 0; count <= 9; count++) {
+      const slots = range(count + 1).map((i) => handSlot(i, count + 1).x);
+      for (const [i, x] of slots.entries()) {
+        expect(handInsertionIndex(x, count)).toBe(i);
+        expect(dropTarget({ x, y: DROP_LINE_Y + 1 }, count)).toBe(i);
+      }
+      // Comfortably wide: the targets' edges are halfway between slots.
+      for (let i = 1; i < slots.length; i++) {
+        const edge = (slots[i - 1]! + slots[i]!) / 2;
+        expect(handInsertionIndex(edge - 0.01, count)).toBe(i - 1);
+        expect(handInsertionIndex(edge + 0.01, count)).toBe(i);
+        expect(slots[i]! - slots[i - 1]!).toBeGreaterThanOrEqual(5);
+      }
+    }
   });
 
   it("never decreases as the pointer moves right", () => {
-    for (const count of [1, 5, 9]) {
+    for (const count of [1, 5, 9, 10]) {
       let last = 0;
       for (let x = 0; x <= 100; x += 0.5) {
         const index = handInsertionIndex(x, count);
@@ -102,69 +176,160 @@ describe("handCardWithGap", () => {
   });
 });
 
+/**
+ * A seat card's reach on screen at its tilt (up to 3°). While active it is
+ * 12% larger, 0.75u lower and ringed 0.65u in gold, as cards.css draws it.
+ */
+function seatReach(spot: OpponentSpot, active: boolean): Box {
+  const s = spot.scale;
+  const grow = active ? 1.12 : 1;
+  const ring = active ? 0.65 * s : 0;
+  const centre = spot.seat.y + (active ? 0.75 * s : 0);
+  const rad = (3 * Math.PI) / 180;
+  const hw = (SEAT_CARD.w / 2) * s * grow;
+  const hh = (SEAT_CARD.h / 2) * s * grow;
+  const rx = hw * Math.cos(rad) + hh * Math.sin(rad) + ring;
+  const ry = hh * Math.cos(rad) + hw * Math.sin(rad) + ring;
+  return { x: spot.seat.x - rx, y: centre - ry, w: 2 * rx, h: 2 * ry };
+}
+
+const overlaps = (a: Box, b: Box) =>
+  a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+
+const miniBox = (p: Point, scale: number): Box => ({
+  x: p.x - (MINI_CARD.w / 2) * scale,
+  y: p.y - (MINI_CARD.h / 2) * scale,
+  w: MINI_CARD.w * scale,
+  h: MINI_CARD.h * scale,
+});
+
 describe("opponentSpots", () => {
   it("uses the design's spots for one to five opponents", () => {
-    expect(opponentSpots(3).map((s) => s.anchor)).toEqual([
-      { x: 26, y: 15.5 },
-      { x: 50, y: 15.5 },
-      { x: 74, y: 15.5 },
-    ]);
-    expect(opponentSpots(5).map((s) => s.anchor.x)).toEqual([
-      10.5, 30.25, 50, 69.75, 89.5,
-    ]);
+    // The design's seat card: left x - 9.75, top y - 4.3, for spots at x.
+    const lefts = (n: number) =>
+      opponentSpots(n).map((s) => +seatCardBox(s).x.toFixed(2));
+    expect(lefts(3)).toEqual([16.25, 40.25, 64.25]);
+    // Five sit 0.6 right of the design's, so the first one's turn stays on the stage.
+    expect(lefts(5)).toEqual([1.35, 21.1, 40.85, 60.6, 80.35]);
     for (let n = 1; n <= 5; n++)
-      expect(opponentSpots(n).every((s) => s.scale === 1)).toBe(true);
-    // The design's seat card: left x - 9.75, top y - 4.3.
-    const box = seatCardBox(opponentSpots(1)[0]!);
-    expect(box.x).toBeCloseTo(40.25, 10);
-    expect(box.y).toBeCloseTo(11.2, 10);
+      for (const spot of opponentSpots(n)) {
+        expect(spot.scale).toBe(1);
+        expect(seatCardBox(spot).y).toBeCloseTo(11.2, 10);
+      }
   });
 
-  it("clamps the count to 1–7", () => {
+  it("clamps the count to 1–8", () => {
     expect(opponentSpots(0)).toHaveLength(1);
-    expect(opponentSpots(12)).toHaveLength(7);
+    expect(opponentSpots(12)).toHaveLength(MAX_OPPONENTS);
+    expect(MAX_OPPONENTS).toBe(8);
   });
 
-  for (let n = 1; n <= 7; n++)
-    it(`places ${n} opponent(s) on the stage, with full timelines not overlapping`, () => {
+  it("seats the first and last of six or more at the ends of the table, the rest in the design's row", () => {
+    const six = opponentSpots(6);
+    const seven = opponentSpots(7);
+    expect(six[0]!.lane.place).toBe("below");
+    expect(six.at(-1)!.lane.place).toBe("below");
+    expect(six.slice(1, -1).map((s) => s.seat)).toEqual(
+      opponentSpots(4).map((s) => s.seat),
+    );
+    expect(seven.slice(1, -1).map((s) => s.seat)).toEqual(
+      opponentSpots(5).map((s) => s.seat),
+    );
+    expect(six[0]!.seat.x + six.at(-1)!.seat.x).toBeCloseTo(STAGE.w, 10);
+  });
+
+  for (let n = 1; n <= 8; n++)
+    it(`places ${n} opponent(s) clear of each other, the header, the chat and the stage's edges`, () => {
       const spots = opponentSpots(n);
       expect(spots).toHaveLength(n);
-      let lastRight = -Infinity;
-      for (const spot of spots) {
-        const seat = seatCardBox(spot);
-        expect(seat.x).toBeGreaterThanOrEqual(0);
-        expect(seat.y).toBeGreaterThanOrEqual(0);
-        // Above the felt.
-        expect(seat.y + seat.h).toBeLessThanOrEqual(TABLE_BOX.y + 3);
-        expect(seat.x).toBeGreaterThan(lastRight);
-        const minis = miniTimeline(spot, 9);
-        const half = (MINI_CARD.w / 2) * spot.scale;
-        // The line starts right of the seat card.
-        expect(minis[0]!.x - half).toBeGreaterThan(seat.x + seat.w);
-        lastRight = minis.at(-1)!.x + half;
-        expect(lastRight).toBeLessThanOrEqual(STAGE.w);
+      for (const [i, spot] of spots.entries()) {
+        for (const active of [false, true]) {
+          const seat = seatReach(spot, active);
+          expect(seat.x).toBeGreaterThanOrEqual(0);
+          expect(seat.x + seat.w).toBeLessThanOrEqual(STAGE.w);
+          expect(seat.y).toBeGreaterThanOrEqual(HEADER_CLEARANCE);
+          // Whoever's turn it is, no seat touches another.
+          for (const other of spots)
+            if (other !== spot)
+              expect(overlaps(seat, seatReach(other, false))).toBe(false);
+        }
+        // The lane is on the stage, clear of the chat and of the table's ends.
+        const { lane } = spot;
+        expect(lane.x).toBeGreaterThanOrEqual(0);
+        expect(lane.x + lane.w).toBeLessThanOrEqual(STAGE.w);
+        expect(overlaps(lane, CHAT_BOX)).toBe(false);
+        if (lane.place === "below")
+          expect(
+            lane.x + lane.w <= TABLE_BOX.x ||
+              lane.x >= TABLE_BOX.x + TABLE_BOX.w,
+          ).toBe(true);
+        // Its full line touches no seat card, its own included, whoever's turn it is.
+        for (const p of miniTimeline(spot, 10)) {
+          const card = miniBox(p, spot.scale);
+          for (const [j, other] of spots.entries())
+            expect(overlaps(card, seatReach(other, i !== j))).toBe(false);
+        }
       }
     });
 });
 
 describe("miniTimeline", () => {
-  it("uses the design's spacing when there is room", () => {
+  it("uses the design's single row and spacing when there is room", () => {
     const spot = opponentSpots(3)[0]!;
-    expect(miniTimeline(spot, 3).map((p) => p.x)).toEqual([
-      26 - 1.6,
-      26 - 1.6 + 2.5,
-      26 - 1.6 + 5,
+    expect(miniTimeline(spot, 3)).toEqual([
+      { x: 26 - 1.6, y: 15.5 },
+      { x: 26 - 1.6 + 2.5, y: 15.5 },
+      { x: 26 - 1.6 + 5, y: 15.5 },
     ]);
     expect(miniTimeline(spot, 0)).toEqual([]);
   });
 
-  it("squeezes long lines and keeps them in order", () => {
+  it("wraps a long line beside the seat into two even rows, older first", () => {
     const spot = opponentSpots(5)[1]!;
-    const xs = miniTimeline(spot, 9).map((p) => p.x);
-    for (let j = 1; j < xs.length; j++)
-      expect(xs[j]!).toBeGreaterThan(xs[j - 1]!);
-    expect(xs.at(-1)!).toBeLessThanOrEqual(spot.maxMiniX + 1e-9);
-    expect(xs[1]! - xs[0]!).toBeLessThan(2.5);
+    const line = miniTimeline(spot, 9);
+    const rows = [...new Set(line.map((p) => p.y))];
+    expect(rows).toHaveLength(2);
+    expect(line.filter((p) => p.y === rows[0]).length).toBe(5);
+    expect(rows[0]!).toBeLessThan(rows[1]!);
+    // Centred on the seat card.
+    expect((rows[0]! + rows[1]!) / 2).toBeCloseTo(spot.seat.y, 10);
+  });
+
+  it("lays an end seat's line under it, three to a row", () => {
+    const spot = opponentSpots(7)[0]!;
+    const line = miniTimeline(spot, 9);
+    expect(new Set(line.map((p) => p.y)).size).toBe(3);
+    expect(line[0]!.y).toBeGreaterThan(seatCardBox(spot).y);
+    expect(line[1]!.x - line[0]!.x).toBeCloseTo(2.5 * spot.scale, 10);
+  });
+
+  it("keeps every line up to ten cards in its lane, in reading order, cards not overlapping", () => {
+    for (let n = 1; n <= 8; n++)
+      for (const spot of opponentSpots(n))
+        for (let count = 1; count <= 10; count++) {
+          const line = miniTimeline(spot, count);
+          for (const p of line) {
+            const card = miniBox(p, spot.scale);
+            expect(card.x).toBeGreaterThanOrEqual(spot.lane.x - 1e-9);
+            expect(card.x + card.w).toBeLessThanOrEqual(
+              spot.lane.x + spot.lane.w + 1e-9,
+            );
+            expect(card.y).toBeGreaterThanOrEqual(spot.lane.y - 1e-9);
+            expect(card.y + card.h).toBeLessThanOrEqual(
+              spot.lane.y + spot.lane.h + 1e-9,
+            );
+          }
+          for (let j = 1; j < line.length; j++) {
+            const [a, b] = [line[j - 1]!, line[j]!];
+            const sameRow = a.y === b.y;
+            expect(sameRow ? b.x > a.x : b.y > a.y).toBe(true);
+            // Only a spectator's crowded table may let neighbours touch, by a hair.
+            if (sameRow)
+              expect(b.x - a.x).toBeGreaterThanOrEqual(
+                MINI_CARD.w * spot.scale * 0.99,
+              );
+          }
+        }
   });
 });
 
@@ -182,31 +347,86 @@ describe("feltTimeline", () => {
     expect(placed).toHaveLength(4);
     expect(placed[0]!).toBeCloseTo(55.5 - 1.5 * 5.6, 10);
     expect(placed[3]!).toBeCloseTo(55.5 + 1.5 * 5.6, 10);
+    expect(feltLayout(4).status).toBe("opponent");
   });
 
-  it("keeps up to nine cards plus the placed one clear of the deck and the status text", () => {
-    for (let count = 0; count <= 9; count++)
+  it("gives a long line the felt's width and puts the status under it", () => {
+    const layout = feltLayout(9);
+    expect(layout.status).toBe("under");
+    expect(layout.range.max).toBeGreaterThan(STATUS_BOX.opponent.x);
+    expect(layout.scale).toBeGreaterThanOrEqual(1.3);
+  });
+
+  it("keeps up to ten cards plus the placed one clear of the deck and the status text", () => {
+    for (let count = 0; count <= 10; count++) {
+      const layout = feltLayout(count);
       for (const placedAt of [null, 0, count]) {
         const cards = feltTimeline(count, placedAt);
         expect(cards).toHaveLength(count + (placedAt === null ? 0 : 1));
         for (const c of cards) {
+          // The same size whether or not the placed card is in the line.
+          expect(c.scale).toBe(layout.scale);
           expect(c.x - halfWidth(c.scale)).toBeGreaterThanOrEqual(
             DECK_BOX.x + DECK_BOX.w,
           );
-          expect(c.x + halfWidth(c.scale)).toBeLessThanOrEqual(
-            STATUS_BOX.opponent.x,
+          const bottom = c.y + (MINI_CARD.h / 2) * c.scale;
+          if (layout.status === "opponent")
+            expect(c.x + halfWidth(c.scale)).toBeLessThanOrEqual(
+              STATUS_BOX.opponent.x,
+            );
+          else expect(bottom).toBeLessThan(STATUS_BOX.under.y);
+          // Inside the felt.
+          expect(c.x + halfWidth(c.scale)).toBeLessThan(
+            TABLE_BOX.x + TABLE_BOX.w - 1.6,
           );
-          // Inside the felt vertically.
           expect(c.y - (MINI_CARD.h / 2) * c.scale).toBeGreaterThan(
             TABLE_BOX.y + 1.6,
           );
-          expect(c.y + (MINI_CARD.h / 2) * c.scale).toBeLessThan(
-            TABLE_BOX.y + TABLE_BOX.h - 1.6,
-          );
+          expect(bottom).toBeLessThan(TABLE_BOX.y + TABLE_BOX.h - 1.6);
         }
         for (let k = 1; k < cards.length; k++)
-          expect(cards[k]!.x).toBeGreaterThan(cards[k - 1]!.x);
+          expect(cards[k]!.x - cards[k - 1]!.x).toBeGreaterThan(
+            2 * halfWidth(cards[k]!.scale),
+          );
       }
+    }
+  });
+
+  it("keeps a long line clear of the seat cards above it, whoever's turn it is", () => {
+    for (let n = 1; n <= 8; n++)
+      for (const spot of opponentSpots(n))
+        for (let count = 5; count <= 10; count++) {
+          const seat = seatReach(spot, true);
+          const line = [
+            ...feltTimeline(count).map((c) => miniBox(c, c.scale)),
+            ...range(count + 1).map((g) => feltGapBox(g, count)),
+          ];
+          for (const box of line) expect(overlaps(seat, box)).toBe(false);
+        }
+  });
+
+  it("leaves room for a gap button between neighbours and at both ends", () => {
+    for (let count = 0; count <= 10; count++) {
+      const { range: within, status } = feltLayout(count);
+      const cards = feltTimeline(count);
+      for (let g = 0; g <= count; g++) {
+        const gap = feltGapBox(g, count);
+        expect(gap.x).toBeGreaterThanOrEqual(within.min - 1e-9);
+        expect(gap.x + gap.w).toBeLessThanOrEqual(within.max + 1e-9);
+        if (status === "under")
+          expect(gap.y + gap.h).toBeLessThan(STATUS_BOX.under.y);
+        const left = cards[g - 1];
+        const right = cards[g];
+        if (left)
+          expect(gap.x).toBeGreaterThanOrEqual(
+            left.x + halfWidth(left.scale) - 1e-9,
+          );
+        if (right)
+          expect(gap.x + gap.w).toBeLessThanOrEqual(
+            right.x - halfWidth(right.scale) + 1e-9,
+          );
+      }
+    }
   });
 
   it("puts gaps halfway between neighbouring cards", () => {
@@ -215,10 +435,10 @@ describe("feltTimeline", () => {
     expect(feltGapX(0, 4)).toBeLessThan(cards[0]!.x);
     expect(feltGapX(4, 4)).toBeGreaterThan(cards[3]!.x);
     expect(feltGapX(0, 0)).toBe(55.5);
-    for (let g = 0; g <= 9; g++) {
-      expect(feltGapX(g, 9)).toBeGreaterThanOrEqual(FELT_X_RANGE.min);
-      expect(feltGapX(g, 9)).toBeLessThanOrEqual(FELT_X_RANGE.max);
-    }
+    // The design's gap buttons: 2 wide, 8.2 tall, 6.6 apart.
+    const gap = feltGapBox(1, 3);
+    expect(gap.x).toBeCloseTo(55.5 + (1 - 1.5) * 6.6 - 1, 10);
+    expect(gap).toMatchObject({ y: 24.4, w: 2, h: 8.2 });
   });
 });
 

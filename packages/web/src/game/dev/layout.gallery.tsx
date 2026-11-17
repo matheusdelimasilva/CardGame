@@ -5,14 +5,14 @@ import {
   DECK_BOX,
   DISCARD_EXIT,
   DROP_ZONE,
-  FELT_GAP,
-  FELT_X_RANGE,
   GOAL_LABEL_BOX,
+  HAND_BAND,
   HAND_CARD,
-  HAND_X_RANGE,
+  MAX_OPPONENTS,
   MINI_CARD,
   MYSTERY_DEAL,
   MYSTERY_HOME,
+  PLATE,
   SEAT_CARD,
   STAGE,
   STATUS_BOX,
@@ -20,7 +20,8 @@ import {
   TIMELINE_ARROW_BOX,
   boxStyle,
   decadeColor,
-  feltGapX,
+  feltGapBox,
+  feltLayout,
   feltTimeline,
   handCardWithGap,
   handSlot,
@@ -32,7 +33,9 @@ import {
 import type { Box, Point } from "../types";
 import type { GallerySection } from "./types";
 
-const YEARS = [1958, 1965, 1972, 1977, 1983, 1988, 1995, 2003, 2011, 2019];
+const YEARS = [
+  1958, 1965, 1972, 1977, 1983, 1988, 1995, 2003, 2011, 2019, 2022,
+];
 
 function Outline({
   box,
@@ -189,6 +192,8 @@ function LayoutPreview() {
     activeLength,
     placed ? Math.min(activeLength, 3) : null,
   );
+  const feltRange = feltLayout(activeLength).range;
+  const status = feltLayout(activeLength).status;
 
   return (
     <>
@@ -204,21 +209,45 @@ function LayoutPreview() {
         />
         <Outline box={CHAT_BOX} color="#9b7bff" label="chat" />
         <Outline
+          box={{
+            x: PLATE.x,
+            y: STAGE.h - PLATE.bottom - 6,
+            w: PLATE.w,
+            h: 6,
+          }}
+          color="#fffaf0"
+          label="plate (widest)"
+          dashed
+        />
+        <Outline
           box={{ ...STATUS_BOX.mine, y: STATUS_BOX.mine.y - 5, h: 10 }}
           color="#45c486"
           label="status: mine"
           dashed
         />
-        <Outline
-          box={{ ...STATUS_BOX.opponent, y: STATUS_BOX.opponent.y - 5, h: 10 }}
-          color="#33cccc"
-          label="status: opponent"
-          dashed
-        />
-        <VLine x={HAND_X_RANGE.min} color="#ffd84a" label="hand min" />
-        <VLine x={HAND_X_RANGE.max} color="#ffd84a" label="hand max" />
-        <VLine x={FELT_X_RANGE.min} color="#ff6fae" label="felt min" />
-        <VLine x={FELT_X_RANGE.max} color="#ff6fae" label="felt max" />
+        {status === "opponent" ? (
+          <Outline
+            box={{
+              ...STATUS_BOX.opponent,
+              y: STATUS_BOX.opponent.y - 5,
+              h: 10,
+            }}
+            color="#33cccc"
+            label="status: opponent"
+            dashed
+          />
+        ) : (
+          <Outline
+            box={{ ...STATUS_BOX.under, h: 8 }}
+            color="#33cccc"
+            label="status: under the felt line"
+            dashed
+          />
+        )}
+        <VLine x={HAND_BAND.min} color="#ffd84a" label="hand min" />
+        <VLine x={HAND_BAND.max} color="#ffd84a" label="hand max" />
+        <VLine x={feltRange.min} color="#ff6fae" label="felt min" />
+        <VLine x={feltRange.max} color="#ff6fae" label="felt max" />
 
         <CardOutline
           at={MYSTERY_HOME}
@@ -243,6 +272,7 @@ function LayoutPreview() {
           const active = i === 0;
           return (
             <div key={i}>
+              <Outline box={spot.lane} color="#fffaf055" dashed />
               <CardOutline
                 at={spot.seat}
                 size={SEAT_CARD}
@@ -281,10 +311,7 @@ function LayoutPreview() {
           Array.from({ length: activeLength + 1 }, (_, g) => (
             <Outline
               key={g}
-              box={{
-                ...FELT_GAP,
-                x: feltGapX(g, activeLength) - FELT_GAP.w / 2,
-              }}
+              box={feltGapBox(g, activeLength)}
               color="#fffaf0"
               dashed
             />
@@ -306,20 +333,25 @@ function LayoutPreview() {
           );
         })}
 
-        {Array.from({ length: hand }, (_, i) => (
-          <CardOutline
-            key={i}
-            at={handCardWithGap(i, hand, handGap)}
-            size={HAND_CARD}
-            color="#141617"
-            fill={decadeColor(YEARS[i]!)}
-            label={i + 1}
-          />
-        ))}
+        {Array.from({ length: hand }, (_, i) => {
+          const at = handCardWithGap(i, hand, handGap);
+          return (
+            <CardOutline
+              key={i}
+              at={at}
+              size={HAND_CARD}
+              scale={at.scale}
+              color="#141617"
+              fill={decadeColor(YEARS[i]!)}
+              label={i + 1}
+            />
+          );
+        })}
         {handGap !== null && (
           <CardOutline
             at={handSlot(handGap, hand + 1)}
             size={HAND_CARD}
+            scale={handSlot(handGap, hand + 1).scale}
             color="#ffd84a"
             fill="rgba(255, 216, 74, 0.25)"
             label="slot"
@@ -331,14 +363,14 @@ function LayoutPreview() {
           label="Opponents"
           value={opponents}
           min={1}
-          max={7}
+          max={MAX_OPPONENTS}
           onChange={setOpponents}
         />
         <Slider
           label="Hand cards"
           value={hand}
           min={0}
-          max={9}
+          max={10}
           onChange={setHand}
         />
         <Slider
@@ -352,14 +384,14 @@ function LayoutPreview() {
           label="Active timeline"
           value={activeLength}
           min={0}
-          max={9}
+          max={10}
           onChange={setActiveLength}
         />
         <Slider
           label="Other timelines"
           value={otherLength}
           min={0}
-          max={9}
+          max={10}
           onChange={setOtherLength}
         />
         <span>Placed card</span>

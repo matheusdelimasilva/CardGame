@@ -106,6 +106,62 @@ function useFitPlate(key: string) {
   return ref;
 }
 
+/** Line height of `el` in pixels, for counting its lines. */
+function lineHeight(el: HTMLElement): number {
+  const style = getComputedStyle(el);
+  const size = parseFloat(style.fontSize);
+  const value = parseFloat(style.lineHeight);
+  if (Number.isNaN(value)) return size * 1.2;
+  return style.lineHeight.endsWith("px") ? value : value * size;
+}
+
+/**
+ * Shrinks an element's text from its stylesheet size, down to `floor` of
+ * it, until it takes at most `lines` lines and no word spills out sideways;
+ * past the floor the stylesheet's own overflow (an ellipsis, say) takes
+ * over. Measured again when `key` changes, when the stage changes size
+ * (--u follows the window) and once the web fonts have loaded.
+ */
+export function useFitText<T extends HTMLElement>(
+  key: string,
+  lines: number,
+  floor: number,
+) {
+  const ref = useRef<T>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // Half a line of slack: tall glyphs (Caveat's, say) reach past a tight line height.
+    const fit = () => {
+      el.style.fontSize = "";
+      shrink(
+        el,
+        floor,
+        () =>
+          // Strictly: an ellipsis shows for any overflow at all.
+          el.scrollWidth > el.clientWidth ||
+          el.scrollHeight > lineHeight(el) * (lines + 0.5),
+      );
+    };
+    fit();
+    const fonts = document.fonts;
+    void fonts?.ready.then(fit);
+    fonts?.addEventListener("loadingdone", fit);
+    // The stage's size follows --u; the element's own would change as it shrinks.
+    const observer =
+      typeof ResizeObserver === "undefined" ? null : new ResizeObserver(fit);
+    observer?.observe(el.closest(".gs-stage") ?? document.documentElement);
+    return () => {
+      observer?.disconnect();
+      fonts?.removeEventListener("loadingdone", fit);
+    };
+  }, [key, lines, floor]);
+  return ref;
+}
+
+/** Names shrink to this share of their design size before they are cut short. */
+const NAME_FLOOR = 0.55;
+
 // -------------------------------------------------------------- the records
 
 /** The groove sheen that sits over every record. */
@@ -447,6 +503,7 @@ export function SeatCard({
   style,
 }: SeatCardProps) {
   const away = !player.connected;
+  const name = useFitText<HTMLSpanElement>(player.name, 1, NAME_FLOOR);
   const rootClass = cx(
     "gs-seat",
     active && "is-active",
@@ -472,7 +529,9 @@ export function SeatCard({
       >
         {player.animal}
       </span>
-      <span className="gs-seat-name">{player.name}</span>
+      <span ref={name} className="gs-seat-name">
+        {player.name}
+      </span>
       <span className="gs-seat-score">
         {count}/{goal}
       </span>
@@ -534,6 +593,7 @@ export function MePlate({
   className,
   style,
 }: MePlateProps) {
+  const name = useFitText<HTMLSpanElement>(player.name, 1, NAME_FLOOR);
   return (
     <div
       className={cx("gs-me", active && "is-active", className)}
@@ -544,9 +604,59 @@ export function MePlate({
           {player.animal}
         </span>
         <span className="gs-me-text">
-          <span className="gs-me-name">{player.name}</span>
+          <span ref={name} className="gs-me-name">
+            {player.name}
+          </span>
           <Pips count={count} goal={goal} />
         </span>
+      </div>
+    </div>
+  );
+}
+
+// --------------------------------------------------------------- ViewerPlate
+
+export interface ViewerPlateProps {
+  name: string;
+  animal: string;
+  /** What the viewer is doing, e.g. "Watching. The table is full." */
+  note: string;
+  /** One action, such as standing up or taking a seat. */
+  action?: { label: string; onClick: () => void } | null;
+  className?: string;
+  style?: CSSProperties;
+}
+
+/** The plate for someone at the table who is not in this game: a note instead of progress. */
+export function ViewerPlate({
+  name,
+  animal,
+  note,
+  action,
+  className,
+  style,
+}: ViewerPlateProps) {
+  const fitted = useFitText<HTMLSpanElement>(name, 1, NAME_FLOOR);
+  return (
+    <div className={cx("gs-me gs-viewer", className)} style={style}>
+      <div className="gs-me-face">
+        <span className="gs-me-animal" aria-hidden="true">
+          {animal}
+        </span>
+        <span className="gs-me-text">
+          <span ref={fitted} className="gs-me-name">
+            {name}
+          </span>
+          <span className="gs-viewer-note">{note}</span>
+        </span>
+        {action && (
+          <button
+            className="tl-button gs-viewer-action"
+            onClick={action.onClick}
+          >
+            {action.label}
+          </button>
+        )}
       </div>
     </div>
   );

@@ -498,7 +498,8 @@
     font-size: 12px;
   }
   .tl-status {
-    width: calc(100% - 38px);
+    /* Clear of the side seat cards, which overlap the table's inner edge. */
+    width: calc(100% - 66px);
     max-width: 270px;
   }
   .tl-status h1 {
