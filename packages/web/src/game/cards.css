@@ -322,7 +322,7 @@ button.gs-seat:focus-visible .gs-seat-face {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding: calc(var(--u) * 0.6) calc(var(--u) * 0.5);
+  padding: calc(var(--u) * 0.6) calc(var(--u) * 0.35);
   background: var(--cream);
   border-radius: calc(var(--u) * 0.8);
   box-shadow: 0 calc(var(--u) * 0.5) 0 rgba(0, 0, 0, 0.3);
@@ -331,8 +331,10 @@ button.gs-seat:focus-visible .gs-seat-face {
     transform 0.3s cubic-bezier(0.3, 1.4, 0.5, 1),
     box-shadow 0.2s;
 }
+/* It grows downwards, away from the header above the top row. */
 .gs-seat.is-active .gs-seat-face {
-  transform: rotate(var(--gs-tilt, 0deg)) scale(1.12);
+  transform: rotate(var(--gs-tilt, 0deg)) translateY(calc(var(--u) * 0.75))
+    scale(1.12);
   box-shadow:
     0 0 0 calc(var(--u) * 0.4) var(--gold),
     0 0 0 calc(var(--u) * 0.65) var(--ink),
@@ -433,9 +435,9 @@ button.gs-seat:focus-visible .gs-seat-face {
   gap: calc(var(--u) * 0.3);
   min-width: 0;
 }
-/* Long names stop before the plate reaches the hand. */
+/* Long names shrink (and at last stop short) so the plate keeps clear of the hand (layout.ts PLATE). */
 .gs-me-name {
-  max-width: calc(var(--u) * 12);
+  max-width: calc(var(--u) * 10.5);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -447,6 +449,10 @@ button.gs-seat:focus-visible .gs-seat-face {
 .gs-pips {
   display: flex;
   gap: calc(var(--u) * 0.3);
+}
+/* Ten pips would widen the plate: they narrow a little instead. */
+.gs-me .gs-pips {
+  max-width: calc(var(--u) * 10.5);
 }
 .gs-pip {
   width: calc(var(--u) * 0.8);

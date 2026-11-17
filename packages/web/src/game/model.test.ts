@@ -269,7 +269,7 @@ describe("statusText", () => {
     const m = model(scenarios.opponentTurn());
     expect(statusText(m, { index: 0, dragging: true })).toEqual({
       headline: "Mika's turn",
-      sub: "Mika is still choosing.",
+      sub: "Still choosing.",
     });
   });
 
@@ -277,10 +277,10 @@ describe("statusText", () => {
     const room = scenarios.disconnectedOpponent();
     expect(sub(room)).toEqual({
       headline: "Mika's turn",
-      sub: "Mika is away. You can skip their turn.",
+      sub: "They're away. You can skip their turn.",
     });
     const guest = { ...room, you: { ...room.you, isHost: false } };
-    expect(sub(guest).sub).toBe("Mika is away. The host can skip their turn.");
+    expect(sub(guest).sub).toBe("They're away. The host can skip their turn.");
   });
 
   it("shows another player's turn to spectators and benched viewers", () => {

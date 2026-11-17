@@ -79,6 +79,12 @@
   color: var(--cream);
   transform: translateY(-50%);
 }
+/* Under a long felt line: hung from its top and centred under the line. */
+.gs-status.is-under {
+  align-items: center;
+  text-align: center;
+  transform: none;
+}
 .gs-status h1 {
   margin: 0;
   font:
@@ -145,6 +151,10 @@
 .gs-hand-card {
   z-index: 4;
   transition: transform 0.4s cubic-bezier(0.3, 1.5, 0.5, 1) var(--gs-delay);
+}
+/* Cards overlap in a long hand: a hovered one comes forward to be read. */
+.gs-hand-card:hover {
+  z-index: 5;
 }
 .gs-hand-card.is-deal {
   transition:
@@ -272,11 +282,13 @@
   z-index: 5;
   transform: rotate(1deg);
 }
+/* Placed from layout.ts PLATE. */
 .gs-plate-spot {
   position: absolute;
-  left: calc(var(--u) * 2.5);
-  bottom: calc(var(--u) * 4.6);
   z-index: 3;
+}
+.gs-plate-spot > * {
+  max-width: 100%;
 }
 
 .gs-visually-hidden {

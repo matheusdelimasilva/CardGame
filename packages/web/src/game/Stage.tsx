@@ -11,7 +11,14 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
-import { Deck, MiniCard, MysteryCard, SeatCard, SongCard } from "./cards";
+import {
+  Deck,
+  MiniCard,
+  MysteryCard,
+  SeatCard,
+  SongCard,
+  useFitText,
+} from "./cards";
 import {
   CHAT_BOX,
   DECK_BOX,
@@ -19,6 +26,7 @@ import {
   GOAL_LABEL_BOX,
   HAND_CARD,
   MINI_CARD,
+  PLATE,
   SEAT_CARD,
   STATUS_BOX,
   TABLE_BOX,
@@ -68,16 +76,38 @@ function Table() {
   );
 }
 
+/**
+ * Lines the status may take before its text shrinks: under a long felt line
+ * there is width to spare but little height.
+ */
+const STATUS_LINES = {
+  mine: { headline: 2, sub: 3 },
+  opponent: { headline: 2, sub: 3 },
+  under: { headline: 1, sub: 2 },
+} as const;
+
 function Status({ scene, onLock }: { scene: Scene; onLock: () => void }) {
-  const box = STATUS_BOX[scene.statusBox];
+  const place = scene.statusBox;
+  const box = STATUS_BOX[place];
+  const { headline, sub } = scene.status;
+  const headlineRef = useFitText<HTMLHeadingElement>(
+    `${place}\n${headline}`,
+    STATUS_LINES[place].headline,
+    0.6,
+  );
+  const subRef = useFitText<HTMLParagraphElement>(
+    `${place}\n${sub}`,
+    STATUS_LINES[place].sub,
+    0.75,
+  );
   return (
     <div
-      className="gs-status"
+      className={cx("gs-status", `is-${place}`)}
       style={{ left: u(box.x), top: u(box.y), width: u(box.w) }}
       aria-live="polite"
     >
-      <h1>{scene.status.headline}</h1>
-      {scene.status.sub && <p>{scene.status.sub}</p>}
+      <h1 ref={headlineRef}>{headline}</h1>
+      {sub && <p ref={subRef}>{sub}</p>}
       {scene.lock !== "hidden" && (
         <button
           className="tl-button tl-gold gs-lock"
@@ -203,7 +233,9 @@ function DropZone({ zone }: { zone: Scene["dropZone"] }) {
       <div
         className={cx("gs-placed gs-slot", zone.slot && "is-visible")}
         style={
-          zone.slot ? { transform: placeAt(zone.slot, HAND_CARD) } : undefined
+          zone.slot
+            ? { transform: placeAt(zone.slot, HAND_CARD, zone.slot.scale) }
+            : undefined
         }
         aria-hidden="true"
       />
@@ -362,7 +394,17 @@ export function Stage({
       <div className="gs-chat-spot" style={boxStyle(CHAT_BOX)}>
         {chat}
       </div>
-      <div className="gs-plate-spot">{plate}</div>
+      {/* Beside a hand the plate keeps to its corner, so the hand can count on its width. */}
+      <div
+        className="gs-plate-spot"
+        style={{
+          left: u(PLATE.x),
+          bottom: u(PLATE.bottom),
+          maxWidth: scene.hand ? u(PLATE.w) : undefined,
+        }}
+      >
+        {plate}
+      </div>
     </div>
   );
 }

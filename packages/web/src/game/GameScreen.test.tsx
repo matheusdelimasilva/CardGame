@@ -46,7 +46,13 @@ const textOf = (node: ReactTestInstance | string): string =>
 const buttons = (root: ReactTestInstance, text: string) =>
   root.findAllByType("button").filter((b) => textOf(b) === text);
 const status = (root: ReactTestInstance) =>
-  textOf(root.find((n) => n.props.className === "gs-status"));
+  textOf(
+    root.find(
+      (n) =>
+        typeof n.type === "string" &&
+        String(n.props.className).split(" ").includes("gs-status"),
+    ),
+  );
 const mystery = (root: ReactTestInstance) =>
   root.find(
     (n) =>
@@ -84,7 +90,7 @@ const HEADLINES: Record<(typeof SCENARIO_NAMES)[number], RegExp> = {
   overTie: /It's a tie!/,
   spectator: /'s turn/,
   benched: /'s turn/,
-  disconnectedOpponent: /is away/,
+  disconnectedOpponent: /away/,
 };
 
 describe("game screen", () => {

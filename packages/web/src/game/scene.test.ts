@@ -6,6 +6,7 @@ import {
   DISCARD_EXIT,
   MYSTERY_DEAL,
   MYSTERY_HOME,
+  feltLayout,
   feltTimeline,
   handSlot,
 } from "./layout";
@@ -15,7 +16,7 @@ import {
   placementReducer,
   type PlacementState,
 } from "./placement";
-import { dealCount, scene } from "./scene";
+import { DISCARD_CLEAR_MS, dealCount, scene } from "./scene";
 
 const options = { players: 4, goal: 10, timelines: "mixed" } as const;
 const sceneOf = (
@@ -25,6 +26,11 @@ const sceneOf = (
 ) => {
   const model = gameModel(room)!;
   return { model, scene: scene({ model, beat, placement }) };
+};
+/** A hand slot's pose; scenes carry its scale separately. */
+const slotPose = (k: number, total: number) => {
+  const { x, y, r } = handSlot(k, total);
+  return { x, y, r };
 };
 const placed = (index: number, held = false): PlacementState => {
   let s = freshPlacement("current");
@@ -79,7 +85,8 @@ describe("the scene on the viewer's turn", () => {
       placed(0),
     );
     const n = timelineOf(model, "p0").length;
-    expect(s.mystery.pose).toEqual(handSlot(0, n + 1));
+    expect(s.mystery.pose).toEqual(slotPose(0, n + 1));
+    expect(s.mystery.scale).toBe(handSlot(0, n + 1).scale);
     expect(s.hand![0]!.pose.x).toBeGreaterThan(handSlot(0, n + 1).x);
     expect(s.status.headline).toMatch(/^Before \d{4}\?$/);
     expect(s.lock).toBe("ready");
@@ -120,7 +127,7 @@ describe("the scene of the viewer's reveal", () => {
     expect(flip.mystery).toMatchObject({
       visible: true,
       correct: true,
-      pose: handSlot(reveal.placedAt!, reveal.line.length + 1),
+      pose: slotPose(reveal.placedAt!, reveal.line.length + 1),
     });
     expect(flip.mystery.face?.year).toBe(model.lastTurn!.song.year);
     const settle = sceneOf(room, "settle").scene;
@@ -129,15 +136,52 @@ describe("the scene of the viewer's reveal", () => {
     expect(settle.hand![reveal.placedAt!]!.pose).toEqual(flip.mystery.pose);
   });
 
-  it("throws a wrong card off the table and closes the hand", () => {
+  it("throws a wrong card off the table, then closes the hand once it is clear", () => {
     const room = scenarios.myRevealWrong(options);
+    const flip = sceneOf(room, "flip").scene;
     const settle = sceneOf(room, "settle").scene;
     expect(settle.mystery).toMatchObject({
       pose: DISCARD_EXIT,
       motion: "discard",
       correct: false,
+      scale: flip.mystery.scale,
     });
     expect(settle.status.headline).toBe("Not quite");
+    // The gap stays open while the card waits on it, then closes behind it.
+    expect(flip.hand!.every((c) => c.delayMs === 0)).toBe(true);
+    expect(settle.hand!.every((c) => c.delayMs === DISCARD_CLEAR_MS)).toBe(
+      true,
+    );
+    const right = sceneOf(scenarios.myRevealCorrect(options), "settle").scene;
+    expect(right.hand!.every((c) => c.delayMs === 0)).toBe(true);
+  });
+});
+
+describe("a long hand", () => {
+  const long = { ...options, timelines: "long" } as const;
+
+  it("draws every card at the hand's scale, the card in its slot too", () => {
+    const { model, scene: s } = sceneOf(
+      scenarios.myTurn(long),
+      "ready",
+      placed(3),
+    );
+    const n = timelineOf(model, "p0").length;
+    const scale = handSlot(0, n + 1).scale;
+    expect(scale).toBeLessThan(1);
+    expect(s.hand!.every((c) => c.scale === scale)).toBe(true);
+    expect(s.mystery.scale).toBe(scale);
+  });
+
+  it("shrinks the held card to the hand's size over a slot", () => {
+    const { model, scene: s } = sceneOf(
+      scenarios.myTurn(long),
+      "ready",
+      placed(3, true),
+    );
+    const n = timelineOf(model, "p0").length;
+    expect(s.mystery.scale).toBeCloseTo(1.08 * handSlot(3, n + 1).scale, 10);
+    expect(s.dropZone.slot).toEqual(handSlot(3, n + 1));
   });
 });
 
@@ -155,9 +199,20 @@ describe("the scene on an opponent's turn", () => {
       visible: true,
       draggable: false,
     });
-    expect(s.statusBox).toBe("opponent");
+    expect(s.statusBox).toBe(feltLayout(line.length).status);
     expect(s.seats.find((seat) => seat.active)?.player.id).toBe(active.id);
     expect(s.felt?.player.id).toBe(active.id);
+  });
+
+  it("puts the status beside a short line and under a long one", () => {
+    const short = sceneOf(
+      scenarios.opponentTurn({ ...options, timelines: "short" }),
+    ).scene;
+    expect(short.statusBox).toBe("opponent");
+    const long = sceneOf(
+      scenarios.opponentTurn({ ...options, timelines: "long" }),
+    ).scene;
+    expect(long.statusBox).toBe("under");
   });
 
   it("shows the title and artist on the face-down card when the table does", () => {
@@ -220,6 +275,14 @@ describe("viewers who are not playing", () => {
       expect(s.seats).toHaveLength(model.opponents.length);
     },
   );
+
+  it("seats all eight players of a full table for a spectator", () => {
+    const { scene: s } = sceneOf(
+      scenarios.spectator({ ...options, players: 8 }),
+    );
+    expect(s.seats).toHaveLength(8);
+    expect(new Set(s.seats.map((seat) => seat.at.x)).size).toBe(8);
+  });
 });
 
 it("counts every starting card for the deal", () => {
