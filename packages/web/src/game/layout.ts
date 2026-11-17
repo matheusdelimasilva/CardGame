@@ -3,7 +3,9 @@
  * 62.5u tall (see .gs-stage), and every position here is the centre of the
  * thing placed on it unless the name says box. The numbers come from
  * docs/design/game-screen.dc.html; where the design only covered short
- * timelines and five opponents, the extensions are noted.
+ * timelines and five opponents, the extensions are noted. portrait.ts lays
+ * the same parts out for a phone held upright; StageLayout, at the end, is
+ * what Scene and Stage read, whichever of the two it is.
  */
 import type { Box, Point, Pose } from "./types";
 
@@ -130,10 +132,18 @@ export function handSlot(k: number, total: number): HandPose {
  * number of cards left of the pointer).
  */
 export function handInsertionIndex(x: number, count: number): number {
+  return insertionIndex(handSlot, x, count);
+}
+
+/** handInsertionIndex for any hand layout `slot`. */
+export function insertionIndex(
+  slot: (k: number, total: number) => Point,
+  x: number,
+  count: number,
+): number {
   let index = 0;
   for (let k = 0; k < count; k++) {
-    const between =
-      (handSlot(k, count + 1).x + handSlot(k + 1, count + 1).x) / 2;
+    const between = (slot(k, count + 1).x + slot(k + 1, count + 1).x) / 2;
     if (between < x) index++;
   }
   return index;
@@ -141,16 +151,16 @@ export function handInsertionIndex(x: number, count: number): number {
 
 /**
  * Pose of the hand's card `i` of `count` while a gap is open at `gap`
- * (null: no gap), so the cards make room for the one being placed.
+ * (null: no gap), so the cards make room for the one being placed; in the
+ * design's hand unless another layout's `slot` is given.
  */
 export function handCardWithGap(
   i: number,
   count: number,
   gap: number | null,
+  slot: (k: number, total: number) => HandPose = handSlot,
 ): HandPose {
-  return gap === null
-    ? handSlot(i, count)
-    : handSlot(i < gap ? i : i + 1, count + 1);
+  return gap === null ? slot(i, count) : slot(i < gap ? i : i + 1, count + 1);
 }
 
 // -------------------------------------------------------------- opponents
@@ -169,9 +179,10 @@ export interface OpponentSpot {
   /**
    * Where the mini timeline may go. "beside": right of the seat card, in up
    * to `rows` rows centred on it; "below": under the seat card, in up to
-   * `rows` rows centred under it.
+   * `rows` rows centred under it; "pile": stacked behind the seat card
+   * (portrait.ts), the seat's count telling how many there are.
    */
-  lane: Box & { place: "beside" | "below"; rows: number };
+  lane: Box & { place: "beside" | "below" | "pile"; rows: number };
 }
 
 const OPPONENT_Y = 15.5;
@@ -469,6 +480,132 @@ export function placeAt(
 ): string {
   const r = pose.r ?? 0;
   return `translate(${u(pose.x - size.w / 2)}, ${u(pose.y - size.h / 2)}) rotate(${+r.toFixed(1)}deg) scale(${+scale.toFixed(3)})`;
+}
+
+// ------------------------------------------------------- the stage layout
+
+/** Where a status block goes, and how it sits there. */
+export interface StatusSpot {
+  x: number;
+  y: number;
+  w: number;
+  /** "middle": y is the block's vertical centre; "top": its top edge. */
+  anchor: "middle" | "top";
+  align: "start" | "center";
+  /** Lines the headline and the sub-line may take before their text shrinks. */
+  lines: { headline: number; sub: number };
+}
+
+/** A mini card's place: its centre and, where it is tilted, its rotation. */
+export type MiniPose = Point & { r?: number };
+
+/** How the viewer's hand is laid out, and how it scrolls when it is too long to fit. */
+export interface HandGeometry {
+  /** Slot `k` of `total`, in hand units: stage units with the hand scrolled to its start. */
+  slot(k: number, total: number): HandPose;
+  /** The insertion index for hand x over `count` cards (see handInsertionIndex). */
+  insertionIndex(x: number, count: number): number;
+  /** The strip the hand scrolls in; null where every hand fits and nothing scrolls. */
+  view: Box | null;
+  /** How far a hand of `total` slots scrolls, in stage units. */
+  maxScroll(total: number): number;
+  /** The nearest scroll to `scroll` that shows all of slot `k` of `total`. */
+  scrollToShow(scroll: number, k: number, total: number): number;
+  /** Auto-scroll speed, in units per second, for a card held over the hand at stage x. */
+  edgeSpeed(x: number): number;
+}
+
+/**
+ * Everything about where things go on one shape of screen: the landscape
+ * stage of the design, or the portrait one of portrait.ts. Scene and Stage
+ * read it and never ask which one it is.
+ */
+export interface StageLayout {
+  kind: "landscape" | "portrait";
+  stage: { w: number; h: number };
+  table: Box;
+  deck: Box;
+  /** Where undealt cards wait. */
+  deckCentre: Point;
+  goalLabel: Box;
+  mysteryHome: Pose;
+  mysteryDeal: Pose;
+  discardExit: Pose;
+  dropZone: Box;
+  /** A held card counts as over the hand once its centre is below this. */
+  dropLineY: number;
+  ruler: Box;
+  plate: { x: number; bottom: number; w: number };
+  status: Record<StatusPlace, StatusSpot>;
+  /** The chat card; a drawer is closed until opened from the tools. */
+  chat: { box: Box; drawer: boolean };
+  /** A corner for the screen's own buttons (sound, chat), if the header has no room for them. */
+  tools: Box | null;
+  hand: HandGeometry;
+  /** One spot per opponent, clockwise from the viewer. */
+  opponents: OpponentSpot[];
+  /** Where an opponent's cards rest at their seat. */
+  miniTimeline(spot: OpponentSpot, count: number): MiniPose[];
+  /** Where the status goes while a line of `count` cards is on the felt. */
+  feltStatus(count: number): StatusPlace;
+  feltTimeline(count: number, placedAt?: number | null): FeltCard[];
+  feltGapBox(g: number, count: number): Box;
+}
+
+const LANDSCAPE_HAND: HandGeometry = {
+  slot: handSlot,
+  insertionIndex: handInsertionIndex,
+  view: null,
+  maxScroll: () => 0,
+  scrollToShow: () => 0,
+  edgeSpeed: () => 0,
+};
+
+/** The design's stage for `opponents` opponents. */
+export function landscapeLayout(opponents: number): StageLayout {
+  const lines = { headline: 2, sub: 3 };
+  return {
+    kind: "landscape",
+    stage: STAGE,
+    table: TABLE_BOX,
+    deck: DECK_BOX,
+    deckCentre: {
+      x: DECK_BOX.x + DECK_BOX.w / 2,
+      y: DECK_BOX.y + DECK_BOX.h / 2,
+    },
+    goalLabel: GOAL_LABEL_BOX,
+    mysteryHome: MYSTERY_HOME,
+    mysteryDeal: MYSTERY_DEAL,
+    discardExit: DISCARD_EXIT,
+    dropZone: DROP_ZONE,
+    dropLineY: DROP_LINE_Y,
+    ruler: TIMELINE_ARROW_BOX,
+    plate: PLATE,
+    status: {
+      mine: { ...STATUS_BOX.mine, anchor: "middle", align: "start", lines },
+      opponent: {
+        ...STATUS_BOX.opponent,
+        anchor: "middle",
+        align: "start",
+        lines,
+      },
+      // Under a long felt line there is width to spare but little height.
+      under: {
+        ...STATUS_BOX.under,
+        anchor: "top",
+        align: "center",
+        lines: { headline: 1, sub: 2 },
+      },
+    },
+    chat: { box: CHAT_BOX, drawer: false },
+    tools: null,
+    hand: LANDSCAPE_HAND,
+    opponents: opponentSpots(opponents),
+    miniTimeline,
+    feltStatus: (count) => feltLayout(count).status,
+    feltTimeline,
+    feltGapBox,
+  };
 }
 
 /** Absolute-position style for a box. */

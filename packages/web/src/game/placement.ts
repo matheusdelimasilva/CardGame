@@ -4,7 +4,7 @@
  * and whether "Lock it in" has been pressed. Pure, so the drag and keyboard
  * rules can be tested without a DOM.
  */
-import { DROP_LINE_Y, handInsertionIndex } from "./layout";
+import { landscapeLayout, type StageLayout } from "./layout";
 import type { Placement, Point } from "./types";
 
 /** A press that moves less than this many pixels is a tap (pause or resume), not a drag. */
@@ -107,10 +107,20 @@ export function shownPlacement(state: PlacementState): Placement | null {
   return state.index === null ? null : { index: state.index, dragging: false };
 }
 
+const LANDSCAPE = landscapeLayout(1);
+
 /**
  * The slot a held card would drop into: its centre must be below the drop
- * line, and then it goes where its x falls among the hand's `count` cards.
+ * line, and then it goes where its x falls among the hand's `count` cards,
+ * with the hand scrolled `scroll` units along (see HandGeometry).
  */
-export function dropTarget(centre: Point, count: number): number | null {
-  return centre.y > DROP_LINE_Y ? handInsertionIndex(centre.x, count) : null;
+export function dropTarget(
+  centre: Point,
+  count: number,
+  layout: StageLayout = LANDSCAPE,
+  scroll = 0,
+): number | null {
+  return centre.y > layout.dropLineY
+    ? layout.hand.insertionIndex(centre.x + scroll, count)
+    : null;
 }

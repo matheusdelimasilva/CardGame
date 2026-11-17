@@ -11,6 +11,7 @@ import {
   handSlot,
 } from "./layout";
 import { gameModel, revealedPlacement, timelineOf } from "./model";
+import { portraitLayout } from "./portrait";
 import {
   freshPlacement,
   placementReducer,
@@ -284,6 +285,80 @@ describe("viewers who are not playing", () => {
     expect(new Set(s.seats.map((seat) => seat.at.x)).size).toBe(8);
   });
 });
+
+describe("the scene on the portrait stage", () => {
+  const long = { ...options, timelines: "long" } as const;
+  const layout = portraitLayout(90, options.players - 1);
+  const portraitOf = (
+    room: RoomView,
+    beat: Beat = "ready",
+    placement: PlacementState = freshPlacement("current"),
+  ) => {
+    const model = gameModel(room)!;
+    return { model, scene: scene({ model, beat, placement, layout }) };
+  };
+
+  it("draws the hand and the card resting in it in hand units, and says which slot the card is in", () => {
+    const { model, scene: s } = portraitOf(
+      scenarios.myTurn(long),
+      "ready",
+      placed(7),
+    );
+    const n = timelineOf(model, "p0").length;
+    const { scale, ...pose } = layout.hand.slot(7, n + 1);
+    expect(s.mystery).toMatchObject({ slot: 7, pose, scale });
+    expect(s.handSlots).toBe(n + 1);
+    expect(s.hand!.map((c) => c.pose.x)).toEqual(
+      [...range(7), ...range(n - 7).map((i) => i + 8)].map(
+        (k) => layout.hand.slot(k, n + 1).x,
+      ),
+    );
+    expect(portraitOf(scenarios.myTurn(long)).scene.mystery).toMatchObject({
+      slot: null,
+      pose: layout.mysteryHome,
+    });
+  });
+
+  it("draws the slot under a held card where the drop lands", () => {
+    const { model, scene: s } = portraitOf(
+      scenarios.myTurn(long),
+      "ready",
+      placed(2, true),
+    );
+    const n = timelineOf(model, "p0").length;
+    expect(s.dropZone.slot).toEqual(layout.hand.slot(2, n + 1));
+    expect(s.mystery.slot).toBeNull();
+  });
+
+  it("flips the viewer's card in its slot, then throws a wrong one off the stage", () => {
+    const room = scenarios.myRevealWrong(long);
+    const flip = portraitOf(room, "flip").scene.mystery;
+    expect(flip.slot).not.toBeNull();
+    const settle = portraitOf(room, "settle").scene.mystery;
+    expect(settle).toMatchObject({
+      slot: null,
+      pose: layout.discardExit,
+      motion: "discard",
+    });
+  });
+
+  it("piles the other opponents' cards behind their seats and lays the active one's on the felt", () => {
+    const { model, scene: s } = portraitOf(scenarios.opponentTurn(long));
+    const active = model.active!;
+    const line = timelineOf(model, active.id);
+    const felt = s.minis.filter((m) => m.layer === "felt");
+    expect(felt.map((m) => m.pose.x)).toEqual(
+      layout.feltTimeline(line.length).map((c) => c.x),
+    );
+    const piled = s.minis.filter((m) => m.layer === "pile");
+    expect(piled.length + felt.length).toBe(s.minis.length);
+    expect(piled.every((m) => m.zoom === 1)).toBe(true);
+    expect(s.statusBox).toBe("opponent");
+    expect(s.mystery.pose).toEqual(layout.mysteryDeal);
+  });
+});
+
+const range = (n: number) => Array.from({ length: n }, (_, i) => i);
 
 it("counts every starting card for the deal", () => {
   const model = gameModel(scenarios.intro({ ...options, timelines: "short" }))!;

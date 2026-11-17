@@ -4,7 +4,7 @@ import type { SeatLook } from "../ui/seats";
 
 export type { SongCardView, TurnSummary };
 
-/** A point in stage units (the stage is 100u wide and 62.5u tall). */
+/** A point in stage units (the landscape stage is 100u × 62.5u; see StageLayout). */
 export interface Point {
   x: number;
   y: number;

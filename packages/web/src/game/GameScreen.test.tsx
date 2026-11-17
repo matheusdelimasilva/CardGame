@@ -33,10 +33,18 @@ const element = (room: RoomView, error: string | null = null) => (
     onBackToLobby={vi.fn()}
   />
 );
+/** The screen's own box: a phone held upright, or none at all (landscape). */
+let screenBox: { width: number; height: number } | null = null;
 const render = (room: RoomView) => {
   act(() => {
     renderer = create(element(room), {
-      createNodeMock: (node) => (node.type === "dialog" ? dialog : null),
+      createNodeMock: (node) => {
+        if (node.type === "dialog") return dialog;
+        const box = screenBox;
+        if (box && String(node.props.className).startsWith("game-screen"))
+          return { getBoundingClientRect: () => box };
+        return null;
+      },
     });
   });
   return renderer!.root;
@@ -66,6 +74,7 @@ beforeEach(() => {
   vi.useFakeTimers();
   vi.stubGlobal("document", { activeElement: null, body: {} });
   dialog.open = false;
+  screenBox = null;
 });
 afterEach(() => {
   act(() => renderer?.unmount());
@@ -174,5 +183,68 @@ describe("game screen", () => {
     const root = render(scenarios.overIWin());
     act(() => buttons(root, "Play again")[0]!.props.onClick());
     expect(send).toHaveBeenCalledWith({ type: "start" });
+  });
+});
+
+describe("game screen held upright", () => {
+  beforeEach(() => {
+    screenBox = { width: 375, height: 812 };
+  });
+  const chatButton = (root: ReactTestInstance) =>
+    root.find(
+      (n) =>
+        n.type === "button" &&
+        String(n.props.className).includes("gs-chat-toggle"),
+    );
+  const chatSpot = (root: ReactTestInstance) =>
+    root.find(
+      (n) =>
+        typeof n.type === "string" &&
+        String(n.props.className).includes("gs-chat-spot"),
+    );
+
+  it("takes the portrait stage, with the sound switch beside the chat button", () => {
+    const root = render(scenarios.opponentTurn());
+    expect(
+      root.findByProps({ className: "game-screen is-portrait" }),
+    ).toBeTruthy();
+    const sound = root.findByProps({ "aria-label": "Sound" });
+    // In the stage's tools corner, not the header.
+    expect(
+      root
+        .findByProps({ className: "tl-header-actions" })
+        .findAllByProps({ "aria-label": "Sound" }),
+    ).toHaveLength(0);
+    act(() => sound.props.onClick());
+    expect(audio.setMuted).toHaveBeenCalledWith(true);
+    expect(chatButton(root).props["aria-expanded"]).toBe(false);
+  });
+
+  it("opens the chat from its button, marks messages that arrive while it is closed, and closes it for the viewer's turn", () => {
+    const root = render(scenarios.opponentTurn());
+    expect(chatSpot(root).props.className).toContain("is-closed");
+    act(() => chatButton(root).props.onClick());
+    expect(chatSpot(root).props.className).not.toContain("is-closed");
+    act(() => chatButton(root).props.onClick());
+    const chats = [
+      { id: "1", from: { id: "p1", name: "Mika" }, text: "Queen?", at: 0 },
+    ];
+    act(() =>
+      renderer!.update(
+        <GameScreen
+          {...element(scenarios.opponentTurn()).props}
+          chats={chats}
+        />,
+      ),
+    );
+    expect(chatButton(root).props["aria-label"]).toBe("Chat, new messages");
+    act(() => chatButton(root).props.onClick());
+    expect(chatButton(root).props["aria-label"]).toBe("Chat");
+    act(() =>
+      renderer!.update(
+        <GameScreen {...element(scenarios.myTurn()).props} chats={chats} />,
+      ),
+    );
+    expect(chatSpot(root).props.className).toContain("is-closed");
   });
 });

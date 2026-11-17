@@ -6,16 +6,10 @@
  */
 import { DEAL_STAGGER_MS, type Beat } from "./choreography";
 import {
-  DISCARD_EXIT,
-  MYSTERY_DEAL,
-  MYSTERY_HOME,
-  feltLayout,
-  feltTimeline,
   handCardWithGap,
-  handSlot,
-  miniTimeline,
-  opponentSpots,
+  landscapeLayout,
   type HandPose,
+  type StageLayout,
   type StatusPlace,
 } from "./layout";
 import {
@@ -35,8 +29,7 @@ import type {
 } from "./types";
 import type { SongFace } from "./cards";
 
-/** Cards waiting in the deck sit on its centre, turned a little each, as in the design. */
-const DECK_CENTRE: Point = { x: 36, y: 28.5 };
+/** Hand cards waiting in the deck sit on its centre this small, turned a little each, as in the design. */
 const UNDEALT_HAND_SCALE = 0.6;
 /** The design's seat tilts, repeated for six and seven opponents. */
 const SEAT_TILTS = [-3, 2, -2, 3, -1, 2, -2];
@@ -70,6 +63,8 @@ export interface MysteryScene {
   key: string;
   /** "held": following the pointer, which the drag code tracks outside React. */
   pose: Pose | "held";
+  /** The hand slot the card rests in (its pose is that slot's, and scrolls with the hand), or null. */
+  slot: number | null;
   /** Tilt while held. */
   heldTilt: number;
   scale: number;
@@ -102,8 +97,8 @@ export interface MiniScene {
   pose: Pose;
   scale: number;
   glow: boolean;
-  /** Stacking: seat cards under the felt's, the placed card on top. */
-  layer: "seat" | "felt" | "placed";
+  /** Stacking: a pile behind its seat card, seat cards under the felt's, the placed card on top. */
+  layer: "pile" | "seat" | "felt" | "placed";
   dealt: boolean;
   motion: "deal" | "move" | "discard";
   delayMs: number;
@@ -126,8 +121,10 @@ export interface Scene {
   statusBox: StatusPlace;
   lock: "hidden" | "ready" | "sending";
   shuffling: boolean;
-  /** null when the viewer is not playing. */
+  /** null when the viewer is not playing. Poses are in hand units (see HandGeometry). */
   hand: HandCardScene[] | null;
+  /** Slots the hand is laid out in: its cards, and the gap if one is open. */
+  handSlots: number;
   mystery: MysteryScene;
   dropZone: { visible: boolean; over: boolean; slot: HandPose | null };
   seats: SeatScene[];
@@ -140,7 +137,12 @@ export interface SceneInput {
   model: GameModel;
   beat: Beat;
   placement: PlacementState;
+  /** The design's landscape stage unless given. */
+  layout?: StageLayout;
 }
+
+/** SceneInput with its layout settled. */
+type Input = Required<SceneInput>;
 
 /** How many cards the deal moves: everyone's starting timeline. */
 export function dealCount(model: GameModel): number {
@@ -148,13 +150,17 @@ export function dealCount(model: GameModel): number {
   return everyone.reduce((n, p) => n + timelineOf(model, p.id).length, 0);
 }
 
-const at = (p: Point, r = 0): Pose => ({ x: p.x, y: p.y, r });
+const at = (p: Point & { r?: number }): Pose => ({
+  x: p.x,
+  y: p.y,
+  r: p.r ?? 0,
+});
 /** A hand slot as a pose and the scale to draw a card there. */
 const inSlot = ({ scale, ...pose }: HandPose) => ({ pose, scale });
 
 /** The viewer's hand: which cards, and the gap the mystery card opens in it. */
 function handLine(
-  { model, beat, placement }: SceneInput,
+  { model, beat, placement }: Input,
   line: SongCardView[],
 ): { line: SongCardView[]; gap: number | null } {
   const stage = model.stage;
@@ -176,12 +182,12 @@ function handLine(
   return { line, gap: null };
 }
 
-function handScene(input: SceneInput): {
+function handScene(input: Input): {
   cards: HandCardScene[];
   gap: number | null;
   count: number;
 } {
-  const { model, beat, placement } = input;
+  const { model, beat, placement, layout } = input;
   const own = timelineOf(model, model.me!.id);
   const { line, gap } = handLine(input, own);
   const n = line.length;
@@ -196,13 +202,13 @@ function handScene(input: SceneInput): {
     if (beat === "undealt")
       return {
         song,
-        pose: { ...DECK_CENTRE, r: i * 40 },
+        pose: { ...layout.deckCentre, r: i * 40 },
         scale: UNDEALT_HAND_SCALE,
         dealt: false,
         motion: "move",
         delayMs: 0,
       };
-    const { scale, ...pose } = handCardWithGap(i, n, gap);
+    const { scale, ...pose } = handCardWithGap(i, n, gap, layout.hand.slot);
     let delayMs = discarding ? DISCARD_CLEAR_MS : 0;
     if (parting) {
       // The design's parting: neighbours lean away from the gap, further cards follow later.
@@ -225,15 +231,17 @@ function handScene(input: SceneInput): {
 }
 
 function mysteryScene(
-  input: SceneInput,
+  input: Input,
   handCount: number,
   handGap: number | null,
 ): MysteryScene {
-  const { model, beat, placement } = input;
+  const { model, beat, placement, layout } = input;
+  const handSlot = layout.hand.slot;
   const stage = model.stage;
   const base: MysteryScene = {
     key: String(model.turnNumber),
-    pose: at(MYSTERY_DEAL),
+    pose: at(layout.mysteryDeal),
+    slot: null,
     heldTilt: 0,
     scale: 1,
     visible: false,
@@ -274,12 +282,13 @@ function mysteryScene(
       return {
         ...shown,
         ...inSlot(handSlot(placement.index, handCount + 1)),
+        slot: placement.index,
         draggable,
       };
     return {
       ...shown,
       // Just dealt, it waits off the deck for a moment before sliding home.
-      pose: beat === "arrive" ? at(MYSTERY_DEAL) : MYSTERY_HOME,
+      pose: beat === "arrive" ? at(layout.mysteryDeal) : layout.mysteryHome,
       draggable,
     };
   }
@@ -289,18 +298,19 @@ function mysteryScene(
   // An opponent's placed card is drawn as a mini card in their timeline instead.
   if (!mine && turn.outcome !== "passed") return base;
   const correct = turn.outcome === "correct";
-  let rest = { pose: at(MYSTERY_DEAL), scale: 1 };
+  let rest = { pose: at(layout.mysteryDeal), scale: 1 };
   if (mine)
     rest =
       handGap === null
-        ? { pose: MYSTERY_HOME, scale: 1 }
+        ? { pose: layout.mysteryHome, scale: 1 }
         : inSlot(handSlot(handGap, handCount + 1));
   if (beat === "settle" && mine && correct) return base;
   return {
     ...base,
     // It flies off at the size it had in its slot.
     scale: rest.scale,
-    pose: beat === "settle" ? DISCARD_EXIT : rest.pose,
+    pose: beat === "settle" ? layout.discardExit : rest.pose,
+    slot: beat !== "settle" && mine ? handGap : null,
     visible: true,
     face: turn.song,
     correct: correct && beat === "flip",
@@ -309,7 +319,7 @@ function mysteryScene(
 }
 
 /** The opponent whose timeline lies on the felt, if any. */
-function feltPlayer({ model, beat }: SceneInput): TablePlayer | null {
+function feltPlayer({ model, beat }: Input): TablePlayer | null {
   if (model.whose !== "opponent") return null;
   if (model.stage.kind === "placing") return model.active;
   if (model.stage.kind === "revealing" && beat !== "return")
@@ -317,9 +327,10 @@ function feltPlayer({ model, beat }: SceneInput): TablePlayer | null {
   return null;
 }
 
-function opponentsScene(input: SceneInput, firstDeal: number) {
-  const { model, beat } = input;
-  const spots = opponentSpots(model.opponents.length);
+function opponentsScene(input: Input, firstDeal: number) {
+  const { model, beat, layout } = input;
+  const spots = layout.opponents;
+  const deckCentre = at(layout.deckCentre);
   const onFelt = feltPlayer(input);
   const reveal = revealedPlacement(model);
   const turn = model.stage.kind === "revealing" ? model.stage.turn : null;
@@ -343,22 +354,23 @@ function opponentsScene(input: SceneInput, firstDeal: number) {
       tilt: SEAT_TILTS[i % SEAT_TILTS.length]!,
     });
     if (isFelt) felt = { player, line, placedAt };
-    const row = isFelt ? feltTimeline(line.length, placedAt) : null;
-    const seatRow = miniTimeline(spot, line.length);
+    const row = isFelt ? layout.feltTimeline(line.length, placedAt) : null;
+    const seatRow = layout.miniTimeline(spot, line.length);
+    const piled = spot.lane.place === "pile";
     line.forEach((song, j) => {
       const order = dealt++;
       if (beat === "undealt") {
         minis.push({
           key: song.id,
           year: song.year,
-          pose: at(DECK_CENTRE),
+          pose: deckCentre,
           scale: spot.scale,
           glow: false,
-          layer: "seat",
+          layer: piled ? "pile" : "seat",
           dealt: false,
           motion: "move",
           delayMs: 0,
-          zoom: SEAT_ZOOM,
+          zoom: piled ? 1 : SEAT_ZOOM,
         });
         return;
       }
@@ -371,11 +383,12 @@ function opponentsScene(input: SceneInput, firstDeal: number) {
         pose: at(slot ?? seatRow[j]!),
         scale: slot ? slot.scale : spot.scale,
         glow: false,
-        layer: slot ? "felt" : "seat",
+        layer: slot ? "felt" : piled ? "pile" : "seat",
         dealt: true,
         motion: beat === "dealing" ? "deal" : "move",
         delayMs: beat === "dealing" ? order * DEAL_STAGGER_MS : 0,
-        zoom: slot ? FELT_ZOOM : SEAT_ZOOM,
+        // A piled card is mostly hidden: the seat card tells the count.
+        zoom: slot ? FELT_ZOOM : piled ? 1 : SEAT_ZOOM,
       });
     });
     // The placed card, until it joins the line (right) or has flown off (wrong).
@@ -387,9 +400,9 @@ function opponentsScene(input: SceneInput, firstDeal: number) {
         key: correct ? full[placedAt]!.id : `placed-${turn.turnNumber}`,
         year: beat === "flip" || beat === "settle" ? turn.song.year : null,
         pose: launched
-          ? at(DECK_CENTRE)
+          ? deckCentre
           : beat === "settle" && !correct
-            ? DISCARD_EXIT
+            ? layout.discardExit
             : at(slot),
         scale: launched ? 1 : slot.scale,
         glow: correct && (beat === "flip" || beat === "settle"),
@@ -405,8 +418,12 @@ function opponentsScene(input: SceneInput, firstDeal: number) {
 }
 
 /** Everything the stage draws. */
-export function scene(input: SceneInput): Scene {
-  const { model, beat, placement } = input;
+export function scene(given: SceneInput): Scene {
+  const input: Input = {
+    ...given,
+    layout: given.layout ?? landscapeLayout(given.model.opponents.length),
+  };
+  const { model, beat, placement, layout } = input;
   const stage = model.stage;
   const placingMine = stage.kind === "placing" && model.whose === "mine";
   const hand = model.me ? handScene(input) : null;
@@ -438,7 +455,7 @@ export function scene(input: SceneInput): Scene {
   const over = held !== null && held.index !== null;
   return {
     status,
-    statusBox: felt ? feltLayout(felt.line.length).status : "mine",
+    statusBox: felt ? layout.feltStatus(felt.line.length) : "mine",
     lock:
       placingMine && !placement.held && placement.index !== null
         ? placement.sent
@@ -447,11 +464,12 @@ export function scene(input: SceneInput): Scene {
         : "hidden",
     shuffling: beat === "undealt",
     hand: hand?.cards ?? null,
+    handSlots: hand ? hand.count + (hand.gap === null ? 0 : 1) : 0,
     mystery: mysteryScene(input, handCount, hand?.gap ?? null),
     dropZone: {
       visible: held !== null,
       over,
-      slot: over ? handSlot(held.index!, handCount + 1) : null,
+      slot: over ? layout.hand.slot(held.index!, handCount + 1) : null,
     },
     seats,
     minis,

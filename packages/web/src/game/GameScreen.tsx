@@ -5,14 +5,21 @@
  * unsent placement (placement.ts) are kept here and turned into a Scene.
  */
 import type { ChatMessage, ClientMessage, RoomView } from "@cardgame/protocol";
-import { useEffect, useReducer, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import type { TrackAudio } from "../audio";
 import { seatLook } from "../ui/seats";
 import type { Connection } from "../useRoom";
 import { ChatPanel, chatLines } from "./ChatPanel";
 import { MePlate, ViewerPlate } from "./cards";
 import { useBeat } from "./choreography";
-import { GameHeader } from "./Header";
+import { GameHeader, SoundToggle } from "./Header";
 import { gameModel, ranking, statusText } from "./model";
 import {
   ConnectionBanner,
@@ -31,6 +38,7 @@ import { dealCount, scene as buildScene } from "./scene";
 import { Stage, type MysteryActions } from "./Stage";
 import type { GameModel } from "./types";
 import { useSecondsLeft } from "./useSecondsLeft";
+import { useStageLayout } from "./useStageLayout";
 import "./game.css";
 
 /** With no answer from the server this long after "Lock it in", the player may press it again. */
@@ -124,6 +132,8 @@ function GameTable({
   const game = room.game!;
   const stage = model.stage;
   const beat = useBeat(model, dealCount(model));
+  const root = useRef<HTMLDivElement>(null);
+  const { shape, layout } = useStageLayout(root, model.opponents.length);
   const [help, setHelp] = useState(false);
   const [menuFor, setMenuFor] = useState<string | null>(null);
 
@@ -183,7 +193,7 @@ function GameTable({
     onTap: tap,
   };
 
-  const scene = buildScene({ model, beat, placement });
+  const scene = buildScene({ model, beat, placement, layout });
   const introSeconds = useSecondsLeft(
     stage.kind === "intro" ? game.pause : null,
   );
@@ -191,19 +201,32 @@ function GameTable({
   const over = stage.kind === "over";
   const { headline, sub } = statusText(model);
 
+  const lines = chatLines(chats);
+  const toggleSound = () => audio.setMuted(!audio.muted);
+
   return (
-    <div className="game-screen">
+    <div
+      ref={root}
+      className={`game-screen${shape.kind === "portrait" ? " is-portrait" : ""}`}
+      style={
+        shape.kind === "portrait"
+          ? ({ "--u": `${shape.unit}px` } as CSSProperties)
+          : undefined
+      }
+    >
       <GameHeader
         code={room.code}
         gameName={room.gameInfo.name}
         watchers={watchers(room)}
         soundOn={!audio.muted}
+        withSound={!layout.tools}
         onLeave={onLeave}
-        onToggleSound={() => audio.setMuted(!audio.muted)}
+        onToggleSound={toggleSound}
         onInstructions={() => setHelp(true)}
       />
       <Stage
         scene={scene}
+        layout={layout}
         goal={model.goal}
         playing={audio.status === "playing"}
         actions={actions}
@@ -212,12 +235,14 @@ function GameTable({
         }
         chat={
           <ChatPanel
-            lines={chatLines(chats)}
+            lines={lines}
             canSend={connection === "open" && !!room.you.name}
             named={!!room.you.name}
             onSend={(text) => send({ type: "chat", text })}
           />
         }
+        chatCount={lines.length}
+        tools={<SoundToggle on={!audio.muted} onToggle={toggleSound} />}
         plate={
           model.me ? (
             <MePlate

@@ -269,6 +269,145 @@
   top: calc(var(--u) * 16.4);
 }
 
+/*
+ * The portrait stage (portrait.ts): the header is one compact row in stage
+ * units, the way out and the code, the marquee, then help as "?" and the
+ * invite. The sound switch moves to the stage's tools; the watchers line
+ * has no room.
+ */
+.game-screen.is-portrait .gs-header .tl-table-info {
+  top: calc(var(--u) * 0.9);
+  left: calc(var(--u) * 1);
+  right: auto;
+  gap: calc(var(--u) * 0.7);
+}
+.game-screen.is-portrait .gs-header .tl-back {
+  width: calc(var(--u) * 4.6);
+  height: calc(var(--u) * 4.6);
+  font-size: calc(var(--u) * 2.2);
+}
+.game-screen.is-portrait .gs-header .tl-code {
+  flex-direction: column;
+  gap: calc(var(--u) * 0.2);
+}
+.game-screen.is-portrait .gs-header .tl-code > span {
+  font-size: calc(var(--u) * 1);
+}
+.game-screen.is-portrait .gs-header .tl-code > strong {
+  font-size: calc(var(--u) * 1.9);
+  line-height: 1;
+}
+.game-screen.is-portrait .gs-header .tl-watchers {
+  display: none;
+}
+.game-screen.is-portrait .gs-header .tl-marquee {
+  top: calc(var(--u) * 0.6);
+  padding: calc(var(--u) * 0.65) calc(var(--u) * 1.5) calc(var(--u) * 0.6);
+  border-radius: calc(var(--u) * 1);
+  box-shadow: 0 calc(var(--u) * 0.45) 0 #0007;
+}
+.game-screen.is-portrait .gs-header .tl-marquee-border {
+  inset: calc(var(--u) * 0.3);
+  border-width: 2px;
+  border-radius: calc(var(--u) * 0.75);
+}
+.game-screen.is-portrait .gs-header .tl-now-playing {
+  font-size: calc(var(--u) * 1);
+  letter-spacing: 0.3em;
+  margin-right: -0.3em;
+}
+.game-screen.is-portrait .gs-header .tl-game-title {
+  margin-top: calc(var(--u) * 0.15);
+  font-size: calc(var(--u) * 2.3);
+  text-shadow:
+    -2px 0 #ef4a3cd9,
+    2px 0 #3b8cf0d9,
+    0 0 8px #ffd84af2;
+}
+.game-screen.is-portrait .gs-header .tl-header-actions {
+  top: calc(var(--u) * 0.9);
+  right: calc(var(--u) * 1);
+  left: auto;
+  gap: calc(var(--u) * 0.6);
+}
+.game-screen.is-portrait .gs-header .tl-header-actions .tl-button {
+  height: calc(var(--u) * 4.6);
+  min-height: 0;
+  padding: 0 calc(var(--u) * 1.3);
+  font-size: calc(var(--u) * 1.6);
+}
+/* "Instructions" stays the button's name; it shows as a question mark. */
+.game-screen.is-portrait .gs-header .tl-header-actions .gs-help {
+  width: calc(var(--u) * 4.6);
+  padding: 0;
+  font-size: 0;
+}
+.game-screen.is-portrait .gs-header .gs-help::before {
+  content: "?";
+  font-size: calc(var(--u) * 2.4);
+}
+.game-screen.is-portrait .gs-header .tl-copied {
+  top: calc(100% + var(--u) * 1);
+  font-size: calc(var(--u) * 2.2);
+}
+/* Banners hang under the header and may wrap; the error toast stays clear of the tools. */
+.game-screen.is-portrait .gs-banner {
+  top: calc(var(--u) * 7);
+  max-width: calc(100% - var(--u) * 4);
+  box-sizing: border-box;
+  white-space: normal;
+  text-align: center;
+  font-size: max(13px, calc(var(--u) * 1.6));
+}
+.game-screen.is-portrait .gs-connection + .gs-sound-prompt {
+  top: calc(var(--u) * 12.4);
+}
+.game-screen.is-portrait .toast {
+  bottom: calc(var(--u) * 7.5);
+}
+/* A dialog's column is the screen's width, so a wide panel narrows to fit a phone instead of overflowing it. */
+.game-screen .tl-dialog[open] {
+  grid-template-columns: minmax(0, 1fr);
+}
+/* Final scores on a phone: a smaller headline and finer pips leave the names room. */
+.game-screen.is-portrait .gs-scores {
+  padding-inline: calc(var(--u) * 2);
+}
+.game-screen.is-portrait .gs-scores h2 {
+  font-size: calc(var(--u) * 3.4);
+}
+.game-screen.is-portrait .gs-score-row {
+  gap: calc(var(--u) * 0.8);
+  padding-inline: calc(var(--u) * 0.8);
+}
+.game-screen.is-portrait .gs-score-rank {
+  width: calc(var(--u) * 2.8);
+}
+.game-screen.is-portrait .gs-score-pips {
+  gap: calc(var(--u) * 0.15);
+}
+.game-screen.is-portrait .gs-score-pips > span {
+  width: calc(var(--u) * 0.55);
+  height: calc(var(--u) * 1.1);
+  border-width: 1px;
+}
+.game-screen.is-portrait .gs-score-count {
+  min-width: 0;
+}
+/* The round note stacks its countdown under the steps. */
+.game-screen.is-portrait .gs-note {
+  width: min(100%, calc(var(--u) * 40));
+  flex-direction: column;
+  align-items: stretch;
+  gap: calc(var(--u) * 1.6);
+}
+.game-screen.is-portrait .gs-note-countdown {
+  width: auto;
+}
+.game-screen.is-portrait .gs-note-starts {
+  font-size: max(13px, calc(var(--u) * 1.4));
+}
+
 @keyframes gs-tick {
   from {
     transform: scale(1.25);

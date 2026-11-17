@@ -8,7 +8,8 @@
   width: 100%;
   height: 100vh;
   height: 100dvh;
-  min-height: 420px;
+  /* Low enough for a phone held sideways, whose stage must not be cut off at the bottom. */
+  min-height: 320px;
   overflow: hidden;
   background: radial-gradient(
     ellipse at 50% 45%,
