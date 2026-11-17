@@ -572,6 +572,68 @@ export function SeatCard({
   );
 }
 
+// --------------------------------------------------------------------- Chips
+
+export interface ChipsProps extends HTMLAttributes<HTMLSpanElement> {
+  count: number;
+  /** Chip colour and the darker edge under it: the owner's seat colour. */
+  chip: string;
+  edge: string;
+  /** At most this many are drawn; the rest are counted, "+3". */
+  max?: number;
+  /** With none left, a dashed outline keeps the place. */
+  showEmpty?: boolean;
+}
+
+/**
+ * Betting tokens as a row of poker chips, 1.7u each (the parent scales the
+ * row). A chip added later hops in; keyed by position, so only new ones do.
+ */
+export function Chips({
+  count,
+  chip,
+  edge,
+  max = 4,
+  showEmpty,
+  className,
+  style,
+  ...rest
+}: ChipsProps) {
+  const drawn = Math.max(0, Math.min(count, max));
+  return (
+    <span
+      className={cx("gs-chips", className)}
+      style={
+        { "--gs-chip": chip, "--gs-chip-edge": edge, ...style } as CSSProperties
+      }
+      {...rest}
+    >
+      {Array.from({ length: drawn }, (_, i) => (
+        <span key={i} className="gs-chips-chip" />
+      ))}
+      {count > max && <span className="gs-chips-more">+{count - max}</span>}
+      {count <= 0 && showEmpty && <span className="gs-chips-chip is-empty" />}
+    </span>
+  );
+}
+
+/** A bet token's face: the bettor's animal on their chip colour (cream for the viewer's own). */
+export function TokenFace({ player }: { player: TablePlayer }) {
+  return (
+    <span
+      className="gs-token-face"
+      style={
+        {
+          "--gs-chip": player.isMe ? "var(--cream)" : player.chip,
+        } as CSSProperties
+      }
+      aria-hidden="true"
+    >
+      {player.animal}
+    </span>
+  );
+}
+
 // ------------------------------------------------------------------- MePlate
 
 export interface MePlateProps {

@@ -470,3 +470,323 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* -------------------------------------------------------------- betting */
+
+/* An opponent's chips beside their seat card, scaled with it. */
+.gs-seat-chips {
+  z-index: 2;
+  transform-origin: 0 0;
+}
+/* The viewer's chips under the plate (layout.bets.plateChips). */
+.gs-my-chips {
+  position: absolute;
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  min-width: calc(var(--u) * 2.2);
+  cursor: help;
+  outline: none;
+}
+.gs-my-chips .gs-chips {
+  gap: calc(var(--u) * 0.5);
+}
+.gs-my-chips .gs-chips-chip {
+  width: calc(var(--u) * 2.2);
+  height: calc(var(--u) * 2.2);
+  border-width: calc(var(--u) * 0.25);
+  box-shadow: 0 calc(var(--u) * 0.25) 0 var(--gs-chip-edge);
+}
+.gs-my-chips:hover .gs-chips-chip:not(.is-empty),
+.gs-my-chips:focus-visible .gs-chips-chip:not(.is-empty) {
+  animation: gs-floaty 2.4s ease-in-out infinite;
+}
+.gs-my-chips:hover .gs-chips-chip:nth-child(2),
+.gs-my-chips:focus-visible .gs-chips-chip:nth-child(2) {
+  animation-delay: -0.6s;
+}
+.gs-my-chips:hover .gs-chips-chip:nth-child(3),
+.gs-my-chips:focus-visible .gs-chips-chip:nth-child(3) {
+  animation-delay: -1.2s;
+}
+.gs-my-chips:hover .gs-chips-chip:nth-child(4),
+.gs-my-chips:focus-visible .gs-chips-chip:nth-child(4) {
+  animation-delay: -1.8s;
+}
+.gs-my-chips:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: calc(var(--u) * 0.6);
+}
+
+/* Tooltips of the chips and the bet tokens, shown on hover and on focus. */
+.gs-tip {
+  position: absolute;
+  z-index: 1;
+  visibility: hidden;
+  opacity: 0;
+  box-sizing: border-box;
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: calc(var(--u) * 0.6);
+  padding: calc(var(--u) * 0.5) calc(var(--u) * 0.9);
+  font:
+    500 calc(var(--u) * 1.3) / 1.25 "Rubik",
+    sans-serif;
+  box-shadow: 0 calc(var(--u) * 0.3) 0 rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+:hover > .gs-tip,
+:focus-visible > .gs-tip {
+  visibility: visible;
+  opacity: 1;
+}
+.gs-my-chips .gs-tip {
+  left: calc(100% + var(--u) * 1.2);
+  bottom: calc(var(--u) * -0.4);
+  width: calc(var(--u) * 21);
+  max-width: calc(100vw - 32px);
+  padding: calc(var(--u) * 0.8) calc(var(--u) * 1.1);
+  font-size: calc(var(--u) * 1.4);
+  line-height: 1.3;
+  text-wrap: pretty;
+}
+.is-portrait .gs-my-chips .gs-tip {
+  left: 0;
+  bottom: calc(100% + var(--u) * 1);
+}
+
+/* A gap in the active opponent's line: the design's dashed slot, in a target a thumb wide where the line has room. */
+.gs-gap {
+  position: absolute;
+  z-index: 5;
+  width: max(var(--gs-gap-w), min(44px, var(--gs-gap-reach)));
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+.gs-gap::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: var(--gs-gap-w);
+  box-sizing: border-box;
+  transform: translateX(-50%);
+  border: 2px dashed rgba(255, 250, 240, 0.75);
+  border-radius: calc(var(--u) * 0.5);
+  background: rgba(255, 250, 240, 0.14);
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.gs-gap:not(:disabled):hover::before {
+  border-color: var(--gold);
+}
+.gs-gap:focus-visible {
+  outline: none;
+}
+.gs-gap:focus-visible::before {
+  border-color: var(--gold);
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+.gs-gap.is-picked::before,
+.gs-gap.is-mine::before {
+  border: 2px solid var(--ink);
+  background: var(--gold);
+}
+.gs-gap:disabled {
+  cursor: progress;
+}
+.gs-gap.is-mine {
+  cursor: default;
+}
+
+/* The bet bar: floating under the felt (landscape), or the status's buttons (portrait). */
+/*
+ * A lane centred where the bar goes: the bar is centred in it, and one too
+ * wide for it keeps the lane's right end and grows leftwards ("safe"
+ * overflow falls on the start side, the right one in right-to-left).
+ */
+.gs-bet-bar-spot {
+  position: absolute;
+  z-index: 9;
+  display: flex;
+  justify-content: safe center;
+  direction: rtl;
+  transform: translateY(-50%);
+}
+.gs-bet-bar-spot > * {
+  direction: ltr;
+}
+.gs-bet-bar {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.6);
+}
+/* The design's bar, clear of the chat: a text too long for the room wraps. */
+.gs-bet-bar.is-floating {
+  flex: none;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: var(--gs-bar-max);
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: calc(var(--u) * 1.2);
+  padding: calc(var(--u) * 0.9) calc(var(--u) * 1) calc(var(--u) * 0.9)
+    calc(var(--u) * 2);
+  box-shadow: 0 calc(var(--u) * 0.6) 0 rgba(0, 0, 0, 0.45);
+}
+.gs-bet-bar.is-status {
+  margin-top: calc(var(--u) * 1.1);
+  gap: calc(var(--u) * 1);
+}
+.gs-bet-count,
+.gs-bet-bar > button {
+  flex: none;
+}
+.gs-bet-count {
+  min-width: calc(var(--u) * 3);
+  font: 400 calc(var(--u) * 2.4) / 1 var(--mono);
+  color: var(--gold);
+}
+.gs-bet-text {
+  min-width: 0;
+  text-wrap: balance;
+  font:
+    700 calc(var(--u) * 1.7) / 1.2 "Rubik",
+    sans-serif;
+}
+.gs-bet-bar .tl-button {
+  padding: calc(var(--u) * 0.8) calc(var(--u) * 1.8);
+  font-size: calc(var(--u) * 1.7);
+  white-space: nowrap;
+}
+.gs-bet-bar.is-floating .tl-button {
+  box-shadow: none;
+}
+.gs-bet-bar.is-status .tl-button {
+  min-height: 44px;
+  padding: 0 calc(var(--u) * 1.6);
+}
+.gs-bet-confirm:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.gs-bet-pass:disabled {
+  cursor: progress;
+}
+
+/* The five-segment countdown on the viewer's locked card. */
+.gs-timer {
+  display: flex;
+  gap: calc(var(--u) * 0.5);
+  margin-top: calc(var(--u) * 1);
+}
+.gs-timer > span {
+  width: calc(var(--u) * 2.2);
+  height: calc(var(--u) * 0.8);
+  box-sizing: border-box;
+  border: 2px solid var(--ink);
+  border-radius: calc(var(--u) * 0.2);
+  background: rgba(20, 22, 23, 0.35);
+  transition: background 0.25s;
+}
+.gs-timer > span.is-on {
+  background: var(--gold);
+}
+
+/*
+ * Bet tokens. A new one flies in from its bettor's chips; it glides to its
+ * gap at the reveal, then flies home (refunded) or shrinks away. Over the
+ * viewer's hand its carrier scrolls with the hand (see the mystery carrier).
+ */
+.gs-token-carrier {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 7;
+  transform: translateX(
+    calc(var(--u) * var(--gs-scroll, 0) * var(--gs-in-hand) * -1)
+  );
+  transition: --gs-in-hand 0.5s cubic-bezier(0.3, 1.2, 0.5, 1);
+}
+.gs-bet-token {
+  width: calc(var(--u) * 2.2);
+  height: calc(var(--u) * 2.2);
+  cursor: help;
+  outline: none;
+  transition:
+    transform 0.5s cubic-bezier(0.3, 1.2, 0.5, 1),
+    opacity 0.3s;
+  animation: gs-token-in 0.6s cubic-bezier(0.3, 1.2, 0.5, 1) backwards;
+}
+/* translate and scale apply outside the transform: the offset is in stage space. */
+@keyframes gs-token-in {
+  from {
+    translate: var(--gs-from-x) var(--gs-from-y);
+  }
+}
+.gs-bet-token:hover,
+.gs-bet-token:focus-visible {
+  z-index: 20 !important;
+}
+.gs-bet-token:hover .gs-token-face,
+.gs-bet-token:focus-visible .gs-token-face {
+  animation: gs-floaty 1.2s ease-in-out infinite;
+  box-shadow: 0 calc(var(--u) * 0.9) calc(var(--u) * 0.5) rgba(0, 0, 0, 0.35);
+}
+.gs-bet-token:focus-visible .gs-token-face {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+.gs-bet-token .gs-tip {
+  left: 50%;
+  bottom: calc(100% + var(--u) * 1.4);
+  translate: -50% 0;
+  white-space: nowrap;
+}
+.gs-bet-token.is-home {
+  opacity: 0;
+  transition:
+    transform 0.6s cubic-bezier(0.5, 0, 0.5, 1),
+    opacity 0.2s 0.5s;
+}
+.gs-bet-token.is-vanish {
+  opacity: 0;
+  transition: opacity 0.35s 0.2s;
+}
+.gs-bet-token.is-vanish .gs-token-face {
+  scale: 0.2;
+  transition: scale 0.5s 0.05s cubic-bezier(0.5, -0.4, 0.8, 0.6);
+}
+
+/* A mini card over the viewer's hand scrolls with it (a stolen card flying in). */
+.gs-mini-slot.is-in-hand {
+  translate: calc(var(--u) * var(--gs-scroll, 0) * -1) 0;
+}
+/* A card stolen from the viewer appears at the thief's once the viewer's card has flown there. */
+.gs-mini-slot.is-land > .gs-mini {
+  animation: gs-mini-land 0.25s var(--gs-delay) backwards;
+}
+@keyframes gs-mini-land {
+  from {
+    opacity: 0;
+    scale: 1.6;
+  }
+}
+/* The viewer's card stolen: it waits a beat, flies to the thief's seat shrinking, and is gone. */
+.gs-stage-mystery.is-steal {
+  transition:
+    transform 0.8s cubic-bezier(0.4, 0, 0.3, 1) 0.5s,
+    opacity 0.15s 1.25s;
+}
+.gs-mystery-carrier.is-steal {
+  transition: --gs-in-hand 0.8s cubic-bezier(0.4, 0, 0.3, 1) 0.5s;
+}
