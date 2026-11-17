@@ -265,6 +265,83 @@ describe("judgeGuess", () => {
     expect(judge(loveBeatles, "beatle")).toEqual({ kind: "near" });
   });
 
+  it("allows more typos in a near miss the longer the answer, so a few slips cannot spoil it", () => {
+    const susie = song(
+      "international",
+      "Wake Up Little Susie",
+      "The Everly Brothers",
+    );
+    // 3 edits off 17 letters.
+    expect(judge(susie, "Wake Up Little Suzy")).toEqual({ kind: "near" });
+    expect(judge(susie, "wake up lil susie")).toEqual({ kind: "near" });
+    expect(judge(rhapsody, "bohemain rapsodi")).toEqual({ kind: "near" });
+    const hand = song(
+      "international",
+      "I Want to Hold Your Hand",
+      "The Beatles",
+    );
+    expect(judge(hand, "i wanna hold your hand")).toEqual({ kind: "near" });
+    const hotel = song("international", "Hotel California", "Eagles");
+    expect(judge(hotel, "hotell califonia")).toEqual({ kind: "near" });
+    // Credit is unchanged: still one typo at most.
+    expect(credits(susie, "Wake Up Little Suzy")).toEqual([]);
+    expect(credits(hotel, "hotel californa")).toEqual(["title"]);
+  });
+
+  it("calls the start of the answer near when its last word is cut short", () => {
+    const slow = song("international", "Slow Motion", "Color Me Badd");
+    expect(judge(slow, "slow mo")).toEqual({ kind: "near" });
+    expect(judge(rhapsody, "bohemian rhap")).toEqual({ kind: "near" });
+    expect(judge(loveBeatles, "all you nee")).toEqual({ kind: "near" });
+    const ipanema = song("brasil", "Garota de Ipanema", "Pery Ribeiro");
+    expect(judge(ipanema, "garota de ipa")).toEqual({ kind: "near" });
+    const believin = song("international", "Don't Stop Believin'", "Journey");
+    expect(judge(believin, "dont stop beli")).toEqual({ kind: "near" });
+    // Not when the words it stands for are all common, or the line is too little of the answer.
+    expect(judge(loveBeatles, "you need lo")).toBeNull();
+    expect(judge(rhapsody, "bohemian r")).toBeNull();
+    expect(judge(slow, "slow")).toBeNull();
+    // A lone cut word is too often chat: "classic" while Classics IV plays.
+    const spooky = song("international", "Spooky", "Classics IV");
+    expect(judge(spooky, "classic")).toBeNull();
+  });
+
+  it("calls a guess near when it leaves out one word of the answer", () => {
+    const susie = song(
+      "international",
+      "Wake Up Little Susie",
+      "The Everly Brothers",
+    );
+    expect(judge(susie, "wake up susie")).toEqual({ kind: "near" });
+    expect(judge(loveBeatles, "all need is love")).toEqual({ kind: "near" });
+    // Unless every word left is common.
+    const always = song(
+      "international",
+      "I Will Always Love You",
+      "Whitney Houston",
+    );
+    expect(judge(always, "i will love you")).toBeNull();
+  });
+
+  it("judges accented and unaccented Portuguese near misses alike", () => {
+    const aguas = song("brasil", "Águas de Março", "Elis Regina e Tom Jobim");
+    expect(judge(aguas, "agua de marso")).toEqual({ kind: "near" });
+    expect(judge(aguas, "água de marso")).toEqual({ kind: "near" });
+    const ivete = song(
+      "brasil",
+      "Se Eu Não Te Amasse Tanto Assim",
+      "Ivete Sangalo",
+    );
+    expect(judge(ivete, "se eu nao te amase tanto asim")).toEqual({
+      kind: "near",
+    });
+    expect(judge(ivete, "se eu não te amase tanto asim")).toEqual({
+      kind: "near",
+    });
+    for (const typed of ["eu te amo", "eu nao sei", "não te amo tanto"])
+      expect(judge(ivete, typed)).toBeNull();
+  });
+
   it("calls a line holding the whole answer near, so it cannot spoil it", () => {
     const toto = song("international", "Hold the Line", "Toto");
     expect(judge(toto, "Toto. final answer")).toEqual({ kind: "near" });
@@ -328,5 +405,30 @@ describe("judgeGuess", () => {
       "!!!",
     ])
       expect(judge(rhapsody, typed)).toBeNull();
+  });
+
+  it("leaves ordinary chat alone against long titles too", () => {
+    const long = [
+      song("international", "Wake Up Little Susie", "The Everly Brothers"),
+      song("international", "I Will Always Love You", "Whitney Houston"),
+      song("international", "Smells Like Teen Spirit", "Nirvana"),
+      song("brasil", "Se Eu Não Te Amasse Tanto Assim", "Ivete Sangalo"),
+    ];
+    for (const s of long)
+      for (const typed of [
+        "i know this one",
+        "no idea",
+        "i love you",
+        "i love this song",
+        "wait wait wait dont tell me",
+        "it's on the tip of my tongue",
+        "you know",
+        "que música boa",
+        "sei essa",
+        "não faço ideia",
+        "eu te amo",
+        "kkkkkk",
+      ])
+        expect(judge(s, typed)).toBeNull();
   });
 });

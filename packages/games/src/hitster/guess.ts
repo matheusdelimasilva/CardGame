@@ -219,6 +219,43 @@ function within(inner: string[], outer: string[]): boolean {
 }
 
 /**
+ * Every way the guess's words can be read as a run of the answer's words:
+ * in order, with at most one of the answer's words left out between two of
+ * them ("wake up susie"), and the last cut short to 2 letters or more after
+ * a whole one ("slow mo", "bohemian rhap"; a lone cut word like "classic"
+ * for "Classics IV" is too often just chat). Gives the answer's words each
+ * reading stands for, so a cut word is judged by the word it starts.
+ */
+function* readings(
+  guess: string[],
+  answer: string[],
+): Generator<{ words: string[]; gap: boolean }> {
+  const last = guess.length - 1;
+  const fits = (w: string, a: string | undefined, k: number) =>
+    a !== undefined &&
+    (w === a || (k === last && k > 0 && w.length >= 2 && a.startsWith(w)));
+  for (let i = 0; i < answer.length; i++)
+    // A gap before guess word `gap`; 0 means none.
+    for (let gap = 0; gap <= last; gap++) {
+      const at = guess.map((_, k) => i + k + (gap && k >= gap ? 1 : 0));
+      if (guess.every((w, k) => fits(w, answer[at[k]!], k)))
+        yield { words: at.map((n) => answer[n]!), gap: gap > 0 };
+    }
+}
+
+/**
+ * How many typos a near miss may hold: one for an answer of 4 to 7 letters,
+ * then a fifth of the letters but at least two, since a long answer with a
+ * few slips still gives it away ("Wake Up Little Suzy" is 3 off 17 letters).
+ */
+const nearTypos = (letters: number) =>
+  letters < 4
+    ? 0
+    : letters < TYPO_MIN_LENGTH
+      ? 1
+      : Math.max(2, Math.floor(letters / 5));
+
+/**
  * The answer exactly, or with one typo when it is long enough that one slip
  * cannot make it another plausible answer ("bohemian rapsody").
  */
@@ -233,29 +270,32 @@ function matches(guess: Phrase, form: AnswerForm): boolean {
 
 /**
  * Close to the answer without matching it. Following the design prototype:
- * - a few typos off: one for an answer of 4 to 7 letters, two from 8. The
- *   guess needs 4 letters, so "lol" is not close to "Lola".
- * - part of the answer, in whole words, holding at least half its letters
- *   and at least 4, and saying something on its own (see distinctive):
- *   "bohemian" is close to "Bohemian Rhapsody" and "need is love" to "All
- *   You Need Is Love", but "love", "you" or "you need" is not.
+ * - a few typos off (see nearTypos). The guess needs 4 letters, so "lol" is
+ *   not close to "Lola".
+ * - part of the answer, read as a run of its words (see readings), holding
+ *   at least half its letters and at least 4, where both the guess and the
+ *   answer's words it stands for say something on their own (see
+ *   distinctive): "bohemian" and "bohemian rhap" are close to "Bohemian
+ *   Rhapsody" and "need is love" to "All You Need Is Love", but "love",
+ *   "you" or "you need" is not, nor "baby" to "Babyface" or "you kn" to
+ *   "You Know".
  * - the answer, in whole words, inside a longer line ("is this Queen??"),
  *   unless every word of the answer is common, so "I love this" is just
  *   chat while "Love" plays.
  */
 function near(guess: Phrase, form: AnswerForm, lexicon: Lexicon): boolean {
   const [g, a] = [guess.text, form.text];
-  if (g.length >= 4 && a.length >= 4) {
-    const max = a.length >= TYPO_MIN_LENGTH ? 2 : 1;
-    if (distance(g, a, max) <= max) return true;
-  }
-  if (
-    g.length >= 4 &&
-    g.length * 2 >= a.length &&
-    distinctive(guess, lexicon) &&
-    within(guess.words, form.words)
-  )
-    return true;
+  const max = nearTypos(a.length);
+  if (g.length >= 4 && max && distance(g, a, max) <= max) return true;
+  if (g.length >= 4 && g.length * 2 >= a.length && distinctive(guess, lexicon))
+    for (const { words, gap } of readings(guess.words, form.words))
+      // Common words with one left out are too easily chat ("i dont know" for "I Don't Wanna Know").
+      if (
+        gap
+          ? words.some((w) => !lexicon.common.has(w))
+          : distinctive({ words, text: words.join("") }, lexicon)
+      )
+        return true;
   return (
     form.distinctive &&
     guess.words.length > form.words.length &&
