@@ -1,8 +1,15 @@
-import { MAX_CHAT_LENGTH, MAX_NAME_LENGTH, SEAT_COUNT, type ChatMessage, type RoomView, type SeatView } from "@cardgame/protocol";
+import {
+  MAX_CHAT_LENGTH,
+  MAX_NAME_LENGTH,
+  SEAT_COUNT,
+  type ChatMessage,
+  type SeatView,
+} from "@cardgame/protocol";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { navigate } from "./App";
+import { useTrackAudio } from "./audio";
 import { gameUIs } from "./games";
-import { describeSettings } from "./NewTable";
+import { TableLobby } from "./lobby/TableLobby";
 import { Avatar, OpenSeat, Seat } from "./Seat";
 import { KEYS, storage } from "./storage";
 import { useRoom } from "./useRoom";
@@ -12,19 +19,33 @@ export function Room({ code }: { code: string }) {
   const [chatOpen, setChatOpen] = useState(false);
   const [seenChatId, setSeenChatId] = useState<string | null>(null);
   const lastChatId = chats.at(-1)?.id ?? null;
-  useEffect(() => {
-    if (chatOpen) setSeenChatId(lastChatId);
-  }, [chatOpen, lastChatId]);
+  // Opening or closing the chat marks everything so far as seen.
+  const toggleChat = () => {
+    setSeenChatId(lastChatId);
+    setChatOpen((o) => !o);
+  };
   const unread = !chatOpen && lastChatId !== null && lastChatId !== seenChatId;
   const [menuFor, setMenuFor] = useState<string | null>(null);
   // Hooks must run on every render, so this sits above the early returns below.
-  const secondsLeft = useSecondsLeft(room?.game && !room.game.result ? room.game.timer : null);
+  const secondsLeft = useSecondsLeft(
+    room?.game && !room.game.result ? room.game.timer : null,
+  );
+  const audio = useTrackAudio(
+    room?.game && !room.game.result ? (room.game.track?.url ?? null) : null,
+  );
 
   if (connection === "gone") {
-    return <Notice title="Table not found" text="This table has closed or the link is wrong." />;
+    return (
+      <Notice
+        title="Table not found"
+        text="This table has closed or the link is wrong."
+      />
+    );
   }
   if (connection === "kicked") {
-    return <Notice title="Removed" text="The host removed you from this table." />;
+    return (
+      <Notice title="Removed" text="The host removed you from this table." />
+    );
   }
   if (!room) return <Notice title="Joining table..." text={code} quiet />;
 
@@ -40,46 +61,98 @@ export function Room({ code }: { code: string }) {
     you: game.players.includes(you.id) ? you.id : null,
     nameOf,
     move: (move: unknown) => send({ type: "move", move }),
+    audio,
   };
+
+  if (!running) {
+    return (
+      <TableLobby room={room} send={send} connection={connection} error={error}>
+        {!you.name && (
+          <NamePrompt onSubmit={(name) => send({ type: "setName", name })} />
+        )}
+      </TableLobby>
+    );
+  }
 
   // Seats are drawn clockwise starting from the viewer, who sits at the bottom.
   const first = you.seat ?? 0;
-  const around = Array.from({ length: SEAT_COUNT }, (_, i) => (first + i) % SEAT_COUNT)
+  const around = Array.from(
+    { length: SEAT_COUNT },
+    (_, i) => (first + i) % SEAT_COUNT,
+  )
     .filter((seat) => seat !== you.seat)
-    .filter((seat) => room.seats[seat] !== null || !running || you.seat === null);
+    .filter(
+      (seat) => room.seats[seat] !== null || !running || you.seat === null,
+    );
   const menuPlayer = menuFor ? (members.get(menuFor) ?? null) : null;
   const waitingOn = running ? game.active.map(nameOf) : [];
 
   return (
     <div className="room">
       <header className="topbar">
-        <button className="topbar-home" onClick={() => navigate("/")} aria-label="Leave table">
+        <button
+          className="topbar-home"
+          onClick={() => navigate("/")}
+          aria-label="Leave table"
+        >
           ‹
         </button>
         <span className="topbar-code">table {room.code}</span>
-        <button className="topbar-chat" onClick={() => setChatOpen((o) => !o)} aria-expanded={chatOpen} aria-label={unread ? "Chat (new messages)" : "Chat"}>
+        {running && game.track && (
+          <button
+            className="topbar-sound"
+            onClick={() => audio.setMuted(!audio.muted)}
+            aria-pressed={!audio.muted}
+            aria-label={audio.muted ? "Turn sound on" : "Turn sound off"}
+          >
+            {audio.muted ? "🔇" : "🔊"}
+          </button>
+        )}
+        <button
+          className="topbar-chat"
+          onClick={toggleChat}
+          aria-expanded={chatOpen}
+          aria-label={unread ? "Chat (new messages)" : "Chat"}
+        >
           💬{unread && <span className="chat-unread" />}
         </button>
         <ShareButton code={room.code} />
       </header>
 
-      {connection === "reconnecting" && <div className="reconnecting">Connection lost. Reconnecting...</div>}
+      {connection === "reconnecting" && (
+        <div className="reconnecting">Connection lost. Reconnecting...</div>
+      )}
+      {audio.status === "blocked" && (
+        <div className="sound-prompt">🔊 Tap anywhere to turn on sound</div>
+      )}
 
       <div className="felt">
         <div className="oval" />
         <div className="center">
           {running && ui && gameProps ? (
-            <ui.Center {...gameProps} />
-          ) : (
-            <Lobby room={room} send={send} nameOf={nameOf} />
-          )}
+            <>
+              <ui.Center {...gameProps} />
+              {game.pause && (
+                <Announcement
+                  key={game.gameId}
+                  info={ui.announcement(game, nameOf)}
+                  pause={game.pause}
+                />
+              )}
+            </>
+          ) : null}
         </div>
 
         {around.map((seat, i) => {
           const player = room.seats[seat];
           const slots = you.seat === null ? around.length : around.length + 1;
-          const angle = ((90 + (360 * (you.seat === null ? i : i + 1)) / slots) * Math.PI) / 180;
-          const style = { left: `${50 + 41 * Math.cos(angle)}%`, top: `${50 + 38 * Math.sin(angle)}%` };
+          const angle =
+            ((90 + (360 * (you.seat === null ? i : i + 1)) / slots) * Math.PI) /
+            180;
+          const style = {
+            left: `${50 + 41 * Math.cos(angle)}%`,
+            top: `${50 + 38 * Math.sin(angle)}%`,
+          };
           return (
             <div className="seat-spot" style={style} key={seat}>
               {player ? (
@@ -87,31 +160,69 @@ export function Room({ code }: { code: string }) {
                   seat={seat}
                   player={player}
                   active={running && game.active.includes(player.id)}
-                  clock={running && game.active.includes(player.id) ? secondsLeft : null}
-                  tag={game && ui && player.inGame ? ui.seatTag(game, player.id) : running ? "next game" : null}
-                  cards={running && ui && gameProps && player.inGame ? <ui.SeatCards {...gameProps} playerId={player.id} /> : null}
+                  clock={
+                    running && game.active.includes(player.id)
+                      ? secondsLeft
+                      : null
+                  }
+                  tag={
+                    game && ui && player.inGame
+                      ? ui.seatTag(game, player.id)
+                      : running
+                        ? "next game"
+                        : null
+                  }
+                  cards={
+                    running && ui && gameProps && player.inGame ? (
+                      <ui.SeatCards {...gameProps} playerId={player.id} />
+                    ) : null
+                  }
                   onClick={you.isHost ? () => setMenuFor(player.id) : undefined}
                 />
               ) : (
-                <OpenSeat onSit={you.name ? () => send({ type: "sit", seat }) : undefined} />
+                <OpenSeat
+                  onSit={
+                    you.name ? () => send({ type: "sit", seat }) : undefined
+                  }
+                />
               )}
             </div>
           );
         })}
 
-        {running && ui && <Announcement key={game.gameId} info={ui.announcement(game, nameOf)} />}
+        {running && ui && !game.pause && (
+          <Announcement
+            key={game.gameId}
+            info={ui.announcement(game, nameOf)}
+            pause={game.pause}
+          />
+        )}
       </div>
 
       <footer className="dock">
         <div className="dock-me">
           {running && (
-            <div className={`turn-plate${playing && game.active.includes(you.id) ? " mine" : ""}`}>
-              {playing && game.active.includes(you.id) ? "Your turn" : `waiting for ${waitingOn.join(", ")}...`}
-              {secondsLeft !== null && <span className={`plate-clock${secondsLeft <= 5 ? " low" : ""}`}>{secondsLeft}s</span>}
+            <div
+              className={`turn-plate${playing && game.active.includes(you.id) ? " mine" : ""}`}
+            >
+              {playing && game.active.includes(you.id)
+                ? "Your turn"
+                : game.pause
+                  ? "Paused"
+                  : `waiting for ${waitingOn.join(", ")}...`}
+              {secondsLeft !== null && (
+                <span
+                  className={`plate-clock${secondsLeft <= 5 ? " low" : ""}`}
+                >
+                  {secondsLeft}s
+                </span>
+              )}
             </div>
           )}
           {you.seat !== null ? (
-            <div className={`me-panel${running && game.active.includes(you.id) ? " active" : ""}`}>
+            <div
+              className={`me-panel${running && game.active.includes(you.id) ? " active" : ""}`}
+            >
               <Avatar seat={you.seat} size="lg" />
               <div className="me-text">
                 <span className="nametag me">{you.name}</span>
@@ -124,7 +235,10 @@ export function Room({ code }: { code: string }) {
                 </span>
               </div>
               {!playing && (
-                <button className="btn small" onClick={() => send({ type: "stand" })}>
+                <button
+                  className="btn small"
+                  onClick={() => send({ type: "stand" })}
+                >
                   Stand up
                 </button>
               )}
@@ -146,35 +260,44 @@ export function Room({ code }: { code: string }) {
             )
           )}
         </div>
-        {playing && ui && gameProps && (
+        {playing && ui && gameProps && ui.Dock && (
+          <div className="dock-wide">
+            <ui.Dock {...gameProps} />
+          </div>
+        )}
+        {playing && ui && gameProps && !ui.Dock && (
           <>
             <div className="dock-hand">
-              <ui.Hand {...gameProps} />
+              {ui.Hand && <ui.Hand {...gameProps} />}
             </div>
             <div className="dock-actions">
-              <ui.Actions {...gameProps} />
+              {ui.Actions && <ui.Actions {...gameProps} />}
             </div>
           </>
         )}
       </footer>
 
-      {!you.name && <NamePrompt onSubmit={(name) => send({ type: "setName", name })} />}
+      {!you.name && (
+        <NamePrompt onSubmit={(name) => send({ type: "setName", name })} />
+      )}
 
       {menuPlayer && (
         <div className="overlay" onClick={() => setMenuFor(null)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2 className="name">{menuPlayer.name}</h2>
-            {running && game.active.includes(menuPlayer.id) && !menuPlayer.connected && (
-              <button
-                className="btn blue"
-                onClick={() => {
-                  send({ type: "skip", playerId: menuPlayer.id });
-                  setMenuFor(null);
-                }}
-              >
-                Play their turn for them
-              </button>
-            )}
+            {running &&
+              game.active.includes(menuPlayer.id) &&
+              !menuPlayer.connected && (
+                <button
+                  className="btn blue"
+                  onClick={() => {
+                    send({ type: "skip", playerId: menuPlayer.id });
+                    setMenuFor(null);
+                  }}
+                >
+                  Play their turn for them
+                </button>
+              )}
             {menuPlayer.id !== you.id && (
               <button
                 className="btn red"
@@ -183,7 +306,9 @@ export function Room({ code }: { code: string }) {
                   setMenuFor(null);
                 }}
               >
-                {running && menuPlayer.inGame ? "Remove and end this game" : "Remove from table"}
+                {running && menuPlayer.inGame
+                  ? "Remove and end this game"
+                  : "Remove from table"}
               </button>
             )}
             {running && (
@@ -205,7 +330,13 @@ export function Room({ code }: { code: string }) {
       )}
 
       {chatOpen && (
-        <Chat chats={chats} youId={you.id} canSend={connection === "open" && !!you.name} named={!!you.name} send={send} />
+        <Chat
+          chats={chats}
+          youId={you.id}
+          canSend={connection === "open" && !!you.name}
+          named={!!you.name}
+          send={send}
+        />
       )}
 
       {room.spectators.length > 0 && (
@@ -218,85 +349,75 @@ export function Room({ code }: { code: string }) {
           {error}
         </div>
       )}
-    </div>
-  );
-}
-
-function Lobby({ room, send, nameOf }: { room: RoomView; send: ReturnType<typeof useRoom>["send"]; nameOf: (id: string) => string }) {
-  const info = room.gameInfo;
-  const seated = room.seats.filter((s) => s !== null).length;
-  const winners = room.game?.result?.winners.map(nameOf) ?? null;
-  const missing = info.minPlayers - seated;
-
-  return (
-    <div className="lobby">
-      {winners ? (
-        <>
-          <div className="lobby-label">game over</div>
-          <div className="lobby-winner">★ {winners.join(" & ")} ★</div>
-          <div className="lobby-label">{winners.length > 1 ? "win" : "wins"} {info.name}</div>
-        </>
-      ) : (
-        <>
-          <div className="lobby-label">now playing</div>
-          <div className="lobby-game">{info.name}</div>
-          <div className="lobby-label">
-            {seated} seated · {info.minPlayers} to {info.maxPlayers} players
-          </div>
-          {info.settings.length > 0 && (
-            <ul className="lobby-settings">
-              {describeSettings(info, room.settings).map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ul>
-          )}
-        </>
-      )}
-      {room.you.isHost ? (
-        <>
-          <button className="btn gold big" disabled={missing > 0} onClick={() => send({ type: "start" })}>
-            {winners ? "Play again" : "Start game"}
-          </button>
-          {missing > 0 && (
-            <div className="lobby-hint">
-              {seated === 0 ? "Take a seat, then share the link." : `Needs ${missing} more player${missing > 1 ? "s" : ""}.`}
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="lobby-hint">Waiting for the host to start...</div>
-      )}
+      <div className="crt" aria-hidden="true" />
     </div>
   );
 }
 
 /** Counts down a turn timer locally between server updates. null when the turn is not timed. */
 function useSecondsLeft(timer: { remainingMs: number } | null): number | null {
-  const [left, setLeft] = useState<number | null>(null);
+  const [countdown, setCountdown] = useState<{
+    timer: typeof timer;
+    left: number;
+  } | null>(null);
   useEffect(() => {
-    if (!timer) return setLeft(null);
+    if (!timer) return;
     const end = performance.now() + timer.remainingMs;
-    const tick = () => setLeft(Math.max(0, Math.ceil((end - performance.now()) / 1000)));
-    tick();
+    const tick = () =>
+      setCountdown({
+        timer,
+        left: Math.max(0, Math.ceil((end - performance.now()) / 1000)),
+      });
     const id = setInterval(tick, 250);
     return () => clearInterval(id);
   }, [timer]);
-  return left;
+  return timer
+    ? countdown?.timer === timer
+      ? countdown.left
+      : Math.ceil(timer.remainingMs / 1000)
+    : null;
 }
 
-function Announcement({ info }: { info: { key: string; title: string; detail: string } | null }) {
+export function Announcement({
+  info,
+  pause,
+}: {
+  info: { key: string; title: string; detail: string; next?: string } | null;
+  pause: { remainingMs: number } | null;
+}) {
   const [hiddenKey, setHiddenKey] = useState<string | null>(null);
   const key = info?.key ?? null;
+  const paused = pause !== null;
   useEffect(() => {
-    if (!key) return;
+    if (!key || paused) return;
     const t = setTimeout(() => setHiddenKey(key), 3200);
     return () => clearTimeout(t);
-  }, [key]);
-  if (!info || hiddenKey === info.key) return null;
+  }, [key, paused]);
+  if (!info || (!paused && hiddenKey === info.key)) return null;
   return (
-    <div className="banner" key={info.key} role="status" onClick={() => setHiddenKey(info.key)}>
+    <div
+      className={`banner${paused ? " held" : ""}`}
+      key={info.key}
+      role="status"
+      onClick={() => {
+        if (!paused) setHiddenKey(info.key);
+      }}
+    >
       <div className="banner-title">{info.title}</div>
       <div className="banner-detail">{info.detail}</div>
+      {info.next && <div className="banner-next">{info.next}</div>}
+      {pause && (
+        <PauseProgress key={info.key} remainingMs={pause.remainingMs} />
+      )}
+    </div>
+  );
+}
+
+function PauseProgress({ remainingMs }: { remainingMs: number }) {
+  const [duration] = useState(remainingMs);
+  return (
+    <div className="banner-progress" aria-hidden="true">
+      <span style={{ animationDuration: `${Math.max(0, duration)}ms` }} />
     </div>
   );
 }
@@ -355,7 +476,15 @@ function NamePrompt({ onSubmit }: { onSubmit: (name: string) => void }) {
   );
 }
 
-function Notice({ title, text, quiet }: { title: string; text: string; quiet?: boolean }) {
+function Notice({
+  title,
+  text,
+  quiet,
+}: {
+  title: string;
+  text: string;
+  quiet?: boolean;
+}) {
   return (
     <main className="home">
       <section className="panel notice">
@@ -400,9 +529,14 @@ function Chat({
   return (
     <div className="chat" role="region" aria-label="Table chat">
       <div className="chat-log" ref={log} aria-live="polite">
-        {chats.length === 0 && <div className="chat-empty">No messages yet.</div>}
+        {chats.length === 0 && (
+          <div className="chat-empty">No messages yet.</div>
+        )}
         {chats.map((m) => (
-          <div key={m.id} className={m.from.id === youId ? "chat-line mine" : "chat-line"}>
+          <div
+            key={m.id}
+            className={m.from.id === youId ? "chat-line mine" : "chat-line"}
+          >
             <b>{m.from.name}</b> <span>{m.text}</span>
           </div>
         ))}
@@ -413,7 +547,13 @@ function Chat({
           onChange={(e) => setText(e.target.value)}
           maxLength={MAX_CHAT_LENGTH}
           disabled={!canSend}
-          placeholder={!named ? "Choose a name to chat" : canSend ? "Say something..." : "Reconnecting..."}
+          placeholder={
+            !named
+              ? "Choose a name to chat"
+              : canSend
+                ? "Say something..."
+                : "Reconnecting..."
+          }
           aria-label="Chat message"
           autoComplete="off"
         />

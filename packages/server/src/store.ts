@@ -1,48 +1,55 @@
-import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
+import { mkdir, writeFile, rename } from "node:fs/promises";
 import { dirname } from "node:path";
-import type { HistoryEntry } from "@cardgame/protocol";
-import type { Room } from "./rooms";
+import { DATA_VERSION, ROOM_VERSION, migrateData } from "./migrations";
+import { BufferedStore } from "./persistence";
+import { PostgresStore } from "./postgres-store";
 
-interface Data {
-  /** Host session token -> email. */
-  sessions: Record<string, string>;
-  /** Host email -> finished games, newest first. */
-  history: Record<string, HistoryEntry[]>;
-  rooms: Room[];
-}
+export type { Session } from "./migrations";
+export type { Store } from "./persistence";
+export { PostgresStore };
 
-/**
- * Small JSON-file store. It keeps host sessions, game history and a snapshot
- * of every room, so a restart does not lose games in progress. It is meant to
- * be replaced by a real database without changing its callers.
- */
-export class Store {
-  data: Data = { sessions: {}, history: {}, rooms: [] };
-  private timer: NodeJS.Timeout | null = null;
+/** Local snapshots use atomic, serialized asynchronous writes; null is memory-only. */
+export class JsonStore extends BufferedStore {
+  readonly ready = Promise.resolve();
 
   constructor(private readonly file: string | null) {
+    super();
     if (!file) return;
     try {
-      this.data = { ...this.data, ...JSON.parse(readFileSync(file, "utf8")) };
-    } catch {
-      // No file yet, or an unreadable one: start empty.
+      const input = JSON.parse(readFileSync(file, "utf8"));
+      this.data = migrateData(input);
+      if (
+        input.version !== DATA_VERSION ||
+        input.rooms?.some(
+          (room: { version?: number }) => room.version !== ROOM_VERSION,
+        )
+      )
+        this.save({ metadata: true });
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code === "ENOENT") return;
+      throw new Error(`Cannot load JSON snapshot ${file}: ${String(err)}`, {
+        cause: err,
+      });
     }
   }
 
-  /** Schedules a write; many changes close together become one write. */
-  save(): void {
-    if (!this.file || this.timer) return;
-    this.timer = setTimeout(() => {
-      this.timer = null;
-      this.flush();
-    }, 300);
-  }
-
-  flush(): void {
+  protected async write(): Promise<void> {
     if (!this.file) return;
-    mkdirSync(dirname(this.file), { recursive: true });
-    const tmp = `${this.file}.tmp`;
-    writeFileSync(tmp, JSON.stringify(this.data));
-    renameSync(tmp, this.file);
+    const contents = JSON.stringify(this.data);
+    await mkdir(dirname(this.file), { recursive: true });
+    const temp = `${this.file}.tmp`;
+    await writeFile(temp, contents);
+    await rename(temp, this.file);
   }
+}
+
+/** Explicit in-memory options take precedence over the process environment. */
+export function createStore(
+  dataFile: string | null,
+  databaseUrl = process.env.DATABASE_URL,
+) {
+  return dataFile !== null && databaseUrl
+    ? new PostgresStore(databaseUrl)
+    : new JsonStore(dataFile);
 }

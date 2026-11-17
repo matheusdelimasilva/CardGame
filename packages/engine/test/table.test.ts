@@ -22,7 +22,8 @@ function table(seed = 1) {
   t = addZone(addZone(t, "hand:a", "a"), "hand:b", "b");
   return addCards(t, "deck", standardDeck());
 }
-const faces = (t: ReturnType<typeof table>, zone: string) => t.zones[zone]!.cards.map((c) => c.face);
+const faces = (t: ReturnType<typeof table>, zone: string) =>
+  t.zones[zone]!.cards.map((c) => c.face);
 
 describe("table", () => {
   it("shuffles deterministically from the seed and keeps all 52 cards", () => {
@@ -37,10 +38,16 @@ describe("table", () => {
   it("gives cards new ids and hides them when shuffled", () => {
     const before = addCards(table(), "discard", ["XX"], FACE_UP);
     const after = shuffle(moveAll(before, "discard", "deck"), "deck");
-    const oldIds = new Set(before.zones.deck!.cards.concat(before.zones.discard!.cards).map((c) => c.id));
+    const oldIds = new Set(
+      before.zones
+        .deck!.cards.concat(before.zones.discard!.cards)
+        .map((c) => c.id),
+    );
     expect(after.zones.deck!.cards).toHaveLength(53);
     expect(after.zones.deck!.cards.some((c) => oldIds.has(c.id))).toBe(false);
-    expect(after.zones.deck!.cards.every((c) => c.visibleTo.length === 0)).toBe(true);
+    expect(after.zones.deck!.cards.every((c) => c.visibleTo.length === 0)).toBe(
+      true,
+    );
   });
 
   it("deals the top card and does not change the input state", () => {
@@ -54,11 +61,44 @@ describe("table", () => {
   });
 
   it("moves a card to the top or the bottom, keeping visibility unless told otherwise", () => {
-    let { table: t, cardId } = deal(table(), "deck", "hand:a", ["a"]);
+    const dealt = deal(table(), "deck", "hand:a", ["a"]);
+    const { cardId } = dealt;
+    let t = dealt.table;
     t = moveCard(t, cardId, "deck", { toBottom: true });
-    expect(t.zones.deck!.cards[0]).toMatchObject({ id: cardId, visibleTo: ["a"] });
+    expect(t.zones.deck!.cards[0]).toMatchObject({
+      id: cardId,
+      visibleTo: ["a"],
+    });
     t = moveCard(t, cardId, "discard", { visibleTo: FACE_UP });
-    expect(t.zones.discard!.cards.at(-1)).toMatchObject({ id: cardId, visibleTo: "all" });
+    expect(t.zones.discard!.cards.at(-1)).toMatchObject({
+      id: cardId,
+      visibleTo: "all",
+    });
+  });
+
+  it("inserts a card at a position and rejects positions outside the zone", () => {
+    let t = addCards(table(), "discard", ["X1", "X2", "X3"], FACE_UP);
+    const { table: dealt, cardId } = deal(t, "deck", "hand:a", FACE_DOWN);
+    t = moveCard(dealt, cardId, "discard", { index: 1, visibleTo: FACE_UP });
+    expect(faces(t, "discard")).toEqual([
+      "X1",
+      t.zones.discard!.cards[1]!.face,
+      "X2",
+      "X3",
+    ]);
+    expect(t.zones.discard!.cards[1]!.id).toBe(cardId);
+    expect(
+      moveCard(t, cardId, "discard", { index: 3 }).zones.discard!.cards[3]!.id,
+    ).toBe(cardId);
+    expect(() => moveCard(t, cardId, "hand:a", { index: 1 })).toThrow(
+      EngineError,
+    );
+    expect(() => moveCard(t, cardId, "hand:a", { index: -1 })).toThrow(
+      EngineError,
+    );
+    expect(() => moveCard(t, cardId, "hand:a", { index: 0.5 })).toThrow(
+      EngineError,
+    );
   });
 
   it("rejects unknown zones, unknown cards and dealing from an empty zone", () => {
@@ -73,26 +113,42 @@ describe("table", () => {
 describe("visibility", () => {
   it("shows a private card only to its viewer, and nothing hidden to spectators", () => {
     const { table: t, cardId } = deal(table(), "deck", "hand:a", ["a"]);
-    const card = (viewer: string | null) => viewTable(t, viewer).zones["hand:a"]!.cards[0]!;
+    const card = (viewer: string | null) =>
+      viewTable(t, viewer).zones["hand:a"]!.cards[0]!;
     expect(card("a").face).not.toBeNull();
     expect(card("b")).toEqual({ id: cardId, face: null, faceUp: false });
     expect(card(null).face).toBeNull();
-    expect(viewTable(t, "a").zones.deck!.cards.every((c) => c.face === null)).toBe(true);
+    expect(
+      viewTable(t, "a").zones.deck!.cards.every((c) => c.face === null),
+    ).toBe(true);
   });
 
   it("peek adds one viewer; reveal shows everyone", () => {
-    let { table: t, cardId } = deal(table(), "deck", "hand:a", FACE_DOWN);
-    const seenBy = (viewer: string | null) => viewTable(t, viewer).zones["hand:a"]!.cards[0]!.face !== null;
+    const dealt = deal(table(), "deck", "hand:a", FACE_DOWN);
+    const { cardId } = dealt;
+    let t = dealt.table;
+    const seenBy = (viewer: string | null) =>
+      viewTable(t, viewer).zones["hand:a"]!.cards[0]!.face !== null;
     expect(seenBy("a")).toBe(false);
     t = peek(t, cardId, "a");
-    expect([seenBy("a"), seenBy("b"), seenBy(null)]).toEqual([true, false, false]);
+    expect([seenBy("a"), seenBy("b"), seenBy(null)]).toEqual([
+      true,
+      false,
+      false,
+    ]);
     t = reveal(t, cardId);
-    expect([seenBy("a"), seenBy("b"), seenBy(null)]).toEqual([true, true, true]);
+    expect([seenBy("a"), seenBy("b"), seenBy(null)]).toEqual([
+      true,
+      true,
+      true,
+    ]);
     expect(viewTable(t, null).zones["hand:a"]!.cards[0]!.faceUp).toBe(true);
   });
 
   it("never includes hidden faces or the random state in a view", () => {
-    const { table: t } = deal(shuffle(table(), "deck"), "deck", "hand:a", ["a"]);
+    const { table: t } = deal(shuffle(table(), "deck"), "deck", "hand:a", [
+      "a",
+    ]);
     const hidden = t.zones["hand:a"]!.cards[0]!.face;
     const json = JSON.stringify(viewTable(t, "b"));
     expect(json).not.toContain(`"${hidden}"`);

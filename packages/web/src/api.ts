@@ -7,7 +7,10 @@ async function call<T>(path: string, body?: unknown): Promise<T> {
   try {
     res = await fetch(path, {
       method: body === undefined ? "GET" : "POST",
-      headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
       body: body === undefined ? undefined : JSON.stringify(body),
     });
   } catch {
@@ -19,12 +22,16 @@ async function call<T>(path: string, body?: unknown): Promise<T> {
 }
 
 export const api = {
-  requestCode: (email: string) => call<{ devCode?: string }>("/api/auth/request", { email }),
-  verify: (email: string, code: string) => call<{ token: string; email: string }>("/api/auth/verify", { email, code }),
+  requestCode: (email: string) =>
+    call<{ devCode?: string }>("/api/auth/request", { email }),
+  verify: (email: string, code: string) =>
+    call<{ token: string; email: string }>("/api/auth/verify", { email, code }),
   me: () => call<{ email: string }>("/api/me"),
   signOut: () => call<object>("/api/auth/signout", {}),
   games: () => call<{ games: GameInfo[] }>("/api/games"),
-  createRoom: (gameId: string, settings: SettingValues) => call<{ code: string }>("/api/rooms", { gameId, settings }),
-  roomExists: (code: string) => call<{ exists: boolean }>(`/api/rooms/${encodeURIComponent(code)}`),
+  createRoom: (gameId: string, settings: SettingValues) =>
+    call<{ code: string }>("/api/rooms", { gameId, settings }),
+  roomExists: (code: string) =>
+    call<{ exists: boolean }>(`/api/rooms/${encodeURIComponent(code)}`),
   history: () => call<{ history: HistoryEntry[] }>("/api/history"),
 };

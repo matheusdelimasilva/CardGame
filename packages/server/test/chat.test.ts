@@ -10,7 +10,12 @@ import { createApp } from "../src/app";
  *   server -> room    { type: "chat", message: { id, from: { id, name }, text, at } }
  * Chat is ephemeral, plain text, and only reaches sockets that have joined the room.
  */
-type ChatMessage = { id: string; from: { id: string; name: string }; text: string; at: number };
+type ChatMessage = {
+  id: string;
+  from: { id: string; name: string };
+  text: string;
+  at: number;
+};
 
 let app: ReturnType<typeof createApp>;
 let base: string;
@@ -25,25 +30,47 @@ afterEach(() => app.close());
 async function api(path: string, body?: unknown, token?: string) {
   const res = await fetch(`http://${base}${path}`, {
     method: body === undefined ? "GET" : "POST",
-    headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  return (await res.json()) as Record<string, any>;
+  return (await res.json()) as Record<string, string>; // the fields these tests read are strings
 }
 
 async function newRoom(): Promise<string> {
-  const { devCode } = await api("/api/auth/request", { email: "host@example.com" });
-  const { token } = await api("/api/auth/verify", { email: "host@example.com", code: devCode });
-  return (await api("/api/rooms", { gameId: "demo" }, token)).code;
+  const { devCode } = await api("/api/auth/request", {
+    email: "host@example.com",
+  });
+  const { token } = await api("/api/auth/verify", {
+    email: "host@example.com",
+    code: devCode,
+  });
+  return (await api("/api/rooms", { gameId: "demo" }, token)).code as string;
 }
 
 /** Connects, says hello and (unless name is null) picks a nickname. Records chat traffic. */
-async function join(code: string, name: string | null, opts: { hello?: boolean } = {}) {
+async function join(
+  code: string,
+  name: string | null,
+  opts: { hello?: boolean } = {},
+) {
   const ws = new WebSocket(`ws://${base}/ws?room=${code}`);
-  const c = { ws, chats: [] as ChatMessage[], errors: [] as string[], kicked: false, joined: false, id: "", token: "", name: "", states: [] as string[] };
+  const c = {
+    ws,
+    chats: [] as ChatMessage[],
+    errors: [] as string[],
+    kicked: false,
+    joined: false,
+    id: "",
+    token: "",
+    name: "",
+    states: [] as string[],
+  };
   let wake = () => {};
   ws.on("message", (raw) => {
-    const msg = JSON.parse(String(raw)) as any;
+    const msg = JSON.parse(String(raw)) as ServerMessage;
     if (msg.type === "chat") c.chats.push(msg.message);
     if (msg.type === "error") c.errors.push(msg.message);
     if (msg.type === "kicked") c.kicked = true;
@@ -57,11 +84,14 @@ async function join(code: string, name: string | null, opts: { hello?: boolean }
     wake();
   });
   await new Promise((r) => ws.once("open", r));
-  const send = (msg: ClientMessage | { type: "chat"; text?: unknown; from?: unknown }) => ws.send(JSON.stringify(msg));
+  const send = (
+    msg: ClientMessage | { type: "chat"; text?: unknown; from?: unknown },
+  ) => ws.send(JSON.stringify(msg));
   const until = async (test: () => boolean) => {
     const deadline = Date.now() + 2000;
     while (!test()) {
-      if (Date.now() > deadline) throw new Error("Timed out waiting for the server");
+      if (Date.now() > deadline)
+        throw new Error("Timed out waiting for the server");
       await new Promise<void>((r) => {
         wake = r;
         setTimeout(r, 25);
@@ -92,7 +122,10 @@ describe("room live chat", () => {
     await bo.until(() => bo.chats.length === 1);
     await ana.until(() => ana.chats.length === 1);
 
-    expect(bo.chats[0]).toMatchObject({ text: "hello table", from: { id: ana.id, name: "Ana" } });
+    expect(bo.chats[0]).toMatchObject({
+      text: "hello table",
+      from: { id: ana.id, name: "Ana" },
+    });
     expect(typeof bo.chats[0]!.id).toBe("string");
     expect(typeof bo.chats[0]!.at).toBe("number");
     expect(ana.chats[0]).toEqual(bo.chats[0]);
@@ -104,7 +137,11 @@ describe("room live chat", () => {
     const ana = await join(code, "Ana");
     const bo = await join(code, "Bo");
 
-    ana.send({ type: "chat", text: "I am not Bo", from: { id: bo.id, name: "Bo" } });
+    ana.send({
+      type: "chat",
+      text: "I am not Bo",
+      from: { id: bo.id, name: "Bo" },
+    });
     await bo.until(() => bo.chats.length === 1);
     expect(bo.chats[0]!.from).toEqual({ id: ana.id, name: "Ana" });
   });
@@ -170,12 +207,18 @@ describe("room live chat", () => {
 
   it("refuses a member who was removed from the room", async () => {
     await boot();
-    const { devCode } = await api("/api/auth/request", { email: "host@example.com" });
-    const { token } = await api("/api/auth/verify", { email: "host@example.com", code: devCode });
-    const code = (await api("/api/rooms", { gameId: "demo" }, token)).code as string;
+    const { devCode } = await api("/api/auth/request", {
+      email: "host@example.com",
+    });
+    const { token } = (await api("/api/auth/verify", {
+      email: "host@example.com",
+      code: devCode,
+    })) as { token: string };
+    const code = (await api("/api/rooms", { gameId: "demo" }, token))
+      .code as string;
 
     const host = await join(code, null, { hello: false });
-    host.send({ type: "hello", sessionToken: token } as any);
+    host.send({ type: "hello", sessionToken: token });
     await host.until(() => host.joined);
     host.send({ type: "setName", name: "Hosty" });
     const bo = await join(code, "Bo");
@@ -235,7 +278,13 @@ describe("room live chat", () => {
     await ana.until(() => ana.errors.length >= 1);
     expect(ana.errors.at(-1)).toMatch(/slow|too (many|fast)|wait/i);
     await new Promise((r) => setTimeout(r, 150));
-    expect(texts(bo)).toEqual(["spam 0", "spam 1", "spam 2", "spam 3", "spam 4"]);
+    expect(texts(bo)).toEqual([
+      "spam 0",
+      "spam 1",
+      "spam 2",
+      "spam 3",
+      "spam 4",
+    ]);
     expect(ana.errors).toHaveLength(25);
     expect(bo.errors).toEqual([]);
 
@@ -268,7 +317,8 @@ describe("room live chat", () => {
     await new Promise((r) => again.once("open", r));
     again.send(JSON.stringify({ type: "hello", memberToken: ana.token }));
     await bo.until(() => welcomed);
-    for (let i = 0; i < 30; i++) again.send(JSON.stringify({ type: "chat", text: `again ${i}` }));
+    for (let i = 0; i < 30; i++)
+      again.send(JSON.stringify({ type: "chat", text: `again ${i}` }));
     await bo.until(() => errors.length === 30);
     expect(errors.at(-1)).toMatch(/too fast/i);
     expect(bo.chats.length).toBe(delivered);
@@ -287,7 +337,8 @@ describe("room live chat", () => {
     cy.send({ type: "chat", text: "sentinel" });
     await cy.until(() => cy.chats.length >= 1);
     expect(texts(cy)).toEqual(["sentinel"]);
-    for (const c of [ana, bo, cy]) expect(c.states.join("")).not.toContain("secret-before-cy");
+    for (const c of [ana, bo, cy])
+      expect(c.states.join("")).not.toContain("secret-before-cy");
   });
 
   it("delivers to every connection of the same member, once each", async () => {

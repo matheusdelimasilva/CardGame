@@ -18,6 +18,17 @@ const mb = await readJson(join(CACHE_DIR, "musicbrainz.json"), {});
 const deezer = await readJson(join(CACHE_DIR, "deezer.json"), {});
 const deezerOverrides = await readJson(join(ROOT, "deezer-overrides.json"), {});
 
+// Verified international additions are checked in independently of disposable caches.
+const internationalAccepted = await readJson(
+  join(ROOT, "international", "accepted.json"),
+  {},
+);
+
+const internationalBaseline = await readJson(
+  join(ROOT, "international", "baseline.json"),
+  { ids: {} },
+);
+
 const yearOf = (d) => (d && /^\d{4}/.test(d) ? Number(d.slice(0, 4)) : null);
 
 function matches(song, c) {
@@ -42,7 +53,12 @@ for (const { rows } of Object.values(billboard.years)) {
       const good = candidates
         .filter((c) => matches(row, c))
         .map((c) => ({ ...c, year: yearOf(c.firstRelease) }))
-        .filter((c) => c.year && c.year <= row.chartYear && c.year >= row.chartYear - MAX_YEARS_BEFORE_CHART)
+        .filter(
+          (c) =>
+            c.year &&
+            c.year <= row.chartYear &&
+            c.year >= row.chartYear - MAX_YEARS_BEFORE_CHART,
+        )
         .sort((a, b) => a.year - b.year || b.score - a.score);
       if (good.length) {
         releaseYear = good[0].year;
@@ -76,20 +92,46 @@ let dropped = 0;
 const withDeezer = [];
 for (const s of seen.values()) {
   const label = `${s.artist} — ${s.title}`;
-  const id = label in deezerOverrides ? deezerOverrides[label] : deezer[`${deezerNorm(s.artist)}|${deezerNorm(s.title)}`]?.id ?? null;
+  const verified = internationalAccepted[label];
+  const id =
+    label in deezerOverrides
+      ? deezerOverrides[label]
+      : verified?.year === s.year
+        ? verified.deezerId
+        : (deezer[`${deezerNorm(s.artist)}|${deezerNorm(s.title)}`]?.id ??
+          internationalBaseline.ids[label] ??
+          null);
   if (label in deezerOverrides && id === null) {
     dropped++;
     continue;
   }
-  withDeezer.push({ ...s, deezerId: id });
+  withDeezer.push({
+    ...s,
+    yearSource:
+      verified?.year === s.year && id === verified.deezerId
+        ? "musicbrainz"
+        : s.yearSource,
+    mbid:
+      verified?.year === s.year && id === verified.deezerId
+        ? verified.recordingMbid
+        : s.mbid,
+    deezerId: id,
+  });
 }
 stats.deezerMatched = withDeezer.filter((s) => s.deezerId !== null).length;
 stats.droppedNoPreview = dropped;
-const final = withDeezer.sort((a, b) => a.year - b.year || a.chartRank - b.chartRank);
+const final = withDeezer.sort(
+  (a, b) => a.year - b.year || a.chartRank - b.chartRank,
+);
 
 await writeJson(join(OUT_DIR, "songs.json"), final);
 console.log(`songs: ${final.length} (deduped from ${songs.length})`);
 console.log(stats);
 const perYear = {};
 for (const s of final) perYear[s.year] = (perYear[s.year] ?? 0) + 1;
-console.log("per release year:", Object.entries(perYear).map(([y, n]) => `${y}:${n}`).join(" "));
+console.log(
+  "per release year:",
+  Object.entries(perYear)
+    .map(([y, n]) => `${y}:${n}`)
+    .join(" "),
+);

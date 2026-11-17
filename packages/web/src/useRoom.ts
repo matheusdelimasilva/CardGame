@@ -1,11 +1,17 @@
-import type { ChatMessage, ClientMessage, RoomView, ServerMessage } from "@cardgame/protocol";
+import type {
+  ChatMessage,
+  ClientMessage,
+  RoomView,
+  ServerMessage,
+} from "@cardgame/protocol";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { KEYS, storage } from "./storage";
 
 /** Only this many recent chat lines are kept in memory. */
 export const MAX_CHAT_HISTORY = 50;
 
-export type Connection = "connecting" | "open" | "reconnecting" | "gone" | "kicked";
+export type Connection =
+  "connecting" | "open" | "reconnecting" | "gone" | "kicked";
 
 /** Keeps a live connection to one table and reconnects when it drops. */
 export function useRoom(code: string) {
@@ -17,7 +23,6 @@ export function useRoom(code: string) {
 
   useEffect(() => {
     let stopped = false;
-    setChats([]); // a different room never inherits the previous room's chat
     let attempts = 0;
     let retry: ReturnType<typeof setTimeout> | undefined;
     let everJoined = false;
@@ -25,7 +30,9 @@ export function useRoom(code: string) {
     const connect = () => {
       if (stopped) return;
       const proto = location.protocol === "https:" ? "wss:" : "ws:";
-      const ws = new WebSocket(`${proto}//${location.host}/ws?room=${encodeURIComponent(code)}`);
+      const ws = new WebSocket(
+        `${proto}//${location.host}/ws?room=${encodeURIComponent(code)}`,
+      );
       socket.current = ws;
       ws.onopen = () => {
         const hello: ClientMessage = {
@@ -83,6 +90,7 @@ export function useRoom(code: string) {
       clearTimeout(retry);
       document.removeEventListener("visibilitychange", onVisible);
       socket.current?.close();
+      // A different room never inherits the previous room's chat.
       setChats([]);
     };
   }, [code]);
@@ -94,7 +102,8 @@ export function useRoom(code: string) {
   }, [error]);
 
   const send = useCallback((msg: ClientMessage) => {
-    if (socket.current?.readyState === WebSocket.OPEN) socket.current.send(JSON.stringify(msg));
+    if (socket.current?.readyState === WebSocket.OPEN)
+      socket.current.send(JSON.stringify(msg));
     else setError("Not connected. Trying again...");
   }, []);
 

@@ -6,24 +6,24 @@ Plain Node (v22.6+ for the `.ts` import), no dependencies.
 
 ## Sources
 
-| Data | Source | Years | Notes |
-|---|---|---|---|
-| Year-end top 100 (radio) | pt.wikipedia "Lista das canções mais executadas no Brasil em …" (Crowley) | 1999, 2000, 2002, 2004, 2005, 2007, 2008, 2021 | 2000/2002/2004 pages only have the top 10, 2005 the top 20 |
-| Number-one songs | pt.wikipedia "Lista de canções/singles número um na …" | 2009–2025 | Brasil Hot 100 Airplay, Hot Popular Songs, Top 100 Brasil (Crowley), Top 50 Streaming (Pro-Música), Brasil Hot 100, Brazil Songs. Every #1 gets `chartRank: 1`. |
-| Notable songs by year | pt.wikipedia "Categoria:Canções de <ano>", Brazilian pages only | 1912–2026 | The main source before 1999. No rank: a Wikipedia article is the popularity proxy. |
-| Hand-picked hits | `curated-br.mjs` | 1917–2025 | Fallback for gaps; also each year's #1 as reported by the press (Buscapé, Crowley, Pro-Música, Spotify). |
-| Release year / id | [MusicBrainz](https://musicbrainz.org) recording search | all | Data is CC0. |
+| Data                     | Source                                                                    | Years                                          | Notes                                                                                                                                                           |
+| ------------------------ | ------------------------------------------------------------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Year-end top 100 (radio) | pt.wikipedia "Lista das canções mais executadas no Brasil em …" (Crowley) | 1999, 2000, 2002, 2004, 2005, 2007, 2008, 2021 | 2000/2002/2004 pages only have the top 10, 2005 the top 20                                                                                                      |
+| Number-one songs         | pt.wikipedia "Lista de canções/singles número um na …"                    | 2009–2025                                      | Brasil Hot 100 Airplay, Hot Popular Songs, Top 100 Brasil (Crowley), Top 50 Streaming (Pro-Música), Brasil Hot 100, Brazil Songs. Every #1 gets `chartRank: 1`. |
+| Notable songs by year    | pt.wikipedia "Categoria:Canções de <ano>", Brazilian pages only           | 1912–2026                                      | The main source before 1999. No rank: a Wikipedia article is the popularity proxy.                                                                              |
+| Hand-picked hits         | `curated-br.mjs`                                                          | 1917–2025                                      | Fallback for gaps; also each year's #1 as reported by the press (Buscapé, Crowley, Pro-Música, Spotify).                                                        |
+| Release year / id        | [MusicBrainz](https://musicbrainz.org) recording search                   | all                                            | Data is CC0.                                                                                                                                                    |
 
-A category page counts as Brazilian when a category says so (Portuguese-language, Brazilian
-genre, "do Brasil"…), when its first paragraph does, or when it was recorded by an artist whose
-pages are mostly Brazilian. Portuguese (Portugal) and Eurovision songs are excluded.
+A category page counts as Brazilian when a category says so (Brazilian genre, "do Brasil"…),
+or when its first paragraph calls it Brazilian and no category marks it as foreign-language
+(English, Spanish…, United States, United Kingdom, Portugal).
 
 ## Run (from the repo root)
 
 ```bash
 node tools/songs/brazil/scrape-br.mjs                # ~15 min, caches in .cache/br/
 node tools/songs/brazil/fetch-musicbrainz-br.mjs     # ~35 min (1 req/s), resumable
-node tools/songs/fetch-deezer.mjs --file songs-br.json   # optional: Deezer preview ids
+node tools/songs/fetch-deezer.mjs --br                # optional: Deezer preview ids
 node tools/songs/brazil/build-songs-br.mjs           # instant, offline
 ```
 
@@ -33,6 +33,7 @@ Same as `songs.json`: `title`, `artist`, `year` (release year, the one to use), 
 `chartYear`, `chartRank`, `mbid`, `deezerId`, plus `source` (which list the song came from).
 
 `yearSource` is one of:
+
 - `wikipedia`: the song's "Canções de <ano>" category (its release year).
 - `curated`: hand-picked list.
 - `musicbrainz`: chart song whose MusicBrainz first release is the chart year or the year before.

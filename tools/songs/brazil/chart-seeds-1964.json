@@ -1,0 +1,269 @@
+{
+  "source": {
+    "publication": "Cash Box",
+    "publicationDate": "1965-01-23",
+    "chartTitle": "Brazil’s 1964 Best Sellers",
+    "chartYear": 1964,
+    "period": "annual",
+    "territoryAsPrinted": "BRAZIL",
+    "scopeAsPrinted": "Brazil’s 1964 Best Sellers",
+    "printedPage": 70,
+    "sourceUrl": "https://www.worldradiohistory.com/Archive-All-Music/Cash-Box/60s/1965/CB-1965-01-23.pdf",
+    "extractionStatus": "scan-verified",
+    "visualVerification": true,
+    "note": "Verified against downloaded scan, printed page70, PDF index69 on2026-11-15. Local-product marker is as printed and does not independently establish nationality. Chart year is not release year.",
+    "pdfPageIndex": 69
+  },
+  "rows": [
+    {
+      "position": 1,
+      "chartYear": 1964,
+      "rawTitle": "Datemi Un Martello",
+      "rawArtist": "Rita Pavone",
+      "rawLabel": "RCA Victor",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 2,
+      "chartYear": 1964,
+      "rawTitle": "Io Che Amo Solo Te",
+      "rawArtist": "Sérgio Endrigo",
+      "rawLabel": "RCA Victor",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 3,
+      "chartYear": 1964,
+      "rawTitle": "Dominique",
+      "rawArtist": "Giane",
+      "rawLabel": "Chantecler",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 4,
+      "chartYear": 1964,
+      "rawTitle": "Deixa Isso Pr'a Lá",
+      "rawArtist": "Jair Rodrigues",
+      "rawLabel": "Cia. Bras. de Discos (Philips)",
+      "localProductMarker": true,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 5,
+      "chartYear": 1964,
+      "rawTitle": "Una Lácrima Sul Viso",
+      "rawArtist": "Bobby Solo",
+      "rawLabel": "Chantecler",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 6,
+      "chartYear": 1964,
+      "rawTitle": "Parei Na Contra Mão",
+      "rawArtist": "Roberto Carlos",
+      "rawLabel": "CBS do Brasil",
+      "localProductMarker": true,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 7,
+      "chartYear": 1964,
+      "rawTitle": "Acorrentados-Encadenados",
+      "rawArtist": "Agnaldo Rayol",
+      "rawLabel": "Copacabana",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 8,
+      "chartYear": 1964,
+      "rawTitle": "My Boy Lollipop",
+      "rawArtist": "Millie Small",
+      "rawLabel": "Cia. Bras. de Discos (Philips)",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 9,
+      "chartYear": 1964,
+      "rawTitle": "Cin-Cin",
+      "rawArtist": "Richard Anthony",
+      "rawLabel": "Odeon",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 10,
+      "chartYear": 1964,
+      "rawTitle": "Ritmo Da Chuva-Rhythm Of The Rain",
+      "rawArtist": "Demetrius",
+      "rawLabel": "Continental",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 11,
+      "chartYear": 1964,
+      "rawTitle": "Rua Augusta",
+      "rawArtist": "Ronnie Cord",
+      "rawLabel": "RCA Victor",
+      "localProductMarker": true,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 12,
+      "chartYear": 1964,
+      "rawTitle": "O Divorcio",
+      "rawArtist": "Oslain Galvão",
+      "rawLabel": "RGE",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 13,
+      "chartYear": 1964,
+      "rawTitle": "Roberta",
+      "rawArtist": "Peppino di Capri",
+      "rawLabel": "Odeon",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 14,
+      "chartYear": 1964,
+      "rawTitle": "Que Queres Tu De Mim",
+      "rawArtist": "Altemar Dutra",
+      "rawLabel": "Odeon",
+      "localProductMarker": true,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 15,
+      "chartYear": 1964,
+      "rawTitle": "Separação",
+      "rawArtist": "Claudio de Barros",
+      "rawLabel": "RCA Victor",
+      "localProductMarker": true,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 16,
+      "chartYear": 1964,
+      "rawTitle": "Sabe Deus-Sabrá Dios",
+      "rawArtist": "Carlos Alberto",
+      "rawLabel": "CBS do Brasil",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 17,
+      "chartYear": 1964,
+      "rawTitle": "Michael",
+      "rawArtist": "Trini Lopez",
+      "rawLabel": "Reprise",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 18,
+      "chartYear": 1964,
+      "rawTitle": "I Want To Hold Your Hand",
+      "rawArtist": "The Beatles",
+      "rawLabel": "Odeon",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 19,
+      "chartYear": 1964,
+      "rawTitle": "Scrivi",
+      "rawArtist": "Rita Pavone",
+      "rawLabel": "RCA Victor",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 20,
+      "chartYear": 1964,
+      "rawTitle": "La Bamba",
+      "rawArtist": "Prini Lorez",
+      "rawLabel": "RGE",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": "Printed Prini Lorez preserved; identify Brazilian act separately from Trini Lopez."
+    },
+    {
+      "position": 21,
+      "chartYear": 1964,
+      "rawTitle": "Mais Que Nada",
+      "rawArtist": "Jorge Ben",
+      "rawLabel": "Cia. Bras. de Discos (Philips)",
+      "localProductMarker": true,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 22,
+      "chartYear": 1964,
+      "rawTitle": "Somos Iguais",
+      "rawArtist": "Altemar Dutra",
+      "rawLabel": "Odeon",
+      "localProductMarker": true,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 23,
+      "chartYear": 1964,
+      "rawTitle": "Hully Gully Baby",
+      "rawArtist": "Chubby Checker",
+      "rawLabel": "Fermata",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 24,
+      "chartYear": 1964,
+      "rawTitle": "Blue Star",
+      "rawArtist": "The Jordans",
+      "rawLabel": "Continental",
+      "localProductMarker": false,
+      "needsReview": false,
+      "reviewReason": null
+    },
+    {
+      "position": 25,
+      "chartYear": 1964,
+      "rawTitle": "O Trem Das Onze",
+      "rawArtist": "Os Demônios da Garoa",
+      "rawLabel": "Chantecler",
+      "localProductMarker": true,
+      "needsReview": false,
+      "reviewReason": null
+    }
+  ]
+}

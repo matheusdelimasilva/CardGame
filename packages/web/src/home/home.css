@@ -1,0 +1,1209 @@
+/* Home flow: home screen, choose a game, game settings.
+   Felt desk with paper sheets; Rubik for text, the pixel face only in the logo. */
+
+.flow {
+  --ink: #141617;
+  --cream: #fffaf0;
+  --paper-lines: repeating-linear-gradient(
+    to bottom,
+    transparent 0 31px,
+    rgba(59, 140, 240, 0.22) 31px 32px
+  );
+  --checker: repeating-conic-gradient(#ef4a3c 0 25%, #d63e31 0 50%);
+  --rubik: "Rubik", system-ui, sans-serif;
+  --pop: cubic-bezier(0.3, 1.4, 0.5, 1);
+  --logo-fs: 78px;
+  color: var(--ink);
+  font-family: var(--rubik);
+  font-size: 18px;
+  line-height: 1.45;
+}
+.flow b {
+  font-weight: 700;
+  color: inherit;
+}
+.flow h1,
+.flow h2,
+.flow h3 {
+  font-family: var(--rubik);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.flow.staged {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+.flow.stacked {
+  position: relative;
+  min-height: 100%;
+  overflow-x: hidden;
+  padding-bottom: 72px;
+}
+.flow-felt {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    #5c9a82,
+    #4a836d 60%,
+    #3b6b58
+  );
+}
+.flow-felt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1.5px);
+  background-size: 6px 6px;
+  opacity: 0.6;
+}
+
+/* The 1200 x 760 stage, scaled to fit the window. */
+.stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1200px;
+  height: 760px;
+  transform: translate(-50%, -50%) scale(var(--s, 1));
+}
+
+/* ---------- Logo: arcade marquee ---------- */
+.marquee {
+  position: relative;
+  isolation: isolate;
+  background: var(--ink);
+  border-radius: 22px;
+  padding: 18px 46px 16px;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.45);
+  transition:
+    background 0.3s,
+    box-shadow 0.3s;
+  text-align: center;
+  overflow: hidden;
+  cursor: default;
+}
+.marquee.bare {
+  background: rgba(20, 22, 23, 0);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0);
+}
+.marquee-fade {
+  transition: opacity 0.3s;
+}
+.marquee.bare .marquee-fade {
+  opacity: 0;
+}
+.marquee-border {
+  position: absolute;
+  inset: 7px;
+  border: 3px solid #ef4a3c;
+  border-radius: 16px;
+  pointer-events: none;
+}
+.marquee-body {
+  position: relative;
+  animation: hf-flicker 2.4s steps(1) infinite;
+}
+.marquee-suits {
+  font:
+    400 20px/1 "VT323",
+    monospace;
+  color: #ef4a3c;
+  letter-spacing: 0.5em;
+  margin-right: -0.5em;
+}
+.flow .marquee-title {
+  position: relative;
+  display: inline-block;
+  margin: 2px 0 4px;
+  font:
+    700 var(--logo-fs) / 1 "Pixelify Sans",
+    sans-serif;
+  letter-spacing: 0.02em;
+  color: #ffe680;
+  text-shadow:
+    -3px 0 rgba(239, 74, 60, 0.85),
+    3px 0 rgba(59, 140, 240, 0.85),
+    0 0 12px rgba(255, 216, 74, 0.95),
+    0 0 34px rgba(255, 216, 74, 0.7);
+}
+/* Without the cabinet the letters get a black outline and a hard drop shadow. */
+.flow .marquee.bare .marquee-title {
+  text-shadow:
+    -3px 0 rgba(239, 74, 60, 0.85),
+    3px 0 rgba(59, 140, 240, 0.85),
+    7px 0 var(--ink),
+    -7px 0 var(--ink),
+    0 7px var(--ink),
+    0 -7px var(--ink),
+    5px 5px var(--ink),
+    -5px 5px var(--ink),
+    5px -5px var(--ink),
+    -5px -5px var(--ink),
+    0 14px 0 var(--ink),
+    5px 12px 0 var(--ink),
+    -5px 12px 0 var(--ink),
+    0 0 34px rgba(255, 216, 74, 0.7);
+}
+.marquee-coin {
+  font:
+    400 20px/1 "VT323",
+    monospace;
+  color: #d8d2bf;
+  letter-spacing: 0.18em;
+  animation: hf-blink 1.1s steps(2, start) infinite;
+}
+.marquee-scan {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.28) 0 1px,
+    transparent 1px 3px
+  );
+}
+.marquee-roll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -40%;
+  height: 40%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 250, 240, 0.04) 20%,
+    rgba(255, 250, 240, 0.16) 55%,
+    rgba(255, 250, 240, 0.08) 75%,
+    transparent
+  );
+  animation: hf-roll 2.8s linear infinite;
+  will-change: transform;
+}
+
+.stage-logo {
+  position: absolute;
+  left: 50%;
+  top: 26px;
+  z-index: 6;
+  transform: translateX(-50%) scale(1);
+  transform-origin: 50% 0;
+  transition: transform 0.5s cubic-bezier(0.3, 1.2, 0.4, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+.flow:not(.on-home) .stage-logo {
+  transform: translateX(-50%) translateY(-22px) scale(0.62);
+}
+.tagline {
+  font: 500 17px/1.2 var(--rubik);
+  color: var(--cream);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  transition: opacity 0.25s;
+}
+.flow:not(.on-home) .tagline {
+  opacity: 0;
+}
+
+/* ---------- Paper sheets and controls ---------- */
+.sheet {
+  position: relative;
+  background: var(--cream) var(--paper-lines);
+  border-radius: 6px;
+  padding: 32px 34px 30px;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3);
+}
+.doors .sheet {
+  min-height: 310px;
+}
+.sheet-tape {
+  position: absolute;
+  left: 50%;
+  top: -12px;
+  width: 110px;
+  height: 26px;
+  margin-left: -55px;
+}
+.sheet-tape.gold {
+  background: rgba(255, 216, 74, 0.9);
+  transform: rotate(-3deg);
+}
+.sheet-tape.blue {
+  background: rgba(59, 140, 240, 0.8);
+  transform: rotate(2deg);
+}
+.flow .sheet-title {
+  margin: 0;
+  font: 800 46px/1.05 var(--rubik);
+  letter-spacing: -0.02em;
+}
+.sheet-text {
+  margin: 12px 0 20px;
+  font: 400 18px/1.45 var(--rubik);
+  text-wrap: pretty;
+}
+.sheet-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.sheet-dev {
+  margin: -6px 0 16px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: rgba(255, 216, 74, 0.5);
+  font: 400 16px/1.4 var(--rubik);
+}
+.sheet-dev b {
+  letter-spacing: 0.15em;
+}
+.flow .pinput {
+  min-width: 0;
+  background: #fff;
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 9px;
+  padding: 11px 14px;
+  font: 500 18px/1.2 var(--rubik);
+  outline: none;
+}
+.flow .pinput:focus-visible {
+  outline: 3px solid #3b8cf0;
+  outline-offset: 2px;
+}
+.pinput::placeholder {
+  color: #9a968a;
+}
+.pinput.grow {
+  flex: 1;
+  min-width: 180px;
+}
+.pinput.code {
+  width: 200px;
+  font: 700 20px/1.2 var(--rubik);
+  letter-spacing: 0.3em;
+}
+.pbtn {
+  background: var(--cream);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 9px;
+  padding: 10px 20px;
+  font: 700 19px/1.2 var(--rubik);
+  box-shadow: 0 5px 0 var(--ink);
+  white-space: nowrap;
+  transition:
+    transform 0.12s,
+    background 0.2s;
+}
+.pbtn:not(:disabled):hover {
+  transform: translateY(-2px);
+}
+.pbtn:not(:disabled):active {
+  transform: translateY(3px);
+}
+.pbtn:disabled {
+  background: #d8d2bf;
+}
+.pbtn.gold:not(:disabled) {
+  background: #ffd84a;
+}
+.pbtn.blue:not(:disabled) {
+  background: #3b8cf0;
+  color: var(--cream);
+}
+.pbtn.wide {
+  padding: 10px 26px;
+}
+.pbtn.big {
+  border-radius: 10px;
+  padding: 13px 30px;
+  font: 800 26px/1.2 var(--rubik);
+  box-shadow: 0 6px 0 var(--ink);
+}
+.pbtn.back {
+  padding: 9px 18px 9px 14px;
+  font: 700 18px/1.2 var(--rubik);
+}
+.pbtn.continue {
+  padding: 13px 34px;
+  font: 800 24px/1.2 var(--rubik);
+}
+.paper-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--ink);
+  text-decoration: underline;
+}
+.paper-link.small {
+  display: block;
+  margin-top: 16px;
+  font: 500 15px/1.2 var(--rubik);
+}
+.scribble {
+  margin: 16px 0 0;
+  font:
+    700 28px/1 "Caveat",
+    cursive;
+  transform: rotate(-2deg);
+  transform-origin: 0 50%;
+}
+.scribble.red {
+  color: #c7362a;
+}
+.scribble.green {
+  color: #2c6a52;
+}
+
+/* ---------- Home: the two doors ---------- */
+.doors {
+  position: absolute;
+  left: 90px;
+  right: 90px;
+  top: 284px;
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+.door {
+  position: relative;
+  min-width: 0;
+}
+.doors .door {
+  flex: 1;
+  transition:
+    flex 0.45s cubic-bezier(0.3, 1.2, 0.4, 1),
+    transform 0.45s var(--pop);
+}
+.doors .door.host {
+  transform: rotate(-1.5deg);
+}
+.doors .door.join {
+  transform: rotate(1.5deg);
+}
+/* The hovered door widens and straightens; the other shrinks back. */
+.flow[data-door="host"] .door.host,
+.flow[data-door="join"] .door.join {
+  flex: 1.4;
+  transform: rotate(0deg) translateY(-10px);
+}
+.flow[data-door="join"] .door.host {
+  transform: rotate(-2.4deg) scale(0.96);
+}
+.flow[data-door="host"] .door.join {
+  transform: rotate(2.4deg) scale(0.96);
+}
+/* Leaving home sweeps both sheets off the sides. */
+.flow:not(.on-home) .doors .door {
+  transition:
+    flex 0.45s cubic-bezier(0.3, 1.2, 0.4, 1),
+    transform 0.5s cubic-bezier(0.6, 0, 0.8, 0.4);
+}
+.flow:not(.on-home) .doors .door.host {
+  transform: translate(-760px, 90px) rotate(-22deg);
+}
+.flow:not(.on-home) .doors .door.join {
+  transform: translate(760px, 90px) rotate(22deg);
+}
+
+.host-fan {
+  position: absolute;
+  left: 70px;
+  top: 0;
+  width: 104px;
+  height: 146px;
+  pointer-events: none;
+}
+.fan-card {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  border: 4px solid var(--cream);
+  background: var(--checker) 0 0 / 16px 16px;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.3);
+  transform-origin: 50% 100%;
+  transition: transform 0.45s var(--pop);
+}
+.fan-card.f0 {
+  transform: translate(-6px, -12px) rotate(-4deg);
+}
+.fan-card.f1 {
+  transform: translate(0, -16px) rotate(0deg);
+  transition-delay: 0.08s;
+}
+.fan-card.f2 {
+  transform: translate(6px, -12px) rotate(4deg);
+  transition-delay: 0.04s;
+}
+.flow[data-door="host"] .fan-card.f0,
+.stacked .door.host:focus-within .fan-card.f0 {
+  transform: translate(-62px, -78px) rotate(-16deg);
+}
+.flow[data-door="host"] .fan-card.f1,
+.stacked .door.host:focus-within .fan-card.f1 {
+  transform: translate(0, -94px) rotate(0deg);
+}
+.flow[data-door="host"] .fan-card.f2,
+.stacked .door.host:focus-within .fan-card.f2 {
+  transform: translate(62px, -78px) rotate(16deg);
+}
+
+.join-chips {
+  position: absolute;
+  right: 104px;
+  top: 0;
+  width: 72px;
+  height: 72px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+.flow[data-door="join"] .join-chips {
+  opacity: 1;
+}
+.chip {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 6px dashed var(--cream);
+  box-shadow:
+    0 5px 0 var(--edge),
+    0 10px 12px rgba(0, 0, 0, 0.25);
+  background: var(--fill);
+  transition: transform 350ms var(--pop);
+}
+.chip::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  opacity: 0.65;
+}
+.chip.gold {
+  --fill: #ffd84a;
+  --edge: #c9a52e;
+  border-color: var(--ink);
+}
+.chip.red {
+  --fill: #ef4a3c;
+  --edge: #b8362b;
+  transition-delay: 40ms;
+}
+.chip.blue {
+  --fill: #3b8cf0;
+  --edge: #2a69b8;
+  transition-delay: 80ms;
+}
+.chip.c0 {
+  transform: translate(-6px, 24px) rotate(-8deg);
+}
+.chip.c1 {
+  transform: translate(0, 28px) rotate(0deg);
+}
+.chip.c2 {
+  transform: translate(6px, 24px) rotate(8deg);
+}
+.flow[data-door="join"] .chip.c0 {
+  transform: translate(-76px, -54px) rotate(-24deg);
+}
+.flow[data-door="join"] .chip.c1 {
+  transform: translate(0, -88px) rotate(0deg);
+}
+.flow[data-door="join"] .chip.c2 {
+  transform: translate(76px, -54px) rotate(24deg);
+}
+
+/* ---------- Past games drawer ---------- */
+.drawer-dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0;
+  z-index: 8;
+  transition: transform 0.35s ease-in-out;
+}
+.drawer-dock.away {
+  transform: translateY(120px);
+}
+.drawer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: min(880px, 100% - 16px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Closed, only the tab shows above the window's bottom edge. */
+  transform: translateY(calc(100% - 46px));
+  transition: transform 0.4s cubic-bezier(0.3, 1.25, 0.4, 1);
+}
+.drawer.open {
+  transform: translateY(0);
+}
+.flow .drawer-tab-wrap {
+  margin: 0;
+  font: inherit;
+}
+.drawer-tab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 46px;
+  padding: 0 26px;
+  background: #f3ead2;
+  color: var(--ink);
+  border: 0;
+  border-radius: 14px 14px 0 0;
+  font: 700 16px/1 var(--rubik);
+  box-shadow: 0 -4px 0 rgba(0, 0, 0, 0.22);
+}
+.flow .drawer-tab:focus-visible {
+  outline: 3px solid #ffd84a;
+  outline-offset: 3px;
+}
+.drawer-chev {
+  width: 8px;
+  height: 8px;
+  border-top: 2.5px solid var(--ink);
+  border-left: 2.5px solid var(--ink);
+  transform: translateY(3px) rotate(45deg);
+  transition: transform 0.25s;
+}
+.drawer.open .drawer-chev {
+  transform: translateY(-2px) rotate(225deg);
+}
+.drawer-sheet {
+  align-self: stretch;
+  min-height: 150px;
+  max-height: min(50vh, 340px);
+  overflow-y: auto;
+  background: #f3ead2
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 29px,
+      rgba(20, 22, 23, 0.08) 29px 30px
+    );
+  border-radius: 12px 12px 0 0;
+  border-top: 4px solid #ef4a3c;
+  padding: 14px 30px 18px;
+  box-shadow: 0 -4px 0 rgba(0, 0, 0, 0.22);
+  cursor: pointer;
+}
+.drawer.open .drawer-sheet {
+  cursor: default;
+}
+.drawer-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px 26px;
+}
+.drawer-grid li {
+  min-width: 0;
+}
+.drawer-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--ink);
+}
+.drawer-game {
+  font: 800 16px/1.3 var(--rubik);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.drawer-when {
+  font: 400 13px/1.3 var(--rubik);
+  color: #5b574c;
+  white-space: nowrap;
+}
+.drawer-players {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font:
+    700 22px/1.2 "Caveat",
+    cursive;
+}
+.drawer-players > span {
+  padding: 0 7px 2px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+}
+.drawer-players > .won {
+  border-color: #ef4a3c;
+}
+.drawer-note {
+  font: 400 16px/1.45 var(--rubik);
+  color: #5b574c;
+}
+
+/* ---------- Setup: choose a game, settings ---------- */
+.setup {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+.setup-chrome {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.flow:not(.on-home) .setup-chrome {
+  opacity: 1;
+  transition-delay: 0.35s;
+}
+.setup-chrome > .back {
+  position: absolute;
+  left: 48px;
+  top: 40px;
+  pointer-events: auto;
+}
+.step-dots {
+  display: flex;
+  gap: 10px;
+}
+.setup-chrome > .step-dots {
+  position: absolute;
+  left: 50%;
+  top: 118px;
+  margin-left: -19px;
+}
+.step-dots > span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffd84a;
+  box-shadow: 0 0 0 3px var(--ink);
+  transition: background 0.3s;
+}
+.step-dots > span + span {
+  background: rgba(20, 22, 23, 0.35);
+}
+.step-dots.two > span {
+  background: var(--cream);
+}
+.step-dots.two > span + span {
+  background: #ffd84a;
+}
+.picker-head {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.25s;
+}
+.flow.on-settings .picker-head {
+  opacity: 0;
+}
+.flow .screen-title {
+  margin: 0;
+  text-align: center;
+  font: 800 42px/1.05 var(--rubik);
+  letter-spacing: -0.02em;
+  color: var(--cream);
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+}
+.picker-head .screen-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 144px;
+}
+.picker-note {
+  text-align: center;
+  font: 500 17px/1.3 var(--rubik);
+  color: var(--cream);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+.picker-head .picker-note {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 330px;
+}
+.picker-head .continue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 612px;
+  width: max-content;
+  margin: 0 auto;
+  pointer-events: auto;
+}
+
+.settings-sheet {
+  position: absolute;
+  left: 440px;
+  top: 138px;
+  width: 620px;
+  padding: 28px 36px 26px;
+  pointer-events: auto;
+  transform: translate(840px, 60px) rotate(14deg);
+  transition: transform 0.35s ease-in;
+}
+.flow.on-settings .settings-sheet {
+  transform: translate(0, 0) rotate(1deg);
+  transition: transform 0.55s cubic-bezier(0.3, 1.15, 0.4, 1) 0.2s;
+}
+.flow .settings-title {
+  font-size: 40px;
+}
+.sheet-sub {
+  margin: 10px 0 0;
+  font: 400 18px/1.45 var(--rubik);
+  color: #5b574c;
+}
+.setting-row {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 2px dashed rgba(20, 22, 23, 0.3);
+}
+.setting-row.toggle {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.setting-text {
+  flex: 1;
+  min-width: 0;
+}
+.flow .setting-title {
+  margin: 0;
+  font: 700 21px/1.2 var(--rubik);
+}
+.setting-desc {
+  margin: 6px 0 0;
+  font: 400 16px/1.45 var(--rubik);
+  color: #5b574c;
+  text-wrap: pretty;
+}
+.setting-opts {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.popt {
+  background: #fff;
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 9px;
+  padding: 9px 16px;
+  font: 700 17px/1.2 var(--rubik);
+  box-shadow: 0 0 0 var(--ink);
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    background 0.15s;
+}
+.popt.on {
+  background: #ffd84a;
+  box-shadow: 0 4px 0 var(--ink);
+  transform: translateY(-2px);
+}
+.flow .pselect {
+  display: block;
+  margin-top: 14px;
+  width: 100%;
+  appearance: none;
+  cursor: pointer;
+  padding-right: 40px;
+  font-weight: 700;
+  font-size: 17px;
+  background: #fff
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23141617' stroke-width='2.2'/%3E%3C/svg%3E")
+    no-repeat right 14px center / 13px;
+}
+.pswitch {
+  flex: none;
+  position: relative;
+  width: 88px;
+  height: 44px;
+  background: #d8d2bf;
+  border: 3px solid var(--ink);
+  border-radius: 99px;
+  box-shadow: 0 4px 0 var(--ink);
+  padding: 0;
+  transition: background 0.2s;
+}
+.pswitch.on {
+  background: #ffd84a;
+}
+.pswitch-knob {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--ink);
+  transition: left 0.2s var(--pop);
+}
+.pswitch.on .pswitch-knob {
+  left: 49px;
+}
+.pswitch-text {
+  position: absolute;
+  top: 0;
+  left: 42px;
+  font: 700 13px/38px var(--rubik);
+  color: var(--ink);
+}
+.pswitch.on .pswitch-text {
+  left: 13px;
+}
+.pbtn.create {
+  margin-top: 20px;
+}
+
+/* ---------- Game cards ---------- */
+.stage-cards {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 234px;
+  display: flex;
+  justify-content: center;
+  gap: 26px;
+  pointer-events: none;
+}
+.card-slot {
+  flex: none;
+  width: 226px;
+  height: 320px;
+  pointer-events: auto;
+}
+.card-lift {
+  width: 100%;
+  height: 100%;
+  transform: rotate(var(--tilt));
+  transition: transform 0.2s var(--pop);
+}
+.card-lift.picked {
+  transform: translateY(-14px) rotate(0deg);
+}
+.flow.on-settings .card-lift {
+  transform: none;
+}
+.game-card {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  text-align: left;
+  perspective: 900px;
+  transition: transform 0.2s var(--pop);
+}
+.flow .game-card:focus-visible {
+  outline: none;
+}
+.game-card:hover,
+.game-card:focus-visible {
+  transform: translateY(-10px) rotate(-1.5deg);
+}
+.game-flipper {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateY(var(--flip, 0deg));
+  transition: var(--flip-tr, none);
+}
+.game-back,
+.game-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 14px;
+}
+.game-back {
+  transform: rotateY(180deg);
+  border: 5px solid var(--cream);
+  background: var(--checker) 0 0 / 18px 18px;
+  box-shadow: 0 7px 0 rgba(0, 0, 0, 0.3);
+}
+.game-face {
+  background: var(--cream);
+  padding: 18px 22px 22px;
+  box-shadow: 0 7px 0 rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.game-card:focus-visible .game-face {
+  box-shadow:
+    0 0 0 4px #3b8cf0,
+    0 7px 0 4px rgba(0, 0, 0, 0.3);
+}
+.game-card.selected .game-face {
+  box-shadow:
+    0 0 0 5px #ffd84a,
+    0 0 0 8px var(--ink),
+    0 9px 0 8px rgba(0, 0, 0, 0.3);
+}
+.game-suit {
+  font: 400 68px/1 var(--rubik);
+  color: var(--ink);
+}
+.game-suit.red {
+  color: #ef4a3c;
+}
+.game-title {
+  margin-top: auto;
+  font: 800 32px/1.05 var(--rubik);
+  letter-spacing: -0.02em;
+}
+.game-players {
+  margin-top: 10px;
+  align-self: flex-start;
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: 99px;
+  padding: 5px 12px;
+  font: 700 14px/1.2 var(--rubik);
+}
+.game-desc {
+  margin-top: 12px;
+  min-height: 66px;
+  font: 400 15px/1.38 var(--rubik);
+  text-wrap: pretty;
+}
+
+/* ---------- Stacked layout: phones and short windows ---------- */
+.stack {
+  position: relative;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.stack-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.stack-top .step-dots {
+  margin-right: 8px;
+}
+.stack-logo {
+  --logo-fs: clamp(40px, 12vw, 64px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+.stack-logo .marquee {
+  padding: 14px 26px 12px;
+}
+.stack-logo .marquee.bare {
+  --logo-fs: clamp(32px, 9vw, 44px);
+  padding: 0 0 14px;
+}
+.stack-logo .tagline {
+  white-space: normal;
+  font-size: 16px;
+}
+.stack-doors {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding-top: 20px;
+  animation: hf-rise 0.4s var(--pop) both;
+}
+.stack-doors .door.host {
+  transform: rotate(-1deg);
+}
+.stack-doors .door.join {
+  transform: rotate(1deg);
+}
+.stacked .sheet {
+  padding: 26px 20px 24px;
+}
+.stacked .sheet-title {
+  font-size: clamp(32px, 9vw, 40px);
+}
+.stacked .pinput.code {
+  width: 0;
+  flex: 1;
+  min-width: 140px;
+}
+.stack-games {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.stack-games .screen-title {
+  font-size: clamp(32px, 9vw, 40px);
+}
+.stack-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 18px 14px;
+  padding: 6px 4px 0;
+}
+.stack-cards .game-card {
+  height: auto;
+  animation: hf-deal 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+.stack-cards .game-back {
+  display: none;
+}
+.stack-cards .game-face {
+  position: relative;
+  min-height: 230px;
+  height: 100%;
+  padding: 14px 14px 16px;
+}
+.stack-cards .game-suit {
+  font-size: 44px;
+}
+.stack-cards .game-title {
+  font-size: 24px;
+  padding-top: 12px;
+}
+.stack-cards .game-desc {
+  min-height: 0;
+  font-size: 14px;
+}
+.stack-continue {
+  position: sticky;
+  bottom: 16px;
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+}
+.stack-settings {
+  padding-top: 8px;
+  animation: hf-swing 0.5s cubic-bezier(0.3, 1.15, 0.4, 1) both;
+}
+.stack-settings .sheet {
+  transform: rotate(0.5deg);
+}
+.stack-settings .setting-row.toggle {
+  gap: 16px;
+}
+@media (max-width: 640px) {
+  .drawer-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .drawer-sheet {
+    padding: 12px 18px 16px;
+  }
+}
+
+/* ---------- Motion ---------- */
+@keyframes hf-blink {
+  to {
+    visibility: hidden;
+  }
+}
+@keyframes hf-roll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(350%);
+  }
+}
+@keyframes hf-flicker {
+  0%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+  31% {
+    opacity: 0.82;
+  }
+  33% {
+    opacity: 1;
+  }
+  62% {
+    transform: translateX(3px) skewX(-4deg);
+  }
+  64% {
+    transform: none;
+  }
+  88% {
+    opacity: 0.9;
+  }
+}
+@keyframes hf-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+@keyframes hf-deal {
+  from {
+    opacity: 0;
+    transform: translateY(60px) rotateY(80deg) rotate(6deg);
+  }
+}
+@keyframes hf-swing {
+  from {
+    opacity: 0;
+    transform: translateX(60%) rotate(10deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow *,
+  .flow *::before,
+  .flow *::after {
+    animation: none !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+.home-library-link {
+  position: fixed;
+  right: 24px;
+  bottom: 20px;
+  z-index: 10;
+  color: #fffaf0;
+  font:
+    13px "Rubik",
+    sans-serif;
+  text-decoration: none;
+  padding: 10px 14px;
+  background: #244a3d;
+  border: 1px solid #ffffff44;
+  border-radius: 6px;
+}

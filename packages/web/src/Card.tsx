@@ -19,7 +19,14 @@ interface Props {
 }
 
 export function Card({ face, size = "md", className = "" }: Props) {
-  if (face === null) return <span className={`card back ${size} ${className}`} role="img" aria-label="Face-down card" />;
+  if (face === null)
+    return (
+      <span
+        className={`card back ${size} ${className}`}
+        role="img"
+        aria-label="Face-down card"
+      />
+    );
   const m = /^(10|[2-9JQKA])([SHDC])$/.exec(face);
   if (!m) {
     return (
@@ -30,7 +37,11 @@ export function Card({ face, size = "md", className = "" }: Props) {
   }
   const suit = SUITS[m[2]!]!;
   return (
-    <span className={`card face ${suit.color} ${size} ${className}`} role="img" aria-label={faceLabel(face)}>
+    <span
+      className={`card face ${suit.color} ${size} ${className}`}
+      role="img"
+      aria-label={faceLabel(face)}
+    >
       <span className="card-rank">{m[1]}</span>
       <span className="card-suit">{suit.glyph}</span>
       {size === "lg" && <span className="card-rank flip">{m[1]}</span>}

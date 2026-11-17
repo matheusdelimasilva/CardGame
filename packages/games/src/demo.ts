@@ -1,3 +1,4 @@
+import { z } from "zod";
 import {
   FACE_DOWN,
   FACE_UP,
@@ -36,7 +37,11 @@ export type Tiebreaker = "none" | "H" | "D" | "C" | "S";
  * Who scores this round: the highest rank. If several tie and one of them
  * holds the tiebreaker suit, only that player scores; otherwise all tied score.
  */
-export function roundWinners(players: PlayerId[], cards: Record<PlayerId, string>, tiebreaker: Tiebreaker): PlayerId[] {
+export function roundWinners(
+  players: PlayerId[],
+  cards: Record<PlayerId, string>,
+  tiebreaker: Tiebreaker,
+): PlayerId[] {
   const best = Math.max(...players.map((p) => rankValue(cards[p]!)));
   const tied = players.filter((p) => rankValue(cards[p]!) === best);
   const favoured = tied.filter((p) => cards[p]!.endsWith(tiebreaker));
@@ -106,7 +111,9 @@ function finishRound(state: DemoState): void {
     state.table = moveAll(state.table, slot(player), "discard", FACE_UP);
   }
 
-  const champions = state.players.filter((p) => state.scores[p]! >= TARGET_SCORE);
+  const champions = state.players.filter(
+    (p) => state.scores[p]! >= TARGET_SCORE,
+  );
   if (champions.length > 0) {
     state.winners = champions;
     return;
@@ -118,10 +125,15 @@ function finishRound(state: DemoState): void {
 
 export const demo: GameModule<DemoState, DemoMove, DemoView> = {
   id: "demo",
+  moveSchema: z.discriminatedUnion("type", [
+    z.object({ type: z.literal("peek") }),
+    z.object({ type: z.literal("reveal") }),
+  ]),
   name: "Demo",
   minPlayers: 2,
   maxPlayers: 8,
-  description: "Not a real game: a tiny round of highest-card-wins that shows the table working.",
+  description:
+    "Not a real game: a tiny round of highest-card-wins that shows the table working.",
   settings: [
     {
       type: "toggle",
@@ -134,7 +146,8 @@ export const demo: GameModule<DemoState, DemoMove, DemoView> = {
       type: "select",
       id: "tiebreaker",
       label: "Tiebreaker suit",
-      description: "When the highest cards tie, the one in this suit takes the point alone.",
+      description:
+        "When the highest cards tie, the one in this suit takes the point alone.",
       options: [
         { value: "none", label: "None: tied players all score" },
         { value: "H", label: "Hearts" },
@@ -169,7 +182,8 @@ export const demo: GameModule<DemoState, DemoMove, DemoView> = {
 
   applyMove(current, player, move) {
     if (current.winners) return { ok: false, error: "The game is over." };
-    if (!current.players.includes(player)) return { ok: false, error: "You are not in this game." };
+    if (!current.players.includes(player))
+      return { ok: false, error: "You are not in this game." };
     const state = structuredClone(current);
     const card = state.table.zones[slot(player)]!.cards[0]!;
 
@@ -178,7 +192,8 @@ export const demo: GameModule<DemoState, DemoMove, DemoView> = {
       return { ok: true, state };
     }
     if (move.type === "reveal") {
-      if (state.players[state.turn] !== player) return { ok: false, error: "It is not your turn." };
+      if (state.players[state.turn] !== player)
+        return { ok: false, error: "It is not your turn." };
       state.table = reveal(state.table, card.id);
       state.revealed += 1;
       if (state.revealed === state.players.length) finishRound(state);

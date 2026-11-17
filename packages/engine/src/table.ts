@@ -44,7 +44,11 @@ export function createTable(seed: number): TableState {
   return { zones: {}, nextCardId: 1, rng: seed | 0 };
 }
 
-export function addZone(t: TableState, id: ZoneId, owner: PlayerId | null = null): TableState {
+export function addZone(
+  t: TableState,
+  id: ZoneId,
+  owner: PlayerId | null = null,
+): TableState {
   if (t.zones[id]) throw new EngineError(`Zone already exists: ${id}`);
   const next = clone(t);
   next.zones[id] = { id, owner, cards: [] };
@@ -61,7 +65,11 @@ export function addCards(
   const next = clone(t);
   const zone = zoneOf(next, zoneId);
   for (const face of faces) {
-    zone.cards.push({ id: `c${next.nextCardId++}`, face, visibleTo: structuredClone(visibleTo) });
+    zone.cards.push({
+      id: `c${next.nextCardId++}`,
+      face,
+      visibleTo: structuredClone(visibleTo),
+    });
   }
   return next;
 }
@@ -86,7 +94,10 @@ export function shuffle(t: TableState, zoneId: ZoneId): TableState {
   return next;
 }
 
-export function findCard(t: TableState, cardId: CardId): { zone: Zone; index: number; card: Card } {
+export function findCard(
+  t: TableState,
+  cardId: CardId,
+): { zone: Zone; index: number; card: Card } {
   for (const zone of Object.values(t.zones)) {
     const index = zone.cards.findIndex((c) => c.id === cardId);
     if (index >= 0) return { zone, index, card: zone.cards[index]! };
@@ -99,21 +110,43 @@ export interface MoveOptions {
   visibleTo?: Visibility;
   /** Put the card under the pile instead of on top. */
   toBottom?: boolean;
+  /** Insert at this position, counted from the bottom (0 = first). Wins over toBottom. */
+  index?: number;
 }
 
-export function moveCard(t: TableState, cardId: CardId, to: ZoneId, opts: MoveOptions = {}): TableState {
+export function moveCard(
+  t: TableState,
+  cardId: CardId,
+  to: ZoneId,
+  opts: MoveOptions = {},
+): TableState {
   const next = clone(t);
   const { zone, index, card } = findCard(next, cardId);
   const target = zoneOf(next, to);
   zone.cards.splice(index, 1);
-  if (opts.visibleTo !== undefined) card.visibleTo = structuredClone(opts.visibleTo);
-  if (opts.toBottom) target.cards.unshift(card);
+  if (opts.visibleTo !== undefined)
+    card.visibleTo = structuredClone(opts.visibleTo);
+  if (opts.index !== undefined) {
+    if (
+      !Number.isInteger(opts.index) ||
+      opts.index < 0 ||
+      opts.index > target.cards.length
+    ) {
+      throw new EngineError(`Position ${opts.index} is outside zone ${to}`);
+    }
+    target.cards.splice(opts.index, 0, card);
+  } else if (opts.toBottom) target.cards.unshift(card);
   else target.cards.push(card);
   return next;
 }
 
 /** Moves every card of one zone onto another, keeping their order. */
-export function moveAll(t: TableState, from: ZoneId, to: ZoneId, visibleTo?: Visibility): TableState {
+export function moveAll(
+  t: TableState,
+  from: ZoneId,
+  to: ZoneId,
+  visibleTo?: Visibility,
+): TableState {
   const next = clone(t);
   const source = zoneOf(next, from);
   const target = zoneOf(next, to);
@@ -137,7 +170,11 @@ export function deal(
   return { table: moveCard(t, top.id, to, { visibleTo }), cardId: top.id };
 }
 
-export function setVisibility(t: TableState, cardId: CardId, visibleTo: Visibility): TableState {
+export function setVisibility(
+  t: TableState,
+  cardId: CardId,
+  visibleTo: Visibility,
+): TableState {
   const next = clone(t);
   findCard(next, cardId).card.visibleTo = structuredClone(visibleTo);
   return next;
@@ -149,7 +186,11 @@ export function reveal(t: TableState, cardId: CardId): TableState {
 }
 
 /** Lets one more player see a card without showing it to the others. */
-export function peek(t: TableState, cardId: CardId, player: PlayerId): TableState {
+export function peek(
+  t: TableState,
+  cardId: CardId,
+  player: PlayerId,
+): TableState {
   const { card } = findCard(t, cardId);
   if (card.visibleTo === "all" || card.visibleTo.includes(player)) return t;
   return setVisibility(t, cardId, [...card.visibleTo, player]);

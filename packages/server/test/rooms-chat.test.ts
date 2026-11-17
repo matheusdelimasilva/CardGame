@@ -17,7 +17,14 @@ describe("rooms.chat", () => {
     const { room, named } = table();
     const ana = named("Ana");
     const res = rooms.chat(room, ana, "  hi  ", 1234);
-    expect(res).toEqual({ message: { id: expect.any(String), from: { id: ana.id, name: "Ana" }, text: "hi", at: 1234 } });
+    expect(res).toEqual({
+      message: {
+        id: expect.any(String),
+        from: { id: ana.id, name: "Ana" },
+        text: "hi",
+        at: 1234,
+      },
+    });
   });
 
   it("gives every message a distinct id", () => {
@@ -35,8 +42,19 @@ describe("rooms.chat", () => {
     room.members = room.members.filter((m) => m !== gone);
     expect(rooms.chat(room, gone, "hi", 0)).toHaveProperty("error");
     const ana = named("Ana");
-    for (const bad of ["", "  \n ", 5, null, undefined, {}, ["a"], "x".repeat(501)]) {
-      expect(rooms.chat(room, ana, bad as unknown as string, 0)).toHaveProperty("error");
+    for (const bad of [
+      "",
+      "  \n ",
+      5,
+      null,
+      undefined,
+      {},
+      ["a"],
+      "x".repeat(501),
+    ]) {
+      expect(rooms.chat(room, ana, bad as unknown as string, 0)).toHaveProperty(
+        "error",
+      );
     }
     expect(rooms.chat(room, ana, "x".repeat(500), 0)).toHaveProperty("message");
   });
@@ -45,7 +63,10 @@ describe("rooms.chat", () => {
     const { room, named } = table();
     const ana = named("Ana");
     const bo = named("Bo");
-    for (let i = 0; i < 5; i++) expect(rooms.chat(room, ana, `m${i}`, 1000 + i)).toHaveProperty("message");
+    for (let i = 0; i < 5; i++)
+      expect(rooms.chat(room, ana, `m${i}`, 1000 + i)).toHaveProperty(
+        "message",
+      );
     expect(rooms.chat(room, ana, "6th", 1005)).toHaveProperty("error");
     expect(rooms.chat(room, ana, "still no", 10_999)).toHaveProperty("error"); // first one (t=1000) not yet 10s old
     // Bo has his own budget.
@@ -59,7 +80,8 @@ describe("rooms.chat", () => {
     const { room, named } = table();
     const ana = named("Ana");
     for (let i = 0; i < 100; i++) rooms.chat(room, ana, "", 0); // invalid
-    for (let i = 0; i < 5; i++) expect(rooms.chat(room, ana, `m${i}`, 0)).toHaveProperty("message");
+    for (let i = 0; i < 5; i++)
+      expect(rooms.chat(room, ana, `m${i}`, 0)).toHaveProperty("message");
     for (let i = 0; i < 100; i++) rooms.chat(room, ana, "over", 5000); // rate-limited
     expect(rooms.chat(room, ana, "after", 10_000)).toHaveProperty("message");
   });

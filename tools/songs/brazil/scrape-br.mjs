@@ -1,3 +1,4 @@
+import { rowsFromTables } from "./chart-tables.mjs";
 // Step 1 (Brazil): collect popular Brazilian songs from pt.wikipedia.
 //  a) chart pages: Crowley year-end top 100 lists + number-one lists of the Brazilian charts
 //  b) "Categoria:Canções de <ano>" pages that are Brazilian songs (best coverage before 1999)
@@ -5,7 +6,13 @@
 // Output: ../.cache/br/charts.json, ../.cache/br/categories.json
 import { join } from "node:path";
 import { CACHE_DIR, readJson, writeJson } from "../lib.mjs";
-import { getWikitext, infobox, parseTables, plain, wikiApi } from "./wikitext.mjs";
+import {
+  getWikitext,
+  infobox,
+  parseTables,
+  plain,
+  wikiApi,
+} from "./wikitext.mjs";
 import { isBrazilian } from "./sources-br.mjs";
 
 const BR_CACHE = join(CACHE_DIR, "br");
@@ -23,7 +30,13 @@ const CHART_PREFIXES = [
 const SKIP = /Hot Pop Songs|Pop Internacional/;
 
 async function listPages(prefix) {
-  const j = await wikiApi({ action: "query", list: "allpages", aplimit: "500", apfilterredir: "nonredirects", apprefix: prefix });
+  const j = await wikiApi({
+    action: "query",
+    list: "allpages",
+    aplimit: "500",
+    apfilterredir: "nonredirects",
+    apprefix: prefix,
+  });
   return j.query.allpages.map((p) => p.title);
 }
 
@@ -32,40 +45,24 @@ function chartName(page) {
   return /número um na (.+?) em \d{4}/.exec(page)?.[1] ?? page;
 }
 
-function rowsFromTables(tables, chartYear, chart) {
-  const out = [];
-  for (const rows of tables) {
-    const hi = rows.findIndex((r) => r.some((c) => /^(can[çc][ãa]o|single|t[íi]tulo)/i.test(c)) && r.some((c) => /^artista/i.test(c)));
-    if (hi < 0) continue;
-    const h = rows[hi];
-    const iTitle = h.findIndex((c) => /^(can[çc][ãa]o|single|t[íi]tulo)/i.test(c));
-    const iArtist = h.findIndex((c) => /^artista/i.test(c));
-    const iRank = h.findIndex((c) => /^(posi|#|n\.?º|rank)/i.test(c));
-    for (const r of rows.slice(hi + 1)) {
-      const title = r[iTitle], artist = r[iArtist];
-      if (!title || !artist) continue;
-      const rank = iRank >= 0 ? Number(r[iRank]) : 1;
-      if (!Number.isInteger(rank)) continue;
-      out.push({ chartYear, rank, title, artist, chart });
-    }
-  }
-  // number-one lists repeat a song for every week it led: keep it once
-  const seen = new Set();
-  return out.filter((r) => {
-    const k = `${r.title}|${r.artist}`.toLowerCase();
-    return seen.has(k) ? false : seen.add(k);
-  });
-}
-
 const chartsPath = join(BR_CACHE, "charts.json");
 const charts = await readJson(chartsPath, { pages: {} });
 for (const prefix of CHART_PREFIXES) {
   for (const page of await listPages(prefix)) {
-    if (SKIP.test(page) || charts.pages[page]) continue;
+    if (
+      SKIP.test(page) ||
+      (charts.pages[page]?.parserVersion === 2 &&
+        charts.pages[page]?.rows.length)
+    )
+      continue;
     const chartYear = Number(/em (\d{4})/.exec(page)?.[1]);
     const wt = await getWikitext(page);
-    const rows = wt ? rowsFromTables(parseTables(wt), chartYear, chartName(page)) : [];
-    charts.pages[page] = { chartYear, rows };
+    const rows = wt
+      ? rowsFromTables(parseTables(wt), chartYear, chartName(page), {
+          numberOne: /número um/i.test(page),
+        })
+      : [];
+    charts.pages[page] = { chartYear, rows, parserVersion: 2 };
     await writeJson(chartsPath, charts);
     console.log(`${page}: ${rows.length}`);
   }
@@ -83,7 +80,14 @@ async function categoryMembers(year) {
   const titles = [];
   let cont = {};
   do {
-    const j = await wikiApi({ action: "query", list: "categorymembers", cmtitle: `Categoria:Canções de ${year}`, cmnamespace: "0", cmlimit: "500", ...cont });
+    const j = await wikiApi({
+      action: "query",
+      list: "categorymembers",
+      cmtitle: `Categoria:Canções de ${year}`,
+      cmnamespace: "0",
+      cmlimit: "500",
+      ...cont,
+    });
     titles.push(...(j.query?.categorymembers ?? []).map((m) => m.title));
     cont = j.continue ?? null;
   } while (cont);
@@ -98,12 +102,25 @@ async function pageDetails(titles) {
     const pages = new Map();
     do {
       const j = await wikiApi({
-        action: "query", titles: batch.join("|"), prop: "revisions|categories",
-        rvprop: "content", rvslots: "main", cllimit: "max", ...cont,
+        action: "query",
+        titles: batch.join("|"),
+        prop: "revisions|categories",
+        rvprop: "content",
+        rvslots: "main",
+        cllimit: "max",
+        ...cont,
       });
       for (const p of j.query?.pages ?? []) {
-        const cur = pages.get(p.title) ?? { title: p.title, cats: [], text: "" };
-        cur.cats.push(...(p.categories ?? []).map((c) => c.title.replace(/^Categoria:/, "")));
+        const cur = pages.get(p.title) ?? {
+          title: p.title,
+          cats: [],
+          text: "",
+        };
+        cur.cats.push(
+          ...(p.categories ?? []).map((c) =>
+            c.title.replace(/^Categoria:/, ""),
+          ),
+        );
         cur.text ||= p.revisions?.[0]?.slots?.main?.content ?? "";
         pages.set(p.title, cur);
       }
@@ -134,5 +151,7 @@ for (let year = FROM; year <= TO; year++) {
   });
   cats.years[year] = { total: titles.length, songs };
   await writeJson(catPath, cats);
-  console.log(`Canções de ${year}: ${songs.filter((p) => isBrazilian(p)).length}/${titles.length} brasileiras`);
+  console.log(
+    `Canções de ${year}: ${songs.filter(isBrazilian).length}/${titles.length} brasileiras`,
+  );
 }
