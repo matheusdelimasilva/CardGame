@@ -64,7 +64,7 @@ describe("snapshot migrations", () => {
     expect(data.rooms[0]).toEqual({
       ...v0.rooms[0],
       version: ROOM_VERSION,
-      settings: {},
+      settings: { guessInChat: true },
       game: {
         ...v0.rooms[0]!.game,
         trackKey: "",
@@ -78,6 +78,8 @@ describe("snapshot migrations", () => {
           bets: [],
           declined: [],
           locked: null,
+          guessInChat: true,
+          guessed: { title: [], artist: [] },
         },
       },
     });
@@ -173,6 +175,8 @@ describe("snapshot migrations", () => {
     delete saved.bets;
     delete saved.declined;
     delete saved.locked;
+    delete saved.guessInChat;
+    delete saved.guessed;
     const room = {
       ...createRoom("HITS12", "host@example.com", "hitster"),
       version: 2,
@@ -206,5 +210,60 @@ describe("snapshot migrations", () => {
     expect(bet).toMatchObject({ ok: true, state: { tokens: [2, 1] } });
     const otherGame = migrateRoom({ ...room, gameId: "fixture", game: null });
     expect(otherGame.game).toBeNull();
+  });
+
+  it("upgrades a v3 Hitster room so its table guesses in chat, as the new default, and nobody has guessed yet", () => {
+    const hitster = games.hitster;
+    const settings = {
+      songList: "international",
+      cardsToWin: "10",
+      showSongInfo: false,
+    };
+    const live = hitster.resume!(
+      hitster.setup({ players: ["p1", "p2"], seed: 5, settings }),
+    ) as HitsterState;
+    expect(live).toMatchObject({
+      guessInChat: true,
+      guessed: { title: [], artist: [] },
+    });
+    const saved = structuredClone(live);
+    delete saved.guessInChat;
+    delete saved.guessed;
+    const room = {
+      ...createRoom("HITS12", "host@example.com", "hitster"),
+      version: 3,
+      settings,
+      game: {
+        gameId: "hitster",
+        players: ["p1", "p2"],
+        state: saved,
+        result: null,
+        turnKey: "",
+        deadline: null,
+        resumeAt: null,
+        turnMs: 0,
+        trackKey: "",
+        trackNonce: null,
+      },
+    };
+    const migrated = migrateRoom(structuredClone(room));
+    expect(migrated.version).toBe(ROOM_VERSION);
+    expect(migrated.settings).toEqual({ ...settings, guessInChat: true });
+    expect(migrated.game!.state).toEqual(live);
+    expect(migrateRoom(structuredClone(migrated))).toEqual(migrated);
+    expect(games.hitster.view(migrated.game!.state, "p1")).toMatchObject({
+      guessing: true,
+      yourGuess: { title: false, artist: false },
+    });
+
+    // A host who turned guessing off keeps it off, and other games are left alone.
+    const off = migrateRoom({
+      ...structuredClone(room),
+      settings: { ...settings, guessInChat: false },
+      game: null,
+    });
+    expect(off.settings.guessInChat).toBe(false);
+    const otherGame = migrateRoom({ ...room, gameId: "fixture", game: null });
+    expect(otherGame.settings).toEqual(settings);
   });
 });

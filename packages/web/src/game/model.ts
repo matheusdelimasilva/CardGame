@@ -6,6 +6,7 @@ import type { GameView, RoomView } from "@cardgame/protocol";
 import { seatLook } from "../ui/seats";
 import type {
   GameModel,
+  GuessBadges,
   HitsterView,
   MyBet,
   Placement,
@@ -161,6 +162,30 @@ export function gameModel(room: RoomView): GameModel | null {
     viewerIsHost: room.you.isHost,
     tokens: view.tokens,
     myBet: myBetOf(stage, me?.id ?? null, view.tokens),
+    guessing: view.guessing,
+    yourGuess: view.yourGuess,
+  };
+}
+
+/**
+ * The chat's badges, for players of a game that guesses in the chat. Guesses
+ * count only while a song is being placed; through its reveal the badges
+ * keep what the viewer got of it, as the server does. Before the first song
+ * and after the game there is nothing to guess, so there are none.
+ */
+export function guessBadges(model: GameModel): GuessBadges | null {
+  const kind = model.stage.kind;
+  if (
+    !model.guessing ||
+    !model.yourGuess ||
+    kind === "intro" ||
+    kind === "over"
+  )
+    return null;
+  return {
+    song: model.yourGuess.title,
+    artist: model.yourGuess.artist,
+    open: kind === "placing",
   };
 }
 

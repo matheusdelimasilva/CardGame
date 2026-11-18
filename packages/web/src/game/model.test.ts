@@ -4,6 +4,7 @@ import { scenarios } from "./dev/fixtures";
 import {
   describeGap,
   gameModel,
+  guessBadges,
   joinNames,
   myBetOf,
   playerOf,
@@ -561,5 +562,55 @@ describe("fixtures", () => {
             for (const bet of bets)
               expect(view.canBet).not.toContain(bet.player);
           }
+  });
+});
+
+describe("guessBadges", () => {
+  const badges = (room: RoomView) => guessBadges(model(room));
+
+  it("shows what the viewer has guessed while a song is placed, on any turn", () => {
+    expect(badges(scenarios.myTurn())).toEqual({
+      song: false,
+      artist: false,
+      open: true,
+    });
+    expect(badges(scenarios.opponentTurn({ guessed: "song" }))).toEqual({
+      song: true,
+      artist: false,
+      open: true,
+    });
+    expect(badges(scenarios.myTurnLocked({ guessed: "both" }))).toEqual({
+      song: true,
+      artist: true,
+      open: true,
+    });
+  });
+
+  it("keeps the last song's result through its reveal, closed", () => {
+    expect(badges(scenarios.opponentRevealWrong({ guessed: "song" }))).toEqual({
+      song: true,
+      artist: false,
+      open: false,
+    });
+  });
+
+  it("has none before the first song or after the game", () => {
+    expect(badges(scenarios.intro())).toBeNull();
+    expect(badges(scenarios.overIWin())).toBeNull();
+  });
+
+  it("has none when the table does not guess in the chat", () => {
+    expect(badges(scenarios.myTurn({ guessInChat: false }))).toBeNull();
+    // Titles on screen turn guessing off, whatever the setting.
+    expect(badges(scenarios.opponentTurn({ showSongInfo: true }))).toBeNull();
+    expect(model(scenarios.opponentTurn({ showSongInfo: true })).guessing).toBe(
+      false,
+    );
+  });
+
+  it("has none for anyone not playing", () => {
+    expect(model(scenarios.spectator()).guessing).toBe(true);
+    expect(badges(scenarios.spectator())).toBeNull();
+    expect(badges(scenarios.benched())).toBeNull();
   });
 });

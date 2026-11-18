@@ -7,6 +7,7 @@ import {
   forwardRef,
   useLayoutEffect,
   useRef,
+  useState,
   type CSSProperties,
   type HTMLAttributes,
   type ReactNode,
@@ -588,6 +589,7 @@ export interface ChipsProps extends HTMLAttributes<HTMLSpanElement> {
 /**
  * Betting tokens as a row of poker chips, 1.7u each (the parent scales the
  * row). A chip added later hops in; keyed by position, so only new ones do.
+ * Past `max` the count hops instead, keyed by how often it has grown.
  */
 export function Chips({
   count,
@@ -600,6 +602,12 @@ export function Chips({
   ...rest
 }: ChipsProps) {
   const drawn = Math.max(0, Math.min(count, max));
+  const [last, setLast] = useState(count);
+  const [gains, setGains] = useState(0);
+  if (count !== last) {
+    setLast(count);
+    if (count > last) setGains(gains + 1);
+  }
   return (
     <span
       className={cx("gs-chips", className)}
@@ -611,7 +619,11 @@ export function Chips({
       {Array.from({ length: drawn }, (_, i) => (
         <span key={i} className="gs-chips-chip" />
       ))}
-      {count > max && <span className="gs-chips-more">+{count - max}</span>}
+      {count > max && (
+        <span key={`more-${gains}`} className="gs-chips-more">
+          +{count - max}
+        </span>
+      )}
       {count <= 0 && showEmpty && <span className="gs-chips-chip is-empty" />}
     </span>
   );

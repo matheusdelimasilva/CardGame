@@ -103,6 +103,8 @@ const SEAT_ORDER = [3, 5, 0, 6, 1, 7, 2, 4];
 
 export type Goal = 5 | 8 | 10;
 export type TimelineLength = "short" | "long" | "mixed";
+/** What the viewer has guessed of the current song in the chat. */
+export type Guessed = "none" | "song" | "both";
 
 export interface FixtureOptions {
   /** People playing in the game, 2–8 (with a benched viewer, at most 7). */
@@ -112,6 +114,10 @@ export interface FixtureOptions {
   timelines?: TimelineLength;
   /** Show the current song's title and artist (the "Show title and artist" setting). */
   showSongInfo?: boolean;
+  /** The "Guess in chat" setting; on unless turned off. Titles shown turn guessing off too. */
+  guessInChat?: boolean;
+  /** The viewer's guesses of the current song. The first opponent has always guessed the artist. */
+  guessed?: Guessed;
 }
 
 type Viewer = "player" | "spectator" | "benched";
@@ -124,6 +130,8 @@ interface Table {
   others: string[];
   goal: Goal;
   showSongInfo: boolean;
+  guessing: boolean;
+  guessed: Guessed;
   lengths: Record<string, number>;
   /** Betting tokens at the start of the turn. */
   tokens: Record<string, number>;
@@ -200,6 +208,7 @@ function table(viewer: Viewer, options: FixtureOptions): Table {
       settings: {
         songList: "international",
         cardsToWin: String(goal),
+        guessInChat: options.guessInChat ?? true,
         showSongInfo: options.showSongInfo ?? false,
       },
       you,
@@ -214,6 +223,8 @@ function table(viewer: Viewer, options: FixtureOptions): Table {
     others,
     goal,
     showSongInfo: options.showSongInfo ?? false,
+    guessing: (options.guessInChat ?? true) && !options.showSongInfo,
+    guessed: options.guessed ?? "none",
     lengths,
     tokens: Object.fromEntries(ids.map((id, i) => [id, TOKENS[i % 8]!])),
   };
@@ -251,7 +262,26 @@ interface ViewParts {
   winners?: string[] | null;
 }
 
+/**
+ * Who has guessed what of the current song, as the server counts it.
+ * Nobody has, before the first song, after the last, or without guessing.
+ */
+function guesses(t: Table, song: boolean): HitsterView["guesses"] {
+  const counted = song && t.guessing;
+  return Object.fromEntries(
+    t.players.map((id) => [
+      id,
+      {
+        title: counted && id === me && t.guessed !== "none",
+        artist:
+          counted && (id === me ? t.guessed === "both" : id === t.others[0]),
+      },
+    ]),
+  );
+}
+
 function withGame(t: Table, parts: ViewParts): RoomView {
+  const guessed = guesses(t, !parts.winners && !parts.view?.intro);
   const view: HitsterView = {
     players: t.players,
     timelines: timelines(t),
@@ -272,6 +302,9 @@ function withGame(t: Table, parts: ViewParts): RoomView {
     bets: [],
     declined: [],
     canBet: [],
+    guessing: t.guessing,
+    yourGuess: guessed[me] ?? null,
+    guesses: guessed,
     ...parts.view,
   };
   return {

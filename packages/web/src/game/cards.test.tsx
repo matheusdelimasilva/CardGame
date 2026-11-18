@@ -260,6 +260,27 @@ describe("Chips", () => {
     ).toHaveLength(3);
   });
 
+  it("hops the count past the last chip in again when it grows, not when it shrinks", () => {
+    let renderer: ReactTestRenderer | undefined;
+    const draw = (count: number) => (
+      <Chips count={count} max={2} chip="red" edge="black" />
+    );
+    // A new element for the count is a fresh mount, so its hop animation plays.
+    const more = () =>
+      renderer!.root.findByProps({ className: "gs-chips-more" });
+    act(() => {
+      renderer = create(draw(3));
+    });
+    const first = more();
+    act(() => renderer!.update(draw(4)));
+    const grown = more();
+    expect(grown).not.toBe(first);
+    act(() => renderer!.update(draw(3)));
+    expect(more()).toBe(grown);
+    expect(text(more())).toBe("+1");
+    act(() => renderer!.unmount());
+  });
+
   it("keeps an empty place only when asked", () => {
     expect(
       chips(render(<Chips count={0} chip="red" edge="black" />)),

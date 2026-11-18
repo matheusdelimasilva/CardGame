@@ -5,7 +5,7 @@
  * unsent placement (placement.ts) and bet (betting.ts) are kept here and
  * turned into a Scene.
  */
-import type { ChatMessage, ClientMessage, RoomView } from "@cardgame/protocol";
+import type { ClientMessage, RoomView } from "@cardgame/protocol";
 import {
   useEffect,
   useReducer,
@@ -16,13 +16,13 @@ import {
 } from "react";
 import type { TrackAudio } from "../audio";
 import { seatLook } from "../ui/seats";
-import type { Connection } from "../useRoom";
+import type { ChatEntry, Connection } from "../useRoom";
 import { betReducer, freshBet } from "./betting";
-import { ChatPanel, chatLines } from "./ChatPanel";
+import { ChatPanel, chatLines, withGuessHint } from "./ChatPanel";
 import { MePlate, ViewerPlate } from "./cards";
 import { useBeat } from "./choreography";
 import { GameHeader, SoundToggle } from "./Header";
-import { gameModel, ranking, statusText } from "./model";
+import { gameModel, guessBadges, ranking, statusText } from "./model";
 import {
   ConnectionBanner,
   FinalScores,
@@ -51,7 +51,8 @@ export interface GameScreenProps {
   connection: Connection;
   /** The latest refusal or error from the server, cleared after a while. */
   error: string | null;
-  chats: readonly ChatMessage[];
+  /** The chat history, private notices included. */
+  chats: readonly ChatEntry[];
   send: (message: ClientMessage) => void;
   audio: TrackAudio;
   onLeave: () => void;
@@ -269,6 +270,13 @@ function GameTable({
   const { headline, sub } = statusText(model);
 
   const lines = chatLines(chats);
+  const newest = chats.at(-1)?.id ?? null;
+  // The guessing hint goes where this game began in the log: as the page
+  // opened it, or as a new game's intro started.
+  const intro = stage.kind === "intro";
+  const [hint, setHint] = useState({ intro, after: newest });
+  if (intro !== hint.intro)
+    setHint({ intro, after: intro ? newest : hint.after });
   const toggleSound = () => audio.setMuted(!audio.muted);
 
   return (
@@ -303,13 +311,18 @@ function GameTable({
         }
         chat={
           <ChatPanel
-            lines={lines}
+            lines={
+              model.guessing && model.me
+                ? withGuessHint(lines, hint.after)
+                : lines
+            }
             canSend={connection === "open" && !!room.you.name}
             named={!!room.you.name}
             onSend={(text) => send({ type: "chat", text })}
+            badges={guessBadges(model)}
           />
         }
-        chatCount={lines.length}
+        chatLast={newest}
         tools={<SoundToggle on={!audio.muted} onToggle={toggleSound} />}
         plate={
           model.me ? (
@@ -334,6 +347,7 @@ function GameTable({
           goal={model.goal}
           secondsLeft={introSeconds}
           betting
+          chatGuessing={model.guessing}
         />
       )}
       {help && stage.kind !== "intro" && !over && (
@@ -341,6 +355,7 @@ function GameTable({
           mode="help"
           goal={model.goal}
           betting
+          chatGuessing={model.guessing}
           onClose={() => setHelp(false)}
         />
       )}

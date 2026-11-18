@@ -17,8 +17,8 @@ export type TurnSummary = Omit<RulesTurn, "bets" | "thief"> &
 export type PendingBet = NonNullable<RulesView["bets"]>[number];
 
 /**
- * The Hitster view as the client reads it: the betting fields, optional in
- * the rules only for views from before betting, are always sent now.
+ * The Hitster view as the client reads it: the betting and guessing fields,
+ * optional in the rules only for views from before them, are always sent now.
  */
 export type HitsterView = Omit<
   RulesView,
@@ -29,11 +29,22 @@ export type HitsterView = Omit<
   | "bets"
   | "declined"
   | "canBet"
+  | "guessing"
+  | "yourGuess"
+  | "guesses"
 > &
   Required<
     Pick<
       RulesView,
-      "tokens" | "locked" | "lockedIndex" | "bets" | "declined" | "canBet"
+      | "tokens"
+      | "locked"
+      | "lockedIndex"
+      | "bets"
+      | "declined"
+      | "canBet"
+      | "guessing"
+      | "yourGuess"
+      | "guesses"
     >
   > & { lastTurn: TurnSummary | null };
 
@@ -121,6 +132,17 @@ export type MyBet =
   | { kind: "passed" }
   | { kind: "noTokens" };
 
+/**
+ * The chat's SONG / ARTIST badges: what the viewer has guessed of the song
+ * in play. `open` while guesses still count; after that the badges keep the
+ * last song's result.
+ */
+export interface GuessBadges {
+  song: boolean;
+  artist: boolean;
+  open: boolean;
+}
+
 /** Everything the game screen draws, derived from one RoomView. */
 export interface GameModel {
   code: string;
@@ -148,6 +170,10 @@ export interface GameModel {
   /** Betting tokens per player id, as the server counts them now. */
   tokens: Record<string, number>;
   myBet: MyBet;
+  /** The table guesses the song in the chat (the "Guess in chat" setting, unless titles are shown). */
+  guessing: boolean;
+  /** What the viewer has guessed of the current song; null when they are not playing. */
+  yourGuess: { title: boolean; artist: boolean } | null;
 }
 
 /** A status headline and the line under it. */

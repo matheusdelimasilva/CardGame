@@ -40,9 +40,10 @@ const KINDS: ChatLine[] = [
 
 const BADGES: [string, GuessBadges | undefined][] = [
   ["Badges absent", undefined],
-  ["None guessed", { song: false, artist: false }],
-  ["Song guessed", { song: true, artist: false }],
-  ["Both guessed", { song: true, artist: true }],
+  ["None guessed", { song: false, artist: false, open: true }],
+  ["Song guessed", { song: true, artist: false, open: true }],
+  ["Both guessed", { song: true, artist: true, open: true }],
+  ["Reveal: artist missed", { song: true, artist: false, open: false }],
 ];
 
 /** A panel with its own log, so sending appends a line. */

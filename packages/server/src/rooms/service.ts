@@ -17,6 +17,9 @@ export class RoomService {
   private listeners = new Set<(room: Room) => void>();
   private kickListeners = new Set<(room: Room, playerId: string) => void>();
   private chatListeners = new Set<(room: Room, message: ChatMessage) => void>();
+  private noticeListeners = new Set<
+    (room: Room, member: Member, text: string) => void
+  >();
 
   constructor(
     private readonly registry: RoomRegistry,
@@ -44,14 +47,54 @@ export class RoomService {
     };
   }
 
-  /** Chat is ephemeral: it goes to the room's listeners only and is never part of the saved state. */
+  /** Private lines for one member, e.g. why their chat line was held back. */
+  onNotice(
+    listener: (room: Room, member: Member, text: string) => void,
+  ): () => void {
+    this.noticeListeners.add(listener);
+    return () => {
+      this.noticeListeners.delete(listener);
+    };
+  }
+
+  /**
+   * Chat is ephemeral: it goes to the room's listeners only and is never part
+   * of the saved state. The running game sees each line first and may hold
+   * it back, announce something, or change its state (see GameModule.chat).
+   */
   chat(room: Room, member: Member, text: string): Refusal | undefined {
-    return guard(room.code, () => {
-      const result = rooms.chat(room, member, text);
-      if ("error" in result) return result.error;
-      for (const listener of this.chatListeners) listener(room, result.message);
-      return null;
-    });
+    return guard(
+      room.code,
+      () => {
+        const result = rooms.chat(room, member, text);
+        if ("error" in result) return result.error;
+        const { message } = result;
+        const wasFinished = room.game?.result != null;
+        const outcome = rooms.chatInGame(
+          room,
+          member,
+          message.text,
+          message.at,
+        );
+        const lines = [
+          ...(outcome?.deliver === false ? [] : [message]),
+          ...(outcome?.announce ?? []).map((line) =>
+            rooms.systemMessage(line, message.at),
+          ),
+        ];
+        for (const line of lines)
+          for (const listener of this.chatListeners) listener(room, line);
+        if (outcome?.note)
+          for (const listener of this.noticeListeners)
+            listener(room, member, outcome.note);
+        if (outcome?.state !== undefined) {
+          if (!wasFinished && room.game?.result) this.recordHistory(room);
+          this.notify(room);
+        }
+        return null;
+      },
+      () => this.recover(room),
+    );
   }
 
   /** The caller attaches the connection and welcomes it before notifying the room. */

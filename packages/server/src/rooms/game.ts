@@ -1,6 +1,6 @@
 /** Game orchestration and the clocks/recordings derived from running state. */
 import { randomInt } from "node:crypto";
-import type { Track } from "@cardgame/engine";
+import type { ChatOutcome, Track } from "@cardgame/engine";
 import { requireGame } from "@cardgame/games";
 import { newToken } from "./members";
 import {
@@ -142,6 +142,36 @@ function apply(
   running.state = outcome.state;
   syncGame(room, now);
   return null;
+}
+
+/**
+ * Shows a chat line to the running game before it is sent (see
+ * GameModule.chat). A changed state is applied like a move. Returns null to
+ * send the line as usual. The line itself is never kept or logged.
+ */
+export function chatInGame(
+  room: Room,
+  member: Member,
+  text: string,
+  now = Date.now(),
+): ChatOutcome<unknown> | null {
+  const running = room.game;
+  if (!running || running.result || running.resumeAt !== null) return null;
+  const game = requireGame(running.gameId);
+  const player = running.players.includes(member.id) ? member.id : null;
+  let outcome;
+  try {
+    outcome = game.chat?.(running.state, player, text, member.name) ?? null;
+  } catch (err) {
+    // Held back rather than sent: the game may have been about to hide it.
+    console.error(`Room ${room.code}:`, err);
+    return { deliver: false, note: "That message could not be sent." };
+  }
+  if (outcome?.state !== undefined) {
+    running.state = outcome.state;
+    syncGame(room, now);
+  }
+  return outcome;
 }
 
 export function move(

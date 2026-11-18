@@ -61,6 +61,21 @@ export interface Track {
   deezerId: number | null;
 }
 
+/**
+ * What a game decides about one chat line (see GameModule.chat). Chat is
+ * never saved, so neither the line nor these texts are kept anywhere.
+ */
+export interface ChatOutcome<S> {
+  /** The game after this line, when it changed anything. Like a move, it must be a new object. */
+  state?: S;
+  /** Whether the line goes out to the room as typed. */
+  deliver: boolean;
+  /** Lines from the table, not a person, that everyone in the room sees after the line (if delivered). */
+  announce?: string[];
+  /** Told only to the sender, e.g. why their line was not sent. */
+  note?: string;
+}
+
 export interface SetupContext {
   /** Seated players, in table order. */
   players: PlayerId[];
@@ -112,6 +127,19 @@ export interface GameModule<S, M, V> {
   resume?(state: S): S;
   /** null while the game is still running. */
   result(state: S): GameResult | null;
+  /**
+   * Looks at a chat line before it is sent, e.g. to judge it as a guess.
+   * `player` is the sender when they play in this game, else null;
+   * `name` is how the room knows them. Returns null to send the line as
+   * usual. Called only while the game runs and is not paused; the line has
+   * already passed the room's length and rate limits.
+   */
+  chat?(
+    state: S,
+    player: PlayerId | null,
+    text: string,
+    name: string,
+  ): ChatOutcome<S> | null;
 }
 
 /** Runtime game interface after the registry has hidden its state, move and view types. */
@@ -134,5 +162,7 @@ export function defineGame<S, M, V>(module: GameModule<S, M, V>): AnyGame {
     pauseMs: (state) => module.pauseMs?.(state as S) ?? null,
     resume: (state) => (module.resume ? module.resume(state as S) : state),
     result: (state) => module.result(state as S),
+    chat: (state, player, text, name) =>
+      module.chat?.(state as S, player, text, name) ?? null,
   };
 }

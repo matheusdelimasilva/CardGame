@@ -10,6 +10,7 @@ import {
   isScenarioName,
   scenarios,
   type Goal,
+  type Guessed,
   type TimelineLength,
 } from "./fixtures";
 import type { GalleryContext, GallerySection } from "./types";
@@ -27,6 +28,7 @@ const SECTIONS = Object.entries(modules)
 
 const GOALS: Goal[] = [5, 8, 10];
 const LENGTHS: TimelineLength[] = ["short", "long", "mixed"];
+const GUESSED: Guessed[] = ["none", "song", "both"];
 
 /** Scenario and options from the query string, with defaults for anything missing or wrong. */
 function readOptions(params: URLSearchParams): Omit<GalleryContext, "room"> {
@@ -34,6 +36,7 @@ function readOptions(params: URLSearchParams): Omit<GalleryContext, "room"> {
   const players = Number(params.get("players"));
   const goal = Number(params.get("goal"));
   const timelines = params.get("timelines") ?? "";
+  const guessed = params.get("guessed") ?? "";
   return {
     scenario: isScenarioName(scenario) ? scenario : "myTurn",
     options: {
@@ -43,6 +46,10 @@ function readOptions(params: URLSearchParams): Omit<GalleryContext, "room"> {
         ? (timelines as TimelineLength)
         : "mixed",
       showSongInfo: params.get("songInfo") === "1",
+      guessInChat: params.get("guessing") !== "0",
+      guessed: (GUESSED as string[]).includes(guessed)
+        ? (guessed as Guessed)
+        : "none",
     },
   };
 }
@@ -55,6 +62,10 @@ function toQuery(picked: Omit<GalleryContext, "room">, only?: string): string {
     goal: String(picked.options.goal),
     timelines: picked.options.timelines,
     ...(picked.options.showSongInfo ? { songInfo: "1" } : {}),
+    ...(picked.options.guessInChat ? {} : { guessing: "0" }),
+    ...(picked.options.guessed === "none"
+      ? {}
+      : { guessed: picked.options.guessed }),
   });
   return `?${params}`;
 }
@@ -219,6 +230,26 @@ export default function Gallery() {
             onChange={(e) => setOption("showSongInfo", e.target.checked)}
           />{" "}
           Show song info
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={picked.options.guessInChat}
+            onChange={(e) => setOption("guessInChat", e.target.checked)}
+          />{" "}
+          Guess in chat
+        </label>
+        <label>
+          Guessed{" "}
+          <select
+            style={field}
+            value={picked.options.guessed}
+            onChange={(e) => setOption("guessed", e.target.value as Guessed)}
+          >
+            {GUESSED.map((n) => (
+              <option key={n}>{n}</option>
+            ))}
+          </select>
         </label>
       </div>
       {SECTIONS.length === 0 && <p>No *.gallery.tsx files yet.</p>}

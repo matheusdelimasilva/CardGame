@@ -622,16 +622,16 @@ function Mystery({
  * closed, so a half-written message survives, and it closes itself when the
  * viewer's turn to place begins, leaving the table and the hand clear.
  */
-function useChatDrawer(count: number, placing: boolean) {
+function useChatDrawer(newest: string | null, placing: boolean) {
   const [open, setOpen] = useState(false);
-  const [seen, setSeen] = useState(count);
+  const [seen, setSeen] = useState(newest);
   const [wasPlacing, setWasPlacing] = useState(placing);
   if (placing !== wasPlacing) {
     setWasPlacing(placing);
     if (placing) setOpen(false);
   }
-  if (open && seen !== count) setSeen(count);
-  return { open, setOpen, unread: !open && count > seen };
+  if (open && seen !== newest) setSeen(newest);
+  return { open, setOpen, unread: !open && newest !== seen };
 }
 
 export interface StageProps {
@@ -645,8 +645,12 @@ export interface StageProps {
   /** The host's player menu, from an opponent's seat card. */
   onSeat?: (player: TablePlayer) => void;
   chat: ReactNode;
-  /** Chat lines so far, for the drawer's unread dot. */
-  chatCount: number;
+  /**
+   * The id of the newest line from the server or a private notice, for the
+   * drawer's unread dot. An id rather than a count: the history is capped,
+   * so a full log stops growing.
+   */
+  chatLast: string | null;
   /** The viewer's plate in the bottom-left corner. */
   plate: ReactNode;
   /** Buttons for the layout's tools corner, if it has one. */
@@ -662,7 +666,7 @@ export function Stage({
   bet,
   onSeat,
   chat,
-  chatCount,
+  chatLast,
   plate,
   tools,
 }: StageProps) {
@@ -675,7 +679,7 @@ export function Stage({
     scene.handSlots,
     scene.handFocus,
   );
-  const drawer = useChatDrawer(chatCount, scene.mystery.draggable);
+  const drawer = useChatDrawer(chatLast, scene.mystery.draggable);
   const chatId = useId();
   const view = scene.hand ? layout.hand.view : null;
   const barAt = layout.bets.bar.kind === "floating" ? layout.bets.bar : null;

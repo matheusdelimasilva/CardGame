@@ -38,6 +38,10 @@ export class Gateway {
         for (const ws of this.sockets.get(room)?.keys() ?? [])
           this.send(ws, { type: "chat", message });
       }),
+      service.onNotice((room, member, text) => {
+        for (const [ws, m] of this.sockets.get(room) ?? [])
+          if (m === member) this.send(ws, { type: "notice", text });
+      }),
       registry.onDelete((room) => {
         this.sockets.delete(room);
       }),
