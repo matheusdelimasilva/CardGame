@@ -95,7 +95,10 @@ describe("security boundaries", () => {
     );
     expect(res.status).toBe(413);
     expect(res.headers.get("content-type")).toBe("application/json");
-    expect(await res.json()).toEqual({ error: "Request body is too large." });
+    expect(await res.json()).toEqual({
+      error: "Request body is too large.",
+      errorPtBR: "O corpo da solicitação é muito grande.",
+    });
     expect((await fetch(base + "/api/games")).status).toBe(200);
   });
 
@@ -122,7 +125,10 @@ describe("security boundaries", () => {
     );
     expect(result).toEqual({
       status: 413,
-      body: JSON.stringify({ error: "Request body is too large." }),
+      body: JSON.stringify({
+        error: "Request body is too large.",
+        errorPtBR: "O corpo da solicitação é muito grande.",
+      }),
     });
   });
 
@@ -211,6 +217,7 @@ describe("security boundaries", () => {
       expect(await send(raw)).toEqual({
         type: "error",
         message: "Invalid message.",
+        messagePtBR: "Mensagem inválida.",
       });
     }
     const state = new Promise<ServerMessage>((resolve) =>
@@ -224,6 +231,7 @@ describe("security boundaries", () => {
     expect(await send('{"type":"sit","seat":"0"}')).toEqual({
       type: "error",
       message: "Invalid message.",
+      messagePtBR: "Mensagem inválida.",
     });
     expect((await send('{"type":"setName","name":"Ana"}')).type).toBe("state");
     ws.close();

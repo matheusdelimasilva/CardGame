@@ -1,3 +1,4 @@
+import { useLocale } from "../i18n/locale";
 /**
  * The game screen's cards and table furniture, from
  * docs/design/game-screen.dc.html. Everything here is presentational and
@@ -251,6 +252,7 @@ export function SongBack({
   className,
   style,
 }: SongBackProps) {
+  const { t } = useLocale();
   const known = !!title || !!artist;
   const plate = useFitPlate(`${title ?? ""}\n${artist ?? ""}`);
   return (
@@ -260,8 +262,11 @@ export function SongBack({
       role="img"
       aria-label={
         known
-          ? `Mystery song: ${[title, artist].filter(Boolean).join(", ")}`
-          : "Mystery song card"
+          ? t(
+              `Mystery song: ${[title, artist].filter(Boolean).join(", ")}`,
+              `Música misteriosa: ${[title, artist].filter(Boolean).join(", ")}`,
+            )
+          : t("Mystery song card", "Carta da música misteriosa")
       }
     >
       <span className="gs-record">
@@ -386,11 +391,16 @@ export function MiniCard({
   className,
   ...rest
 }: MiniCardProps) {
+  const { t } = useLocale();
   return (
     <div
       className={cx("gs-mini", className)}
       role="img"
-      aria-label={year === null ? "Face-down card" : String(year)}
+      aria-label={
+        year === null
+          ? t("Face-down card", "Carta virada para baixo")
+          : String(year)
+      }
       {...rest}
     >
       <div
@@ -454,13 +464,14 @@ export interface PipsProps {
 
 /** One small bar per card needed to win, filled for each card held. */
 export function Pips({ count, goal, color, className }: PipsProps) {
+  const { t } = useLocale();
   const total = Math.max(0, Math.round(goal));
   return (
     <span
       className={cx("gs-pips", className)}
       style={color ? ({ "--gs-pip": color } as CSSProperties) : undefined}
       role="img"
-      aria-label={`${count} of ${goal} cards`}
+      aria-label={t(`${count} of ${goal} cards`, `${count} de ${goal} cartas`)}
     >
       {Array.from({ length: total }, (_, i) => (
         <span key={i} className={cx("gs-pip", i < count && "is-filled")} />
@@ -503,6 +514,7 @@ export function SeatCard({
   className,
   style,
 }: SeatCardProps) {
+  const { t } = useLocale();
   const away = !player.connected;
   const name = useFitText<HTMLSpanElement>(player.name, 1, NAME_FLOOR);
   const rootClass = cx(
@@ -536,7 +548,7 @@ export function SeatCard({
       <span className="gs-seat-score">
         {count}/{goal}
       </span>
-      {away && <span className="gs-seat-away">away</span>}
+      {away && <span className="gs-seat-away">{t("away", "ausente")}</span>}
       {badge && <span className="gs-seat-badge">{badge}</span>}
     </span>
   );
@@ -552,10 +564,10 @@ export function SeatCard({
     );
   const label = [
     player.name,
-    `${count} of ${goal} cards`,
-    away && "away",
+    t(`${count} of ${goal} cards`, `${count} de ${goal} cartas`),
+    away && t("away", "ausente"),
     badge,
-    "player options",
+    t("player options", "opções da pessoa"),
   ]
     .filter(Boolean)
     .join(", ");

@@ -1,3 +1,4 @@
+import { useLocale } from "../i18n/locale";
 import { InviteButton } from "../ui/InviteButton";
 import { TableHeader } from "../ui/TableHeader";
 import "./overlays.css";
@@ -10,14 +11,15 @@ export function SoundToggle({
   on: boolean;
   onToggle: () => void;
 }) {
+  const { t } = useLocale();
   return (
     <button
       className="tl-button gs-sound"
-      aria-label="Sound"
+      aria-label={t("Sound", "Som")}
       aria-pressed={on}
       onClick={onToggle}
     >
-      {on ? "Sound on" : "Sound off"}
+      {on ? t("Sound on", "Som ligado") : t("Sound off", "Som desligado")}
     </button>
   );
 }
@@ -44,6 +46,7 @@ export function GameHeader({
   onToggleSound: () => void;
   onInstructions: () => void;
 }) {
+  const { t } = useLocale();
   return (
     <TableHeader
       className="gs-header"
@@ -51,15 +54,17 @@ export function GameHeader({
       gameName={gameName}
       watchers={watchers}
       onLeave={onLeave}
+      withLanguage={withSound}
       actions={
         <>
           {withSound && <SoundToggle on={soundOn} onToggle={onToggleSound} />}
           <button
             className="tl-button tl-gold gs-help"
             aria-haspopup="dialog"
+            aria-label={t("Instructions", "Instruções")}
             onClick={onInstructions}
           >
-            Instructions
+            {t("Instructions", "Instruções")}
           </button>
           <InviteButton code={code} />
         </>

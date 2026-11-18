@@ -1,3 +1,4 @@
+import { useLocale } from "../i18n/locale";
 import { useId, type CSSProperties } from "react";
 import { PaperDialog, useModalDialog } from "../ui/PaperDialog";
 import "./overlays.css";
@@ -27,6 +28,7 @@ export function RoundNote({
   /** Required in help mode. */
   onClose?: () => void;
 }) {
+  const { t } = useLocale();
   const intro = mode === "intro";
   const modal = useModalDialog(intro ? null : (onClose ?? null));
   const titleId = useId();
@@ -42,7 +44,7 @@ export function RoundNote({
         {!intro && (
           <button
             className="tl-close"
-            aria-label="Close"
+            aria-label={t("Close", "Fechar")}
             onClick={onClose}
             autoFocus
           >
@@ -50,28 +52,46 @@ export function RoundNote({
           </button>
         )}
         <div className="gs-note-text">
-          <h2 id={titleId}>{intro ? "Get ready" : "How a round works"}</h2>
+          <h2 id={titleId}>
+            {intro
+              ? t("Get ready", "Prepare-se")
+              : t("How a round works", "Como funciona uma rodada")}
+          </h2>
           <ol className="tl-instructions">
             <li>
-              <b>Listen</b> to the mystery song.
+              <b>{t("Listen", "Ouça")}</b>
+              {t(" to the mystery song.", " a música misteriosa.")}
             </li>
             <li>
-              <b>Drag</b> its card into your timeline where the year fits.
+              <b>{t("Drag", "Arraste")}</b>
+              {t(
+                " its card into your timeline where the year fits.",
+                " a carta para a posição correspondente ao ano na sua linha do tempo.",
+              )}
             </li>
             <li>
-              <b>Right spot,</b> you keep it. First to {goal} wins.
+              <b>{t("Right spot,", "Acertou?")}</b>
+              {t(
+                ` you keep it. First to ${goal} wins.`,
+                ` Fique com a carta. Quem juntar ${goal} cartas primeiro vence.`,
+              )}
             </li>
             {betting && (
               <li>
-                <b>Bet a token</b> on an opponent&apos;s turn: tap the gap where
-                the song really goes. If they miss and you&apos;re first to be
-                right, you steal the card.
+                <b>{t("Bet a token", "Aposte uma ficha")}</b>
+                {t(
+                  " on an opponent's turn: tap the gap where the song really goes. If they miss and you're first to be right, you steal the card.",
+                  " na vez de outra pessoa: toque no espaço onde a música deve entrar. Se a pessoa errar e você for a primeira a acertar, você fica com a carta.",
+                )}
               </li>
             )}
             {chatGuessing && (
               <li>
-                <b>Guess in the chat.</b> Type the song and the artist at any
-                time. Get both and you earn a token.
+                <b>{t("Guess in the chat.", "Dê seu palpite no chat.")}</b>
+                {t(
+                  " Type the song and the artist at any time. Get both and you earn a token.",
+                  " Digite o nome da música e do artista a qualquer momento. Acerte os dois para ganhar uma ficha.",
+                )}
               </li>
             )}
           </ol>
@@ -81,11 +101,16 @@ export function RoundNote({
             className="gs-note-countdown"
             role="timer"
             aria-label={
-              secondsLeft === null ? undefined : `Starts in ${secondsLeft}`
+              secondsLeft === null
+                ? undefined
+                : t(
+                    `Starts in ${secondsLeft}`,
+                    `Começa em ${secondsLeft} ${secondsLeft === 1 ? "segundo" : "segundos"}`,
+                  )
             }
           >
             <div className="gs-note-starts" aria-hidden="true">
-              STARTS IN
+              {t("STARTS IN", "COMEÇA EM")}
             </div>
             {/* A new key each second replays the tick. */}
             <div key={secondsLeft} className="gs-note-count" aria-hidden="true">
@@ -154,6 +179,7 @@ export function FinalScores({
   onPlayAgain: () => void;
   onBackToLobby: () => void;
 }) {
+  const { t } = useLocale();
   const modal = useModalDialog(null);
   const titleId = useId();
   const hintId = useId();
@@ -167,7 +193,9 @@ export function FinalScores({
         className={`gs-scores${rows.length > 4 ? " gs-scores-many" : ""}`}
         style={{ "--goal": goal } as CSSProperties}
       >
-        <div className="gs-scores-label">FINAL SCORES</div>
+        <div className="gs-scores-label">
+          {t("FINAL SCORES", "RESULTADO FINAL")}
+        </div>
         <h2 id={titleId}>{headline}</h2>
         <p className="gs-scores-sub">{sub}</p>
         <ol className="gs-scores-list">
@@ -187,7 +215,7 @@ export function FinalScores({
               </span>
               <span className="gs-score-name">
                 {row.player.name}
-                {row.isMe && " (you)"}
+                {row.isMe && t(" (you)", " (você)")}
               </span>
               <span className="gs-score-pips" aria-hidden="true">
                 {Array.from({ length: goal }, (_, i) => (
@@ -211,19 +239,22 @@ export function FinalScores({
             onClick={onPlayAgain}
             autoFocus={isHost}
           >
-            Play again
+            {t("Play again", "Jogar de novo")}
           </button>
           <button
             className="tl-button"
             onClick={onBackToLobby}
             autoFocus={!isHost}
           >
-            Back to lobby
+            {t("Back to lobby", "Voltar à sala")}
           </button>
         </div>
         {!isHost && (
           <p id={hintId} className="gs-scores-hint">
-            The host starts the next game.
+            {t(
+              "The host starts the next game.",
+              "O anfitrião inicia a próxima partida.",
+            )}
           </p>
         )}
       </div>
@@ -257,6 +288,7 @@ export function PlayerMenu({
   onEndGame: () => void;
   onClose: () => void;
 }) {
+  const { t } = useLocale();
   // Each action closes the menu, as the old one did.
   const then = (action: () => void) => () => {
     action();
@@ -267,19 +299,19 @@ export function PlayerMenu({
       <div className="gs-menu-actions">
         {running && theirTurn && !player.connected && (
           <button className="tl-button tl-gold" onClick={then(onSkip)}>
-            Play their turn for them
+            {t("Play their turn for them", "Jogar no lugar da pessoa")}
           </button>
         )}
         {!player.isMe && (
           <button className="tl-button tl-danger" onClick={then(onRemove)}>
             {running && playing
-              ? "Remove and end this game"
-              : "Remove from table"}
+              ? t("Remove and end this game", "Remover e encerrar a partida")
+              : t("Remove from table", "Remover da mesa")}
           </button>
         )}
         {running && (
           <button className="tl-button tl-danger" onClick={then(onEndGame)}>
-            End the game for everyone
+            {t("End the game for everyone", "Encerrar a partida para todos")}
           </button>
         )}
       </div>
@@ -289,9 +321,10 @@ export function PlayerMenu({
 
 /** Shown while the socket is down; the room reconnects on its own. */
 export function ConnectionBanner() {
+  const { t } = useLocale();
   return (
     <div className="gs-banner gs-connection" role="status">
-      Connection lost. Reconnecting…
+      {t("Connection lost. Reconnecting…", "Conexão perdida. Reconectando…")}
     </div>
   );
 }
@@ -301,9 +334,13 @@ export function ConnectionBanner() {
  * anywhere starts it; the button is for keyboards, which a tap listener misses.
  */
 export function SoundPrompt({ onTurnOn }: { onTurnOn: () => void }) {
+  const { t } = useLocale();
   return (
     <button className="gs-banner gs-sound-prompt" onClick={onTurnOn}>
-      Tap anywhere to turn on sound
+      {t(
+        "Tap anywhere to turn on sound",
+        "Toque em qualquer lugar para ativar o som",
+      )}
     </button>
   );
 }

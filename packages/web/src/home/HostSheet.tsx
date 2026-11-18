@@ -1,5 +1,6 @@
-import { useState, type FormEvent } from "react";
-import { api } from "../api";
+import { useId, useState, type FormEvent } from "react";
+import { api, formatApiError } from "../api";
+import { useLocale } from "../i18n/locale";
 import { KEYS, storage } from "../storage";
 
 /** The contents of the "Host a table" paper sheet: sign in, then New table. */
@@ -14,13 +15,14 @@ export function HostSheet({
   onSignedOut: () => void;
   onNewTable: () => void;
 }) {
+  const { t } = useLocale();
   return (
     <>
-      <h2 className="sheet-title">Host a table</h2>
+      <h2 className="sheet-title">{t("Host a table", "Criar uma mesa")}</h2>
       {email ? (
         <div>
           <p className="sheet-text">
-            Signed in as <b>{email}</b>.{" "}
+            {t("Signed in as", "Você entrou como")} <b>{email}</b>.{" "}
             <button
               type="button"
               className="paper-link"
@@ -30,11 +32,11 @@ export function HostSheet({
                 onSignedOut();
               }}
             >
-              Sign out
+              {t("Sign out", "Sair")}
             </button>
           </p>
           <button type="button" className="pbtn gold big" onClick={onNewTable}>
-            New table
+            {t("New table", "Nova mesa")}
           </button>
         </div>
       ) : (
@@ -45,11 +47,14 @@ export function HostSheet({
 }
 
 function SignIn({ onSignedIn }: { onSignedIn: (email: string) => void }) {
+  const { locale, t } = useLocale();
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [devCode, setDevCode] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{ cause: unknown } | null>(null);
+  const errorId = useId();
+  const [invalidEmail, setInvalidEmail] = useState(false);
   const [busy, setBusy] = useState(false);
 
   const run = async (work: () => Promise<void>) => {
@@ -57,17 +62,27 @@ function SignIn({ onSignedIn }: { onSignedIn: (email: string) => void }) {
     setError(null);
     try {
       await work();
-    } catch (err) {
-      setError((err as Error).message);
+    } catch (cause) {
+      setError({ cause });
     } finally {
       setBusy(false);
     }
   };
 
-  const request = (e: FormEvent) => {
+  const request = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const input = e.currentTarget.elements.namedItem(
+      "email",
+    ) as HTMLInputElement;
+    if (!input.validity.valid) {
+      setInvalidEmail(true);
+      setError(null);
+      input.focus();
+      return;
+    }
+    setInvalidEmail(false);
     void run(async () => {
-      const result = await api.requestCode(email);
+      const result = await api.requestCode(email, locale);
       setDevCode(result.devCode ?? null);
       setSentTo(email.trim());
     });
@@ -87,36 +102,51 @@ function SignIn({ onSignedIn }: { onSignedIn: (email: string) => void }) {
   return (
     <>
       {!sentTo ? (
-        <form onSubmit={request}>
+        <form onSubmit={request} noValidate>
           <p className="sheet-text">
-            Enter your email and we will send you a sign-in code. Only the host
-            needs one.
+            {t(
+              "Enter your email and we will send you a sign-in code. Only the host needs one.",
+              "Informe seu e-mail para receber um código de acesso. Só quem cria a mesa precisa do código.",
+            )}
           </p>
           <div className="sheet-row">
             <input
               className="pinput grow"
               type="email"
+              name="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setInvalidEmail(false);
+              }}
+              aria-invalid={invalidEmail}
+              aria-describedby={invalidEmail ? errorId : undefined}
+              placeholder={t("you@example.com", "voce@exemplo.com")}
               autoComplete="email"
-              aria-label="Email"
+              aria-label={t("Email", "E-mail")}
               required
             />
             <button className="pbtn gold" disabled={busy}>
-              Send code
+              {t("Send code", "Enviar código")}
             </button>
           </div>
         </form>
       ) : (
         <form onSubmit={verify}>
           <p className="sheet-text">
-            We sent a 6-digit code to <b>{sentTo}</b>.
+            {t(
+              "We sent a 6-digit code to",
+              "Enviamos um código de 6 dígitos para",
+            )}{" "}
+            <b>{sentTo}</b>.
           </p>
           {devCode && (
             <p className="sheet-dev">
-              Development mode, no email was sent. Your code is <b>{devCode}</b>
-              .
+              {t(
+                "Development mode, no email was sent. Your code is",
+                "Em modo de desenvolvimento, o e-mail não é enviado. Seu código é",
+              )}{" "}
+              <b>{devCode}</b>.
             </p>
           )}
           <div className="sheet-row">
@@ -130,11 +160,11 @@ function SignIn({ onSignedIn }: { onSignedIn: (email: string) => void }) {
               inputMode="numeric"
               autoComplete="one-time-code"
               maxLength={6}
-              aria-label="Sign-in code"
+              aria-label={t("Sign-in code", "Código de acesso")}
               autoFocus
             />
             <button className="pbtn gold" disabled={busy}>
-              Sign in
+              {t("Sign in", "Entrar")}
             </button>
           </div>
           <button
@@ -146,13 +176,22 @@ function SignIn({ onSignedIn }: { onSignedIn: (email: string) => void }) {
               setError(null);
             }}
           >
-            Use a different email
+            {t("Use a different email", "Usar outro e-mail")}
           </button>
         </form>
       )}
-      {error && (
-        <p className="scribble red" role="alert">
-          {error}
+      {(error || invalidEmail) && (
+        <p className="scribble red" role="alert" id={errorId}>
+          {error
+            ? formatApiError(
+                error.cause,
+                locale,
+                t("Could not sign in.", "Não foi possível entrar."),
+              )
+            : t(
+                "Enter a valid email address.",
+                "Informe um endereço de e-mail válido.",
+              )}
         </p>
       )}
     </>

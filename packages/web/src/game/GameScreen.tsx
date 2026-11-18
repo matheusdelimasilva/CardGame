@@ -1,3 +1,4 @@
+import { useLocale, type Locale, translate } from "../i18n/locale";
 /**
  * The Hitster game screen: header, the stage, the chat, and the overlays,
  * for one running (or just finished) game. The server's state comes in as
@@ -15,6 +16,7 @@ import {
   type ReactNode,
 } from "react";
 import type { TrackAudio } from "../audio";
+import { LanguagePicker } from "../ui/LanguagePicker";
 import { seatLook } from "../ui/seats";
 import type { ChatEntry, Connection } from "../useRoom";
 import { betReducer, freshBet } from "./betting";
@@ -67,6 +69,7 @@ function viewerPlate(
   room: RoomView,
   connection: Connection,
   send: GameScreenProps["send"],
+  locale: Locale,
 ) {
   const { you } = room;
   if (!you.name) return null;
@@ -76,10 +79,17 @@ function viewerPlate(
       <ViewerPlate
         name={you.name}
         animal={seatLook(you.seat, true).animal}
-        note="You join the next game."
+        note={translate(
+          locale,
+          "You join the next game.",
+          "Você entra na próxima partida.",
+        )}
         action={
           online
-            ? { label: "Stand up", onClick: () => send({ type: "stand" }) }
+            ? {
+                label: translate(locale, "Stand up", "Levantar"),
+                onClick: () => send({ type: "stand" }),
+              }
             : null
         }
       />
@@ -91,13 +101,21 @@ function viewerPlate(
       animal={seatLook(null).animal}
       note={
         open < 0
-          ? "Watching. The table is full."
-          : "Watching. Take a seat to join the next game."
+          ? translate(
+              locale,
+              "Watching. The table is full.",
+              "Assistindo. A mesa está cheia.",
+            )
+          : translate(
+              locale,
+              "Watching. Take a seat to join the next game.",
+              "Assistindo. Sente-se para entrar na próxima partida.",
+            )
       }
       action={
         open >= 0 && online
           ? {
-              label: "Take a seat",
+              label: translate(locale, "Take a seat", "Sentar"),
               onClick: () => send({ type: "sit", seat: open }),
             }
           : null
@@ -132,6 +150,7 @@ function GameTable({
   onBackToLobby,
   children,
 }: GameScreenProps & { model: GameModel }) {
+  const { locale } = useLocale();
   const game = room.game!;
   const stage = model.stage;
   const beat = useBeat(model, dealCount(model));
@@ -261,15 +280,16 @@ function GameTable({
     bet,
     secondsLeft,
     layout,
+    locale,
   });
   const introSeconds = useSecondsLeft(
     stage.kind === "intro" ? game.pause : null,
   );
   const menuPlayer = model.opponents.find((p) => p.id === menuFor) ?? null;
   const over = stage.kind === "over";
-  const { headline, sub } = statusText(model);
+  const { headline, sub } = statusText(model, null, null, locale);
 
-  const lines = chatLines(chats);
+  const lines = chatLines(chats, locale);
   const newest = chats.at(-1)?.id ?? null;
   // The guessing hint goes where this game began in the log: as the page
   // opened it, or as a new game's intro started.
@@ -313,7 +333,7 @@ function GameTable({
           <ChatPanel
             lines={
               model.guessing && model.me
-                ? withGuessHint(lines, hint.after)
+                ? withGuessHint(lines, hint.after, locale)
                 : lines
             }
             canSend={connection === "open" && !!room.you.name}
@@ -323,7 +343,12 @@ function GameTable({
           />
         }
         chatLast={newest}
-        tools={<SoundToggle on={!audio.muted} onToggle={toggleSound} />}
+        tools={
+          <>
+            <LanguagePicker compact />
+            <SoundToggle on={!audio.muted} onToggle={toggleSound} />
+          </>
+        }
         plate={
           model.me ? (
             <MePlate
@@ -333,7 +358,7 @@ function GameTable({
               active={scene.plate.active}
             />
           ) : (
-            viewerPlate(room, connection, send)
+            viewerPlate(room, connection, send, locale)
           )
         }
       />
@@ -363,7 +388,7 @@ function GameTable({
         <FinalScores
           headline={headline}
           sub={sub}
-          rows={ranking(model)}
+          rows={ranking(model, locale)}
           goal={model.goal}
           isHost={room.you.isHost}
           celebrate={model.winners.some((p) => p.isMe)}

@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { useLocale } from "../i18n/locale";
+import { LanguagePicker } from "../ui/LanguagePicker";
 import {
   catalog,
   filterSongs,
@@ -16,18 +18,29 @@ const initial: Filters = {
   quality: "",
   source: "",
 };
-const number = (n: number) => n.toLocaleString();
-const labels: Record<string, string> = {
-  "chart-year": "Chart-year fallback",
-  musicbrainz: "MusicBrainz",
-  wikipedia: "Wikipedia",
-  curated: "Curated",
-};
 const decades = [
   ...new Set(catalog.map((s) => Math.floor(s.year / 10) * 10)),
 ].sort((a, b) => a - b);
 
 export default function SongLibrary() {
+  const { locale, t } = useLocale();
+  const numbers = useMemo(() => new Intl.NumberFormat(locale), [locale]);
+  const number = numbers.format;
+  const yearSources: Record<string, string> = {
+    "chart-year": t("Chart-year fallback", "Ano da parada como referência"),
+    musicbrainz: "MusicBrainz",
+    wikipedia: "Wikipedia",
+    curated: t("Curated", "Curadoria"),
+  };
+  const sourceLabel = (source: string) => yearSources[source] ?? source;
+  const catalogLabel = (list: CatalogSong["catalog"]) =>
+    list === "brasil" ? "Brasil" : t("International", "Internacional");
+  const decadeLabel = (year: number) => t(`${year}s`, `Anos ${year}`);
+  const recordCount = (count: number) =>
+    t(
+      `${number(count)} ${count === 1 ? "record" : "records"}`,
+      `${number(count)} ${count === 1 ? "registro" : "registros"}`,
+    );
   const [filters, setFilters] = useState(initial);
   const [sort, setSort] = useState("year-desc");
   const [page, setPage] = useState(0);
@@ -42,10 +55,11 @@ export default function SongLibrary() {
   const rows = useMemo(
     () =>
       filterSongs(filters).sort((a, b) => {
-        if (sort === "title") return a.title.localeCompare(b.title);
+        if (sort === "title") return a.title.localeCompare(b.title, locale);
         if (sort === "artist")
           return (
-            a.artist.localeCompare(b.artist) || a.title.localeCompare(b.title)
+            a.artist.localeCompare(b.artist, locale) ||
+            a.title.localeCompare(b.title, locale)
           );
         if (sort === "rank")
           return (
@@ -54,7 +68,7 @@ export default function SongLibrary() {
           );
         return sort === "year-asc" ? a.year - b.year : b.year - a.year;
       }),
-    [filters, sort],
+    [filters, sort, locale],
   );
   const coverageRows = useMemo(
     () => filterSongs({ ...filters, quality: "" }),
@@ -102,19 +116,32 @@ export default function SongLibrary() {
     <main className="library">
       <header className="lib-nav">
         <a href="/" className="lib-brand">
-          ♠ CARDGAME <span>/ THE COLLECTION</span>
+          ♠ CARDGAME <span>{t("/ THE COLLECTION", "/ A COLEÇÃO")}</span>
         </a>
-        <a href="/">Back to game ↗</a>
+        <div className="lib-nav-actions">
+          <LanguagePicker compact />
+          <a href="/">{t("Back to game ↗", "Voltar ao jogo ↗")}</a>
+        </div>
       </header>
       <section className="lib-heading">
         <div>
-          <p className="lib-eyebrow">THE HITSTER ARCHIVE · CATALOG EXPLORER</p>
+          <p className="lib-eyebrow">
+            {t(
+              "THE HITSTER ARCHIVE · CATALOG EXPLORER",
+              "ACERVO DO HITSTER · CATÁLOGO DE MÚSICAS",
+            )}
+          </p>
           <h1>
-            Good music.
+            {t("Good music.", "Música boa.")}
             <br />
-            <em>Great discoveries.</em>
+            <em>{t("Great discoveries.", "Grandes descobertas.")}</em>
           </h1>
-          <p>Dig through the decades. Find a favorite. Inspect every detail.</p>
+          <p>
+            {t(
+              "Dig through the decades. Find a favorite. Inspect every detail.",
+              "Explore várias décadas, encontre suas favoritas e confira todos os detalhes.",
+            )}
+          </p>
         </div>
         <div className="lib-record" aria-hidden="true">
           <div>
@@ -124,11 +151,14 @@ export default function SongLibrary() {
           </div>
         </div>
       </section>
-      <div className="lib-tabs" aria-label="Song catalog">
+      <div
+        className="lib-tabs"
+        aria-label={t("Song catalog", "Catálogo de músicas")}
+      >
         {[
-          ["", "All records"],
-          ["international", "International"],
-          ["brasil", "Brasil"],
+          ["", t("All records", "Todos os registros")],
+          ["international", catalogLabel("international")],
+          ["brasil", catalogLabel("brasil")],
         ].map(([value, label]) => (
           <button
             key={value}
@@ -143,50 +173,77 @@ export default function SongLibrary() {
             </span>
           </button>
         ))}
-        <span className="lib-live">● FROM THE GAME DATASET</span>
+        <span className="lib-live">
+          {t("● FROM THE GAME DATASET", "● DO CATÁLOGO DO JOGO")}
+        </span>
       </div>
-      <section className="lib-stats" aria-label="Filtered catalog statistics">
+      <section
+        className="lib-stats"
+        aria-label={t(
+          "Filtered catalog statistics",
+          "Estatísticas do catálogo filtrado",
+        )}
+      >
         <div>
-          <small>RECORDS IN VIEW</small>
+          <small>{t("RECORDS IN VIEW", "REGISTROS NA SELEÇÃO")}</small>
           <strong>{number(rows.length)}</strong>
-          <span>of {number(catalog.length)} catalog entries</span>
+          <span>
+            {t(
+              `of ${number(catalog.length)} catalog entries`,
+              `de ${number(catalog.length)} registros no catálogo`,
+            )}
+          </span>
         </div>
         <div>
-          <small>ARTIST CREDITS</small>
+          <small>{t("ARTIST CREDITS", "ARTISTAS CREDITADOS")}</small>
           <strong>{number(artists)}</strong>
-          <span>distinct credited names</span>
+          <span>
+            {t("distinct credited names", "nomes distintos nos créditos")}
+          </span>
         </div>
         <div>
-          <small>PREVIEW MATCHES</small>
+          <small>{t("PREVIEW MATCHES", "PRÉVIAS IDENTIFICADAS")}</small>
           <strong>
             {rows.length ? Math.round((matched / rows.length) * 100) : 0}
             <i>%</i>
           </strong>
-          <span>{number(matched)} with a Deezer ID</span>
+          <span>
+            {t(
+              `${number(matched)} with a Deezer ID`,
+              `${number(matched)} com ID do Deezer`,
+            )}
+          </span>
         </div>
         <div>
-          <small>RELEASE YEARS</small>
+          <small>{t("RELEASE YEARS", "ANOS DE LANÇAMENTO")}</small>
           <strong className="lib-year-stat">
             {rows.length
               ? `${Math.min(...rows.map((s) => s.year))}–${Math.max(...rows.map((s) => s.year))}`
               : "—"}
           </strong>
-          <span>first-release metadata</span>
+          <span>
+            {t("first-release metadata", "dados do primeiro lançamento")}
+          </span>
         </div>
       </section>
       <section
         className="lib-panel lib-coverage"
-        aria-label="Metadata coverage"
+        aria-label={t("Metadata coverage", "Cobertura dos metadados")}
       >
         <div className="lib-panel-title">
-          <h2>What’s in the metadata?</h2>
-          <span>{number(coverageRows.length)} records in scope</span>
+          <h2>{t("What’s in the metadata?", "O que há nos metadados?")}</h2>
+          <span>
+            {t(
+              `${recordCount(coverageRows.length)} in scope`,
+              `${recordCount(coverageRows.length)} na seleção`,
+            )}
+          </span>
         </div>
         <p className="lib-coverage-note">
-          Click a statistic to explore those records. Counts follow search,
-          catalog, decade and year source, before the data-quality filter.
-          Missing fields can overlap; chart fields and external IDs are optional
-          for some sources.
+          {t(
+            "Click a statistic to explore those records. Counts follow search, catalog, decade and year source, before the data-quality filter. Missing fields can overlap; chart fields and external IDs are optional for some sources.",
+            "Selecione uma estatística para explorar os registros. Os totais consideram a busca, o catálogo, a década e a fonte do ano. Um registro pode ter vários campos ausentes. Posições nas paradas e IDs externos são opcionais para algumas fontes.",
+          )}
         </p>
         <div className="lib-coverage-grid">
           {coverage.map((option) => (
@@ -200,7 +257,7 @@ export default function SongLibrary() {
                 )
               }
             >
-              <span>{option.label}</span>
+              <span>{t(option.label, option.labelPtBR)}</span>
               <strong>
                 {number(option.count)}
                 <small>
@@ -211,7 +268,7 @@ export default function SongLibrary() {
                 </small>
               </strong>
               <span className="lib-coverage-description">
-                {option.description}
+                {t(option.description, option.descriptionPtBR)}
               </span>
             </button>
           ))}
@@ -220,14 +277,22 @@ export default function SongLibrary() {
       <section className="lib-insights">
         <div className="lib-panel">
           <div className="lib-panel-title">
-            <h2>A trip through time</h2>
-            <span>Pick a decade to explore</span>
+            <h2>{t("A trip through time", "Uma viagem no tempo")}</h2>
+            <span>
+              {t(
+                "Pick a decade to explore",
+                "Escolha uma década para explorar",
+              )}
+            </span>
           </div>
           <div className="lib-chart">
             {counts.map(({ decade, count }) => (
               <button
                 key={decade}
-                aria-label={`${decade}s: ${count} songs`}
+                aria-label={t(
+                  `${decadeLabel(decade)}: ${number(count)} songs`,
+                  `${decadeLabel(decade)}: ${number(count)} ${count === 1 ? "música" : "músicas"}`,
+                )}
                 aria-pressed={filters.decade === String(decade)}
                 onClick={() =>
                   update(
@@ -244,18 +309,21 @@ export default function SongLibrary() {
                     <span>{number(count)}</span>
                   </span>
                 </span>
-                <small>{decade}s</small>
+                <small>{decadeLabel(decade)}</small>
               </button>
             ))}
           </div>
           <p className="lib-note">
-            Counts follow all filters except the selected decade.
+            {t(
+              "Counts follow all filters except the selected decade.",
+              "Os totais consideram todos os filtros, exceto a década selecionada.",
+            )}
           </p>
         </div>
         <div className="lib-panel">
           <div className="lib-panel-title">
-            <h2>On heavy rotation</h2>
-            <span>Top artist credits</span>
+            <h2>{t("On heavy rotation", "Em alta rotação")}</h2>
+            <span>{t("Top artist credits", "Artistas com mais faixas")}</span>
           </div>
           <div className="lib-artists">
             {topArtists.map(([artist, count], i) => (
@@ -265,15 +333,24 @@ export default function SongLibrary() {
                 <small>{number(count)}</small>
               </button>
             ))}
-            {!topArtists.length && <p>No artists match these filters.</p>}
+            {!topArtists.length && (
+              <p>
+                {t(
+                  "No artists match these filters.",
+                  "Nenhum artista corresponde a esses filtros.",
+                )}
+              </p>
+            )}
           </div>
         </div>
       </section>
       <section className="lib-panel lib-browser">
         <div className="lib-panel-title">
           <div>
-            <p className="lib-eyebrow">THE RECORD CRATE</p>
-            <h2>Explore the collection</h2>
+            <p className="lib-eyebrow">
+              {t("THE RECORD CRATE", "A CAIXA DE DISCOS")}
+            </p>
+            <h2>{t("Explore the collection", "Explore a coleção")}</h2>
           </div>
           <div className="lib-actions">
             <button
@@ -288,60 +365,63 @@ export default function SongLibrary() {
                 }
               }}
             >
-              ↝ Surprise me
+              {t("↝ Surprise me", "↝ Surpreenda-me")}
             </button>
             <button disabled={!rows.length} onClick={exportRows}>
-              Export JSON ↓
+              {t("Export JSON ↓", "Exportar JSON ↓")}
             </button>
           </div>
         </div>
         <div className="lib-filters">
           <label className="lib-search">
-            <span>Search the archive</span>
+            <span>{t("Search the archive", "Buscar no acervo")}</span>
             <input
               value={filters.query}
               onChange={(e) => update("query", e.target.value)}
-              placeholder="Search songs, artists, years or IDs…"
+              placeholder={t(
+                "Search songs, artists, years or IDs…",
+                "Busque por faixa, artista, ano ou ID…",
+              )}
             />
           </label>
           <label>
-            <span>Decade</span>
+            <span>{t("Decade", "Década")}</span>
             <select
               value={filters.decade}
               onChange={(e) => update("decade", e.target.value)}
             >
-              <option value="">All decades</option>
+              <option value="">{t("All decades", "Todas as décadas")}</option>
               {decades.map((d) => (
                 <option key={d} value={d}>
-                  {d}s
+                  {decadeLabel(d)}
                 </option>
               ))}
             </select>
           </label>
           <label>
-            <span>Data quality</span>
+            <span>{t("Data quality", "Qualidade dos dados")}</span>
             <select
               value={filters.quality}
               onChange={(e) => update("quality", e.target.value)}
             >
-              <option value="">All records</option>
+              <option value="">{t("All records", "Todos os registros")}</option>
               {qualityOptions.map((option) => (
                 <option key={option.value} value={option.value}>
-                  {option.label}
+                  {t(option.label, option.labelPtBR)}
                 </option>
               ))}
             </select>
           </label>
           <label>
-            <span>Year source</span>
+            <span>{t("Year source", "Fonte do ano")}</span>
             <select
               value={filters.source}
               onChange={(e) => update("source", e.target.value)}
             >
-              <option value="">All sources</option>
+              <option value="">{t("All sources", "Todas as fontes")}</option>
               {[...new Set(catalog.map((s) => s.yearSource))].map((s) => (
                 <option key={s} value={s}>
-                  {labels[s] ?? s}
+                  {sourceLabel(s)}
                 </option>
               ))}
             </select>
@@ -349,7 +429,7 @@ export default function SongLibrary() {
         </div>
         <div className="lib-results">
           <span aria-live="polite">
-            {number(rows.length)} records{" "}
+            {recordCount(rows.length)}{" "}
             {Object.values(filters).some(Boolean) && (
               <button
                 onClick={() => {
@@ -357,12 +437,12 @@ export default function SongLibrary() {
                   setPage(0);
                 }}
               >
-                Clear filters ×
+                {t("Clear filters ×", "Limpar filtros ×")}
               </button>
             )}
           </span>
           <label>
-            Sort by{" "}
+            {t("Sort by", "Ordenar por")}{" "}
             <select
               value={sort}
               onChange={(e) => {
@@ -370,11 +450,19 @@ export default function SongLibrary() {
                 setPage(0);
               }}
             >
-              <option value="year-desc">Newest first</option>
-              <option value="year-asc">Oldest first</option>
-              <option value="artist">Artist A–Z</option>
-              <option value="title">Title A–Z</option>
-              <option value="rank">Chart rank</option>
+              <option value="year-desc">
+                {t("Newest first", "Mais recentes primeiro")}
+              </option>
+              <option value="year-asc">
+                {t("Oldest first", "Mais antigas primeiro")}
+              </option>
+              <option value="artist">
+                {t("Artist A–Z", "Artista de A a Z")}
+              </option>
+              <option value="title">{t("Title A–Z", "Título de A a Z")}</option>
+              <option value="rank">
+                {t("Chart rank", "Posição na parada")}
+              </option>
             </select>
           </label>
         </div>
@@ -383,14 +471,14 @@ export default function SongLibrary() {
             <thead>
               <tr>
                 <th>
-                  <span className="sr-only">Preview</span>
+                  <span className="sr-only">{t("Preview", "Prévia")}</span>
                 </th>
-                <th>TRACK / ARTIST</th>
-                <th>YEAR</th>
-                <th>CHART RANK</th>
-                <th>CATALOG</th>
-                <th>YEAR SOURCE</th>
-                <th>PREVIEW</th>
+                <th>{t("TRACK / ARTIST", "FAIXA / ARTISTA")}</th>
+                <th>{t("YEAR", "ANO")}</th>
+                <th>{t("CHART RANK", "POSIÇÃO NA PARADA")}</th>
+                <th>{t("CATALOG", "CATÁLOGO")}</th>
+                <th>{t("YEAR SOURCE", "FONTE DO ANO")}</th>
+                <th>{t("PREVIEW", "PRÉVIA")}</th>
               </tr>
             </thead>
             <tbody>
@@ -403,7 +491,10 @@ export default function SongLibrary() {
                     <button
                       className="lib-play"
                       disabled={!song.deezerId}
-                      aria-label={`Play ${song.title} by ${song.artist}`}
+                      aria-label={t(
+                        `Play ${song.title} by ${song.artist}`,
+                        `Tocar ${song.title}, de ${song.artist}`,
+                      )}
                       onClick={() => play(song)}
                     >
                       ▶
@@ -425,29 +516,35 @@ export default function SongLibrary() {
                         <strong>#{song.chartRank}</strong>
                         <span>
                           {song.chartYear != null
-                            ? `Chart year ${song.chartYear}`
-                            : "Chart year unavailable"}
+                            ? t(
+                                `Chart year ${song.chartYear}`,
+                                `Ano da parada: ${song.chartYear}`,
+                              )
+                            : t(
+                                "Chart year unavailable",
+                                "Ano da parada indisponível",
+                              )}
                         </span>
                       </>
                     ) : (
-                      <span>No rank</span>
+                      <span>{t("No rank", "Sem posição")}</span>
                     )}
                   </td>
-                  <td>
-                    {song.catalog === "brasil" ? "Brasil" : "International"}
-                  </td>
+                  <td>{catalogLabel(song.catalog)}</td>
                   <td>
                     <span
                       className={`lib-badge ${song.yearSource === "chart-year" ? "fallback" : ""}`}
                     >
-                      {labels[song.yearSource] ?? song.yearSource}
+                      {sourceLabel(song.yearSource)}
                     </span>
                   </td>
                   <td>
                     <span
                       className={song.deezerId ? "lib-matched" : "lib-missing"}
                     >
-                      {song.deezerId ? "● Matched" : "○ No ID"}
+                      {song.deezerId
+                        ? t("● Matched", "● ID encontrado")
+                        : t("○ No ID", "○ Sem ID")}
                     </span>
                   </td>
                 </tr>
@@ -457,89 +554,114 @@ export default function SongLibrary() {
         </div>
         {!rows.length && (
           <div className="lib-empty">
-            <h2>No records in this crate.</h2>
-            <p>Try another artist, decade, or quality filter.</p>
+            <h2>
+              {t("No records in this crate.", "Nenhum registro encontrado.")}
+            </h2>
+            <p>
+              {t(
+                "Try another artist, decade, or quality filter.",
+                "Experimente outro artista, década ou filtro de qualidade.",
+              )}
+            </p>
             <button
               onClick={() => {
                 setFilters(initial);
                 setPage(0);
               }}
             >
-              Reset filters
+              {t("Reset filters", "Redefinir filtros")}
             </button>
           </div>
         )}
         <footer className="lib-pagination">
           <span>
             {rows.length
-              ? `${page * 40 + 1}–${Math.min(rows.length, (page + 1) * 40)}`
+              ? `${number(page * 40 + 1)}–${number(Math.min(rows.length, (page + 1) * 40))}`
               : "0"}{" "}
-            of {number(rows.length)} records
+            {t(
+              `of ${recordCount(rows.length)}`,
+              `de ${recordCount(rows.length)}`,
+            )}
           </span>
           <div>
             <button disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
-              ← Previous
+              {t("← Previous", "← Anterior")}
             </button>
             <button
               disabled={(page + 1) * 40 >= rows.length}
               onClick={() => setPage((p) => p + 1)}
             >
-              Next →
+              {t("Next →", "Próxima →")}
             </button>
           </div>
         </footer>
       </section>
       <p className="lib-footnote">
-        International: Billboard year-end charts. Brasil: charts, Wikipedia
-        categories & curated history. Entries may overlap across catalogs. A
-        Deezer match does not guarantee current preview availability.
+        {t(
+          "International: Billboard year-end charts. Brasil: charts, Wikipedia categories & curated history. Entries may overlap across catalogs. A Deezer match does not guarantee current preview availability.",
+          "O catálogo Internacional vem das paradas anuais da Billboard. O catálogo Brasil reúne paradas musicais, categorias da Wikipedia e registros históricos selecionados. Uma faixa pode aparecer nos dois catálogos. A presença de um ID do Deezer não garante que a prévia esteja disponível.",
+        )}
       </p>
       {selected && (
-        <aside className="lib-detail" aria-label="Song details">
+        <aside
+          className="lib-detail"
+          aria-label={t("Song details", "Detalhes da música")}
+        >
           <button
             className="lib-close"
-            aria-label="Close song details"
+            aria-label={t("Close song details", "Fechar detalhes da música")}
             onClick={() => setSelected(null)}
           >
             ×
           </button>
           <p className="lib-eyebrow">
-            LINER NOTES · {selected.catalog.toUpperCase()}
+            {t("LINER NOTES", "FICHA DA MÚSICA")} ·{" "}
+            {catalogLabel(selected.catalog).toLocaleUpperCase(locale)}
           </p>
           <div className="lib-detail-year">{selected.year}</div>
           <h2>{selected.title}</h2>
           <p>{selected.artist}</p>
           <button disabled={!selected.deezerId} onClick={() => play(selected)}>
-            ▶ Play 30-second preview
+            {t("▶ Play 30-second preview", "▶ Tocar prévia de 30 segundos")}
           </button>
           <div className="lib-detail-missing">
-            <h3>Missing information</h3>
-            {missingFields(selected).length ? (
+            <h3>{t("Missing information", "Informações ausentes")}</h3>
+            {missingFields(selected, locale).length ? (
               <ul>
-                {missingFields(selected).map((field) => (
+                {missingFields(selected, locale).map((field) => (
                   <li key={field}>{field}</li>
                 ))}
               </ul>
             ) : (
-              <p>All tracked metadata fields are present.</p>
+              <p>
+                {t(
+                  "All tracked metadata fields are present.",
+                  "Todos os campos de metadados monitorados estão preenchidos.",
+                )}
+              </p>
             )}
-            <p>Optional chart fields and IDs may not apply to this source.</p>
+            <p>
+              {t(
+                "Optional chart fields and IDs may not apply to this source.",
+                "Campos de paradas e IDs opcionais podem não se aplicar a esta fonte.",
+              )}
+            </p>
           </div>
           <dl>
             {[
               [
-                "Year source",
-                labels[selected.yearSource] ?? selected.yearSource,
+                t("Year source", "Fonte do ano"),
+                sourceLabel(selected.yearSource),
               ],
-              ["Chart year", selected.chartYear],
-              ["Chart rank", selected.chartRank],
-              ["Dataset source", selected.source],
-              ["Deezer ID", selected.deezerId],
-              ["MusicBrainz ID", selected.mbid],
+              [t("Chart year", "Ano da parada"), selected.chartYear],
+              [t("Chart rank", "Posição na parada"), selected.chartRank],
+              [t("Dataset source", "Fonte dos dados"), selected.source],
+              [t("Deezer ID", "ID do Deezer"), selected.deezerId],
+              [t("MusicBrainz ID", "ID do MusicBrainz"), selected.mbid],
             ].map(([key, value]) => (
               <div key={key}>
                 <dt>{key}</dt>
-                <dd>{value ?? "Not available"}</dd>
+                <dd>{value ?? t("Not available", "Indisponível")}</dd>
               </div>
             ))}
           </dl>
@@ -550,7 +672,7 @@ export default function SongLibrary() {
                 target="_blank"
                 rel="noreferrer"
               >
-                Open in Deezer ↗
+                {t("Open in Deezer ↗", "Abrir no Deezer ↗")}
               </a>
             )}
             {selected.mbid && (
@@ -559,33 +681,46 @@ export default function SongLibrary() {
                 target="_blank"
                 rel="noreferrer"
               >
-                MusicBrainz recording ↗
+                {t("MusicBrainz recording ↗", "Gravação no MusicBrainz ↗")}
               </a>
             )}
           </div>
           <details>
-            <summary>Raw record</summary>
+            <summary>{t("Raw record", "Dados brutos")}</summary>
             <pre>{JSON.stringify(selected, null, 2)}</pre>
           </details>
         </aside>
       )}
-      <section className="lib-player" aria-label="Preview player">
+      <section
+        className="lib-player"
+        aria-label={t("Preview player", "Reprodutor de prévias")}
+      >
         <div className="lib-mini-record" aria-hidden="true">
           ♪
         </div>
         <div className="lib-now">
           <small>
             {playing
-              ? "ON THE TURNTABLE · 30-SECOND PREVIEW"
-              : "READY WHEN YOU ARE"}
+              ? t(
+                  "ON THE TURNTABLE · 30-SECOND PREVIEW",
+                  "TOCANDO AGORA · PRÉVIA DE 30 SEGUNDOS",
+                )
+              : t("READY WHEN YOU ARE", "PRONTO PARA TOCAR")}
           </small>
           <strong>
-            {playing?.title ?? "Your next discovery is a play away."}
+            {playing?.title ??
+              t(
+                "Your next discovery is a play away.",
+                "Sua próxima descoberta está a um toque.",
+              )}
           </strong>
           <span>
             {playing
               ? `${playing.artist} · ${playing.year}`
-              : "Choose a track or let us surprise you."}
+              : t(
+                  "Choose a track or let us surprise you.",
+                  "Escolha uma faixa ou deixe a surpresa por nossa conta.",
+                )}
           </span>
         </div>
         {playing && (
@@ -598,7 +733,7 @@ export default function SongLibrary() {
               onError={() => setAudioError(true)}
             />
             <button
-              aria-label="Stop preview"
+              aria-label={t("Stop preview", "Parar prévia")}
               onClick={() => {
                 setPlaying(null);
                 setAudioError(false);
@@ -610,15 +745,17 @@ export default function SongLibrary() {
         )}
         {audioError && (
           <p role="alert">
-            Preview unavailable.{" "}
-            <button onClick={() => playing && play(playing)}>Retry</button>
+            {t("Preview unavailable.", "Prévia indisponível.")}{" "}
+            <button onClick={() => playing && play(playing)}>
+              {t("Retry", "Tentar novamente")}
+            </button>
             {playing?.deezerId && (
               <a
                 href={`https://www.deezer.com/track/${playing.deezerId}`}
                 target="_blank"
                 rel="noreferrer"
               >
-                Open Deezer ↗
+                {t("Open Deezer ↗", "Abrir o Deezer ↗")}
               </a>
             )}
           </p>

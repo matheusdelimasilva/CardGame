@@ -1,3 +1,4 @@
+import { httpError } from "../user-messages";
 import {
   clientIp,
   readBody,
@@ -15,13 +16,19 @@ export function authRoutes({ auth }: HttpContext): Route[] {
       async handler(req, res) {
         if (!auth.allowRequest(clientIp(req))) {
           req.resume();
-          return json(res, 429, {
-            error: "Too many sign-in requests. Try again later.",
-          });
+          return json(
+            res,
+            429,
+            httpError("Too many sign-in requests. Try again later."),
+          );
         }
-        const { email } = await readBody(req, requestCodeSchema);
-        const result = await auth.requestCode(email);
-        json(res, result.error ? 429 : 200, result);
+        const { email, locale } = await readBody(req, requestCodeSchema);
+        const result = await auth.requestCode(email, undefined, locale);
+        json(
+          res,
+          result.error ? 429 : 200,
+          result.error ? httpError(result.error) : result,
+        );
       },
     },
     {
@@ -33,7 +40,7 @@ export function authRoutes({ auth }: HttpContext): Route[] {
         json(
           res,
           result.error ? 400 : 200,
-          result.error ? result : { ...result, email },
+          result.error ? httpError(result.error) : { ...result, email },
         );
       },
     },
@@ -43,7 +50,7 @@ export function authRoutes({ auth }: HttpContext): Route[] {
       handler(req, res) {
         const email = sessionEmail(req, auth);
         if (email) json(res, 200, { email });
-        else json(res, 401, { error: "Not signed in." });
+        else json(res, 401, httpError("Not signed in."));
       },
     },
     {

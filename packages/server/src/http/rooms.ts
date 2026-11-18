@@ -1,3 +1,4 @@
+import { httpError } from "../user-messages";
 import { games, getGame } from "@cardgame/games";
 import { createRoomSchema, readBody } from "../http";
 import { gameInfo, trackFor } from "../rooms";
@@ -24,10 +25,10 @@ export function roomRoutes({
       async handler(req, res) {
         const email = sessionEmail(req, auth);
         if (!email)
-          return json(res, 401, { error: "Sign in to host a table." });
+          return json(res, 401, httpError("Sign in to host a table."));
         const body = await readBody(req, createRoomSchema);
         if (!getGame(body.gameId))
-          return json(res, 400, { error: "Choose a game first." });
+          return json(res, 400, httpError("Choose a game first."));
         const room = registry.create(email, body.gameId, body.settings);
         json(res, 200, { code: room.code });
       },
@@ -37,7 +38,7 @@ export function roomRoutes({
       path: "/api/history",
       handler(req, res) {
         const email = sessionEmail(req, auth);
-        if (!email) return json(res, 401, { error: "Not signed in." });
+        if (!email) return json(res, 401, httpError("Not signed in."));
         json(res, 200, {
           history: Object.hasOwn(store.data.history, email)
             ? store.data.history[email]
@@ -52,7 +53,7 @@ export function roomRoutes({
         const room = registry.get(match[1]!.toUpperCase());
         const track = room ? trackFor(room, match[2]!) : null;
         if (!track)
-          return json(res, 404, { error: "That song is no longer playing." });
+          return json(res, 404, httpError("That song is no longer playing."));
         const song = track.deezerId
           ? { deezerId: track.deezerId }
           : { title: track.title, artist: track.artist };

@@ -1,3 +1,4 @@
+import { httpError } from "../user-messages";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { guard } from "../guard";
 import { HttpError } from "../http";
@@ -37,19 +38,22 @@ export function createRouter(
         return;
       }
       if (url.pathname.startsWith("/api/"))
-        return json(res, 404, { error: "Not found." });
+        return json(res, 404, httpError("Not found."));
       if (req.method === "GET")
         return serveStatic(context.staticDir, url.pathname, res);
-      json(res, 405, { error: "Method not allowed." });
+      json(res, 405, httpError("Method not allowed."));
     } catch (err) {
       if (!(err instanceof HttpError)) console.error(`Room ${code}:`, err);
       guard(code, () => {
         if (res.headersSent) res.destroy();
         else
-          json(res, err instanceof HttpError ? err.status : 500, {
-            error:
+          json(
+            res,
+            err instanceof HttpError ? err.status : 500,
+            httpError(
               err instanceof HttpError ? err.message : "Something went wrong.",
-          });
+            ),
+          );
       });
     }
   };

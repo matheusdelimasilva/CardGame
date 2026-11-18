@@ -1,3 +1,4 @@
+import { httpError } from "./user-messages";
 // 30-second song previews from Deezer's public API (no key needed).
 //
 // - Search uses plain queries: Deezer's advanced syntax (artist:"..." track:"...") is fuzzy
@@ -300,7 +301,7 @@ export class Deezer {
     if (!track) {
       res.writeHead(404, { "Content-Type": "application/json" });
       return void res.end(
-        JSON.stringify({ error: "No preview found for this song." }),
+        JSON.stringify(httpError("No preview found for this song.")),
       );
     }
 
@@ -321,7 +322,7 @@ export class Deezer {
       this.previews.delete(track.id); // maybe expired; next call re-resolves
       res.writeHead(502, { "Content-Type": "application/json" });
       return void res.end(
-        JSON.stringify({ error: "Could not load the preview." }),
+        JSON.stringify(httpError("Could not load the preview.")),
       );
     }
 

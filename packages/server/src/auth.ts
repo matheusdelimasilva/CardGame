@@ -1,4 +1,5 @@
 import { randomBytes, randomInt, timingSafeEqual } from "node:crypto";
+import type { Locale } from "@cardgame/protocol";
 import type { Store } from "./store";
 
 const CODE_TTL_MS = 10 * 60 * 1000;
@@ -14,11 +15,16 @@ interface PendingCode {
   sentAt: number;
 }
 
-export type SendEmail = (to: string, code: string) => Promise<void>;
+export type SendEmail = (
+  to: string,
+  code: string,
+  locale?: Locale,
+) => Promise<void>;
 
 /** Sends through Resend when a key is configured. */
 export function resendSender(apiKey: string, from: string): SendEmail {
-  return async (to, code) => {
+  return async (to, code, locale) => {
+    const portuguese = locale === "pt-BR";
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -28,8 +34,12 @@ export function resendSender(apiKey: string, from: string): SendEmail {
       body: JSON.stringify({
         from,
         to,
-        subject: `${code} is your CardGame sign-in code`,
-        text: `Your sign-in code is ${code}. It expires in 10 minutes.`,
+        subject: portuguese
+          ? `${code} é seu código de acesso ao CardGame`
+          : `${code} is your CardGame sign-in code`,
+        text: portuguese
+          ? `Seu código de acesso é ${code}. Ele expira em 10 minutos.`
+          : `Your sign-in code is ${code}. It expires in 10 minutes.`,
       }),
     });
     if (!res.ok) throw new Error(`Email provider answered ${res.status}`);
@@ -73,6 +83,7 @@ export class Auth {
   async requestCode(
     email: string,
     now = Date.now(),
+    locale?: Locale,
   ): Promise<{ error?: string; devCode?: string }> {
     const previous = this.pending.get(email);
     if (previous && now - previous.sentAt < RESEND_WAIT_MS) {
@@ -89,7 +100,7 @@ export class Auth {
     });
     if (!this.sendEmail) return { devCode: code };
     try {
-      await this.sendEmail(email, code);
+      await this.sendEmail(email, code, locale);
     } catch (err) {
       console.error("Sending the sign-in email failed:", err);
       this.pending.delete(email);

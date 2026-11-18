@@ -18,7 +18,7 @@ export class RoomService {
   private kickListeners = new Set<(room: Room, playerId: string) => void>();
   private chatListeners = new Set<(room: Room, message: ChatMessage) => void>();
   private noticeListeners = new Set<
-    (room: Room, member: Member, text: string) => void
+    (room: Room, member: Member, text: string, textPtBR?: string) => void
   >();
 
   constructor(
@@ -49,7 +49,12 @@ export class RoomService {
 
   /** Private lines for one member, e.g. why their chat line was held back. */
   onNotice(
-    listener: (room: Room, member: Member, text: string) => void,
+    listener: (
+      room: Room,
+      member: Member,
+      text: string,
+      textPtBR?: string,
+    ) => void,
   ): () => void {
     this.noticeListeners.add(listener);
     return () => {
@@ -79,14 +84,16 @@ export class RoomService {
         const lines = [
           ...(outcome?.deliver === false ? [] : [message]),
           ...(outcome?.announce ?? []).map((line) =>
-            rooms.systemMessage(line, message.at),
+            typeof line === "string"
+              ? rooms.systemMessage(line, message.at)
+              : rooms.systemMessage(line.text, message.at, line.textPtBR),
           ),
         ];
         for (const line of lines)
           for (const listener of this.chatListeners) listener(room, line);
         if (outcome?.note)
           for (const listener of this.noticeListeners)
-            listener(room, member, outcome.note);
+            listener(room, member, outcome.note, outcome.notePtBR);
         if (outcome?.state !== undefined) {
           if (!wasFinished && room.game?.result) this.recordHistory(room);
           this.notify(room);

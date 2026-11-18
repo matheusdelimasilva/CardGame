@@ -1,9 +1,11 @@
 import type { GameInfo, HistoryEntry, SettingValues } from "@cardgame/protocol";
 import { useEffect, useState, type CSSProperties } from "react";
-import { api } from "../api";
+import { api, formatApiError } from "../api";
 import { navigate } from "../App";
-import { defaultsOf } from "../settings";
+import { useLocale } from "../i18n/locale";
+import { defaultsOf, localizedGame } from "../settings";
 import { KEYS, storage } from "../storage";
+import { LanguagePicker } from "../ui/LanguagePicker";
 import { HostSheet } from "./HostSheet";
 import { inert } from "./inert";
 import { JoinSheet } from "./JoinSheet";
@@ -28,10 +30,6 @@ const SUITS: Record<string, string> = { hitster: "♪" };
 const FALLBACK_SUITS = ["♠", "♦", "♥", "♣"];
 const suitOf = (g: GameInfo, i: number) =>
   SUITS[g.id] ?? FALLBACK_SUITS[i % FALLBACK_SUITS.length]!;
-const playersOf = (g: GameInfo) =>
-  g.minPlayers === g.maxPlayers
-    ? `${g.minPlayers} players`
-    : `${g.minPlayers}–${g.maxPlayers} players`;
 
 /**
  * Home, then the host's two setup steps (choose a game, then its settings),
@@ -39,6 +37,7 @@ const playersOf = (g: GameInfo) =>
  * the game cards in, rather than swapping pages.
  */
 export function HomeFlow({ path }: { path: string }) {
+  const { locale, t } = useLocale();
   const { stage, scale } = useStage();
 
   const [email, setEmail] = useState<string | null>(
@@ -46,12 +45,14 @@ export function HomeFlow({ path }: { path: string }) {
   );
   const [history, setHistory] = useState<HistoryEntry[] | null>(null);
   const [games, setGames] = useState<GameInfo[] | null>(null);
-  const [gamesError, setGamesError] = useState<string | null>(null);
+  const [gamesError, setGamesError] = useState<{ cause: unknown } | null>(null);
   const [step, setStep] = useState<"games" | "settings">("games");
   const [pick, setPick] = useState<number | null>(null);
   const [values, setValues] = useState<SettingValues>({});
   const [busy, setBusy] = useState(false);
-  const [createError, setCreateError] = useState<string | null>(null);
+  const [createError, setCreateError] = useState<{ cause: unknown } | null>(
+    null,
+  );
   const [door, setDoor] = useState<Door>(null);
   // Cards mount face down below the window, then deal in on the next frame.
   const [dealt, setDealt] = useState(false);
@@ -84,7 +85,7 @@ export function HomeFlow({ path }: { path: string }) {
     api
       .games()
       .then((r) => live && setGames(r.games))
-      .catch((err: Error) => live && setGamesError(err.message));
+      .catch((cause: unknown) => live && setGamesError({ cause }));
     return () => {
       live = false;
     };
@@ -130,8 +131,8 @@ export function HomeFlow({ path }: { path: string }) {
     setCreateError(null);
     try {
       navigate(`/t/${(await api.createRoom(game.id, values)).code}`);
-    } catch (err) {
-      setCreateError((err as Error).message);
+    } catch (cause) {
+      setCreateError({ cause });
       setBusy(false);
     }
   };
@@ -146,19 +147,30 @@ export function HomeFlow({ path }: { path: string }) {
   );
   const settings = (
     <SettingsSheet
-      game={game}
+      game={game && localizedGame(game, locale)}
       values={values}
       onChange={(id, v) => setValues((cur) => ({ ...cur, [id]: v }))}
       onCreate={create}
       busy={busy}
-      error={createError}
+      error={
+        createError
+          ? formatApiError(
+              createError.cause,
+              locale,
+              t("Could not create table.", "Não foi possível criar a mesa."),
+            )
+          : null
+      }
     />
   );
   const stepDots = (
     <div
       className={`step-dots${screen === "settings" ? " two" : ""}`}
       role="img"
-      aria-label={screen === "settings" ? "Step 2 of 2" : "Step 1 of 2"}
+      aria-label={t(
+        `Step ${screen === "settings" ? 2 : 1} of 2`,
+        `Etapa ${screen === "settings" ? 2 : 1} de 2`,
+      )}
     >
       <span />
       <span />
@@ -166,7 +178,7 @@ export function HomeFlow({ path }: { path: string }) {
   );
   const backButton = (
     <button type="button" className="pbtn cream back" onClick={back}>
-      ← Back
+      {t("← Back", "← Voltar")}
     </button>
   );
   const continueButton = (
@@ -176,11 +188,22 @@ export function HomeFlow({ path }: { path: string }) {
       disabled={!game}
       onClick={toSettings}
     >
-      Continue
+      {t("Continue", "Continuar")}
     </button>
   );
-  const gamesNote =
-    gamesError ?? (games === null && onNew ? "Shuffling the deck…" : null);
+  const gamesNote = gamesError
+    ? formatApiError(
+        gamesError.cause,
+        locale,
+        t("Could not load games.", "Não foi possível carregar os jogos."),
+      )
+    : games === null && onNew
+      ? t("Shuffling the deck…", "Embaralhando as cartas…")
+      : null;
+  const tagline = t(
+    "Card games with friends. One link, no sign-up to join.",
+    "Jogue cartas com amigos. É só abrir o link para entrar, sem cadastro.",
+  );
 
   const props = {
     games,
@@ -200,9 +223,7 @@ export function HomeFlow({ path }: { path: string }) {
         <div className="stage" style={{ "--s": scale } as CSSProperties}>
           <div className="stage-logo">
             <Logo bare={away} />
-            <p className="tagline">
-              Card games with friends. One link, no sign-up to join.
-            </p>
+            <p className="tagline">{tagline}</p>
           </div>
 
           <main
@@ -239,14 +260,16 @@ export function HomeFlow({ path }: { path: string }) {
               {backButton}
               {stepDots}
               <div className="picker-head" {...inert(screen !== "games")}>
-                <h2 className="screen-title">Choose a game</h2>
+                <h2 className="screen-title">
+                  {t("Choose a game", "Escolha um jogo")}
+                </h2>
                 {gamesNote && <p className="picker-note">{gamesNote}</p>}
                 {continueButton}
               </div>
             </div>
             <section
               className="settings-sheet sheet"
-              aria-label="Game settings"
+              aria-label={t("Game settings", "Configurações do jogo")}
               {...inert(screen !== "settings")}
             >
               {settings}
@@ -264,11 +287,7 @@ export function HomeFlow({ path }: { path: string }) {
           )}
           <div className="stack-logo">
             <Logo bare={away} />
-            {!away && (
-              <p className="tagline">
-                Card games with friends. One link, no sign-up to join.
-              </p>
-            )}
+            {!away && <p className="tagline">{tagline}</p>}
           </div>
           {screen === "home" && (
             <main className="stack-doors" key="home">
@@ -289,7 +308,9 @@ export function HomeFlow({ path }: { path: string }) {
           )}
           {screen === "games" && (
             <main className="stack-games" key="games">
-              <h2 className="screen-title">Choose a game</h2>
+              <h2 className="screen-title">
+                {t("Choose a game", "Escolha um jogo")}
+              </h2>
               {gamesNote && <p className="picker-note">{gamesNote}</p>}
               <div className="stack-cards">
                 {games?.map((g, i) => (
@@ -308,7 +329,10 @@ export function HomeFlow({ path }: { path: string }) {
           )}
           {screen === "settings" && (
             <main className="stack-settings" key="settings">
-              <section className="sheet" aria-label="Game settings">
+              <section
+                className="sheet"
+                aria-label={t("Game settings", "Configurações do jogo")}
+              >
                 {settings}
               </section>
             </main>
@@ -316,9 +340,13 @@ export function HomeFlow({ path }: { path: string }) {
         </div>
       )}
       {email && <PastGames history={history} away={away} />}
+      <LanguagePicker compact className="home-language-picker" />
       {!away && (
         <a className="home-library-link" href="/songs">
-          ♫ Explore the song library ↗
+          {t(
+            "♫ Explore the song library ↗",
+            "♫ Explore a biblioteca de músicas ↗",
+          )}
         </a>
       )}
     </div>
@@ -435,7 +463,12 @@ function GameCard({
   onPick: () => void;
   style?: CSSProperties;
 }) {
+  const { locale, t } = useLocale();
   const suit = suitOf(game, index);
+  const count =
+    game.minPlayers === game.maxPlayers
+      ? String(game.minPlayers)
+      : `${game.minPlayers}–${game.maxPlayers}`;
   return (
     <button
       type="button"
@@ -454,8 +487,12 @@ function GameCard({
             {suit}
           </span>
           <span className="game-title">{game.name}</span>
-          <span className="game-players">{playersOf(game)}</span>
-          <span className="game-desc">{game.description}</span>
+          <span className="game-players">
+            {t(`${count} players`, `${count} jogadores`)}
+          </span>
+          <span className="game-desc">
+            {localizedGame(game, locale).description}
+          </span>
         </span>
       </span>
     </button>

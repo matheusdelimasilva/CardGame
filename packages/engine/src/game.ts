@@ -71,9 +71,10 @@ export interface ChatOutcome<S> {
   /** Whether the line goes out to the room as typed. */
   deliver: boolean;
   /** Lines from the table, not a person, that everyone in the room sees after the line (if delivered). */
-  announce?: string[];
+  announce?: (string | { text: string; textPtBR: string })[];
   /** Told only to the sender, e.g. why their line was not sent. */
   note?: string;
+  notePtBR?: string;
 }
 
 export interface SetupContext {

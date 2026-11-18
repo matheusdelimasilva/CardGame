@@ -3,6 +3,7 @@ import { clientMessageSchema, type ServerMessage } from "@cardgame/protocol";
 import { WebSocket, WebSocketServer } from "ws";
 import type { Auth } from "../auth";
 import { guard } from "../guard";
+import { messagePtBR } from "../user-messages";
 import * as rooms from "../rooms";
 import type { Member, Room } from "../rooms";
 import type { RoomRegistry } from "../rooms/registry";
@@ -38,9 +39,9 @@ export class Gateway {
         for (const ws of this.sockets.get(room)?.keys() ?? [])
           this.send(ws, { type: "chat", message });
       }),
-      service.onNotice((room, member, text) => {
+      service.onNotice((room, member, text, textPtBR) => {
         for (const [ws, m] of this.sockets.get(room) ?? [])
-          if (m === member) this.send(ws, { type: "notice", text });
+          if (m === member) this.send(ws, { type: "notice", text, textPtBR });
       }),
       registry.onDelete((room) => {
         this.sockets.delete(room);
@@ -53,10 +54,7 @@ export class Gateway {
           ?.toUpperCase() ?? "";
       const room = this.registry.get(code);
       if (!room) {
-        this.send(ws, {
-          type: "error",
-          message: "This table does not exist any more.",
-        });
+        this.sendError(ws, "This table does not exist any more.");
         return ws.close();
       }
       let member: Member | undefined;
@@ -71,17 +69,10 @@ export class Gateway {
             try {
               input = JSON.parse(String(raw));
             } catch {
-              return this.send(ws, {
-                type: "error",
-                message: "Invalid message.",
-              });
+              return this.sendError(ws, "Invalid message.");
             }
             const parsed = clientMessageSchema.safeParse(input);
-            if (!parsed.success)
-              return this.send(ws, {
-                type: "error",
-                message: "Invalid message.",
-              });
+            if (!parsed.success) return this.sendError(ws, "Invalid message.");
             const msg = parsed.data;
             if (!member) {
               if (msg.type !== "hello") return;
@@ -101,8 +92,7 @@ export class Gateway {
               msg.type === "chat"
                 ? this.service.chat(room, member, msg.text)
                 : this.service.command(room, member, msg);
-            if (typeof refusal === "string")
-              this.send(ws, { type: "error", message: refusal });
+            if (typeof refusal === "string") this.sendError(ws, refusal);
           },
           () => this.service.recover(room),
         ),
@@ -131,6 +121,14 @@ export class Gateway {
 
   private send(ws: WebSocket, message: ServerMessage): void {
     if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(message));
+  }
+
+  private sendError(ws: WebSocket, message: string): void {
+    this.send(ws, {
+      type: "error",
+      message,
+      messagePtBR: messagePtBR(message),
+    });
   }
 
   private broadcast(room: Room): void {

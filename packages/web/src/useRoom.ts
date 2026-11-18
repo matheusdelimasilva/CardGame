@@ -5,6 +5,7 @@ import type {
   ServerMessage,
 } from "@cardgame/protocol";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocale } from "./i18n/locale";
 import { KEYS, storage } from "./storage";
 
 /** Only this many recent chat lines are kept in memory. */
@@ -21,6 +22,7 @@ export interface ChatNotice {
   id: string;
   kind: "notice";
   text: string;
+  textPtBR?: string;
   at: number;
 }
 
@@ -31,7 +33,11 @@ export type ChatEntry = ChatMessage | ChatNotice;
 export function useRoom(code: string) {
   const [room, setRoom] = useState<RoomView | null>(null);
   const [connection, setConnection] = useState<Connection>("connecting");
-  const [error, setError] = useState<string | null>(null);
+  const { t } = useLocale();
+  const [error, setError] = useState<Extract<
+    ServerMessage,
+    { type: "error" }
+  > | null>(null);
   const [chats, setChats] = useState<ChatEntry[]>([]);
   const socket = useRef<WebSocket | null>(null);
 
@@ -76,6 +82,7 @@ export function useRoom(code: string) {
             id: `notice:${++notices}`,
             kind: "notice",
             text: msg.text,
+            textPtBR: msg.textPtBR,
             at: Date.now(),
           });
         } else if (msg.type === "kicked") {
@@ -84,7 +91,7 @@ export function useRoom(code: string) {
           storage.set(KEYS.member(code), null);
           setConnection("kicked");
         } else if (msg.type === "error") {
-          if (everJoined) setError(msg.message);
+          if (everJoined) setError(msg);
           else {
             stopped = true;
             setConnection("gone");
@@ -129,8 +136,19 @@ export function useRoom(code: string) {
   const send = useCallback((msg: ClientMessage) => {
     if (socket.current?.readyState === WebSocket.OPEN)
       socket.current.send(JSON.stringify(msg));
-    else setError("Not connected. Trying again...");
+    else
+      setError({
+        type: "error",
+        message: "Not connected. Trying again...",
+        messagePtBR: "Sem conexão. Tentando novamente...",
+      });
   }, []);
 
-  return { room, connection, error, send, chats };
+  return {
+    room,
+    connection,
+    error: error ? t(error.message, error.messagePtBR ?? error.message) : null,
+    send,
+    chats,
+  };
 }

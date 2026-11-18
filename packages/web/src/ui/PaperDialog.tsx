@@ -1,3 +1,4 @@
+import { useLocale } from "../i18n/locale";
 import {
   useEffect,
   useId,
@@ -55,6 +56,7 @@ export function PaperDialog({
   onClose: () => void;
   children: ReactNode;
 }) {
+  const { t } = useLocale();
   const modal = useModalDialog(onClose);
   const titleId = useId();
   return (
@@ -62,7 +64,7 @@ export function PaperDialog({
       <div className="tl-paper">
         <button
           className="tl-close"
-          aria-label="Close"
+          aria-label={t("Close", "Fechar")}
           onClick={onClose}
           autoFocus
         >

@@ -1,0 +1,32 @@
+.language-picker {
+  min-height: 2.5rem;
+  padding: 0 0.5rem;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  background: #244a3d;
+  color: #fffaf0;
+  font:
+    500 0.8125rem "Rubik",
+    sans-serif;
+  cursor: pointer;
+}
+
+.language-picker-compact {
+  min-height: 2rem;
+  padding-inline: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.home-language-picker {
+  position: fixed;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  left: max(24px, env(safe-area-inset-left));
+  z-index: 7;
+}
+
+@media (max-width: 640px) {
+  .home-language-picker {
+    bottom: max(12px, env(safe-area-inset-bottom));
+    left: max(12px, env(safe-area-inset-left));
+  }
+}

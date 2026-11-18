@@ -79,6 +79,10 @@
 .tl-header-actions {
   right: calc(var(--u) * 2.5);
 }
+.tl-header-actions .language-picker {
+  min-height: calc(var(--u) * 3.7);
+}
+
 .tl-invite {
   position: relative;
 }
@@ -370,6 +374,9 @@
     min-height: 44px;
     padding: 10px 18px;
     font-size: 16px;
+  }
+  :where(.table-lobby) .tl-header-actions .language-picker {
+    min-height: 44px;
   }
   :where(.table-lobby) .tl-copied {
     font-size: 21px;

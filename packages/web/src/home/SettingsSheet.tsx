@@ -1,4 +1,5 @@
 import type { GameInfo, SettingDef, SettingValues } from "@cardgame/protocol";
+import { useLocale } from "../i18n/locale";
 
 /**
  * Choices with this many options or fewer show as a row of buttons, so every
@@ -21,17 +22,28 @@ export function SettingsSheet({
   busy: boolean;
   error: string | null;
 }) {
+  const { t } = useLocale();
   return (
     <>
       <div className="sheet-tape gold" aria-hidden="true" />
       <h2 className="sheet-title settings-title">
-        {game ? `${game.name} settings` : "Settings"}
+        {game
+          ? t(`${game.name} settings`, `Configurações do ${game.name}`)
+          : t("Settings", "Configurações")}
       </h2>
       <p className="sheet-sub">
-        These apply to every game played at this table.
+        {t(
+          "These apply to every game played at this table.",
+          "Estas configurações valem para todas as partidas nesta mesa.",
+        )}
       </p>
       {game?.settings.length === 0 && (
-        <p className="sheet-sub">This game has nothing to set up.</p>
+        <p className="sheet-sub">
+          {t(
+            "This game has nothing to set up.",
+            "Este jogo não tem configurações.",
+          )}
+        </p>
       )}
       {game?.settings.map((def) => (
         <SettingRow
@@ -47,7 +59,7 @@ export function SettingsSheet({
         onClick={onCreate}
         disabled={busy || !game}
       >
-        Create table
+        {t("Create table", "Criar mesa")}
       </button>
       {error && (
         <p className="scribble red" role="alert">
@@ -67,6 +79,7 @@ function SettingRow({
   value: boolean | string;
   onChange: (v: boolean | string) => void;
 }) {
+  const { t } = useLocale();
   const id = `setting-${def.id}`;
   const text = (
     <>
@@ -95,7 +108,9 @@ function SettingRow({
           onClick={() => onChange(!on)}
         >
           <span className="pswitch-knob" />
-          <span className="pswitch-text">{on ? "ON" : "OFF"}</span>
+          <span className="pswitch-text">
+            {on ? t("ON", "SIM") : t("OFF", "NÃO")}
+          </span>
         </button>
       </div>
     );

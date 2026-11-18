@@ -1211,6 +1211,10 @@
 @media (max-width: 640px) {
   /* The centred Past games tab leaves no room for the full pill: the link is
      a note icon here, and keeps its text as its name. */
+  .drawer-tab {
+    padding-inline: 14px;
+    font-size: 14px;
+  }
   .home-library-link {
     right: 12px;
     bottom: 12px;

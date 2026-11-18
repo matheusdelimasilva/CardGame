@@ -165,7 +165,11 @@ export function chatInGame(
   } catch (err) {
     // Held back rather than sent: the game may have been about to hide it.
     console.error(`Room ${room.code}:`, err);
-    return { deliver: false, note: "That message could not be sent." };
+    return {
+      deliver: false,
+      note: "That message could not be sent.",
+      notePtBR: "Não foi possível enviar essa mensagem.",
+    };
   }
   if (outcome?.state !== undefined) {
     running.state = outcome.state;

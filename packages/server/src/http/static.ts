@@ -1,3 +1,4 @@
+import { httpError } from "../user-messages";
 import { createReadStream, existsSync, statSync } from "node:fs";
 import type { ServerResponse } from "node:http";
 import { extname, join, normalize } from "node:path";
@@ -20,7 +21,7 @@ export function serveStatic(
   path: string,
   res: ServerResponse,
 ): void {
-  if (!dir) return json(res, 404, { error: "Not found." });
+  if (!dir) return json(res, 404, httpError("Not found."));
   let file = join(dir, normalize(path).replace(/^(\.\.[/\\])+/, ""));
   if (!file.startsWith(dir) || !existsSync(file) || !statSync(file).isFile())
     file = join(dir, "index.html");

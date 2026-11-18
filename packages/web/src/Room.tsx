@@ -1,3 +1,4 @@
+import { useLocale } from "./i18n/locale";
 import { MAX_NAME_LENGTH, type RoomView } from "@cardgame/protocol";
 import { useState, type FormEvent } from "react";
 import { navigate } from "./App";
@@ -5,6 +6,7 @@ import { useTrackAudio } from "./audio";
 import { GameScreen } from "./game/GameScreen";
 import { TableLobby } from "./lobby/TableLobby";
 import { KEYS, storage } from "./storage";
+import { LanguagePicker } from "./ui/LanguagePicker";
 import { useRoom } from "./useRoom";
 
 /**
@@ -21,6 +23,7 @@ export function roomScreen(room: RoomView, watched: boolean): "lobby" | "game" {
 }
 
 export function Room({ code }: { code: string }) {
+  const { t } = useLocale();
   const { room, connection, error, send, chats } = useRoom(code);
   // Whether this page saw the current game running; "Back to lobby" clears it.
   const [watched, setWatched] = useState(false);
@@ -33,17 +36,33 @@ export function Room({ code }: { code: string }) {
   if (connection === "gone") {
     return (
       <Notice
-        title="Table not found"
-        text="This table has closed or the link is wrong."
+        title={t("Table not found", "Mesa não encontrada")}
+        text={t(
+          "This table has closed or the link is wrong.",
+          "Esta mesa foi fechada ou o link está incorreto.",
+        )}
       />
     );
   }
   if (connection === "kicked") {
     return (
-      <Notice title="Removed" text="The host removed you from this table." />
+      <Notice
+        title={t("Removed", "Você não está mais na mesa")}
+        text={t(
+          "The host removed you from this table.",
+          "O anfitrião removeu você desta mesa.",
+        )}
+      />
     );
   }
-  if (!room) return <Notice title="Joining table..." text={code} quiet />;
+  if (!room)
+    return (
+      <Notice
+        title={t("Joining table...", "Entrando na mesa...")}
+        text={code}
+        quiet
+      />
+    );
 
   const namePrompt = !room.you.name && (
     <NamePrompt onSubmit={(name) => send({ type: "setName", name })} />
@@ -71,6 +90,7 @@ export function Room({ code }: { code: string }) {
 }
 
 function NamePrompt({ onSubmit }: { onSubmit: (name: string) => void }) {
+  const { t } = useLocale();
   const [name, setName] = useState(storage.get(KEYS.name) ?? "");
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -82,20 +102,26 @@ function NamePrompt({ onSubmit }: { onSubmit: (name: string) => void }) {
   return (
     <div className="overlay">
       <form className="modal" onSubmit={submit}>
-        <h2>What's your name?</h2>
-        <p className="muted">This is how the others see you at the table.</p>
+        <h2>{t("What's your name?", "Qual é seu nome?")}</h2>
+        <p className="muted">
+          {t(
+            "This is how the others see you at the table.",
+            "Esse é o nome que os outros verão na mesa.",
+          )}
+        </p>
         <input
           className="input"
           value={name}
           onChange={(e) => setName(e.target.value)}
           maxLength={MAX_NAME_LENGTH}
-          placeholder="Nickname"
-          aria-label="Nickname"
+          placeholder={t("Nickname", "Apelido")}
+          aria-label={t("Nickname", "Apelido")}
           autoFocus
         />
         <button className="btn gold big" disabled={!name.trim()}>
-          Join table
+          {t("Join table", "Entrar na mesa")}
         </button>
+        <LanguagePicker compact />
       </form>
     </div>
   );
@@ -110,14 +136,16 @@ function Notice({
   text: string;
   quiet?: boolean;
 }) {
+  const { t } = useLocale();
   return (
     <main className="home">
       <section className="panel notice">
         <h2>{title}</h2>
         <p className="muted">{text}</p>
+        <LanguagePicker compact />
         {!quiet && (
           <button className="btn gold" onClick={() => navigate("/")}>
-            Back to start
+            {t("Back to start", "Voltar ao início")}
           </button>
         )}
       </section>

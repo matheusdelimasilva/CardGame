@@ -13,12 +13,17 @@ const recentChats = new WeakMap<Member, number[]>();
 const newId = () => randomBytes(6).toString("hex");
 
 /** A line from the table rather than a person, e.g. announcing a correct guess. */
-export function systemMessage(text: string, now = Date.now()): ChatMessage {
+export function systemMessage(
+  text: string,
+  now = Date.now(),
+  textPtBR?: string,
+): ChatMessage {
   return {
     id: newId(),
     kind: "system",
     from: { id: "", name: "" },
     text,
+    textPtBR,
     at: now,
   };
 }

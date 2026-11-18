@@ -1,3 +1,4 @@
+import { useLocale } from "../i18n/locale";
 import { SEAT_COUNT, type RoomView } from "@cardgame/protocol";
 import {
   useEffect,
@@ -7,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { navigate } from "../App";
+import { localizedGame } from "../settings";
 import { inert } from "../home/inert";
 import { InviteButton } from "../ui/InviteButton";
 import { PaperDialog } from "../ui/PaperDialog";
@@ -39,31 +41,47 @@ export function TableLobby({
   error: string | null;
   children?: ReactNode;
 }) {
+  const { t, locale } = useLocale();
   const [dialog, setDialog] = useState<"help" | string | null>(null);
   const [leaving, setLeaving] = useState(false);
   const leaveTimer = useRef<ReturnType<typeof setTimeout>>();
   useEffect(() => () => clearTimeout(leaveTimer.current), []);
-  const { you, gameInfo: info } = room;
+  const { you } = room;
+  const info = localizedGame(room.gameInfo, locale);
   const seated = room.seats.filter((seat) => seat !== null).length;
   const enough = seated >= info.minPlayers && seated <= info.maxPlayers;
   const online = connection === "open";
   const winners = room.game?.result?.winners.map(
-    (id) => room.seats.find((seat) => seat?.id === id)?.name ?? "Someone",
+    (id) =>
+      room.seats.find((seat) => seat?.id === id)?.name ??
+      t("Someone", "Alguém"),
   );
   const status = winners
-    ? `${winners.join(" & ")} ${winners.length === 1 ? "wins" : "win"}!`
+    ? t(
+        `${winners.join(" & ")} ${winners.length === 1 ? "wins" : "win"}!`,
+        `${winners.join(" e ")} ${winners.length === 1 ? "venceu" : "venceram"}!`,
+      )
     : you.seat === null
-      ? "Pick a seat"
+      ? t("Pick a seat", "Escolha um lugar")
       : !enough
-        ? "Waiting for players"
-        : "Ready to start";
-  const count = `${seated} of ${SEAT_COUNT} seated.`;
+        ? t("Waiting for players", "Aguardando jogadores")
+        : t("Ready to start", "Pronto para começar");
+  const count = t(
+    `${seated} of ${SEAT_COUNT} seated.`,
+    `${seated} de ${SEAT_COUNT} lugares ocupados.`,
+  );
   const sub =
     you.seat === null
-      ? `Flip any face-down card around the table. ${count}`
+      ? t(
+          `Flip any face-down card around the table. ${count}`,
+          `Vire uma das cartas na mesa. ${count}`,
+        )
       : !enough
-        ? `Share the invite link. You need at least ${info.minPlayers} to start.`
-        : `${count} ${you.isHost ? "Friends can still join until you start." : "Waiting for the host to start."}`;
+        ? t(
+            `Share the invite link. You need at least ${info.minPlayers} to start.`,
+            `Compartilhe o convite. É preciso ter pelo menos ${info.minPlayers} jogadores para começar.`,
+          )
+        : `${count} ${you.isHost ? t("Friends can still join until you start.", "Seus amigos podem entrar até você começar.") : t("Waiting for the host to start.", "Aguardando o anfitrião iniciar a partida.")}`;
   const menuPlayer = room.seats.find((seat) => seat?.id === dialog);
 
   return (
@@ -86,7 +104,7 @@ export function TableLobby({
               onClick={() => setDialog("help")}
               aria-haspopup="dialog"
             >
-              Instructions
+              {t("Instructions", "Instruções")}
             </button>
             <InviteButton code={room.code} />
           </>
@@ -95,7 +113,10 @@ export function TableLobby({
 
       {connection === "reconnecting" && (
         <div className="tl-connection" role="status">
-          Connection lost. Reconnecting…
+          {t(
+            "Connection lost. Reconnecting…",
+            "Conexão perdida. Reconectando…",
+          )}
         </div>
       )}
 
@@ -104,7 +125,9 @@ export function TableLobby({
           <div className="tl-felt" />
         </div>
         <div className="tl-status" aria-live="polite">
-          {winners && <div className="tl-game-over">GAME OVER</div>}
+          {winners && (
+            <div className="tl-game-over">{t("GAME OVER", "FIM DE JOGO")}</div>
+          )}
           <h1 key={status}>{status}</h1>
           <p>{sub}</p>
           <button
@@ -112,11 +135,16 @@ export function TableLobby({
             disabled={!you.isHost || !enough || !online}
             onClick={() => send({ type: "start" })}
           >
-            {winners ? "Play again" : "Start game"}
+            {winners
+              ? t("Play again", "Jogar de novo")
+              : t("Start game", "Iniciar partida")}
           </button>
           {!you.isHost && (
             <span className="tl-host-hint">
-              Only the host can start the game.
+              {t(
+                "Only the host can start the game.",
+                "Só o anfitrião pode iniciar a partida.",
+              )}
             </span>
           )}
         </div>
@@ -151,9 +179,12 @@ export function TableLobby({
                   aria-label={
                     player
                       ? mine
-                        ? "Stand up"
-                        : `${player.name}${!player.connected ? ", away" : ""}${canManage ? ", player options" : " is seated"}`
-                      : `Sit in seat ${seat + 1}`
+                        ? t("Stand up", "Levantar")
+                        : `${player.name}${!player.connected ? t(", away", ", ausente") : ""}${canManage ? t(", player options", ", opções da pessoa") : t(" is seated", " está na mesa")}`
+                      : t(
+                          `Sit in seat ${seat + 1}`,
+                          `Sentar no lugar ${seat + 1}`,
+                        )
                   }
                   aria-haspopup={
                     player && !mine && canManage ? "dialog" : undefined
@@ -177,7 +208,9 @@ export function TableLobby({
                         {player?.name || "\u00a0"}
                       </span>
                       {player && !player.connected && (
-                        <span className="tl-away-label">away</span>
+                        <span className="tl-away-label">
+                          {t("away", "ausente")}
+                        </span>
                       )}
                     </span>
                   </span>
@@ -198,38 +231,52 @@ export function TableLobby({
           <span className="tl-identity-name">{you.name}</span>
         </div>
       )}
-      <SettingsDrawer room={room} />
+      <SettingsDrawer info={info} settings={room.settings} />
 
       {dialog === "help" && (
         <PaperDialog
-          title={`How to play ${info.name}`}
+          title={t(`How to play ${info.name}`, `Como jogar ${info.name}`)}
           onClose={() => setDialog(null)}
         >
           {info.id === "hitster" ? (
             <ol className="tl-instructions">
               <li>
-                <b>Sit down.</b> Flip a card to take a seat and pick your
-                animal.
+                <b>{t("Sit down.", "Sente-se.")}</b>
+                {t(
+                  " Flip a card to take a seat and pick your animal.",
+                  " Vire uma carta para escolher seu lugar e seu animal.",
+                )}
               </li>
               <li>
-                <b>Place a song.</b> On your turn, listen to the mystery song
-                and place it on your timeline where you think its release year
-                fits.
+                <b>{t("Place a song.", "Posicione uma música.")}</b>
+                {t(
+                  " On your turn, listen to the mystery song and place it on your timeline where you think its release year fits.",
+                  " Na sua vez, ouça a música misteriosa e coloque a carta na posição que você acha que corresponde ao ano de lançamento.",
+                )}
               </li>
               <li>
-                <b>Check it.</b> The year is revealed. Right spot: keep the
-                card. Wrong spot: it is discarded.
+                <b>{t("Check it.", "Confira.")}</b>
+                {t(
+                  " The year is revealed. Right spot: keep the card. Wrong spot: it is discarded.",
+                  " O ano será revelado. Se acertar, você fica com a carta. Se errar, ela é descartada.",
+                )}
               </li>
               <li>
-                <b>Win.</b> First to collect the set number of cards wins.
+                <b>{t("Win.", "Vença.")}</b>
+                {t(
+                  " First to collect the set number of cards wins.",
+                  " Quem juntar primeiro a quantidade de cartas definida para a partida vence.",
+                )}
               </li>
             </ol>
           ) : (
             <>
               <p>{info.description}</p>
               <p>
-                Flip a face-down card to take a seat. The host starts when at
-                least {info.minPlayers} players are seated.
+                {t(
+                  `Flip a face-down card to take a seat. The host starts when at least ${info.minPlayers} players are seated.`,
+                  `Vire uma carta para se sentar. O anfitrião começa a partida quando houver pelo menos ${info.minPlayers} jogadores na mesa.`,
+                )}
               </p>
             </>
           )}
@@ -244,7 +291,7 @@ export function TableLobby({
               setDialog(null);
             }}
           >
-            Remove from table
+            {t("Remove from table", "Remover da mesa")}
           </button>
         </PaperDialog>
       )}
@@ -258,7 +305,11 @@ export function TableLobby({
   );
 }
 
-function SettingsDrawer({ room }: { room: RoomView }) {
+function SettingsDrawer({
+  info,
+  settings,
+}: Pick<RoomView, "settings"> & { info: RoomView["gameInfo"] }) {
+  const { t } = useLocale();
   const [open, setOpen] = useState(false);
   const [peek, setPeek] = useState(false);
   const expanded = open || peek;
@@ -290,25 +341,26 @@ function SettingsDrawer({ room }: { room: RoomView }) {
             setOpen(!open);
           }}
         >
-          Game settings <span aria-hidden="true" />
+          {t("Game settings", "Configurações da partida")}{" "}
+          <span aria-hidden="true" />
         </button>
       </h2>
       <div
         id="game-settings"
         className="tl-settings-paper"
         role="region"
-        aria-label="Game settings"
+        aria-label={t("Game settings", "Configurações da partida")}
         {...inert(!expanded)}
         aria-hidden={!expanded}
       >
-        {room.gameInfo.settings.length ? (
-          room.gameInfo.settings.map((def) => {
-            const value = room.settings[def.id] ?? def.default;
+        {info.settings.length ? (
+          info.settings.map((def) => {
+            const value = settings[def.id] ?? def.default;
             const label =
               def.type === "toggle"
                 ? value === true
-                  ? "On"
-                  : "Off"
+                  ? t("On", "Ativado")
+                  : t("Off", "Desativado")
                 : (def.options
                     .find((option) => option.value === value)
                     ?.label.split(":")[0] ?? String(value));
@@ -320,7 +372,12 @@ function SettingsDrawer({ room }: { room: RoomView }) {
             );
           })
         ) : (
-          <p>No additional settings for this game.</p>
+          <p>
+            {t(
+              "No additional settings for this game.",
+              "Este jogo não tem configurações adicionais.",
+            )}
+          </p>
         )}
       </div>
     </section>

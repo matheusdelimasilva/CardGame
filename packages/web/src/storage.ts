@@ -21,5 +21,6 @@ export const KEYS = {
   session: "cg:session",
   email: "cg:email",
   name: "cg:name",
+  locale: "cg:locale",
   member: (code: string) => `cg:member:${code}`,
 };

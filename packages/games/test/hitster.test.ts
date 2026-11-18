@@ -1099,7 +1099,12 @@ describe("guessing in chat", () => {
     expect(first).toEqual({
       state: expect.anything(),
       deliver: false,
-      announce: ["B guessed the song correctly."],
+      announce: [
+        {
+          text: "B guessed the song correctly.",
+          textPtBR: "B acertou a música.",
+        },
+      ],
     });
     expect(s).toEqual(before);
     const titled = first!.state!;
@@ -1109,14 +1114,21 @@ describe("guessing in chat", () => {
     expect(say(titled, "b", "Bohemian Rhapsody!")).toEqual({
       deliver: false,
       note: "You already got the song.",
+      notePtBR: "Você já acertou a música.",
     });
     const both = say(titled, "b", "queen");
     expect(both).toEqual({
       state: expect.anything(),
       deliver: false,
       announce: [
-        "B guessed the artist correctly.",
-        "B got both and earns a token.",
+        {
+          text: "B guessed the artist correctly.",
+          textPtBR: "B acertou o artista.",
+        },
+        {
+          text: "B got both and earns a token.",
+          textPtBR: "B acertou os dois e ganhou uma ficha.",
+        },
       ],
     });
     expect(both!.state).toMatchObject({
@@ -1126,10 +1138,12 @@ describe("guessing in chat", () => {
     expect(say(both!.state!, "b", "QUEEN")).toEqual({
       deliver: false,
       note: "You already got the artist.",
+      notePtBR: "Você já acertou o artista.",
     });
     expect(say(both!.state!, "b", "bohemian rhapsody by queen")).toEqual({
       deliver: false,
       note: "You already got the song.",
+      notePtBR: "Você já acertou a música.",
     });
   });
 
@@ -1138,9 +1152,18 @@ describe("guessing in chat", () => {
     expect(outcome).toMatchObject({
       deliver: false,
       announce: [
-        "C guessed the song correctly.",
-        "C guessed the artist correctly.",
-        "C got both and earns a token.",
+        {
+          text: "C guessed the song correctly.",
+          textPtBR: "C acertou a música.",
+        },
+        {
+          text: "C guessed the artist correctly.",
+          textPtBR: "C acertou o artista.",
+        },
+        {
+          text: "C got both and earns a token.",
+          textPtBR: "C acertou os dois e ganhou uma ficha.",
+        },
       ],
       state: { tokens: [2, 2, 3] },
     });
@@ -1151,10 +1174,12 @@ describe("guessing in chat", () => {
     expect(say(s, "b", "bohemian rapsodi")).toEqual({
       deliver: false,
       note: "Close, but not quite. Your message wasn't sent.",
+      notePtBR: "Quase! Sua mensagem não foi enviada.",
     });
     expect(say(s, "b", "is this queen??")).toEqual({
       deliver: false,
       note: "Close, but not quite. Your message wasn't sent.",
+      notePtBR: "Quase! Sua mensagem não foi enviada.",
     });
     expect(say(s, "b", "my dad plays this in the car")).toBeNull();
     expect(say(s, "b", "love this one")).toBeNull();
@@ -1226,6 +1251,8 @@ describe("guessing in chat", () => {
         expect(say(s, player, text)).toEqual({
           deliver: false,
           note: "Only players in this game can guess the song. Your message wasn't sent.",
+          notePtBR:
+            "Só quem está jogando pode tentar adivinhar a música. Sua mensagem não foi enviada.",
         });
     expect(say(s, null, "go team")).toBeNull();
   });

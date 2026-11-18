@@ -4,6 +4,7 @@ import type {
   ClientMessage,
   GameInfo,
   HistoryEntry,
+  Locale,
   RoomView,
   ServerMessage,
 } from "@cardgame/protocol";
@@ -16,7 +17,7 @@ vi.mock("@cardgame/games", async (original) =>
 
 let app: ReturnType<typeof createApp>;
 let base: string;
-const sent: { to: string; code: string }[] = [];
+const sent: { to: string; code: string; locale?: Locale }[] = [];
 
 /** Stands in for Deezer: any track id resolves to a preview whose bytes name that id. */
 const deezerCalls: string[] = [];
@@ -51,7 +52,7 @@ async function boot(withEmail = false) {
     fetch: fakeDeezer,
     dataFile: null,
     sendEmail: withEmail
-      ? async (to, code) => void sent.push({ to, code })
+      ? async (to, code, locale) => void sent.push({ to, code, locale })
       : null,
   });
   await new Promise<void>((r) => app.server.listen(0, r));
@@ -132,9 +133,15 @@ async function client(
 describe("sign-in", () => {
   it("emails the code and never returns it when a sender is configured", async () => {
     await boot(true);
-    const res = await api("/api/auth/request", { email: " Host@Example.com " });
+    const res = await api("/api/auth/request", {
+      email: " Host@Example.com ",
+      locale: "pt-BR",
+    });
     expect(res.body).toEqual({});
-    expect(sent.at(-1)!.to).toBe("host@example.com");
+    expect(sent.at(-1)).toMatchObject({
+      to: "host@example.com",
+      locale: "pt-BR",
+    });
     expect(
       (
         await api("/api/auth/verify", {

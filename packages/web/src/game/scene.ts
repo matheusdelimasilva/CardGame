@@ -1,3 +1,4 @@
+import { translate, type Locale } from "../i18n/locale";
 /**
  * Where every card on the table is and how it looks, from the game model,
  * the viewer's local placement and the current beat. This is the design
@@ -209,6 +210,7 @@ export interface Scene {
 
 export interface SceneInput {
   model: GameModel;
+  locale?: Locale;
   beat: Beat;
   placement: PlacementState;
   /** The viewer's bet on someone else's turn, before it is confirmed. */
@@ -670,6 +672,7 @@ function betTokens(
   handGap: number | null,
 ): BetTokenScene[] {
   const { model, beat, layout } = input;
+  const t = translate.bind(null, input.locale);
   const stage = model.stage;
   const bets = betsOf(stage);
   const geo = layout.bets;
@@ -684,7 +687,9 @@ function betTokens(
       player,
       from: chipsCentre(input, bet.player),
       level: 0,
-      label: player.isMe ? "You placed a bet." : `${player.name} placed a bet.`,
+      label: player.isMe
+        ? t("You placed a bet.", "Você fez uma aposta.")
+        : t(`${player.name} placed a bet.`, `${player.name} fez uma aposta.`),
     };
     const waiting =
       stage.kind === "placing" || beat === "launch" || beat === "show";
@@ -724,7 +729,8 @@ function bettingScene(
   input: Input,
   felt: FeltScene | null,
 ): { gaps: GapScene[]; bar: BetBarScene | null } {
-  const { model, bet, secondsLeft, layout } = input;
+  const { model, bet, secondsLeft, layout, locale } = input;
+  const t = translate.bind(null, locale);
   const stage = model.stage;
   const myBet = model.myBet;
   if (
@@ -734,7 +740,8 @@ function bettingScene(
   )
     return { gaps: [], bar: null };
   const line = felt.line;
-  const where = (g: number) => describeGap(line, g) ?? "Anywhere";
+  const where = (g: number) =>
+    describeGap(line, g, locale) ?? t("Anywhere", "Qualquer posição");
   const boxes = Array.from({ length: line.length + 1 }, (_, g) =>
     layout.feltGapBox(g, line.length),
   );
@@ -753,7 +760,10 @@ function bettingScene(
           index: myBet.index,
           box: boxes[myBet.index] ?? boxes[0]!,
           reach: reach(myBet.index),
-          label: `Your bet: ${where(myBet.index)}`,
+          label: t(
+            `Your bet: ${where(myBet.index)}`,
+            `Sua aposta: ${where(myBet.index)}`,
+          ),
           state: "mine",
           disabled: true,
         },
@@ -766,15 +776,21 @@ function bettingScene(
       index: g,
       box,
       reach: reach(g),
-      label: `Bet: ${where(g)}`,
+      label: t(`Bet: ${where(g)}`, `Apostar: ${where(g)}`),
       state: bet.pick === g ? "picked" : "open",
       disabled: sending,
     })),
     bar: {
       text:
         bet.pick === null
-          ? `Tap a gap in ${felt.player.name}'s timeline to bet`
-          : `Bet 1 token: ${where(bet.pick)}`,
+          ? t(
+              `Tap a gap in ${felt.player.name}'s timeline to bet`,
+              `Toque em um espaço na linha do tempo de ${felt.player.name} para apostar`,
+            )
+          : t(
+              `Bet 1 token: ${where(bet.pick)}`,
+              `Apostar 1 ficha: ${where(bet.pick)}`,
+            ),
       seconds: stage.locked ? secondsLeft : null,
       canConfirm: bet.pick !== null && !sending,
       sending,
@@ -789,11 +805,13 @@ function beatStatus(
   felt: FeltScene | null,
   placingMine: boolean,
 ): StatusText {
-  const { model, beat, secondsLeft } = input;
+  const { model, beat, secondsLeft, locale } = input;
+  const t = translate.bind(null, locale);
   const placement = myPlacement(input);
   const stage = model.stage;
   const own = model.me ? timelineOf(model, model.me.id) : [];
-  if (beat === "dealing") return { headline: "Dealing…", sub: "" };
+  if (beat === "dealing")
+    return { headline: t("Dealing…", "Distribuindo…"), sub: "" };
   if (
     placingMine &&
     stage.kind === "placing" &&
@@ -802,8 +820,13 @@ function beatStatus(
     placement.index !== null
   )
     return {
-      headline: describeGap(own, placement.index) ?? "Start your timeline",
-      sub: "Locked in. Checking the year…",
+      headline:
+        describeGap(own, placement.index, locale) ??
+        t("Start your timeline", "Comece sua linha do tempo"),
+      sub: t(
+        "Locked in. Checking the year…",
+        "Posição confirmada. Conferindo o ano…",
+      ),
     };
   if (stage.kind === "revealing") {
     const { turn } = stage;
@@ -813,24 +836,37 @@ function beatStatus(
       (beat === "launch" || beat === "show")
     )
       return {
-        headline: `${felt.player.name} placed it`,
-        sub: `${describeGap(felt.line, felt.placedAt) ?? "First card"}.`,
+        headline: t(
+          `${felt.player.name} placed it`,
+          `${felt.player.name} posicionou a carta`,
+        ),
+        sub: `${describeGap(felt.line, felt.placedAt, locale) ?? t("First card", "Primeira carta")}.`,
       };
     if (beat === "bets")
       return model.whose === "mine" && turn.outcome !== "passed"
-        ? { headline: "Locked in", sub: "Bets against you are revealed." }
+        ? {
+            headline: t("Locked in", "Posição confirmada"),
+            sub: t(
+              "Bets against you are revealed.",
+              "As apostas contra você foram reveladas.",
+            ),
+          }
         : {
-            headline: "Bets are in",
-            sub: turn.bets.length ? "" : "Nobody bet.",
+            headline: t("Bets are in", "Apostas encerradas"),
+            sub: turn.bets.length ? "" : t("Nobody bet.", "Ninguém apostou."),
           };
     // The viewer's card is seen to be wrong before the thief takes it.
     if (model.whose === "mine" && turn.thief && beat === "flip")
-      return { headline: "Not quite", sub: songLine(turn.song) };
+      return {
+        headline: t("Not quite", "Você errou"),
+        sub: songLine(turn.song),
+      };
   }
   return statusText(
     model,
     placingMine ? shownPlacement(placement) : null,
     secondsLeft,
+    locale,
   );
 }
 
@@ -840,6 +876,7 @@ export function scene(given: SceneInput): Scene {
     bet: freshBet(null),
     secondsLeft: null,
     ...given,
+    locale: given.locale ?? "en",
     layout: given.layout ?? landscapeLayout(given.model.opponents.length),
   };
   const { model, layout } = input;

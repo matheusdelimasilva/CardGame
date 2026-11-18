@@ -3,6 +3,8 @@
 A web platform for social card games: 2 to 8 players around a round table, on phones and computers.
 One player signs in with an email code and hosts; everyone else joins from a shared link with just a nickname.
 
+CardGame uses your browser’s language preference to choose English or Brazilian Portuguese on your first visit. Change the language using the selector on the home screen, at the table, or in the song library. Your choice is saved in that browser. Hitster’s song list is a separate table setting.
+
 ## Status
 
 | Step                                                         | State                           |

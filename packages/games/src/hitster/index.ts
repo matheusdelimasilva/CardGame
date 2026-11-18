@@ -740,16 +740,23 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
       return {
         deliver: false,
         note: "Only players in this game can guess the song. Your message wasn't sent.",
+        notePtBR:
+          "Só quem está jogando pode tentar adivinhar a música. Sua mensagem não foi enviada.",
       };
     if (verdict.kind === "near")
       return {
         deliver: false,
         note: "Close, but not quite. Your message wasn't sent.",
+        notePtBR: "Quase! Sua mensagem não foi enviada.",
       };
     if (verdict.kind === "repeat")
       return {
         deliver: false,
         note: `You already got the ${PART_NAMES[verdict.part]}.`,
+        notePtBR:
+          verdict.part === "title"
+            ? "Você já acertou a música."
+            : "Você já acertou o artista.",
       };
     let next: HitsterState = {
       ...state,
@@ -762,14 +769,21 @@ export const hitster: GameModule<HitsterState, HitsterMove, HitsterView> = {
           : guessed.artist,
       },
     };
-    const announce = verdict.parts.map(
-      (part) => `${name} guessed the ${PART_NAMES[part]} correctly.`,
-    );
+    const announce = verdict.parts.map((part) => ({
+      text: `${name} guessed the ${PART_NAMES[part]} correctly.`,
+      textPtBR:
+        part === "title"
+          ? `${name} acertou a música.`
+          : `${name} acertou o artista.`,
+    }));
     // Only the line that completes both parts earns the token, so it comes once per song.
     const credit = creditOf(next.guessed!, player);
     if (credit.title && credit.artist) {
       next = addToken(next, player);
-      announce.push(`${name} got both and earns a token.`);
+      announce.push({
+        text: `${name} got both and earns a token.`,
+        textPtBR: `${name} acertou os dois e ganhou uma ficha.`,
+      });
     }
     return { state: next, deliver: false, announce };
   },

@@ -1,8 +1,10 @@
+import { useLocale } from "../i18n/locale";
 import { useEffect, useRef, useState } from "react";
 import "./table-ui.css";
 
 /** Shares the table's link: the share sheet on touch devices, otherwise the clipboard. */
 export function InviteButton({ code }: { code: string }) {
+  const { t } = useLocale();
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>();
   useEffect(() => () => clearTimeout(timer.current), []);
@@ -10,7 +12,10 @@ export function InviteButton({ code }: { code: string }) {
     const url = `${location.origin}/t/${code}`;
     try {
       if (navigator.share && matchMedia("(pointer: coarse)").matches) {
-        await navigator.share({ title: "Join my card table", url });
+        await navigator.share({
+          title: t("Join my card table", "Entre na minha mesa"),
+          url,
+        });
         return;
       }
       await navigator.clipboard.writeText(url);
@@ -19,16 +24,22 @@ export function InviteButton({ code }: { code: string }) {
       timer.current = setTimeout(() => setCopied(false), 1800);
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") return;
-      prompt("Copy this link and send it to your friends:", url);
+      prompt(
+        t(
+          "Copy this link and send it to your friends:",
+          "Copie este link e envie para seus amigos:",
+        ),
+        url,
+      );
     }
   };
   return (
     <div className="tl-invite">
       <span className={`tl-copied${copied ? " visible" : ""}`} role="status">
-        {copied ? "Link copied!" : ""}
+        {copied ? t("Link copied!", "Link copiado!") : ""}
       </span>
       <button className="tl-button tl-gold" onClick={() => void invite()}>
-        Invite
+        {t("Invite", "Convidar")}
       </button>
     </div>
   );

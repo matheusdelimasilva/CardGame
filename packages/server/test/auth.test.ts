@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { Auth } from "../src/auth";
+import { Auth, resendSender } from "../src/auth";
 import { JsonStore } from "../src/store";
 
 const day = 24 * 60 * 60 * 1000;
@@ -79,5 +79,42 @@ describe("auth security", () => {
     const { token } = auth.verify("a@example.com", next.devCode!, 600_001);
     auth.signOut(token!);
     expect(auth.emailFor(token, 600_002)).toBeNull();
+  });
+});
+
+describe("sign-in email language", () => {
+  it("sends the sign-in code in the requested language, with English as the default", async () => {
+    const fetch = vi
+      .fn<typeof globalThis.fetch>()
+      .mockResolvedValue(new Response());
+    vi.stubGlobal("fetch", fetch);
+    const store = new JsonStore(null);
+    const auth = new Auth(store, resendSender("key", "from@example.com"));
+    try {
+      await auth.requestCode("br@example.com", 0, "pt-BR");
+      await auth.requestCode("en@example.com", 0);
+      const [portuguese, english] = fetch.mock.calls.map(([, init]) =>
+        JSON.parse(String(init?.body)),
+      );
+      expect(portuguese).toMatchObject({
+        to: "br@example.com",
+        subject: expect.stringMatching(
+          /^\d{6} é seu código de acesso ao CardGame$/,
+        ),
+        text: expect.stringMatching(
+          /^Seu código de acesso é \d{6}\. Ele expira em 10 minutos\.$/,
+        ),
+      });
+      expect(english).toMatchObject({
+        to: "en@example.com",
+        subject: expect.stringMatching(/^\d{6} is your CardGame sign-in code$/),
+        text: expect.stringMatching(
+          /^Your sign-in code is \d{6}\. It expires in 10 minutes\.$/,
+        ),
+      });
+    } finally {
+      vi.unstubAllGlobals();
+      await store.close();
+    }
   });
 });

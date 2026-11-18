@@ -1,3 +1,4 @@
+import { translate, type Locale } from "../i18n/locale";
 /**
  * Pure functions from a RoomView to what the game screen draws. Nothing here
  * keeps state: the viewer's own, not yet sent placement is passed in.
@@ -245,11 +246,18 @@ export function stolenCard(model: GameModel): {
 export function describeGap(
   line: readonly { year: number }[],
   index: number,
+  locale: Locale = "en",
 ): string | null {
+  const t = translate.bind(null, locale);
   if (line.length === 0) return null;
-  if (index <= 0) return `Before ${line[0]!.year}`;
-  if (index >= line.length) return `After ${line.at(-1)!.year}`;
-  return `Between ${line[index - 1]!.year} and ${line[index]!.year}`;
+  if (index <= 0)
+    return t(`Before ${line[0]!.year}`, `Antes de ${line[0]!.year}`);
+  if (index >= line.length)
+    return t(`After ${line.at(-1)!.year}`, `Depois de ${line.at(-1)!.year}`);
+  return t(
+    `Between ${line[index - 1]!.year} and ${line[index]!.year}`,
+    `Entre ${line[index - 1]!.year} e ${line[index]!.year}`,
+  );
 }
 
 /** "Title, Artist, 1983." */
@@ -258,9 +266,16 @@ export function songLine(song: TurnSummary["song"]): string {
 }
 
 /** Names joined for a sentence: "Mika", "Mika and Jon", "Mika, Jon and Priya". */
-export function joinNames(names: readonly string[]): string {
+export function joinNames(
+  names: readonly string[],
+  locale: Locale = "en",
+): string {
+  const t = translate.bind(null, locale);
   if (names.length <= 1) return names[0] ?? "";
-  return `${names.slice(0, -1).join(", ")} and ${names.at(-1)!}`;
+  return t(
+    `${names.slice(0, -1).join(", ")} and ${names.at(-1)!}`,
+    `${names.slice(0, -1).join(", ")} e ${names.at(-1)!}`,
+  );
 }
 
 /** A player of this game by id, as the table draws them. */
@@ -270,12 +285,22 @@ export function playerOf(model: GameModel, id: string): TablePlayer | null {
 }
 
 /** "Mika placed a bet.", "Mika and Jon placed bets.", or null with no bets. */
-function bettorsNote(model: GameModel, bets: readonly { player: string }[]) {
+function bettorsNote(
+  model: GameModel,
+  bets: readonly { player: string }[],
+  locale: Locale,
+) {
+  const t = translate.bind(null, locale);
   if (bets.length === 0) return null;
-  const names = bets.map((b) => playerOf(model, b.player)?.name ?? "Someone");
+  const names = bets.map(
+    (b) => playerOf(model, b.player)?.name ?? t("Someone", "Alguém"),
+  );
   return names.length === 1
-    ? `${names[0]!} placed a bet.`
-    : `${joinNames(names)} placed bets.`;
+    ? t(`${names[0]!} placed a bet.`, `${names[0]!} fez uma aposta.`)
+    : t(
+        `${joinNames(names)} placed bets.`,
+        `${joinNames(names, locale)} fizeram apostas.`,
+      );
 }
 
 const sentence = (...parts: (string | null)[]) =>
@@ -286,42 +311,68 @@ function myTurnStatus(
   stage: Extract<Stage, { kind: "placing" }>,
   placement: Placement | null,
   secondsLeft: number | null,
+  locale: Locale,
 ): StatusText {
+  const t = translate.bind(null, locale);
   if (stage.locked)
     return {
-      headline: "Locked in",
-      sub: bettorsNote(model, stage.bets) ?? "",
+      headline: t("Locked in", "Posição confirmada"),
+      sub: bettorsNote(model, stage.bets, locale) ?? "",
       timer:
         secondsLeft === null
-          ? "Opponents can still bet."
-          : `Opponents can bet for ${secondsLeft}s.`,
+          ? t("Opponents can still bet.", "Ainda é possível apostar.")
+          : t(
+              `Opponents can bet for ${secondsLeft}s.`,
+              `Você pode receber apostas por mais ${secondsLeft}s.`,
+            ),
     };
   const line = model.me ? timelineOf(model, model.me.id) : [];
   if (!placement)
     return {
-      headline: "Your turn",
+      headline: t("Your turn", "Sua vez"),
       sub:
         line.length === 0
-          ? "Listen, then drag the card to start your timeline."
-          : "Listen, then drag the card into your timeline.",
+          ? t(
+              "Listen, then drag the card to start your timeline.",
+              "Ouça a música e arraste a carta para iniciar sua linha do tempo.",
+            )
+          : t(
+              "Listen, then drag the card into your timeline.",
+              "Ouça a música e arraste a carta para sua linha do tempo.",
+            ),
     };
-  const where = describeGap(line, placement.index) ?? "Start your timeline";
+  const where =
+    describeGap(line, placement.index, locale) ??
+    t("Start your timeline", "Comece sua linha do tempo");
   return placement.dragging
-    ? { headline: where, sub: "Drop to place it." }
-    : { headline: `${where}?`, sub: "Drag again to change your mind." };
+    ? {
+        headline: where,
+        sub: t("Drop to place it.", "Solte a carta para posicioná-la."),
+      }
+    : {
+        headline: `${where}?`,
+        sub: t(
+          "Drag again to change your mind.",
+          "Arraste de novo para mudar a posição.",
+        ),
+      };
 }
 
 /** The viewer's part in an opponent's turn, said before what the opponent is doing. */
-function myBetNote(myBet: MyBet): string | null {
+function myBetNote(myBet: MyBet, locale: Locale): string | null {
+  const t = translate.bind(null, locale);
   switch (myBet.kind) {
     case "open":
-      return "Tap a gap to bet they miss.";
+      return t(
+        "Tap a gap to bet they miss.",
+        "Toque em um espaço para apostar que a pessoa vai errar.",
+      );
     case "placed":
-      return "Bet placed.";
+      return t("Bet placed.", "Aposta feita.");
     case "passed":
-      return "You passed.";
+      return t("You passed.", "Você passou.");
     case "noTokens":
-      return "No tokens left to bet.";
+      return t("No tokens left to bet.", "Você está sem fichas para apostar.");
     case "none":
       return null;
   }
@@ -332,63 +383,103 @@ function opponentTurnStatus(
   model: GameModel,
   stage: Extract<Stage, { kind: "placing" }>,
   secondsLeft: number | null,
+  locale: Locale,
 ): StatusText {
+  const t = translate.bind(null, locale);
   const player = model.active!;
-  const note = myBetNote(model.myBet);
+  const note = myBetNote(model.myBet, locale);
   if (stage.locked)
     return {
-      headline: `${player.name} has placed`,
+      headline: t(
+        `${player.name} has placed`,
+        `${player.name} posicionou a carta`,
+      ),
       sub: note ?? "",
       timer:
         secondsLeft === null
-          ? "Bets close soon."
-          : `Bets close in ${secondsLeft}s.`,
+          ? t("Bets close soon.", "As apostas encerram em breve.")
+          : t(
+              `Bets close in ${secondsLeft}s.`,
+              `As apostas encerram em ${secondsLeft}s.`,
+            ),
     };
-  const headline = `${player.name}'s turn`;
+  const headline = t(`${player.name}'s turn`, `Vez de ${player.name}`);
   if (!player.connected)
     return {
       headline,
       sub: sentence(
         note,
         model.viewerIsHost
-          ? "They're away. You can skip their turn."
-          : "They're away. The host can skip their turn.",
+          ? t(
+              "They're away. You can skip their turn.",
+              "Essa pessoa está ausente. Você pode pular a vez dela.",
+            )
+          : t(
+              "They're away. The host can skip their turn.",
+              "Essa pessoa está ausente. O anfitrião pode pular a vez dela.",
+            ),
       ),
     };
   // Everyone who could bet has bet or passed: the card is judged as soon as it is locked in.
   const allIn =
     stage.canBet.length === 0 && stage.bets.length + stage.declined.length > 0;
-  const before = sentence(note, allIn ? "All bets are in." : null);
+  const before = sentence(
+    note,
+    allIn ? t("All bets are in.", "Todas as apostas foram feitas.") : null,
+  );
   return {
     headline,
-    sub: before ? `${before} They're still choosing.` : "Still choosing.",
+    sub: before
+      ? t(
+          `${before} They're still choosing.`,
+          `${before} A posição ainda está sendo escolhida.`,
+        )
+      : t("Still choosing.", "Ainda escolhendo a posição."),
   };
 }
 
 /** What became of the viewer's own bet, if they made one and did not steal the card. */
-function myBetResult(model: GameModel, turn: TurnSummary): string | null {
+function myBetResult(
+  model: GameModel,
+  turn: TurnSummary,
+  locale: Locale,
+): string | null {
+  const t = translate.bind(null, locale);
   const mine = turn.bets.find((b) => b.player === model.me?.id);
-  if (mine?.result === "refunded") return "Your token comes back.";
-  if (mine?.result === "lost") return "You lose your token.";
+  if (mine?.result === "refunded")
+    return t("Your token comes back.", "Você recupera sua ficha.");
+  if (mine?.result === "lost")
+    return t("You lose your token.", "Você perde sua ficha.");
   return null;
 }
 
-function revealStatus(model: GameModel, turn: TurnSummary): StatusText {
+function revealStatus(
+  model: GameModel,
+  turn: TurnSummary,
+  locale: Locale,
+): StatusText {
+  const t = translate.bind(null, locale);
   const song = songLine(turn.song);
   const mine = model.whose === "mine";
-  const name = model.active?.name ?? "Someone";
-  const result = myBetResult(model, turn);
+  const name = model.active?.name ?? t("Someone", "Alguém");
+  const result = myBetResult(model, turn, locale);
   if (turn.thief) {
     const thief = playerOf(model, turn.thief);
     const won = timelineOf(model, turn.thief).length >= model.goal;
     return {
       headline: thief?.isMe
-        ? "You steal it!"
-        : `${thief?.name ?? "Someone"} steals it`,
+        ? t("You steal it!", "Você roubou a carta!")
+        : t(
+            `${thief?.name ?? "Someone"} steals it`,
+            `${thief?.name ?? "Alguém"} roubou a carta`,
+          ),
       sub: sentence(
         song,
         won
-          ? `That's ${model.goal} songs: ${thief?.isMe ? "you win!" : "they win!"}`
+          ? t(
+              `That's ${model.goal} songs: ${thief?.isMe ? "you win!" : "they win!"}`,
+              `${model.goal} músicas: ${thief?.isMe ? "você venceu!" : "vitória de " + (thief?.name ?? "quem fez a aposta") + "!"}`,
+            )
           : null,
         result,
       ),
@@ -397,51 +488,90 @@ function revealStatus(model: GameModel, turn: TurnSummary): StatusText {
   switch (turn.outcome) {
     case "correct":
       return mine
-        ? { headline: "Nailed it!", sub: song }
-        : { headline: `${name} got it`, sub: sentence(song, result) };
+        ? { headline: t("Nailed it!", "Você acertou!"), sub: song }
+        : {
+            headline: t(`${name} got it`, `${name} acertou`),
+            sub: sentence(song, result),
+          };
     case "wrong":
       return mine
-        ? { headline: "Not quite", sub: `${song} The card is discarded.` }
-        : { headline: `${name} missed`, sub: sentence(song, result) };
+        ? {
+            headline: t("Not quite", "Você errou"),
+            sub: t(
+              `${song} The card is discarded.`,
+              `${song} A carta foi descartada.`,
+            ),
+          }
+        : {
+            headline: t(`${name} missed`, `${name} errou`),
+            sub: sentence(song, result),
+          };
     case "passed":
       return mine
         ? {
-            headline: "Turn skipped",
-            sub: `You were away. ${song} The card is discarded.`,
+            headline: t("Turn skipped", "Vez pulada"),
+            sub: t(
+              `You were away. ${song} The card is discarded.`,
+              `Você estava ausente. ${song} A carta foi descartada.`,
+            ),
           }
         : {
-            headline: `${name} was skipped`,
-            sub: sentence(song, "The card is discarded.", result),
+            headline: t(`${name} was skipped`, `A vez de ${name} foi pulada`),
+            sub: sentence(
+              song,
+              t("The card is discarded.", "A carta foi descartada."),
+              result,
+            ),
           };
   }
 }
 
-function overStatus(model: GameModel): StatusText {
+function overStatus(model: GameModel, locale: Locale): StatusText {
+  const t = translate.bind(null, locale);
   const winners = model.winners;
   const first = winners[0];
-  if (!first) return { headline: "Game over", sub: "The game has ended." };
+  if (!first)
+    return {
+      headline: t("Game over", "Fim de jogo"),
+      sub: t("The game has ended.", "A partida terminou."),
+    };
   const count = timelineOf(model, first.id).length;
   const reachedGoal = count >= model.goal;
   if (winners.length > 1) {
-    const names = winners.map((p) => (p.isMe ? "You" : p.name));
+    const names = winners.map((p) => (p.isMe ? t("You", "Você") : p.name));
     // Only an empty deck ends a game with several winners.
     return {
-      headline: "It's a tie!",
-      sub: `The deck ran out. ${joinNames(names)} have ${count} songs each.`,
+      headline: t("It's a tie!", "Empate!"),
+      sub: t(
+        `The deck ran out. ${joinNames(names)} have ${count} songs each.`,
+        `O baralho acabou. ${joinNames(names, locale)} têm ${count} ${count === 1 ? "música cada" : "músicas cada"}.`,
+      ),
     };
   }
   if (first.isMe)
     return {
-      headline: "You win!",
+      headline: t("You win!", "Você venceu!"),
       sub: reachedGoal
-        ? `${model.goal} songs in the right order.`
-        : "The deck ran out and you have the most songs.",
+        ? t(
+            `${model.goal} songs in the right order.`,
+            `${model.goal} músicas na ordem certa.`,
+          )
+        : t(
+            "The deck ran out and you have the most songs.",
+            "O baralho acabou e você tem mais músicas.",
+          ),
     };
   return {
-    headline: `${first.name} wins`,
+    headline: t(`${first.name} wins`, `${first.name} venceu`),
     sub: reachedGoal
-      ? `They reached ${model.goal} songs first.`
-      : "The deck ran out and they have the most songs.",
+      ? t(
+          `They reached ${model.goal} songs first.`,
+          `Chegou a ${model.goal} músicas primeiro.`,
+        )
+      : t(
+          "The deck ran out and they have the most songs.",
+          "O baralho acabou e essa pessoa tem mais músicas.",
+        ),
   };
 }
 
@@ -454,39 +584,44 @@ export function statusText(
   model: GameModel,
   placement: Placement | null = null,
   secondsLeft: number | null = null,
+  locale: Locale = "en",
 ): StatusText {
+  const t = translate.bind(null, locale);
   const stage = model.stage;
   switch (stage.kind) {
     case "intro":
       return {
-        headline: "Shuffling…",
-        sub: "Dealing everyone a starting card.",
+        headline: t("Shuffling…", "Embaralhando…"),
+        sub: t(
+          "Dealing everyone a starting card.",
+          "Distribuindo uma carta inicial para cada pessoa.",
+        ),
       };
     case "dealing":
-      return { headline: "Dealing…", sub: "" };
+      return { headline: t("Dealing…", "Distribuindo…"), sub: "" };
     case "placing":
       return model.whose === "mine"
-        ? myTurnStatus(model, stage, placement, secondsLeft)
-        : opponentTurnStatus(model, stage, secondsLeft);
+        ? myTurnStatus(model, stage, placement, secondsLeft, locale)
+        : opponentTurnStatus(model, stage, secondsLeft, locale);
     case "revealing":
-      return revealStatus(model, stage.turn);
+      return revealStatus(model, stage.turn, locale);
     case "over":
-      return overStatus(model);
+      return overStatus(model, locale);
   }
 }
 
 const ORDINALS = ["1ST", "2ND", "3RD", "4TH", "5TH", "6TH", "7TH", "8TH"];
 
 /** "1ST" for rank 1, and so on. */
-export function rankLabel(rank: number): string {
-  return ORDINALS[rank - 1] ?? `${rank}TH`;
+export function rankLabel(rank: number, locale: Locale = "en"): string {
+  return translate(locale, ORDINALS[rank - 1] ?? `${rank}TH`, `${rank}º`);
 }
 
 /**
  * Final scores: winners first, then by number of cards. Rows that tie on
  * both share a rank label; the viewer comes first among equals.
  */
-export function ranking(model: GameModel): RankRow[] {
+export function ranking(model: GameModel, locale: Locale = "en"): RankRow[] {
   const winners = new Set(model.winners.map((p) => p.id));
   const everyone = model.me ? [model.me, ...model.opponents] : model.opponents;
   const rows = everyone
@@ -503,6 +638,6 @@ export function ranking(model: GameModel): RankRow[] {
         Number(o.winner) > Number(row.winner) ||
         (o.winner === row.winner && o.count > row.count),
     ).length;
-    return { ...row, rank: rankLabel(ahead + 1) };
+    return { ...row, rank: rankLabel(ahead + 1, locale) };
   });
 }

@@ -10,6 +10,8 @@ export type {
   ToggleSetting,
 } from "@cardgame/engine";
 
+export type Locale = "en" | "pt-BR";
+
 export const SEAT_COUNT = 8;
 export const MAX_NAME_LENGTH = 14;
 export const MAX_CHAT_LENGTH = 500;
@@ -28,6 +30,8 @@ export interface ChatMessage {
   /** Who sent a message. Meaningless for a system line, where it is { id: "", name: "" }. */
   from: { id: string; name: string };
   text: string;
+  /** An optional translation of a server-authored system line. */
+  textPtBR?: string;
   at: number;
 }
 
@@ -128,8 +132,8 @@ export type ServerMessage =
   | { type: "state"; room: RoomView }
   | { type: "chat"; message: ChatMessage }
   /** A private chat line for this member only, e.g. why their message was not sent. Not an error. */
-  | { type: "notice"; text: string }
-  | { type: "error"; message: string }
+  | { type: "notice"; text: string; textPtBR?: string }
+  | { type: "error"; message: string; messagePtBR?: string }
   | { type: "kicked" };
 
 export interface HistoryEntry {

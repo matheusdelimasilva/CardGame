@@ -1,3 +1,4 @@
+import { useLocale, translate, type Locale } from "../i18n/locale";
 import { MAX_CHAT_LENGTH } from "@cardgame/protocol";
 import {
   useLayoutEffect,
@@ -32,10 +33,17 @@ export interface ChatPanelProps {
 }
 
 /** The history as the log draws it. */
-export function chatLines(entries: readonly ChatEntry[]): ChatLine[] {
+export function chatLines(
+  entries: readonly ChatEntry[],
+  locale: Locale = "en",
+): ChatLine[] {
   return entries.map((e) => {
     if (e.kind === "notice" || e.kind === "system")
-      return { id: e.id, kind: e.kind, text: e.text };
+      return {
+        id: e.id,
+        kind: e.kind,
+        text: translate(locale, e.text, e.textPtBR ?? e.text),
+      };
     return { id: e.id, kind: "message", name: e.from.name, text: e.text };
   });
 }
@@ -52,11 +60,20 @@ export const GUESS_HINT =
 export function withGuessHint(
   lines: readonly ChatLine[],
   after: string | null,
+  locale: Locale = "en",
 ): ChatLine[] {
   const at = lines.findIndex((l) => l.id === after) + 1;
   return [
     ...lines.slice(0, at),
-    { id: "guess-hint", kind: "system", text: GUESS_HINT },
+    {
+      id: "guess-hint",
+      kind: "system",
+      text: translate(
+        locale,
+        GUESS_HINT,
+        "Digite aqui o nome da música e do artista. Acerte os dois para ganhar uma ficha.",
+      ),
+    },
     ...lines.slice(at),
   ];
 }
@@ -68,10 +85,14 @@ function placeholder(
   named: boolean,
   canSend: boolean,
   guessing: boolean,
+  t: ReturnType<typeof useLocale>["t"],
 ): string {
-  if (!named) return "Choose a name to chat";
-  if (!canSend) return "Reconnecting...";
-  return guessing ? "Guess or chat…" : "Say something…";
+  if (!named)
+    return t("Choose a name to chat", "Escolha um nome para conversar");
+  if (!canSend) return t("Reconnecting...", "Reconectando...");
+  return guessing
+    ? t("Guess or chat…", "Dê um palpite ou converse…")
+    : t("Say something…", "Diga algo…");
 }
 
 function Badge({
@@ -83,13 +104,26 @@ function Badge({
   guessed: boolean;
   open: boolean;
 }) {
+  const { t } = useLocale();
   const missed = open ? "not guessed yet" : "not guessed";
+  const song = label === "Song";
+  const localizedLabel = song ? t("Song", "Música") : t("Artist", "Artista");
+  const status = guessed
+    ? song
+      ? "Música identificada"
+      : "Artista identificado"
+    : song
+      ? "Música não identificada"
+      : "Artista não identificado";
   return (
     <span
       className={guessed ? "gs-chat-badge gs-chat-badge-got" : "gs-chat-badge"}
-      aria-label={`${label} ${guessed ? "guessed" : missed}`}
+      aria-label={t(
+        `${label} ${guessed ? "guessed" : missed}`,
+        !guessed && open ? `${status} ainda` : status,
+      )}
     >
-      {label.toUpperCase()}
+      {localizedLabel.toUpperCase()}
     </span>
   );
 }
@@ -114,6 +148,7 @@ export function ChatPanel({
   onSend,
   badges,
 }: ChatPanelProps) {
+  const { t } = useLocale();
   const [text, setText] = useState("");
   const log = useRef<HTMLDivElement>(null);
   // Follow new lines only while the reader is at the end of the log.
@@ -141,7 +176,7 @@ export function ChatPanel({
   };
 
   return (
-    <section className="gs-chat" aria-label="Table chat">
+    <section className="gs-chat" aria-label={t("Table chat", "Chat da mesa")}>
       <div className="gs-chat-head">
         <h2 className="gs-chat-title">Chat</h2>
         {badges && (
@@ -159,7 +194,9 @@ export function ChatPanel({
         onScroll={onScroll}
       >
         {lines.length === 0 ? (
-          <div className="gs-chat-empty">No messages yet.</div>
+          <div className="gs-chat-empty">
+            {t("No messages yet.", "Nenhuma mensagem ainda.")}
+          </div>
         ) : (
           lines.map((line) => <Line key={line.id} line={line} />)
         )}
@@ -172,8 +209,8 @@ export function ChatPanel({
           onChange={(e) => setText(e.target.value)}
           maxLength={MAX_CHAT_LENGTH}
           disabled={!canSend}
-          placeholder={placeholder(named, canSend, badges?.open ?? false)}
-          aria-label="Chat message"
+          placeholder={placeholder(named, canSend, badges?.open ?? false, t)}
+          aria-label={t("Chat message", "Mensagem do chat")}
           autoComplete="off"
         />
         <button
@@ -181,7 +218,7 @@ export function ChatPanel({
           type="submit"
           disabled={!canSend || !text.trim()}
         >
-          Send
+          {t("Send", "Enviar")}
         </button>
       </form>
     </section>

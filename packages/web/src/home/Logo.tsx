@@ -1,3 +1,4 @@
+import { useLocale } from "../i18n/locale";
 /**
  * The arcade marquee: CARDGAME in a dark cabinet screen with a red inset
  * border, suits, a blinking INSERT COIN, scanlines and a rolling light band.
@@ -11,6 +12,7 @@ export function Logo({
   bare?: boolean;
   scanlines?: boolean;
 }) {
+  const { t } = useLocale();
   return (
     <div className={`marquee${bare ? " bare" : ""}`}>
       <div className="marquee-border marquee-fade" aria-hidden="true" />
@@ -20,7 +22,7 @@ export function Logo({
         </div>
         <h1 className="marquee-title">CARDGAME</h1>
         <div className="marquee-coin marquee-fade" aria-hidden="true">
-          INSERT COIN
+          {t("INSERT COIN", "INSIRA UMA FICHA")}
         </div>
       </div>
       {scanlines && (

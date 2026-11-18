@@ -23,23 +23,38 @@ export function useStageLayout(
   useLayoutEffect(() => {
     const el = root.current;
     if (!el?.getBoundingClientRect) return;
-    const measure = () => {
+    const measure = (preserveChatLayout = true) => {
       const { width, height } = el.getBoundingClientRect();
       setSize((prev) => {
         if (prev && prev.w === width && prev.h === height) return prev;
         // A phone's keyboard shrinks the window while the chat is typed in:
         // the table holds still, and the keyboard covers its bottom anyway.
         const focused = document.activeElement;
-        const typing = focused?.tagName === "INPUT" && el.contains(focused);
-        if (prev && typing && prev.w === width && height < prev.h) return prev;
+        const typing =
+          focused?.classList.contains("gs-chat-input") && el.contains(focused);
+        if (
+          preserveChatLayout &&
+          prev &&
+          typing &&
+          prev.w === width &&
+          height < prev.h
+        )
+          return prev;
         return { w: width, h: height };
       });
     };
     measure();
     if (typeof ResizeObserver === "undefined") return;
-    const observer = new ResizeObserver(measure);
+    const observer = new ResizeObserver(() => measure());
+    const onFocusOut = (event: FocusEvent) => {
+      if (event.target === el.querySelector(".gs-chat-input")) measure(false);
+    };
     observer.observe(el);
-    return () => observer.disconnect();
+    el.addEventListener("focusout", onFocusOut);
+    return () => {
+      observer.disconnect();
+      el.removeEventListener("focusout", onFocusOut);
+    };
   }, [root]);
   const shape: StageShape = size
     ? stageShape(size.w, size.h, opponents)

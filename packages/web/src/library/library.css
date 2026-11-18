@@ -42,9 +42,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   border-bottom: 1px solid var(--lib-line);
   padding: 25px 0;
   font-size: 12px;
+}
+.lib-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .lib-nav a {
   text-decoration: none;

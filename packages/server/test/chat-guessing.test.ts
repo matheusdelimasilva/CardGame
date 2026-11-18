@@ -67,6 +67,7 @@ describe("guessing the song in chat, over the room service", () => {
         kind: "system",
         from: { id: "", name: "" },
         text: "Bo guessed the song correctly.",
+        textPtBR: "Bo acertou a música.",
         at: expect.any(Number),
       },
     ]);

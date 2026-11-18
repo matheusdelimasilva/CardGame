@@ -348,7 +348,7 @@ const BOTTOM = { ruler: 9.3, tools: 6.2, toolsH: 4.8, plate: 1.2 };
 const HAND_BOTTOM = 9.6;
 const TABLE_UNDER = 1.4;
 const DROP_ABOVE_HAND = 3;
-const TOOLS_W = 13;
+const TOOLS_W = 20;
 
 /** Vertical structure shared by the layout and its minimum height. */
 function zones(opponents: number) {

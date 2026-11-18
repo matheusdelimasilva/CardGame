@@ -16,7 +16,10 @@ const email = z
   .email()
   .max(254)
   .transform((value) => value.toLowerCase());
-export const requestCodeSchema = z.object({ email });
+export const requestCodeSchema = z.object({
+  email,
+  locale: z.enum(["en", "pt-BR"]).optional(),
+});
 export const verifyCodeSchema = z.object({
   email,
   code: z.string().regex(/^\d{6}$/),

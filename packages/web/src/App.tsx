@@ -1,5 +1,6 @@
 import { lazy, Suspense, useSyncExternalStore } from "react";
 import { HomeFlow } from "./home/HomeFlow";
+import { useLocale } from "./i18n/locale";
 import { Room } from "./Room";
 
 const SongLibrary = lazy(() => import("./library/SongLibrary"));
@@ -22,13 +23,20 @@ const subscribe = (onChange: () => void) => {
 };
 
 export function App() {
+  const { t } = useLocale();
   // An external store re-reads the path after subscribing, so a redirect made
   // by a screen while it is mounting is not missed.
   const path = useSyncExternalStore(subscribe, () => location.pathname);
 
   if (/^\/songs\/?$/.test(path))
     return (
-      <Suspense fallback={<p>Loading song library…</p>}>
+      <Suspense
+        fallback={
+          <p>
+            {t("Loading song library…", "Carregando a biblioteca de músicas…")}
+          </p>
+        }
+      >
         <SongLibrary />
       </Suspense>
     );

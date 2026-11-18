@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { api } from "../api";
+import { api, formatApiError } from "../api";
 import { navigate } from "../App";
+import { useLocale } from "../i18n/locale";
 
 /** The contents of the "Join a table" paper sheet. */
 export function JoinSheet() {
+  const { locale, t } = useLocale();
   const [code, setCode] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{ cause: unknown } | "notFound" | null>(
+    null,
+  );
   const [found, setFound] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
@@ -14,22 +18,26 @@ export function JoinSheet() {
     e.preventDefault();
     const c = code.trim().toUpperCase();
     if (!c || found) return;
+    setError(null);
     try {
       if ((await api.roomExists(c)).exists) {
         // A short beat so the "found" note lands before the table opens.
         setFound(true);
         timer.current = setTimeout(() => navigate(`/t/${c}`), 450);
-      } else setError("No table with that code.");
-    } catch (err) {
-      setError((err as Error).message);
+      } else setError("notFound");
+    } catch (cause) {
+      setError({ cause });
     }
   };
 
   return (
     <>
-      <h2 className="sheet-title">Join a table</h2>
+      <h2 className="sheet-title">{t("Join a table", "Entrar em uma mesa")}</h2>
       <p className="sheet-text">
-        Got a link from a friend? Open it, or type the table code here.
+        {t(
+          "Got a link from a friend? Open it, or type the table code here.",
+          "Recebeu um link de um amigo? Abra o link ou digite o código da mesa aqui.",
+        )}
       </p>
       <form className="sheet-row" onSubmit={join}>
         <input
@@ -43,18 +51,30 @@ export function JoinSheet() {
           maxLength={8}
           autoCapitalize="characters"
           autoComplete="off"
-          aria-label="Table code"
+          aria-label={t("Table code", "Código da mesa")}
         />
-        <button className="pbtn blue wide">Join</button>
+        <button className="pbtn blue wide">{t("Join", "Entrar")}</button>
       </form>
       {error && (
         <p className="scribble red" role="alert">
-          {error}
+          {error === "notFound"
+            ? t("No table with that code.", "Nenhuma mesa com esse código.")
+            : formatApiError(
+                error.cause,
+                locale,
+                t(
+                  "Could not find the table.",
+                  "Não foi possível localizar a mesa.",
+                ),
+              )}
         </p>
       )}
       {found && (
         <p className="scribble green" role="status">
-          Table found. Taking a seat…
+          {t(
+            "Table found. Taking a seat…",
+            "Mesa encontrada. Preparando seu lugar…",
+          )}
         </p>
       )}
     </>

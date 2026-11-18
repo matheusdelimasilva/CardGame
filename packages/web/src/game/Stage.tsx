@@ -1,3 +1,4 @@
+import { useLocale } from "../i18n/locale";
 /**
  * The table itself, drawn from a Scene: the felt, the deck, the status, the
  * opponents and their timelines, the viewer's hand and the mystery card.
@@ -75,7 +76,6 @@ export interface BetActions {
 }
 
 /** "2 tokens", "1 token". */
-const tokens = (n: number) => `${n} ${n === 1 ? "token" : "tokens"}`;
 
 /** The oval table: black rail, red pinstripe, felt with a dashed inner line. */
 function Table({ box }: { box: Box }) {
@@ -112,6 +112,7 @@ function Status({
   onLock: () => void;
   bet: BetActions;
 }) {
+  const { t } = useLocale();
   const place = scene.statusBox;
   const spot = layout.status[place];
   const { headline, sub, timer } = scene.status;
@@ -156,7 +157,7 @@ function Status({
           disabled={scene.lock === "sending"}
           onClick={onLock}
         >
-          Lock it in
+          {t("Lock it in", "Confirmar posição")}
         </button>
       )}
     </div>
@@ -172,6 +173,7 @@ function Seats({
   goal: number;
   onSeat?: (player: TablePlayer) => void;
 }) {
+  const { t } = useLocale();
   return scene.seats.map((seat) => (
     <SeatCard
       key={seat.player.id}
@@ -182,7 +184,7 @@ function Seats({
       goal={goal}
       active={seat.active}
       tilt={seat.tilt}
-      badge={seat.bet ? "BET" : null}
+      badge={seat.bet ? t("BET", "APOSTA") : null}
       onClick={onSeat ? () => onSeat(seat.player) : undefined}
     />
   ));
@@ -198,6 +200,7 @@ function SeatChips({
   max: number;
   delay: string;
 }) {
+  const { t } = useLocale();
   return scene.seats.map((seat) => (
     <Chips
       key={seat.player.id}
@@ -212,7 +215,7 @@ function SeatChips({
       chip={seat.player.chip}
       edge={seat.player.chipEdge}
       role="img"
-      aria-label={`${seat.player.name}: ${tokens(seat.chips)}`}
+      aria-label={`${seat.player.name}: ${t(`${seat.chips} ${seat.chips === 1 ? "token" : "tokens"}`, `${seat.chips} ${seat.chips === 1 ? "ficha" : "fichas"}`)}`}
     />
   ));
 }
@@ -230,10 +233,14 @@ function MyChips({
   layout: StageLayout;
   delay: string;
 }) {
+  const { t } = useLocale();
   const tip =
     count === 0
-      ? "You have no chips left to bet."
-      : `You have ${count} ${count === 1 ? "chip" : "chips"}. Use ${count === 1 ? "it" : "them"} to bet against their guesses.`;
+      ? t("You have no chips left to bet.", "Você não tem fichas para apostar.")
+      : t(
+          `You have ${count} ${count === 1 ? "chip" : "chips"}. Use ${count === 1 ? "it" : "them"} to bet against their guesses.`,
+          `Você tem ${count} ${count === 1 ? "ficha" : "fichas"}. Aposte quando achar que alguém vai errar.`,
+        );
   const { x, y } = layout.bets.plateChips;
   return (
     <span
@@ -339,18 +346,28 @@ function FeltTimeline({
   gaps: GapScene[];
   onPick: (i: number) => void;
 }) {
+  const { t } = useLocale();
   return (
     <>
       <ol
         className="gs-visually-hidden"
-        aria-label={`${felt.player.name}'s timeline`}
+        aria-label={t(
+          `${felt.player.name}'s timeline`,
+          `Linha do tempo de ${felt.player.name}`,
+        )}
       >
         {felt.line.map((song) => (
           <li key={song.id}>{song.year}</li>
         ))}
       </ol>
       {gaps.length > 0 && (
-        <div role="group" aria-label={`Gaps in ${felt.player.name}'s timeline`}>
+        <div
+          role="group"
+          aria-label={t(
+            `Gaps in ${felt.player.name}'s timeline`,
+            `Espaços na linha do tempo de ${felt.player.name}`,
+          )}
+        >
           {gaps.map((gap) => (
             <Gap key={gap.index} gap={gap} onPick={onPick} />
           ))}
@@ -366,12 +383,13 @@ function FeltTimeline({
  * says it.
  */
 function BetBar({ bar, actions }: { bar: BetBarScene; actions: BetActions }) {
+  const { t } = useLocale();
   const floating = bar.place === "floating";
   return (
     <div
       className={cx("gs-bet-bar", `is-${bar.place}`)}
       role="group"
-      aria-label="Your bet"
+      aria-label={t("Your bet", "Sua aposta")}
     >
       {floating && bar.seconds !== null && (
         <span className="gs-bet-count" role="timer" aria-live="off">
@@ -389,7 +407,7 @@ function BetBar({ bar, actions }: { bar: BetBarScene; actions: BetActions }) {
         disabled={!bar.canConfirm}
         onClick={actions.onConfirm}
       >
-        Confirm bet
+        {t("Confirm bet", "Confirmar aposta")}
       </button>
       <button
         type="button"
@@ -397,7 +415,7 @@ function BetBar({ bar, actions }: { bar: BetBarScene; actions: BetActions }) {
         disabled={bar.sending}
         onClick={actions.onPass}
       >
-        Pass
+        {t("Pass", "Passar")}
       </button>
     </div>
   );
@@ -437,8 +455,15 @@ function BetTokens({ bets }: { bets: BetTokenScene[] }) {
 }
 
 function Hand({ cards }: { cards: HandCardScene[] }) {
+  const { t } = useLocale();
   return (
-    <div role="list" aria-label="Your timeline, oldest first">
+    <div
+      role="list"
+      aria-label={t(
+        "Your timeline, oldest first",
+        "Sua linha do tempo, das mais antigas às mais recentes",
+      )}
+    >
       {cards.map((card) => (
         <div
           key={card.song.id}
@@ -518,14 +543,25 @@ function HandBand({ box }: { box: Box }) {
 const HELD_TRANSFORM = (tilt: number, scale: number) =>
   `translate(calc(var(--u) * (var(--gs-held-x) - ${HAND_CARD.w / 2})), calc(var(--u) * (var(--gs-held-y) - ${HAND_CARD.h / 2}))) rotate(${tilt}deg) scale(${scale})`;
 
-function mysteryLabel(mystery: MysteryScene, playing: boolean): string {
-  const sound = playing ? "Tap to pause the song." : "Tap to play the song.";
+function mysteryLabel(
+  mystery: MysteryScene,
+  playing: boolean,
+  t: ReturnType<typeof useLocale>["t"],
+): string {
+  const sound = playing
+    ? t("Tap to pause the song.", "Toque para pausar a música.")
+    : t("Tap to play the song.", "Toque para reproduzir a música.");
   if (mystery.face)
     return `${mystery.face.title}, ${mystery.face.artist}, ${mystery.face.year}. ${sound}`;
   const known = [mystery.title, mystery.artist].filter(Boolean).join(", ");
-  const card = known ? `Mystery song: ${known}.` : "Mystery song card.";
+  const card = known
+    ? t(`Mystery song: ${known}.`, `Música misteriosa: ${known}.`)
+    : t("Mystery song card.", "Carta da música misteriosa.");
   return mystery.draggable
-    ? `${card} Drag it into your timeline, or use the arrow keys to choose a spot and Enter to lock it in. Escape takes it back. ${sound}`
+    ? t(
+        `${card} Drag it into your timeline, or use the arrow keys to choose a spot and Enter to lock it in. Escape takes it back. ${sound}`,
+        `${card} Arraste a carta para sua linha do tempo ou use as setas para escolher uma posição e Enter para confirmar. Use Esc para voltar. ${sound}`,
+      )
     : `${card} ${sound}`;
 }
 
@@ -548,6 +584,7 @@ function Mystery({
   scroller: HandScroller;
   actions: MysteryActions;
 }) {
+  const { t } = useLocale();
   const drag = useMysteryDrag({
     stage,
     layout,
@@ -602,7 +639,7 @@ function Mystery({
         role="button"
         tabIndex={mystery.visible ? 0 : -1}
         aria-hidden={mystery.visible ? undefined : true}
-        aria-label={mysteryLabel(mystery, playing)}
+        aria-label={mysteryLabel(mystery, playing, t)}
         aria-keyshortcuts={
           mystery.draggable
             ? "ArrowLeft ArrowRight Enter Escape Space"
@@ -670,6 +707,7 @@ export function Stage({
   plate,
   tools,
 }: StageProps) {
+  const { t } = useLocale();
   const stage = useRef<HTMLDivElement>(null);
   const handCount = scene.hand?.length ?? 0;
   const { scroller, handlers } = useHandScroll(
@@ -701,7 +739,7 @@ export function Stage({
         style={boxStyle(layout.deck)}
       />
       <div className="gs-goal" style={boxStyle(layout.goalLabel)}>
-        FIRST TO {goal}
+        {t(`FIRST TO ${goal}`, `META: ${goal} CARTAS`)}
       </div>
       <Seats scene={scene} goal={goal} onSeat={onSeat} />
       <SeatChips
@@ -736,9 +774,9 @@ export function Stage({
           style={boxStyle(layout.ruler)}
           aria-hidden="true"
         >
-          <span>← older</span>
+          <span>{t("← older", "← mais antigas")}</span>
           <span className="gs-ruler-line" />
-          <span>newer →</span>
+          <span>{t("newer →", "mais recentes →")}</span>
         </div>
       )}
       {view && <HandBand box={view} />}
@@ -790,7 +828,11 @@ export function Stage({
               )}
               aria-expanded={drawer.open}
               aria-controls={chatId}
-              aria-label={drawer.unread ? "Chat, new messages" : "Chat"}
+              aria-label={
+                drawer.unread
+                  ? t("Chat, new messages", "Chat, novas mensagens")
+                  : "Chat"
+              }
               onClick={() => drawer.setOpen(!drawer.open)}
             >
               Chat

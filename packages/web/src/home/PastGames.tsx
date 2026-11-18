@@ -1,9 +1,10 @@
 import type { HistoryEntry } from "@cardgame/protocol";
 import { useState, type PointerEvent } from "react";
+import { useLocale } from "../i18n/locale";
 import { inert } from "./inert";
 
-const when = (iso: string) =>
-  new Date(iso).toLocaleString([], {
+const when = (iso: string, locale: string) =>
+  new Date(iso).toLocaleString(locale, {
     month: "short",
     day: "numeric",
     hour: "numeric",
@@ -23,6 +24,7 @@ export function PastGames({
   /** True off the home screen: the drawer drops out of view. */
   away: boolean;
 }) {
+  const { locale, t } = useLocale();
   const [hover, setHover] = useState(false);
   const [pinned, setPinned] = useState(false);
   const open = !away && (hover || pinned);
@@ -57,22 +59,28 @@ export function PastGames({
               if (!hover) setPinned((p) => !p);
             }}
           >
-            Past games
+            {t("Past games", "Partidas anteriores")}
             <span className="drawer-chev" aria-hidden="true" />
           </button>
         </h2>
         <div
           id="past-games"
           role="region"
-          aria-label="Past games; winners circled"
+          aria-label={t(
+            "Past games; winners circled",
+            "Partidas anteriores, com os vencedores circulados",
+          )}
           className="drawer-sheet"
           onClick={() => !open && setPinned(true)}
         >
           {history === null ? (
-            <p className="drawer-note">Loading…</p>
+            <p className="drawer-note">{t("Loading…", "Carregando…")}</p>
           ) : history.length === 0 ? (
             <p className="drawer-note">
-              Games you host will show up here once they finish.
+              {t(
+                "Games you host will show up here once they finish.",
+                "As partidas que você organizar aparecem aqui quando terminarem.",
+              )}
             </p>
           ) : (
             <ul className="drawer-grid">
@@ -80,7 +88,9 @@ export function PastGames({
                 <li key={`${h.roomCode}-${h.endedAt}-${i}`}>
                   <div className="drawer-head">
                     <span className="drawer-game">{h.gameName}</span>
-                    <span className="drawer-when">{when(h.endedAt)}</span>
+                    <span className="drawer-when">
+                      {when(h.endedAt, locale)}
+                    </span>
                   </div>
                   <div className="drawer-players">
                     {h.players.map((p, j) => {
@@ -88,7 +98,11 @@ export function PastGames({
                       return (
                         <span key={j} className={won ? "won" : undefined}>
                           {p}
-                          {won && <span className="sr-only"> (winner)</span>}
+                          {won && (
+                            <span className="sr-only">
+                              {t(" (winner)", " (venceu)")}
+                            </span>
+                          )}
                         </span>
                       );
                     })}

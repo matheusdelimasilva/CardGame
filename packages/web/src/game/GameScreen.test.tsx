@@ -7,6 +7,7 @@ import {
 } from "react-test-renderer";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { TrackAudio } from "../audio";
+import { LocaleProvider } from "../i18n/locale";
 import type { ChatEntry } from "../useRoom";
 import { GUESS_HINT } from "./ChatPanel";
 import { SCENARIO_NAMES, scenarios } from "./dev/fixtures";
@@ -41,17 +42,25 @@ const element = (
 );
 /** The screen's own box: a phone held upright, or none at all (landscape). */
 let screenBox: { width: number; height: number } | null = null;
-const render = (room: RoomView, chats: readonly ChatEntry[] = []) => {
+const render = (
+  room: RoomView,
+  chats: readonly ChatEntry[] = [],
+  withLocale = false,
+) => {
+  const game = element(room, null, chats);
   act(() => {
-    renderer = create(element(room, null, chats), {
-      createNodeMock: (node) => {
-        if (node.type === "dialog") return dialog;
-        const box = screenBox;
-        if (box && String(node.props.className).startsWith("game-screen"))
-          return { getBoundingClientRect: () => box };
-        return null;
+    renderer = create(
+      withLocale ? <LocaleProvider>{game}</LocaleProvider> : game,
+      {
+        createNodeMock: (node) => {
+          if (node.type === "dialog") return dialog;
+          const box = screenBox;
+          if (box && String(node.props.className).startsWith("game-screen"))
+            return { getBoundingClientRect: () => box };
+          return null;
+        },
       },
-    });
+    );
   });
   return renderer!.root;
 };
@@ -139,6 +148,60 @@ describe("game screen", () => {
       expect(textOf(root)).toContain("Bet a token");
     }
     if (name.startsWith("over")) expect(textOf(root)).toContain("FINAL SCORES");
+  });
+
+  it("switches an in-progress game and its chat history to Brazilian Portuguese", () => {
+    vi.stubGlobal("navigator", { languages: ["en-US"] });
+    vi.stubGlobal("localStorage", {
+      getItem: vi.fn(() => null),
+      setItem: vi.fn(),
+    });
+    vi.stubGlobal("document", {
+      activeElement: null,
+      body: {},
+      documentElement: {},
+    });
+    screenBox = { width: 320, height: 700 };
+    const root = render(
+      scenarios.myTurn(),
+      [
+        {
+          id: "1",
+          kind: "system",
+          from: { id: "", name: "" },
+          text: "Mika guessed the song correctly.",
+          textPtBR: "Mika acertou a música.",
+          at: 1,
+        },
+        {
+          id: "2",
+          from: { id: "p1", name: "Mika" },
+          text: "What a tune!",
+          at: 2,
+        },
+      ],
+      true,
+    );
+
+    expect(status(root)).toMatch(/^Your turn/);
+    key(root, "ArrowRight");
+    expect(status(root)).toMatch(/^Before \d{4}\?/);
+
+    const picker = root
+      .findByProps({ className: "gs-tools" })
+      .findByType("select");
+    expect(picker.props["aria-label"]).toBe("Language");
+    act(() => picker.props.onChange({ target: { value: "pt-BR" } }));
+
+    expect(status(root)).toMatch(/^Antes de \d{4}\?/);
+    expect(buttons(root, "Confirmar posição")).toHaveLength(1);
+    expect(textOf(root)).toContain("META: ");
+    expect(textOf(root)).toContain("Mika acertou a música.");
+    expect(textOf(root)).toContain("Mika: What a tune!");
+    expect(root.findByType("select").props["aria-label"]).toBe("Idioma");
+    expect(mystery(root).props["aria-label"]).toContain(
+      "Carta da música misteriosa",
+    );
   });
 
   it("tells viewers who are not playing what they are doing", () => {
