@@ -2,13 +2,23 @@
 .gs-header {
   z-index: 8;
 }
-/* Three buttons where the design has two: smaller ones keep clear of the marquee at any width. */
+/* Four controls on the right: tighter padding keeps clear of the marquee at any width. */
 .gs-header .tl-header-actions {
-  gap: calc(var(--u) * 0.9);
+  gap: calc(var(--u) * 0.8);
 }
 .gs-header .tl-header-actions .tl-button {
-  padding: calc(var(--u) * 0.8) calc(var(--u) * 1.3);
+  padding: calc(var(--u) * 0.8) calc(var(--u) * 1.2);
   font-size: calc(var(--u) * 1.5);
+}
+.gs-header .tl-header-actions .language-picker {
+  padding: calc(var(--u) * 0.8) calc(var(--u) * 2.35) calc(var(--u) * 0.8)
+    calc(var(--u) * 0.95);
+  background-position: right calc(var(--u) * 0.8) center;
+  background-size: calc(var(--u) * 0.95);
+}
+.gs-header .tl-header-actions .language-picker-flag {
+  width: calc(var(--u) * 2.5);
+  height: calc(var(--u) * 1.65);
 }
 
 /* The round note: the lobby's paper, wider, with the countdown beside the steps. */

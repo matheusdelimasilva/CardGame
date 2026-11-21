@@ -102,7 +102,10 @@ function NamePrompt({ onSubmit }: { onSubmit: (name: string) => void }) {
   return (
     <div className="overlay">
       <form className="modal" onSubmit={submit}>
-        <h2>{t("What's your name?", "Qual é seu nome?")}</h2>
+        <div className="modal-head">
+          <h2>{t("What's your name?", "Qual é seu nome?")}</h2>
+          <LanguagePicker compact />
+        </div>
         <p className="muted">
           {t(
             "This is how the others see you at the table.",
@@ -121,7 +124,6 @@ function NamePrompt({ onSubmit }: { onSubmit: (name: string) => void }) {
         <button className="btn gold big" disabled={!name.trim()}>
           {t("Join table", "Entrar na mesa")}
         </button>
-        <LanguagePicker compact />
       </form>
     </div>
   );
@@ -139,10 +141,10 @@ function Notice({
   const { t } = useLocale();
   return (
     <main className="home">
+      <LanguagePicker compact className="home-language-picker" />
       <section className="panel notice">
         <h2>{title}</h2>
         <p className="muted">{text}</p>
-        <LanguagePicker compact />
         {!quiet && (
           <button className="btn gold" onClick={() => navigate("/")}>
             {t("Back to start", "Voltar ao início")}

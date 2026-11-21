@@ -119,8 +119,8 @@ export default function SongLibrary() {
           ♠ CARDGAME <span>{t("/ THE COLLECTION", "/ A COLEÇÃO")}</span>
         </a>
         <div className="lib-nav-actions">
-          <LanguagePicker compact />
           <a href="/">{t("Back to game ↗", "Voltar ao jogo ↗")}</a>
+          <LanguagePicker compact />
         </div>
       </header>
       <section className="lib-heading">

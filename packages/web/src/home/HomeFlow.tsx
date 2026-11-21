@@ -279,12 +279,11 @@ export function HomeFlow({ path }: { path: string }) {
         </div>
       ) : (
         <div className="stack">
-          {away && (
-            <div className="stack-top">
-              {backButton}
-              {stepDots}
-            </div>
-          )}
+          <div className={`stack-top${away ? "" : " stack-top-home"}`}>
+            {away && backButton}
+            {away && stepDots}
+            <LanguagePicker compact className="home-language-picker" />
+          </div>
           <div className="stack-logo">
             <Logo bare={away} />
             {!away && <p className="tagline">{tagline}</p>}
@@ -340,7 +339,7 @@ export function HomeFlow({ path }: { path: string }) {
         </div>
       )}
       {email && <PastGames history={history} away={away} />}
-      <LanguagePicker compact className="home-language-picker" />
+      {stage && <LanguagePicker compact className="home-language-picker" />}
       {!away && (
         <a className="home-library-link" href="/songs">
           {t(

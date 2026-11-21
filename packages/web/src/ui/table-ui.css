@@ -80,7 +80,17 @@
   right: calc(var(--u) * 2.5);
 }
 .tl-header-actions .language-picker {
-  min-height: calc(var(--u) * 3.7);
+  min-height: 0;
+  border-radius: calc(var(--u) * 0.8);
+  padding: calc(var(--u) * 0.9) calc(var(--u) * 2.8) calc(var(--u) * 0.9)
+    calc(var(--u) * 1.1);
+  box-shadow: 0 calc(var(--u) * 0.45) 0 var(--ink);
+  background-position: right calc(var(--u) * 1) center;
+  background-size: calc(var(--u) * 1.1);
+}
+.tl-header-actions .language-picker-flag {
+  width: calc(var(--u) * 2.95);
+  height: calc(var(--u) * 1.98);
 }
 
 .tl-invite {
@@ -368,7 +378,7 @@
     left: 0;
     right: 0;
     justify-content: center;
-    gap: 14px;
+    gap: 10px;
   }
   :where(.table-lobby, .tl-dialog) .tl-button {
     min-height: 44px;
@@ -377,6 +387,15 @@
   }
   :where(.table-lobby) .tl-header-actions .language-picker {
     min-height: 44px;
+    border-radius: 8px;
+    padding: 10px 30px 10px 12px;
+    box-shadow: 0 4px 0 var(--ink);
+    background-position: right 10px center;
+    background-size: 11px;
+  }
+  :where(.table-lobby) .tl-header-actions .language-picker-flag {
+    width: 24px;
+    height: 16px;
   }
   :where(.table-lobby) .tl-copied {
     font-size: 21px;
@@ -412,6 +431,13 @@
   .tl-button {
     min-height: 36px;
     font-size: 14px;
+  }
+  .tl-header-actions .language-picker {
+    min-height: 36px;
+  }
+  .tl-header-actions .language-picker-flag {
+    width: 22px;
+    height: 15px;
   }
   .tl-watchers {
     font-size: 11px;

@@ -415,8 +415,15 @@
 .gs-tools .language-picker {
   height: calc(var(--u) * 4.6);
   min-height: 0;
-  max-width: calc(var(--u) * 7);
-  font-size: min(0.75rem, calc(var(--u) * 1.4));
+  border-radius: calc(var(--u) * 0.8);
+  padding: 0 calc(var(--u) * 2.2) 0 calc(var(--u) * 0.9);
+  box-shadow: 0 calc(var(--u) * 0.45) 0 var(--ink);
+  background-position: right calc(var(--u) * 0.75) center;
+  background-size: calc(var(--u) * 0.95);
+}
+.gs-tools .language-picker-flag {
+  width: calc(var(--u) * 2.7);
+  height: calc(var(--u) * 1.8);
 }
 
 .gs-tools .tl-button {
